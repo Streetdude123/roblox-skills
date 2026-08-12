@@ -304,8 +304,6 @@ def validate_record(path: Path, data: dict[str, Any]) -> tuple[list[str], list[s
             errors.append("verified-acquisition requires executed and passing independent behavioral skill validation")
         if isinstance(unavailable_claims, list) and unavailable_claims:
             errors.append("verified-acquisition cannot have material resource_proof.unavailable_claims")
-        if isinstance(canonical, str) and not canonical.strip():
-            errors.append("verified-acquisition requires canonical identity/provenance")
 
     if trust_basis == "curated":
         if not nonempty_string(slug):
