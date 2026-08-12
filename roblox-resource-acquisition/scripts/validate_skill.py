@@ -4,16 +4,31 @@
 This intentionally cannot prove runtime correctness or documentation truth. It
 checks that a generated skill exposes the minimum operational/provenance contract
 before behavioral tests and rejects obvious unfilled template state.
+
+PyYAML is required (see requirements.txt); the script exits with code 2 and an
+install hint when it is missing.
 """
 from __future__ import annotations
 
 import argparse
-import ipaddress
 import re
+import sys
 from collections import Counter
 from datetime import date
 from pathlib import Path
 from urllib.parse import parse_qsl, urlparse
+
+if str(Path(__file__).resolve().parent) not in sys.path:
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _common import (
+    DEVFORUM_TOPIC_PATH_RE,
+    SENSITIVE_QUERY_RE,
+    SLUG_RE,
+    VOLATILE_VERSION_TOKEN_RE,
+    has_immutable_version_evidence,
+    load_yaml,
+    validated_url_host,
+)
 
 REQUIRED_HEADINGS = [
     "Use when",
@@ -96,15 +111,6 @@ SENSITIVE_URL_QUERY_KEYS = {
     "token",
     "x-amz-signature",
 }
-
-SENSITIVE_URL_QUERY_KEY_RE = re.compile(
-    r"(?:"
-    r"(?:^|[_-])(?:access[_-]?key|api[_-]?key|auth(?:orization)?|credential|password|passwd|secret|signature|sig|token)(?:$|[_-])"
-    r"|(?:api|access|auth|client|private|refresh|session|bearer)[_-]?(?:token|key|secret|credential)(?:$|[_-])"
-    r"|secret[_-]?key(?:$|[_-])"
-    r")",
-    re.I,
-)
 
 NO_SEPARATE_CANONICAL_RE = re.compile(
     r"^(?:"
@@ -330,34 +336,6 @@ SECTION_MIN_WORDS = {
 }
 
 
-VOLATILE_VERSION_TOKEN_RE = re.compile(
-    r"\b(?:latest|current|stable|head|main|master|trunk|nightly|rolling|dev|development)\b",
-    re.I,
-)
-
-IMMUTABLE_VERSION_ID_RE = re.compile(
-    r"(?:"
-    # Common semantic/calver-style releases, including a major-only v1 tag.
-    r"\bv\d+(?:(?:[._-]\d+)+(?:[-+][0-9A-Za-z.-]+)?)?\b"
-    r"|\b\d+(?:[._-]\d+)+(?:[-+][0-9A-Za-z.-]+)?\b"
-    # Git/object-style hexadecimal identifiers. Seven chars is the common
-    # practical lower bound for an abbreviated commit hash.
-    r"|\b[0-9a-f]{7,64}\b"
-    r")",
-    re.I,
-)
-
-# Some upstreams use immutable named tags/releases rather than numeric semver.
-# Require an explicit reference kind so arbitrary prose cannot masquerade as a
-# validated pin (for example, bare ``banana-state``).
-EXPLICIT_IMMUTABLE_REF_RE = re.compile(
-    r"\b(?:tag|release|version|commit|revision|rev|build|asset version)\b"
-    r"\s*(?:[:=#@]|is\b)?\s*([A-Za-z0-9][A-Za-z0-9._/-]{0,127})\b",
-    re.I,
-)
-
-SOURCE_STATE_DATE_RE = re.compile(r"\b\d{4}-\d{2}-\d{2}\b")
-
 COMMAND_TOOL_RE = re.compile(
     r"\b(?:python\d*|pytest|luau|lune|rojo|selene|stylua|npm|pnpm|yarn|bun|cargo|git|wally|aftman)\b",
     re.I,
@@ -399,36 +377,6 @@ PASS_RELATION_RE = re.compile(
     r")",
     re.I,
 )
-
-
-def has_immutable_version_evidence(value: str) -> bool:
-    """Accept an immutable-looking ID, named reference, or dated source state."""
-    dated_tokens = SOURCE_STATE_DATE_RE.findall(value)
-    for raw_date in dated_tokens:
-        try:
-            source_date = date.fromisoformat(raw_date)
-        except ValueError:
-            continue
-        if source_date <= date.today():
-            return True
-
-    # Date-shaped tokens also resemble numeric release IDs. Mask them before
-    # checking release identifiers so malformed/future dates cannot
-    # accidentally satisfy an immutable-ID branch.
-    without_dates = SOURCE_STATE_DATE_RE.sub(" ", value)
-    if IMMUTABLE_VERSION_ID_RE.search(without_dates):
-        return True
-
-    explicit = EXPLICIT_IMMUTABLE_REF_RE.search(without_dates)
-    if not explicit:
-        return False
-    identifier = explicit.group(1).strip().lower()
-    return identifier not in {
-        "latest", "current", "stable", "head", "main", "master", "trunk",
-        "nightly", "rolling", "dev", "development", "unknown", "tbd", "none",
-        "not", "unavailable", "unspecified", "n/a", "na", "not-available",
-        "not_available", "not-applicable", "not_applicable",
-    }
 
 
 def iter_fenced_blocks(text: str):
@@ -494,17 +442,21 @@ def parse_frontmatter(text: str) -> tuple[dict[str, str], str]:
         raise ValueError("SKILL.md frontmatter is not closed")
     raw = text[4:end]
     body = text[end + 5 :]
+    try:
+        loaded = load_yaml(raw)
+    except ValueError as exc:
+        raise ValueError(f"invalid frontmatter: {exc}") from exc
+    if loaded is None:
+        loaded = {}
+    if not isinstance(loaded, dict):
+        raise ValueError("SKILL.md frontmatter must be a YAML mapping")
     data: dict[str, str] = {}
-    for line in raw.splitlines():
-        if not line.strip() or line.lstrip().startswith("#"):
-            continue
-        if ":" not in line:
-            raise ValueError(f"Unsupported frontmatter line: {line!r}")
-        key, value = line.split(":", 1)
-        key = key.strip()
-        if key in data:
-            raise ValueError(f"duplicate frontmatter field: {key}")
-        data[key] = value.strip().strip('"\'')
+    for key, value in loaded.items():
+        if not isinstance(key, str):
+            raise ValueError(f"frontmatter keys must be strings, got {key!r}")
+        if isinstance(value, (dict, list)):
+            raise ValueError(f"frontmatter field {key!r} must be a scalar value")
+        data[key] = "" if value is None else str(value).strip()
     return data, body
 
 
@@ -614,43 +566,6 @@ def extract_labeled_value(section: str, label: str) -> str | None:
     return match.group(1).strip()
 
 
-def validated_url_host(parsed) -> str | None:
-    """Return normalized host for syntactically valid HTTP URL authority."""
-    try:
-        host = parsed.hostname
-        _ = parsed.port
-    except ValueError:
-        return None
-    if not host or re.search(r"[\s\x00-\x1f\x7f]", host) or "%" in host:
-        return None
-    host = host.rstrip(".")
-    if not host:
-        return None
-    if ":" in host:
-        try:
-            ipaddress.ip_address(host)
-        except ValueError:
-            return None
-        return host.lower()
-    try:
-        ascii_host = host.encode("idna").decode("ascii")
-    except UnicodeError:
-        return None
-    if len(ascii_host) > 253:
-        return None
-    labels = ascii_host.split(".")
-    if any(
-        not label
-        or len(label) > 63
-        or label.startswith("-")
-        or label.endswith("-")
-        or not re.fullmatch(r"[A-Za-z0-9-]+", label)
-        for label in labels
-    ):
-        return None
-    return ascii_host.lower()
-
-
 def parse_http_url(value: str) -> tuple[str, str] | None:
     # Labeled provenance fields should contain one HTTPS URL, not prose plus a URL.
     # Curated identities and portable evidence records already require HTTPS;
@@ -682,7 +597,7 @@ def url_embeds_credentials(value: str) -> bool:
     for component in (parsed.query, parsed.fragment):
         for key, _ in parse_qsl(component, keep_blank_values=True):
             normalized_key = key.strip().lower()
-            if normalized_key in SENSITIVE_URL_QUERY_KEYS or SENSITIVE_URL_QUERY_KEY_RE.search(normalized_key):
+            if normalized_key in SENSITIVE_URL_QUERY_KEYS or SENSITIVE_QUERY_RE.search(normalized_key):
                 return True
     return False
 
@@ -1031,7 +946,7 @@ def validate_skill(root: Path) -> tuple[list[str], list[str]]:
             errors.append(f"missing frontmatter field: {field}")
 
     name = meta.get("name", "")
-    if name and not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", name):
+    if name and not SLUG_RE.fullmatch(name):
         errors.append("frontmatter name must be a lowercase kebab-case slug")
 
     description = meta.get("description", "")
@@ -1124,7 +1039,7 @@ def validate_skill(root: Path) -> tuple[list[str], list[str]]:
                 errors.append("DevForum provenance URL must use devforum.roblox.com")
             else:
                 topic_path = urlparse(devforum_url).path
-                if not re.fullmatch(r"/t/(?:[^/]+/)?\d+(?:/\d+)?/?", topic_path):
+                if not DEVFORUM_TOPIC_PATH_RE.fullmatch(topic_path):
                     errors.append("DevForum provenance URL must identify a specific DevForum topic, not a category/home/search page")
         elif NO_DEVFORUM_RE.fullmatch(devforum_value.strip()):
             warnings.append(

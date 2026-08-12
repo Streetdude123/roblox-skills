@@ -4,51 +4,32 @@
 This is a structural and state-consistency validator. Passing does not establish
 that the resource, source claims, or generated skill are actually correct.
 
-PyYAML is used when available. A small dependency-free fallback parser supports
-the schema emitted by templates/resource-record.yaml, including its nested maps
-and string lists.
+PyYAML is required (see requirements.txt). A single parser everywhere keeps
+trust/verification verdicts identical across environments; the script exits
+with code 2 and an install hint when PyYAML is missing.
 """
 from __future__ import annotations
 
 import argparse
-import ipaddress
-import json
-import re
+import sys
 from datetime import date
 from pathlib import Path
 from typing import Any
-from urllib.parse import parse_qsl, urlparse
+from urllib.parse import urlparse
 
-try:  # Optional convenience, not a runtime requirement.
-    import yaml  # type: ignore
-except Exception:  # pragma: no cover - environment dependent
-    yaml = None
-
-
-if yaml is not None:
-    class UniqueKeyLoader(yaml.SafeLoader):
-        pass
-
-    def _construct_unique_mapping(loader: Any, node: Any, deep: bool = False) -> dict[Any, Any]:
-        mapping: dict[Any, Any] = {}
-        for key_node, value_node in node.value:
-            key = loader.construct_object(key_node, deep=deep)
-            if key in mapping:
-                raise yaml.constructor.ConstructorError(
-                    "while constructing a mapping",
-                    node.start_mark,
-                    f"found duplicate key {key!r}",
-                    key_node.start_mark,
-                )
-            mapping[key] = loader.construct_object(value_node, deep=deep)
-        return mapping
-
-    UniqueKeyLoader.add_constructor(
-        yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
-        _construct_unique_mapping,
-    )
-else:  # pragma: no cover - only used without PyYAML
-    UniqueKeyLoader = None
+if str(Path(__file__).resolve().parent) not in sys.path:
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _common import (
+    DEVFORUM_TOPIC_PATH_RE,
+    SLUG_RE,
+    VOLATILE_VERSION_TOKEN_RE,
+    has_immutable_version_evidence,
+    load_yaml,
+    normalize_empty_values,
+    validate_date,
+    validate_https_url,
+    validated_url_host,
+)
 
 TOP_LEVEL_FIELDS = {
     "resource",
@@ -123,301 +104,19 @@ ALLOWED_ORIGINS = {"curated", "project", "devforum", "other"}
 ALLOWED_TRUST_LEVELS = {"trusted", "untrusted"}
 ALLOWED_TRUST_BASES = {"", "curated", "verified-acquisition", "project", "explicit-user", "other"}
 ALLOWED_VERIFICATION = {"unverified", "unavailable", "verified", "failed"}
-SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
-VOLATILE_VERSION_TOKEN_RE = re.compile(
-    r"\b(?:latest|current|stable|head|main|master|trunk|nightly|rolling|dev|development)\b",
-    re.I,
-)
-
-IMMUTABLE_VERSION_ID_RE = re.compile(
-    r"(?:"
-    r"\bv\d+(?:(?:[._-]\d+)+(?:[-+][0-9A-Za-z.-]+)?)?\b"
-    r"|\b\d+(?:[._-]\d+)+(?:[-+][0-9A-Za-z.-]+)?\b"
-    r"|\b[0-9a-f]{7,64}\b"
-    r")",
-    re.I,
-)
-
-EXPLICIT_IMMUTABLE_REF_RE = re.compile(
-    r"\b(?:tag|release|version|commit|revision|rev|build|asset version)\b"
-    r"\s*(?:[:=#@]|is\b)?\s*([A-Za-z0-9][A-Za-z0-9._/-]{0,127})\b",
-    re.I,
-)
-
-SOURCE_STATE_DATE_RE = re.compile(r"\b\d{4}-\d{2}-\d{2}\b")
-
-DEVFORUM_TOPIC_PATH_RE = re.compile(r"/t/(?:[^/]+/)?\d+(?:/\d+)?/?")
-
-SENSITIVE_QUERY_RE = re.compile(
-    r"(?:"
-    r"(?:^|[_-])(?:access[_-]?key|api[_-]?key|auth(?:orization)?|credential|password|passwd|secret|signature|sig|token)(?:$|[_-])"
-    r"|(?:api|access|auth|client|private|refresh|session|bearer)[_-]?(?:token|key|secret|credential)(?:$|[_-])"
-    r"|secret[_-]?key(?:$|[_-])"
-    r")",
-    re.I,
-)
-
-
-class MiniYamlError(ValueError):
-    pass
-
-
-def strip_comment(line: str) -> str:
-    out: list[str] = []
-    quote: str | None = None
-    escaped = False
-    for ch in line:
-        if escaped:
-            out.append(ch)
-            escaped = False
-            continue
-        if ch == "\\" and quote == '"':
-            out.append(ch)
-            escaped = True
-            continue
-        if quote:
-            out.append(ch)
-            if ch == quote:
-                quote = None
-            continue
-        if ch in {"'", '"'}:
-            quote = ch
-            out.append(ch)
-            continue
-        # In a YAML plain scalar, ``#`` starts a comment only when it is
-        # separated from the value (or begins the line). Preserve embedded
-        # fragments such as ``https://example.test/page#section`` so the
-        # fallback parser cannot silently discard security-relevant URL data.
-        if ch == "#" and (not out or out[-1].isspace()):
-            break
-        out.append(ch)
-    return "".join(out).rstrip()
-
-
-def split_inline_list(raw: str) -> list[str]:
-    items: list[str] = []
-    current: list[str] = []
-    quote: str | None = None
-    escaped = False
-    for ch in raw:
-        if escaped:
-            current.append(ch)
-            escaped = False
-            continue
-        if ch == "\\" and quote == '"':
-            current.append(ch)
-            escaped = True
-            continue
-        if quote:
-            current.append(ch)
-            if ch == quote:
-                quote = None
-            continue
-        if ch in {"'", '"'}:
-            quote = ch
-            current.append(ch)
-            continue
-        if ch == ",":
-            item = "".join(current).strip()
-            if not item:
-                raise MiniYamlError("empty item in inline list")
-            items.append(item)
-            current = []
-            continue
-        if ch in "[]{}":
-            raise MiniYamlError("nested inline collections are not supported")
-        current.append(ch)
-    if quote:
-        raise MiniYamlError("unterminated quote in inline list")
-    item = "".join(current).strip()
-    if item:
-        items.append(item)
-    elif raw.strip():
-        raise MiniYamlError("empty trailing item in inline list")
-    return items
-
-
-def parse_scalar(raw: str) -> Any:
-    raw = raw.strip()
-    if raw == "":
-        return ""
-    if raw == "[]":
-        return []
-    if raw.startswith("[") or raw.endswith("]"):
-        if not (raw.startswith("[") and raw.endswith("]")):
-            raise MiniYamlError("unterminated inline list")
-        inner = raw[1:-1].strip()
-        if not inner:
-            return []
-        return [parse_scalar(item) for item in split_inline_list(inner)]
-    if raw.startswith("{") or raw.endswith("}"):
-        raise MiniYamlError("inline maps are not supported")
-    if raw[0:1] in {"'", '"'} or raw[-1:] in {"'", '"'}:
-        if len(raw) < 2 or raw[0] != raw[-1] or raw[0] not in {"'", '"'}:
-            raise MiniYamlError("unterminated or mismatched quote")
-        if raw[0] == '"':
-            # JSON string escaping is a safe subset of YAML double-quoted
-            # escaping and correctly handles forms such as \u0023. Reject
-            # unsupported escapes rather than silently changing YAML meaning.
-            try:
-                return json.loads(raw)
-            except json.JSONDecodeError as exc:
-                raise MiniYamlError(f"invalid double-quoted string: {exc.msg}") from exc
-        # YAML single-quoted strings escape a quote by doubling it.
-        return raw[1:-1].replace("''", "'")
-    # Reject mapping syntax that would not be a plain scalar in YAML.
-    if re.search(r":\s", raw):
-        raise MiniYamlError("nested mapping syntax is not supported")
-
-    lowered = raw.lower()
-    if lowered in {"true", "yes", "on"}:
-        return True
-    if lowered in {"false", "no", "off"}:
-        return False
-    if lowered in {"null", "~"}:
-        return None
-    if lowered in {".inf", "+.inf"}:
-        return float("inf")
-    if lowered == "-.inf":
-        return float("-inf")
-    if lowered == ".nan":
-        return float("nan")
-    if re.fullmatch(r"[-+]?0b[01_]+", raw, re.I):
-        sign = -1 if raw.startswith("-") else 1
-        digits = raw.lstrip("+-")[2:].replace("_", "")
-        return sign * int(digits, 2)
-    if re.fullmatch(r"[-+]?0x[0-9a-f_]+", raw, re.I):
-        sign = -1 if raw.startswith("-") else 1
-        digits = raw.lstrip("+-")[2:].replace("_", "")
-        return sign * int(digits, 16)
-    if re.fullmatch(r"[-+]?[0-9][0-9_]*", raw):
-        return int(raw.replace("_", ""), 10)
-    if re.fullmatch(r"[-+]?\d+(?::[0-5]?\d)+", raw):
-        # PyYAML resolves sexagesimal integer syntax; only the resulting type
-        # matters to this schema validator.
-        return 0
-    if re.fullmatch(r"[-+]?(?:\d[\d_]*\.[\d_]*|[\d_]*\.[\d_]+)(?:[eE][-+]?\d+)?", raw):
-        return float(raw.replace("_", ""))
-    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", raw):
-        try:
-            return date.fromisoformat(raw)
-        except ValueError:
-            pass
-    if re.match(r"^\d{4}-\d{2}-\d{2}(?:[Tt]|[ \t]+)\d{1,2}:\d{2}", raw):
-        raise MiniYamlError("timestamp scalars are not supported; quote string values explicitly")
-    return raw
-
-
-def load_fallback(path: Path) -> dict[str, Any]:
-    """Parse the deliberately small resource-record schema without PyYAML."""
-    root: dict[str, Any] = {}
-    current_map: str | None = None
-    current_list: tuple[dict[str, Any], str] | None = None
-
-    for lineno, raw_line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-        line = strip_comment(raw_line)
-        if not line.strip():
-            continue
-        if "\t" in raw_line[: len(raw_line) - len(raw_line.lstrip())]:
-            raise MiniYamlError(f"line {lineno}: tabs are not supported for indentation")
-        indent = len(line) - len(line.lstrip(" "))
-        content = line.strip()
-
-        if indent == 0:
-            current_map = None
-            current_list = None
-            if content.startswith("-"):
-                raise MiniYamlError(f"line {lineno}: top-level sequence is not supported")
-            if ":" not in content:
-                raise MiniYamlError(f"line {lineno}: expected key: value")
-            key, raw_value = content.split(":", 1)
-            key = key.strip()
-            if not key:
-                raise MiniYamlError(f"line {lineno}: empty key")
-            if key in root:
-                raise MiniYamlError(f"line {lineno}: duplicate key {key!r}")
-            raw_value = raw_value.strip()
-            if raw_value == "":
-                if key in NESTED_FIELDS:
-                    root[key] = {}
-                    current_map = key
-                elif key in {"alternatives_considered", "limitations"}:
-                    root[key] = []
-                    current_list = (root, key)
-                else:
-                    root[key] = ""
-            else:
-                root[key] = parse_scalar(raw_value)
-            continue
-
-        if indent == 4:
-            if current_list is None or not content.startswith("-"):
-                raise MiniYamlError(
-                    f"line {lineno}: four-space indentation is only supported for nested list items"
-                )
-            item = content[1:].strip()
-            if not item:
-                raise MiniYamlError(f"line {lineno}: empty list item")
-            current_list[0][current_list[1]].append(parse_scalar(item))
-            continue
-
-        if indent != 2:
-            raise MiniYamlError(f"line {lineno}: only two-space nested mappings and four-space nested list items are supported")
-
-        if content.startswith("-"):
-            if current_list is None:
-                raise MiniYamlError(f"line {lineno}: list item appears outside a list field")
-            item = content[1:].strip()
-            if not item:
-                raise MiniYamlError(f"line {lineno}: empty list item")
-            current_list[0][current_list[1]].append(parse_scalar(item))
-            continue
-
-        if current_map is None:
-            raise MiniYamlError(f"line {lineno}: nested mapping appears without a parent map")
-        if ":" not in content:
-            raise MiniYamlError(f"line {lineno}: expected nested key: value")
-        key, raw_value = content.split(":", 1)
-        key = key.strip()
-        child = root[current_map]
-        if not isinstance(child, dict):
-            raise MiniYamlError(f"line {lineno}: invalid mapping parent {current_map!r}")
-        if key in child:
-            raise MiniYamlError(f"line {lineno}: duplicate key {current_map}.{key}")
-        raw_value = raw_value.strip()
-        if raw_value == "":
-            if current_map == "resource_proof" and key == "unavailable_claims":
-                child[key] = []
-                current_list = (child, key)
-            else:
-                child[key] = ""
-                current_list = None
-        else:
-            child[key] = parse_scalar(raw_value)
-            current_list = None
-
-    verification = root.get("verification")
-    if isinstance(verification, dict) and isinstance(verification.get("validated_at"), date):
-        verification["validated_at"] = verification["validated_at"].isoformat()
-    return root
 
 
 def load_record(path: Path) -> dict[str, Any]:
-    if yaml is not None:
-        try:
-            loaded = yaml.load(path.read_text(encoding="utf-8"), Loader=UniqueKeyLoader)
-        except Exception as exc:
-            raise ValueError(f"invalid YAML: {exc}") from exc
-        if not isinstance(loaded, dict):
-            raise ValueError("record must be a YAML mapping")
-        verification = loaded.get("verification")
-        if isinstance(verification, dict) and isinstance(verification.get("validated_at"), date):
-            verification["validated_at"] = verification["validated_at"].isoformat()
-        return loaded
-    try:
-        return load_fallback(path)
-    except MiniYamlError as exc:
-        raise ValueError(f"invalid or unsupported YAML: {exc}") from exc
+    loaded = load_yaml(path.read_text(encoding="utf-8"))
+    if not isinstance(loaded, dict):
+        raise ValueError("record must be a YAML mapping")
+    normalize_empty_values(loaded, LIST_FIELDS)
+    # PyYAML resolves an unquoted ISO date to datetime.date. Accept that
+    # natural YAML spelling and normalize it to the schema's string form.
+    verification = loaded.get("verification")
+    if isinstance(verification, dict) and isinstance(verification.get("validated_at"), date):
+        verification["validated_at"] = verification["validated_at"].isoformat()
+    return loaded
 
 
 def dotted_get(data: dict[str, Any], dotted: str) -> Any:
@@ -431,106 +130,6 @@ def dotted_get(data: dict[str, Any], dotted: str) -> Any:
 
 def nonempty_string(value: Any) -> bool:
     return isinstance(value, str) and bool(value.strip())
-
-
-def validated_url_host(parsed: Any) -> str | None:
-    """Return a normalized hostname when URL authority syntax is valid."""
-    try:
-        host = parsed.hostname
-        _ = parsed.port  # validates numeric/range syntax
-    except ValueError:
-        return None
-    if not host or re.search(r"[\s\x00-\x1f\x7f]", host) or "%" in host:
-        return None
-    host = host.rstrip(".")
-    if not host:
-        return None
-    if ":" in host:
-        try:
-            ipaddress.ip_address(host)
-        except ValueError:
-            return None
-        return host.lower()
-    try:
-        ascii_host = host.encode("idna").decode("ascii")
-    except UnicodeError:
-        return None
-    if len(ascii_host) > 253:
-        return None
-    labels = ascii_host.split(".")
-    if any(
-        not label
-        or len(label) > 63
-        or label.startswith("-")
-        or label.endswith("-")
-        or not re.fullmatch(r"[A-Za-z0-9-]+", label)
-        for label in labels
-    ):
-        return None
-    return ascii_host.lower()
-
-
-def validate_https_url(value: str, *, field: str, expected_host: str | None = None) -> list[str]:
-    errors: list[str] = []
-    try:
-        parsed = urlparse(value)
-    except Exception:
-        return [f"{field} is not a valid URL"]
-    if parsed.scheme.lower() != "https" or not parsed.netloc:
-        errors.append(f"{field} must be an absolute https:// URL")
-    host = validated_url_host(parsed)
-    if parsed.netloc and host is None:
-        errors.append(f"{field} has an invalid URL host or port")
-    if parsed.username or parsed.password:
-        errors.append(f"{field} must not contain embedded credentials")
-    if expected_host and host and host != expected_host:
-        errors.append(f"{field} must use host {expected_host}")
-    for component_name, component in (("query", parsed.query), ("fragment", parsed.fragment)):
-        for key, _ in parse_qsl(component, keep_blank_values=True):
-            if SENSITIVE_QUERY_RE.search(key):
-                errors.append(f"{field} must not contain credential-like {component_name} parameter {key!r}")
-    return errors
-
-
-def validate_date(value: str, *, field: str) -> list[str]:
-    if value == "YYYY-MM-DD":
-        return [f"{field} still contains the template placeholder YYYY-MM-DD"]
-    try:
-        parsed = date.fromisoformat(value)
-    except ValueError:
-        return [f"{field} must be a real ISO date in YYYY-MM-DD form"]
-    if parsed > date.today():
-        return [f"{field} cannot be in the future"]
-    return []
-
-
-def has_immutable_version_evidence(value: str) -> bool:
-    """Accept an immutable-looking ID, named reference, or valid dated source state."""
-    for raw_date in SOURCE_STATE_DATE_RE.findall(value):
-        try:
-            source_date = date.fromisoformat(raw_date)
-        except ValueError:
-            continue
-        if source_date <= date.today():
-            return True
-
-    # Date-shaped tokens can resemble numeric release IDs. Mask them before
-    # checking version identifiers so malformed/future dates cannot satisfy a
-    # release-number branch by accident.
-    without_dates = SOURCE_STATE_DATE_RE.sub(" ", value)
-    if IMMUTABLE_VERSION_ID_RE.search(without_dates):
-        return True
-
-    explicit = EXPLICIT_IMMUTABLE_REF_RE.search(without_dates)
-    if not explicit:
-        return False
-    identifier = explicit.group(1).strip().lower()
-    return identifier not in {
-        "latest", "current", "stable", "head", "main", "master", "trunk",
-        "nightly", "rolling", "dev", "development", "unknown", "tbd", "none",
-        "not", "unavailable", "unspecified", "n/a", "na", "not-available",
-        "not_available", "not-applicable", "not_applicable",
-    }
 
 
 def validate_record(path: Path, data: dict[str, Any]) -> tuple[list[str], list[str]]:
