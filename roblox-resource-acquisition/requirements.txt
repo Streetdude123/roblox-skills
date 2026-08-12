@@ -1,0 +1,7 @@
+# Optional dependency for the validator scripts in scripts/.
+#
+# The scripts run on the Python 3.8+ standard library alone: each one falls
+# back to a bundled mini-YAML parser that supports the flat schemas shipped in
+# templates/. Install PyYAML to parse the full YAML syntax (block scalars,
+# nested collections, anchors) in user-authored registry/store/record files.
+PyYAML>=5.4
