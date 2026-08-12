@@ -232,7 +232,7 @@ GENERIC_PASS_RE = re.compile(
 OBSERVABLE_VERB_RE = re.compile(
     r"\b(?:print(?:s|ed)?|log(?:s|ged)?|return(?:s|ed)?|exit(?:s|ed)?|"
     r"run(?:s|ning|ran)?|exist(?:s|ed)?|emit(?:s|ted)?|fire(?:s|d)?|trigger(?:s|ed)?|call(?:s|ed)?|"
-    r"receive(?:s|d)?|send(?:s|sent)?|create(?:s|d)?|destroy(?:s|ed)?|"
+    r"receive(?:s|d)?|send(?:s)?|sent|create(?:s|d)?|destroy(?:s|ed)?|"
     r"remove(?:s|d)?|appear(?:s|ed)?|show(?:s|ed)?|contain(?:s|ed)?|"
     r"equal(?:s|ed)?|match(?:es|ed)?|change(?:s|d)?|become(?:s)?|"
     r"increment(?:s|ed)?|decrement(?:s|ed)?|connect(?:s|ed)?|disconnect(?:s|ed)?)\b",
