@@ -1,7 +1,7 @@
 ---
 name: roblox-resource-acquisition
 description: Finds, evaluates, verifies, learns, packages, refreshes, and validates Roblox community resources as reusable agent skills. Use when a Roblox task needs a reusable capability not adequately covered by Roblox built-ins or already-trusted dependencies, when an existing resource skill needs source/version refresh, or when explicitly asked to discover, compare, or evaluate a community library, module, framework, plugin, package, or other Community Resource.
-compatibility: Scripts require Python 3.8+ (standard library only). PyYAML is optional — install it via requirements.txt for full YAML parsing; without it the scripts use a bundled fallback parser limited to the shipped flat schemas.
+compatibility: Scripts require Python 3.8+ and PyYAML (pip install -r requirements.txt). A single required parser keeps validation verdicts identical across environments; scripts exit with code 2 and an install hint when PyYAML is missing.
 ---
 
 # Roblox Resource Acquisition
@@ -205,7 +205,7 @@ If no fresh-agent mechanism exists, run the same protocol as an explicit contrac
 
 Run `scripts/validate_skill.py <generated-skill-directory>` as a structural gate when Python is available. Treat its PASS as structural evidence only, never as proof that the prose, upstream claims, or runtime behavior are correct.
 
-**Script dependencies.** All scripts in `scripts/` run on the Python 3.8+ standard library with no required third-party packages. PyYAML is the sole optional dependency (`pip install -r requirements.txt`): when present it parses full YAML syntax; when absent the scripts fall back to a bundled parser that supports only the flat schemas shipped in `templates/`. No other packages, databases, or network access are needed.
+**Script dependencies.** All scripts in `scripts/` require Python 3.8+ and PyYAML (`pip install -r requirements.txt`); everything else is standard library. PyYAML is required rather than optional so that every environment parses registry, learnings, and record files identically — a validation verdict, and therefore a trust decision, must never depend on which parser happened to be installed. When PyYAML is missing the scripts exit with code 2 and an install hint (exit 1 remains validation failure, 0 pass). No other packages, databases, or network access are needed.
 
 ## 7. Repair the generated skill until it converges
 

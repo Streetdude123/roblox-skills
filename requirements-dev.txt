@@ -1,0 +1,4 @@
+# Development-only dependencies for this repository (running tests/).
+# The shipped skill itself needs only roblox-resource-acquisition/requirements.txt.
+-r roblox-resource-acquisition/requirements.txt
+pytest>=7.0
