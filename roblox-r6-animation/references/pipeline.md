@@ -75,7 +75,7 @@ Roll scaling decomposes orientation into Euler angles and is not general retarge
 
 ## Baking and export
 
-`Poser.bake` creates real KeyframeSequence, Keyframe, and nested Pose instances. It samples procedural clips using `ctxAt(t)` when provided. `Bake.lua` is an Edit-mode project helper with configurable root, rig, and clip list; inspect and adapt those inputs first.
+`Poser.bake` creates real KeyframeSequence, Keyframe, and nested Pose instances. It refuses a length over 60 s: a held clip such as `DioPoint` carries `length = 100000` so it never ends in play, and a bake of it with no explicit length looped for millions of frames, flooded memory and crashed Studio behind a "Save File Failure" dialog on 2026-09-22 (the unsaved place was lost). Pass a bake length for every held clip and bake at most five clips per `execute_luau` call. It samples procedural clips using `ctxAt(t)` when provided. `Bake.lua` is an Edit-mode project helper with configurable root, rig, and clip list; inspect and adapt those inputs first.
 
 Account for the current baker's behavior before delivering its output:
 

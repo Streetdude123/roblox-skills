@@ -227,6 +227,27 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   clones of the body, the stand and the roller for two frames at join.
 - 2026-09-22: "search up tutorials like the animation and stuff and improve the VFX skill" - read the League of Legends VFX style guide takeaways, Jason Keyser on block-ins and timing, the VFX Apprentice timing and design principles, Vlambeer's screenshake tricks and the Roblox DevForum particle guides; the rules that survived translation are the Principles section and `references/principles.md`. Biggest changes: one hero element per phase, pale cores with a dark rim, stretched sparks, and gather-overload-process timing with short dissipation on gameplay effects.
 
+- 2026-09-22 (night): "I lost all my changes to my place cause my pc restarted, reapply all the changes ...
+  he's not even punching the road roller and he doesn't even touch it. Fix it and reapply all the
+  changes with improved vfx and animations." The place had never been published. Rebuilt in one pass
+  with `scripts/RebuildStandPlace.lua` and the four scripts in `scripts/rebuild/` (the kit archive,
+  the 53 templates + 28 meshes + 23 sound picks, the 70 stand sounds and the dusk lighting, the free
+  model rig and its 8 clips, the 54 dead kit sounds), the road roller re-inserted (asset
+  121007269169300, scaled 16/50, one MeshPart named Body). The roller now lies along DIO's line
+  (`Angles(tilt, 0, 0)`), DIO stands on the rear hood (top 1.2 above the centre, measured with rays
+  over the mesh in its own frame: a 5 x 8 grid of downward casts), The World dives at the front
+  housing (top 3.4 at z -5) with the fist flashes, a gold `RingShock` 1.1 every six beats, `Hit2`
+  0.55 every three, `PackF` shards every six and sparks that fly up off the metal (Top emission,
+  gravity -40) all placed in the ROLLER's frame at `DECK (0, 3.4, -5)`, never beside DIO. The rush
+  glow was cut (stand light 1.6 to 0.7, echoes every 0.45 s at 0.82, flash 1.2, one per beat): at the
+  old values the stand read as a gold blob on the housing, not a body hammering.
+- Two Studio traps from that night. A `Poser.bake` of a held clip (`length = 100000`) with no bake
+  length loops for millions of frames, floods memory (his machine has 6 GB), and Studio dies behind a
+  "Save File Failure" dialog that blocks every MCP call; bake in batches of five with a length, and
+  publish first. The full VFX kit in `ServerStorage.VfxKit` is 50,066 instances (36,661 of them
+  `Wing Rigs`); a play test doubles the place in memory, so once the templates are extracted the kit
+  folder should be saved to an .rbxm and removed from the place.
+
 ## Reference index
 
 - [taste.md](references/taste.md) - his taste in full, why each rule exists, and the identity rule for stands.
@@ -244,5 +265,6 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
 - `scripts/SummonVfx.lua` - the small rung worked example (DIO summon: the clock gather, the tick pop, gold echoes, the charge and heartbeat idle, the join-time warm-up, `afterimage`, `standParts` that skips `Tr 1` parts, `rigOf`).
 - `scripts/Moves.lua`, `scripts/TimeStop.lua`, `scripts/MovesServer.lua` - the move rung (barrage with fist streaks, flashes, arm echoes and a finisher) and the cinematic move (the time stop call, the freeze, the resume) with the server that runs hitboxes, freezes the world, queues damage in stopped time and launches knockback through a 0.22 s `LinearVelocity`.
 - `scripts/UltimateVfx.lua` - the cinematic rung worked example (sword ultimate, 2272 lines).
+- `scripts/RebuildStandPlace.lua` + `scripts/rebuild/` - rebuild the whole DIO place from a fresh baseplate that holds his packs, the old Stand model and the free model.
 - `scripts/RoadRoller.lua` - the second cinematic piece (the road roller: a procedural root and roller on one beat table, the land, the rush on the deck, the boom, the fade; the server side is `startRoadRoller` and `blast` in `MovesServer.lua`).
 - `scripts/ScanPack.lua`, `scripts/MeshGallery.lua`, `scripts/BlankDeadSounds.lua` - the pack intake tools.

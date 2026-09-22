@@ -26,10 +26,14 @@ local sfx = SummonVfx.sfx
 local RoadRoller = {}
 local active = {}
 
--- the roller mesh is 16 long and 8.6 tall; dio rides the rear deck with his root 3 above the top
+-- the roller mesh is 16 long and 8.6 tall and lies along dio's line, front away from him; rays over the mesh gave
+-- the rear hood top 1.2 above the centre (z 2 to 6) and the front housing top a flat 3.4 at z -5, so dio rides the
+-- hood with his root 3 above it and the world dives at the housing with its fists on the metal
 local ROLLER_H = 8.6
 local ROOT_H = 3
-local REAR = 3
+local REAR = 3.5
+local HOOD_H = 1.2
+local DECK = V3(0, 3.4, -5)
 
 local function newModel(name)
 	local m = Instance.new("Model")
@@ -54,7 +58,7 @@ end
 -- the roller's centre height above the impact ground through the cutscene: it drops in from the sky to just
 -- under dio's feet at the apex, falls with him to the ground, squashes on the land, then sinks under the rush
 local function rollerY(t)
-	local apexCentre = RR.Apex - ROOT_H - ROLLER_H / 2
+	local apexCentre = RR.Apex - ROOT_H - HOOD_H
 	local landed = ROLLER_H / 2
 	if t < T.reach then
 		return nil
@@ -88,10 +92,10 @@ local function rootAt(state, t)
 		p = apex - V3(0, 0.4 * sineInOut(u), 0)
 	elseif t < T.off then
 		local ry = rollerY(t) or (ROLLER_H / 2)
-		p = V3(0, ry + ROLLER_H / 2 + ROOT_H, REAR)
+		p = V3(0, ry + HOOD_H + ROOT_H, REAR)
 	elseif t < T.off + 0.65 then
 		local u = (t - T.off) / 0.65
-		local from = V3(0, (rollerY(T.off - 0.01) or 3) + ROLLER_H / 2 + ROOT_H, REAR)
+		local from = V3(0, (rollerY(T.off - 0.01) or 3) + HOOD_H + ROOT_H, REAR)
 		local to = V3(0, ROOT_H, 14)
 		p = from:Lerp(to, sineInOut(u)) + V3(0, 6 * 4 * u * (1 - u), 0)
 	else
@@ -112,7 +116,7 @@ local function rollerCF(state, t)
 		tilt = -0.14 + 0.14 * quadOut((t - T.land) / 0.3)
 	end
 	local j = (t > T.land + 0.4 and t < T.boom) and 0.06 * math.sin(t * math.pi * 2 * 12) or 0
-	return state.impact * CFrame.new(j, y, 0) * CFrame.Angles(tilt, math.pi / 2, 0)
+	return state.impact * CFrame.new(j, y, 0) * CFrame.Angles(tilt, 0, 0)
 end
 
 local function light(parent, color, brightness, range)
@@ -231,6 +235,7 @@ local function run(state)
 		local rc = rollerCF(state, t)
 		if rc and roller.PrimaryPart and t < T.boom then
 			roller:PivotTo(rc)
+			state.rollerCF = rc
 			if roller.PrimaryPart.Transparency > 0 and t >= T.reach then
 				for _, p in ipairs(roller:GetDescendants()) do
 					if p:IsA("BasePart") then
@@ -246,11 +251,17 @@ local function run(state)
 			if acc >= 0.083 then
 				acc -= 0.083
 				beat += 1
-				state.flash.CFrame = hrp.CFrame * CFrame.new(0.6 + (math.random() - 0.5) * 1.5, -1.6, -4.5 + (math.random() - 0.5) * 1.5)
-				state.flashE:Emit(2)
-				state.sparkE:Emit(4)
+				local deck = (state.rollerCF or hrp.CFrame) * CFrame.new(DECK.X + (math.random() - 0.5) * 3.2, DECK.Y + 0.15, DECK.Z + (math.random() - 0.5) * 1.6)
+				state.flash.CFrame = deck
+				state.flashE:Emit(1)
+				state.sparkE:Emit(5)
 				if beat % 6 == 0 then
 					sfx(RR.Voice.hit, hrp, 0.55, 0.9 + math.random() * 0.2)
+					Kit.burst("RingShock", deck * CFrame.new(0, 0.1, 0), state.fx, 1, {color = P.gold, color2 = P.pale, scale = 1.1, glow = 1, life = 0.6})
+					Kit.burst("PackF", deck, state.fx, {brightershards = 4, BLACKSHARDS = 2}, {scale = 0.5, life = 1.2})
+				end
+				if beat % 3 == 0 then
+					Kit.burst("Hit2", deck, state.fx, 1, {color = P.gold, color2 = P.white, scale = 0.55, glow = 1, life = 0.4})
 				end
 				if isLocal then
 					CameraRig.kick(0.09)
@@ -300,8 +311,8 @@ local function run(state)
 	landFx(state)
 	task.delay(0.2 * Tw.S(), function()
 		if state.alive and isLocal then
-			CameraRig.cutTo({angle = 40, dist = 22, height = 7, lookY = 5, fov = 62, roll = 0})
-			CameraRig.shot({angle = 110, dist = 20, height = 6}, T.boom - T.land - 0.2, Sine, InOut)
+			CameraRig.cutTo({angle = 40, dist = 23, height = 9, lookY = 7, fov = 62, roll = 0})
+			CameraRig.shot({angle = 112, dist = 21, height = 8}, T.boom - T.land - 0.2, Sine, InOut)
 			CameraRig.floor(0.2)
 		end
 	end)
@@ -311,7 +322,7 @@ local function run(state)
 		return
 	end
 	state.rigDio:play(Clips.DioPoint, {fadeIn = 0.15})
-	state.rigStand:play(Clips.WorldRollerBarrage, {fadeIn = 0.15})
+	state.rigStand:play(Clips.WorldRollerBarrage, {fadeIn = 0.22})
 	local flash = Emitters.carrier(state.fx, hrp.CFrame, V3(2.4, 1.2, 2.4))
 	state.flash = flash
 	state.flashE = Emitters.make(flash, {
@@ -320,7 +331,7 @@ local function run(state)
 		ShapeStyle = Enum.ParticleEmitterShapeStyle.Volume,
 		Speed = NumberRange.new(0, 0),
 		Lifetime = NumberRange.new(0.08, 0.14),
-		Size = Tw.seq({{0, 1.8}, {0.3, 1.2}, {1, 0}}),
+		Size = Tw.seq({{0, 1.2}, {0.3, 0.8}, {1, 0}}),
 		Color = Tw.cseq({{0, P.white}, {0.5, P.gold}, {1, P.amber}}),
 		Transparency = Tw.seq({{0, 0.1}, {1, 1}}),
 		Rotation = NumberRange.new(0, 360),
@@ -329,21 +340,23 @@ local function run(state)
 		texture = "spark",
 		Shape = Enum.ParticleEmitterShape.Box,
 		ShapeStyle = Enum.ParticleEmitterShapeStyle.Volume,
-		Speed = NumberRange.new(10, 22),
-		Drag = 4,
-		SpreadAngle = Vector2.new(180, 180),
-		Lifetime = NumberRange.new(0.15, 0.35),
-		Size = Tw.seq({{0, 0.4}, {1, 0}}),
+		Speed = NumberRange.new(14, 30),
+		Acceleration = V3(0, -40, 0),
+		Drag = 2,
+		SpreadAngle = Vector2.new(70, 70),
+		EmissionDirection = Enum.NormalId.Top,
+		Lifetime = NumberRange.new(0.25, 0.5),
+		Size = Tw.seq({{0, 0.45}, {1, 0}}),
 		Color = Tw.cseq({{0, P.white}, {0.4, P.gold}, {1, P.amber}}),
 		Transparency = Tw.seq({{0, 0}, {1, 1}}),
 		RotSpeed = NumberRange.new(-400, 400),
 	})
-	state.standLight = light(stand["Stand Torso"], P.gold, 1.6, 12)
+	state.standLight = light(stand["Stand Torso"], P.gold, 0.7, 9)
 	state.echo = true
 	task.spawn(function()
 		while state.alive and state.echo do
-			SummonVfx.afterimage(stand, state.fx, 0.2, P.gold, 0.6)
-			Tw.wait(0.25)
+			SummonVfx.afterimage(stand, state.fx, 0.18, P.gold, 0.82)
+			Tw.wait(0.45)
 		end
 	end)
 	-- the blast

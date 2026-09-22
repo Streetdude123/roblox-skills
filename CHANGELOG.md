@@ -5,6 +5,19 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-22 (night) — Rebuild of the lost place, the road roller on the metal (user-authorized)
+
+- `roblox-vfx-craft`: `scripts/RebuildStandPlace.lua` and `scripts/rebuild/` rebuild the whole
+  DIO place from a fresh baseplate (kit archive, templates, sounds, the free model rig, dead sounds,
+  modules, dummy, bake rig) after the unpublished place was lost. The road roller layout is measured
+  with rays over the mesh: DIO on the rear hood, The World pitched 65 down over the front housing with
+  its fists 0.3 studs into the metal, every contact effect placed in the roller's frame; the rush glow
+  cut so the stand reads as a body. Two Studio traps logged (a runaway bake of a held clip, the
+  50k instance kit doubling in play on a 6 GB machine).
+- `roblox-r6-animation`: `Poser.bake` refuses a length over 60 s; `Bake.lua` takes a bake length per
+  clip and the held `DioPoint` entry; the road roller numbers and the night's feedback in
+  `references/project-style.md`.
+
 ## 2026-09-22 — Canon ZA WARUDO, the road roller cutscene (user-authorized)
 
 - `roblox-r6-animation`: `DioTimeStop` remade from the show's two frames (arms crossed in an X

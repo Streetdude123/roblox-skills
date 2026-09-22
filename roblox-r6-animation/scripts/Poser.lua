@@ -387,6 +387,11 @@ function Poser.bake(clip, rig, fps, name, length)
 	kfs.Loop = clip.loop == true
 	kfs.Priority = Enum.AnimationPriority.Action
 	length = length or clip.length
+	-- a held clip carries a 100000 s length so it never ends in play; baked without an explicit length it loops for
+	-- millions of frames, floods memory and crashes studio, so the bake refuses anything over a minute
+	if length > 60 then
+		error(("bake %s: length %s needs an explicit bake length"):format(tostring(name or clip.name), tostring(length)))
+	end
 	local n = math.floor(length * fps + 0.5)
 	local root
 	for _, joint in pairs(rig.joints) do

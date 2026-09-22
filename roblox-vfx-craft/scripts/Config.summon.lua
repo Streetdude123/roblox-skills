@@ -119,8 +119,9 @@ Config.RoadRoller = {
 	BoomDamage = 30,
 	BoomRadius = 18,
 	Fling = 55,
-	-- where the stand hangs over the roller deck, leaning down into it
-	StandOffset = Vector3.new(0.6, -0.4, -3.4),
+	-- the stand root over the roller's front housing, 2.45 above and 1.1 behind the fists' landing point so the
+	-- barrage's 2.7 stud reach drives into the metal; dio stands on the rear hood 8.5 behind that point
+	StandOffset = Vector3.new(0.3, 1.65, -7.4),
 	Voice = {
 		track = "RoadRollerDA",
 		bed = "RoadRollerStart",

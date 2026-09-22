@@ -1165,7 +1165,8 @@ Clips.DioRollerOff = {
 	},
 }
 
--- the world on the roller: the model's rush loop with the root out over the front deck, leaning down into the metal
+-- the world on the roller: the model's rush loop with the root pitched 65 down over the front housing so the fists
+-- (2.7 studs along the look at full extension) land on the metal 2.45 below and 1.1 ahead of the root
 local ROLL = Config.RoadRoller.StandOffset
 Clips.WorldRollerBarrage = Poser.fromSequence(Anims.Barrage, WRAPS, {
 	name = "WorldRollerBarrage",
@@ -1175,7 +1176,7 @@ Clips.WorldRollerBarrage = Poser.fromSequence(Anims.Barrage, WRAPS, {
 	extra = {
 		["StandHumanoidRootPart"] = function(t)
 			local j = sin(t * TAU * 12)
-			return {p = V3(ROLL.X + 0.04 * j, ROLL.Y + 0.05 * cos(t * TAU * 9.3), ROLL.Z + 0.06 * j), r = {-38 + 2 * j, 0, 1.5 * j}}
+			return {p = V3(ROLL.X + 0.04 * j, ROLL.Y + 0.05 * cos(t * TAU * 9.3), ROLL.Z + 0.06 * j), r = {-65 + 2 * j, 0, 1.5 * j}}
 		end,
 	},
 })
