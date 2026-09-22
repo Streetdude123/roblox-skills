@@ -286,26 +286,40 @@ Clips.DioSummon = {
 	},
 }
 
--- the world is a predator over dio's shoulder: it bursts out of his back on one arc, flares open at the
--- apex like a threat display, then coils down into a claw and palm guard that hangs forward over him
--- the root is the engine; the head follows two frames later, the arms three, the legs four
--- the stance is built with offsets: the claw arm and the palm arm are dropped a tenth, the lead knee rides up
+-- the stand's own clips come from the world model's animation set: raw keyframe sequences played through the
+-- poser with the pose names mapped onto the stand joints, and a procedural root that keeps the float
+local Anims = root.Assets.Anims
+local WRAPS = Poser.wrapsOf(root.Assets.TheWorld)
+local MAP = {
+	Torso = "Stand Torso",
+	Head = "Stand Head",
+	["Right Arm"] = "Stand Right Arm",
+	["Left Arm"] = "Stand Left Arm",
+	["Right Leg"] = "Stand Right Leg",
+	["Left Leg"] = "Stand Left Leg",
+}
+
+-- the hover is the first frame of the world idle: a floating body that leans in 15 degrees with the torso
+-- raised half a stud, the right arm out at 53, the left hand raised across the chest, both legs trailing back
 local HOVER = {
-	root = {-7, 0, 0},
-	head = {-9, -8, -2},
-	rArm = {140, -20, -41},
-	lArm = {128, 15, 47},
-	rLeg = {17, 0, 10},
-	lLeg = {-8, 6, -8},
-	rArmP = V3(0, 0.05, 0),
-	lArmP = V3(0, 0.02, 0),
-	rLegP = V3(0, 0.1, -0.12),
-	lLegP = V3(0, -0.04, 0.06),
+	root = {0, 0, 0},
+	torso = {-14.7, -8.1, -6.0},
+	torsoP = V3(0, 0.46, 0),
+	head = {3.8, 13.5, -3.5},
+	rArm = {-5.6, -93.5, 53.3},
+	lArm = {26.3, -92.4, 124.4},
+	rLeg = {-42.3, -1.7, 27.6},
+	lLeg = {-33.6, -0.2, -8.0},
+	rArmP = V3(0.16, -0.07, -0.36),
+	lArmP = V3(0.16, -0.62, -0.15),
+	rLegP = V3(0.09, 0.13, -0.55),
+	lLegP = V3(-0.24, 0.37, -1.0),
 }
 -- the fold is the shape it takes inside dio's back: chin tucked, arms crossed, knees pulled up
 local FOLD = {
 	root = {-35, -40, 0},
 	rootP = V3(0, -0.9, 0.6),
+	torso = {-10, 0, 0},
 	head = {-30, 0, 0},
 	rArm = {55, 20, -50},
 	lArm = {60, -20, 55},
@@ -315,6 +329,9 @@ local FOLD = {
 }
 local APEX = V3(F.X - 0.5, F.Y + 1.0, F.Z - 0.3)
 
+-- the world bursts out of dio's back on one arc, flares open at the apex like a threat display, coils into a
+-- claw guard, then relaxes into the model's own idle; the root is the engine, the head follows two frames
+-- later, the arms three, the legs four
 Clips.WorldAppear = {
 	name = "WorldAppear",
 	length = 1.0,
@@ -325,8 +342,16 @@ Clips.WorldAppear = {
 			K(0.24, {12, 0, 2}, APEX + V3(0.1, 0.12, 0), "sine", "inout"),
 			K(0.36, {-8, 0, -2}, V3(F.X, F.Y - 0.05, F.Z), "back", "out", 1.25),
 			K(0.50, {-6, 0, 0}, V3(F.X, F.Y + 0.06, F.Z), "quad", "out"),
-			K(0.72, {-7.5, 0, 0}, V3(F.X, F.Y + 0.02, F.Z), "sine", "inout"),
+			K(0.72, {-4, 0, 0}, V3(F.X, F.Y + 0.02, F.Z), "sine", "inout"),
 			K(1.00, HOVER.root, V3(F.X, F.Y, F.Z), "sine", "inout"),
+		},
+		["Stand Torso"] = {
+			K(0.00, FOLD.torso, V3(0, 0, 0)),
+			K(0.12, {12, 0, 0}, V3(0, 0.2, 0), "cubic", "out"),
+			K(0.26, {8, 0, 0}, V3(0, 0.25, 0), "sine", "inout"),
+			K(0.40, {-22, -6, -6}, V3(0, 0.5, 0), "back", "out", 1.2),
+			K(0.54, {-16, -8, -6}, V3(0, 0.44, 0), "quad", "out"),
+			K(1.00, HOVER.torso, HOVER.torsoP, "sine", "inout"),
 		},
 		["Stand Head"] = {
 			K(0.00, FOLD.head),
@@ -341,9 +366,9 @@ Clips.WorldAppear = {
 			K(0.06, {50, 15, -40}, V3(0, 0, 0), "sine", "inout"),
 			K(0.16, {22, 0, 128}, V3(0, 0.08, 0), "back", "out", 1.5),
 			K(0.26, {26, -8, 120}, V3(0, 0.08, 0), "sine", "inout"),
-			K(0.40, {146, -22, -44}, HOVER.rArmP, "back", "out", 1.2),
-			K(0.52, {136, -20, -39}, HOVER.rArmP, "quad", "out"),
-			K(0.74, {141, -20, -42}, HOVER.rArmP, "sine", "inout"),
+			K(0.40, {146, -22, -44}, V3(0, 0.05, 0), "back", "out", 1.2),
+			K(0.52, {136, -20, -39}, V3(0, 0.05, 0), "quad", "out"),
+			K(0.72, {120, -40, -20}, V3(0.05, 0, -0.1), "sine", "inout"),
 			K(1.00, HOVER.rArm, HOVER.rArmP, "sine", "inout"),
 		},
 		["Stand Left Arm"] = {
@@ -351,9 +376,9 @@ Clips.WorldAppear = {
 			K(0.07, {54, -15, 45}, V3(0, 0, 0), "sine", "inout"),
 			K(0.18, {20, 0, -128}, V3(0, 0.08, 0), "back", "out", 1.5),
 			K(0.28, {24, 8, -120}, V3(0, 0.08, 0), "sine", "inout"),
-			K(0.43, {134, 16, 50}, HOVER.lArmP, "back", "out", 1.2),
-			K(0.55, {124, 15, 44}, HOVER.lArmP, "quad", "out"),
-			K(0.76, {129, 15, 48}, HOVER.lArmP, "sine", "inout"),
+			K(0.43, {134, 16, 50}, V3(0, 0.02, 0), "back", "out", 1.2),
+			K(0.55, {124, 15, 44}, V3(0, 0.02, 0), "quad", "out"),
+			K(0.76, {80, -50, 100}, V3(0.1, -0.3, -0.1), "sine", "inout"),
 			K(1.00, HOVER.lArm, HOVER.lArmP, "sine", "inout"),
 		},
 		["Stand Right Leg"] = {
@@ -362,7 +387,7 @@ Clips.WorldAppear = {
 			K(0.18, {-14, 0, 16}, V3(0, 0, 0), "back", "out", 1.3),
 			K(0.28, {-10, 0, 14}, V3(0, 0, 0), "sine", "inout"),
 			K(0.44, {20, 0, 10}, V3(0, 0.12, -0.15), "back", "out", 1.2),
-			K(0.56, {15, 0, 10}, HOVER.rLegP, "quad", "out"),
+			K(0.56, {15, 0, 10}, V3(0, 0.1, -0.12), "quad", "out"),
 			K(1.00, HOVER.rLeg, HOVER.rLegP, "sine", "inout"),
 		},
 		["Stand Left Leg"] = {
@@ -370,61 +395,36 @@ Clips.WorldAppear = {
 			K(0.08, {56, 0, -8}, FOLD.legP - V3(0, 0.05, 0), "sine", "inout"),
 			K(0.20, {-12, 0, -16}, V3(0, 0, 0), "back", "out", 1.3),
 			K(0.30, {-8, 0, -14}, V3(0, 0, 0), "sine", "inout"),
-			K(0.46, {-11, 6, -8}, HOVER.lLegP, "back", "out", 1.2),
-			K(0.58, {-7, 6, -8}, HOVER.lLegP, "quad", "out"),
+			K(0.46, {-11, 6, -8}, V3(0, -0.04, 0.06), "back", "out", 1.2),
+			K(0.58, {-7, 6, -8}, V3(0, -0.04, 0.06), "quad", "out"),
 			K(1.00, HOVER.lLeg, HOVER.lLegP, "sine", "inout"),
 		},
 	},
 }
 
--- the hover is one 2.6 s bob on the root; the head and the arms trail it a fifth of a cycle at half size,
--- the legs ride in phase, a slow half speed sway keeps it off the metronome, and a walk leans it in and
--- lets it trail a third of a stud behind the user
-local function hoverJoint(name)
-	return function(t, ctx)
-		local walk = ctx.walk or 0
-		local ph = ctx.phase or 0
-		local w = t * TAU / 2.6
-		local bob = sin(w)
-		local lag = sin(w - 1.26)
-		local sway = sin(w * 0.5)
-		if name == "StandHumanoidRootPart" then
-			return {
-				p = V3(F.X + 0.05 * sway, F.Y + 0.14 * bob + 0.06 * sin(2 * ph) * walk, F.Z + 0.35 * walk),
-				r = {HOVER.root[1] + 1.6 * bob - 9 * walk, 2 * sway - 3 * sin(ph) * walk, 1.2 * sway - 2 * sin(ph) * walk},
-			}
-		elseif name == "Stand Head" then
-			return {r = {HOVER.head[1] - 2 * lag - 3 * walk, HOVER.head[2] + 1.5 * lag, HOVER.head[3]}}
-		elseif name == "Stand Right Arm" then
-			return {p = HOVER.rArmP + V3(0, 0.02 * lag, 0), r = {HOVER.rArm[1] + 3 * lag - 8 * walk, HOVER.rArm[2], HOVER.rArm[3] + 2 * lag}}
-		elseif name == "Stand Left Arm" then
-			return {p = HOVER.lArmP + V3(0, 0.02 * lag, 0), r = {HOVER.lArm[1] + 2.5 * lag - 6 * walk, HOVER.lArm[2], HOVER.lArm[3] - 1.5 * lag}}
-		elseif name == "Stand Right Leg" then
-			return {p = HOVER.rLegP + V3(0, 0.02 * bob, 0), r = {HOVER.rLeg[1] + 2.5 * bob - 6 * walk, 0, HOVER.rLeg[3] + 1 * bob}}
-		elseif name == "Stand Left Leg" then
-			return {p = HOVER.lLegP, r = {HOVER.lLeg[1] - 2 * bob - 4 * walk, HOVER.lLeg[2], HOVER.lLeg[3] - 1 * bob}}
-		end
-		return {}
-	end
+-- the float root: the model's idle already breathes 0.27 studs on the torso so the root only sways at half
+-- speed, leans in and trails a third of a stud when the user walks
+local function floatRoot(t, ctx)
+	local walk = ctx.walk or 0
+	local ph = ctx.phase or 0
+	local w = t * TAU / 2.5
+	local sway = sin(w * 0.5)
+	return {
+		p = V3(F.X + 0.05 * sway, F.Y + 0.04 * sin(w) + 0.06 * sin(2 * ph) * walk, F.Z + 0.35 * walk),
+		r = {1.2 * sin(w) - 9 * walk, 2 * sway - 3 * sin(ph) * walk, 1.2 * sway - 2 * sin(ph) * walk},
+	}
 end
 
-Clips.WorldFloat = {
+Clips.WorldFloat = Poser.fromSequence(Anims.idle, WRAPS, {
 	name = "WorldFloat",
-	length = 100000,
+	map = MAP,
 	loop = true,
-	joints = {
-		["StandHumanoidRootPart"] = hoverJoint("StandHumanoidRootPart"),
-		["Stand Head"] = hoverJoint("Stand Head"),
-		["Stand Right Arm"] = hoverJoint("Stand Right Arm"),
-		["Stand Left Arm"] = hoverJoint("Stand Left Arm"),
-		["Stand Right Leg"] = hoverJoint("Stand Right Leg"),
-		["Stand Left Leg"] = hoverJoint("Stand Left Leg"),
-	},
-}
+	extra = {["StandHumanoidRootPart"] = floatRoot},
+})
 
 Clips.WorldIdleBake = {
 	name = "WorldIdle",
-	length = 5.2,
+	length = 5.0,
 	loop = true,
 	joints = Clips.WorldFloat.joints,
 	ctxAt = function(t)
@@ -442,6 +442,11 @@ Clips.WorldVanish = {
 			K(0.00, HOVER.root, V3(F.X, F.Y, F.Z)),
 			K(0.10, {8, 0, 0}, V3(F.X - 0.2, F.Y + 0.45, F.Z - 0.1), "sine", "out"),
 			K(0.36, FOLD.root, FOLD.rootP, "cubic", "in"),
+		},
+		["Stand Torso"] = {
+			K(0.00, HOVER.torso, HOVER.torsoP),
+			K(0.10, {6, -4, 0}, V3(0, 0.5, 0), "sine", "out"),
+			K(0.36, FOLD.torso, V3(0, 0, 0), "cubic", "in"),
 		},
 		["Stand Head"] = {
 			K(0.00, HOVER.head),
@@ -468,6 +473,329 @@ Clips.WorldVanish = {
 			K(0.13, {-12, 0, -12}, V3(0, 0, 0), "sine", "out"),
 			K(0.36, FOLD.lLeg, FOLD.legP, "cubic", "in"),
 		},
+	},
+}
+
+-- the barrage puts the stand in front of the user at chest height; the model's own loop drives the body
+-- (the torso swings 110 degrees every five frames) and the root only shivers at 12 Hz so the rush vibrates
+local FRONT = Config.BarrageOffset
+local function barrageRoot(t, ctx)
+	local j = sin(t * TAU * 12)
+	local k = cos(t * TAU * 9.3)
+	return {p = V3(FRONT.X + 0.04 * j, FRONT.Y + 0.05 * k, FRONT.Z + 0.06 * j), r = {-8 + 1.5 * k, 0, 1.5 * j}}
+end
+
+-- the entry frames of the loop come from the idle so they are trimmed and the loop runs 0.083 to 0.667
+Clips.WorldBarrage = Poser.fromSequence(Anims.Barrage, WRAPS, {
+	name = "WorldBarrage",
+	map = MAP,
+	loop = true,
+	trimStart = 0.083,
+	extra = {["StandHumanoidRootPart"] = barrageRoot},
+})
+
+-- the finisher is the model's heavy punch: a two frame strike with the arm arcing over the head and a hop
+Clips.WorldHeavy = Poser.fromSequence(Anims.HeavyPunch, WRAPS, {
+	name = "WorldHeavy",
+	map = MAP,
+	loop = false,
+	extra = {
+		["StandHumanoidRootPart"] = function(t)
+			local lunge = math.clamp((t - 0.3) / 0.05, 0, 1)
+			return {p = V3(FRONT.X, FRONT.Y - 0.2 * lunge, FRONT.Z - 1.2 * lunge), r = {-6 - 10 * lunge, 0, 0}}
+		end,
+	},
+})
+
+-- the five hit chain of the model links end pose to start pose so each clip is the wind up of the next
+Clips.WorldCombo = {}
+for i, name in ipairs({"LeftPunch", "RightPunch", "LeftUpperCut", "RightKick", "LeftStab"}) do
+	Clips.WorldCombo[i] = Poser.fromSequence(Anims[name], WRAPS, {
+		name = "World" .. name,
+		map = MAP,
+		loop = false,
+		extra = {
+			["StandHumanoidRootPart"] = function()
+				return {p = FRONT, r = {-6, 0, 0}}
+			end,
+		},
+	})
+end
+
+-- dio during the barrage stands bladed like a boxer and points: the torso turns 32 so the right shoulder
+-- leads, the pointing arm reads dead ahead in root space (the turn is taken out of the arm), the head
+-- counters the turn onto the target, the lead foot is forward and the rear foot back and turned out, the
+-- weight sits low; four frames of whip out of a wound up stance and then it holds with a breath only
+local WIND = {
+	torso = {3, -14, -2}, torsoP = V3(-0.03, -0.08, 0.05),
+	head = {5, 12, 2},
+	rArm = {-36, 0, 22}, rArmP = V3(0, -0.05, 0.05),
+	lArm = {26, -8, -18}, lArmP = V3(0, -0.02, 0),
+	rLeg = {8, -6, 10}, rLegP = V3(0.05, 0.02, -0.15),
+	lLeg = {-10, 4, -10}, lLegP = V3(-0.05, 0.05, 0.15),
+}
+local POINT = {
+	torso = {-6, 32, 4}, torsoP = V3(0.05, -0.15, -0.05),
+	head = {4, -30, -3},
+	rArm = {58, -10, 80}, rArmP = V3(0.05, 0.03, -0.1),
+	lArm = {-24, 6, -20}, lArmP = V3(0, -0.05, 0.03),
+	rLeg = {18, -4, 10}, rLegP = V3(0.05, 0.02, -0.3),
+	lLeg = {-22, 10, -14}, lLegP = V3(-0.06, 0.05, 0.35),
+}
+local function mix(a, b, e)
+	return {a[1] + (b[1] - a[1]) * e, a[2] + (b[2] - a[2]) * e, a[3] + (b[3] - a[3]) * e}
+end
+local function add(a, b)
+	return {a[1] + b[1], a[2] + b[2], a[3] + b[3]}
+end
+local function pointJoint(name)
+	return function(t)
+		local u = math.min(1, t / 0.14)
+		local e = 1 - (1 - u) ^ 4
+		local w = t * TAU * 0.35
+		local breath = sin(w) * e
+		local lag = sin(w - 1.3) * e
+		if name == "Torso" then
+			return {p = WIND.torsoP:Lerp(POINT.torsoP, e) + V3(0, -0.015 * breath, 0), r = add(mix(WIND.torso, POINT.torso, e), {1.5 * breath, 0, 0})}
+		elseif name == "Head" then
+			return {r = add(mix(WIND.head, POINT.head, e), {0.8 * lag, 0, 0})}
+		elseif name == "Right Arm" then
+			return {p = WIND.rArmP:Lerp(POINT.rArmP, e), r = add(mix(WIND.rArm, POINT.rArm, e), {1.2 * lag, 0, 0})}
+		elseif name == "Left Arm" then
+			return {p = WIND.lArmP:Lerp(POINT.lArmP, e), r = add(mix(WIND.lArm, POINT.lArm, e), {-1.2 * lag, 0, -0.8 * lag})}
+		elseif name == "Right Leg" then
+			return {p = WIND.rLegP:Lerp(POINT.rLegP, e), r = add(mix(WIND.rLeg, POINT.rLeg, e), {0.8 * breath, 0, 0})}
+		elseif name == "Left Leg" then
+			return {p = WIND.lLegP:Lerp(POINT.lLegP, e), r = add(mix(WIND.lLeg, POINT.lLeg, e), {-0.8 * breath, 0, 0})}
+		end
+		return {}
+	end
+end
+
+Clips.DioBarrage = {
+	name = "DioBarrage",
+	length = 100000,
+	loop = true,
+	joints = {
+		["Torso"] = pointJoint("Torso"),
+		["Head"] = pointJoint("Head"),
+		["Right Arm"] = pointJoint("Right Arm"),
+		["Left Arm"] = pointJoint("Left Arm"),
+		["Right Leg"] = pointJoint("Right Leg"),
+		["Left Leg"] = pointJoint("Left Leg"),
+	},
+}
+
+-- the heavy finisher on dio is one lunge: the pointing arm punches with the stand and the body steps in
+Clips.DioHeavy = {
+	name = "DioHeavy",
+	length = 0.6,
+	joints = {
+		["Torso"] = {
+			K(0.00, POINT.torso, POINT.torsoP),
+			K(0.28, {4, 42, 6}, V3(0.05, -0.12, 0.06), "sine", "inout"),
+			K(0.33, {-16, 12, -4}, V3(0, -0.24, -0.22), "quart", "out"),
+			K(0.45, {-13, 8, -3}, V3(0, -0.2, -0.16), "sine", "out"),
+			K(0.60, {-6, -4, 0}, V3(0, -0.1, -0.05), "sine", "inout"),
+		},
+		["Head"] = {
+			K(0.00, POINT.head),
+			K(0.30, {12, 26, -5}, nil, "sine", "inout"),
+			K(0.36, {-4, -8, 2}, nil, "quart", "out"),
+			K(0.60, {4, 4, 0}, nil, "sine", "inout"),
+		},
+		["Right Arm"] = {
+			K(0.00, POINT.rArm, POINT.rArmP),
+			K(0.28, {120, 10, 36}, V3(0.05, 0.06, 0.12), "sine", "inout"),
+			K(0.33, {94, -10, -12}, V3(0, -0.05, -0.38), "quart", "out"),
+			K(0.42, {98, -10, -10}, V3(0, -0.05, -0.32), "sine", "out"),
+			K(0.60, {40, 0, 4}, V3(0, 0, 0), "sine", "inout"),
+		},
+		["Left Arm"] = {
+			K(0.00, POINT.lArm, POINT.lArmP),
+			K(0.30, {-44, 10, -30}, V3(0, -0.05, 0.05), "sine", "inout"),
+			K(0.35, {22, 0, -18}, V3(0, 0, 0), "quart", "out"),
+			K(0.60, {-4, 4, -8}, V3(0, 0, 0), "sine", "inout"),
+		},
+		["Right Leg"] = {
+			K(0.00, POINT.rLeg, POINT.rLegP),
+			K(0.33, {30, -4, 10}, V3(0.05, 0.1, -0.55), "quart", "out"),
+			K(0.60, {6, 0, 6}, V3(0, 0, -0.1), "sine", "inout"),
+		},
+		["Left Leg"] = {
+			K(0.00, POINT.lLeg, POINT.lLegP),
+			K(0.33, {-32, 4, -10}, V3(-0.05, 0.05, 0.55), "quart", "out"),
+			K(0.60, {-6, 0, -6}, V3(0, 0, 0.1), "sine", "inout"),
+		},
+	},
+}
+
+-- the time stop on dio: the hand rises open beside the head on the call, holds breathing through the pause,
+-- gathers on the command and snaps forward into the stop gesture on the last syllable with the body lunging
+local TS = Config.TimeStop.Beats
+Clips.DioTimeStop = {
+	name = "DioTimeStop",
+	length = TS.done,
+	joints = {
+		["Torso"] = {
+			K(0.00, {3, -8, 0}, V3(0, 0, 0)),
+			K(0.30, {12, -14, -3}, V3(0, -0.1, 0.06), "cubic", "out"),
+			K(0.85, {14, -16, -4}, V3(0, -0.12, 0.08), "sine", "inout"),
+			K(1.35, {12, -14, -3}, V3(0, -0.1, 0.06), "sine", "inout"),
+			K(TS.snap - 0.35, {16, -22, -6}, V3(0.04, -0.14, 0.12), "sine", "inout"),
+			K(TS.snap, {-12, 14, 6}, V3(0, -0.24, -0.22), "quart", "out"),
+			K(TS.snap + 0.12, {-10, 10, 5}, V3(0, -0.22, -0.18), "sine", "out"),
+			K(TS.done, {-8, 6, 3}, V3(0, -0.16, -0.1), "sine", "inout"),
+		},
+		["Head"] = {
+			K(0.00, {4, 6, 0}),
+			K(0.34, {16, 10, 2}, nil, "cubic", "out"),
+			K(0.85, {18, 12, 3}, nil, "sine", "inout"),
+			K(1.35, {15, 10, 2}, nil, "sine", "inout"),
+			K(TS.snap - 0.32, {20, 18, 4}, nil, "sine", "inout"),
+			K(TS.snap + 0.03, {2, -10, -4}, nil, "quart", "out"),
+			K(TS.done, {5, -4, -2}, nil, "sine", "inout"),
+		},
+		["Right Arm"] = {
+			K(0.00, {18, 0, 14}, V3(0, 0, 0)),
+			K(0.14, {80, 10, 40}, V3(0, 0.05, 0), "sine", "inout"),
+			K(0.32, {152, 0, -22}, V3(0, 0.08, 0), "back", "out", 1.3),
+			K(0.85, {156, -4, -24}, V3(0, 0.08, 0), "sine", "inout"),
+			K(1.35, {150, 0, -20}, V3(0, 0.08, 0), "sine", "inout"),
+			K(TS.snap - 0.35, {162, 6, -30}, V3(0, 0.1, 0.05), "sine", "inout"),
+			K(TS.snap, {94, -10, -6}, V3(0.05, -0.05, -0.4), "quart", "out"),
+			K(TS.snap + 0.1, {98, -10, -8}, V3(0.05, -0.05, -0.35), "sine", "out"),
+			K(TS.done, {92, -8, -8}, V3(0.05, -0.05, -0.3), "sine", "inout"),
+		},
+		["Left Arm"] = {
+			K(0.00, {-6, 0, -14}, V3(0, 0, 0)),
+			K(0.36, {-26, 6, -22}, V3(0, -0.05, 0), "cubic", "out"),
+			K(0.85, {-30, 6, -24}, V3(0, -0.05, 0), "sine", "inout"),
+			K(TS.snap - 0.35, {-34, 8, -28}, V3(0, -0.05, 0), "sine", "inout"),
+			K(TS.snap + 0.04, {36, 0, -30}, V3(0, 0, 0), "quart", "out"),
+			K(TS.done, {20, 2, -20}, V3(0, 0, 0), "sine", "inout"),
+		},
+		["Right Leg"] = {
+			K(0.00, {6, 0, 8}, V3(0, 0, 0)),
+			K(0.32, {16, -6, 14}, V3(0.05, 0.05, -0.35), "cubic", "out"),
+			K(TS.snap - 0.35, {18, -6, 16}, V3(0.05, 0.05, -0.4), "sine", "inout"),
+			K(TS.snap, {30, -4, 12}, V3(0.05, 0.12, -0.55), "quart", "out"),
+			K(TS.done, {26, -4, 12}, V3(0.05, 0.1, -0.5), "sine", "inout"),
+		},
+		["Left Leg"] = {
+			K(0.00, {-6, 0, -8}, V3(0, 0, 0)),
+			K(0.32, {-16, 4, -14}, V3(-0.05, 0.1, 0.35), "cubic", "out"),
+			K(TS.snap - 0.35, {-18, 4, -16}, V3(-0.05, 0.1, 0.4), "sine", "inout"),
+			K(TS.snap, {-32, 4, -12}, V3(-0.05, 0.02, 0.55), "quart", "out"),
+			K(TS.done, {-28, 4, -12}, V3(-0.05, 0.04, 0.5), "sine", "inout"),
+		},
+	},
+}
+
+-- the world rises over dio on the call and spreads wide like a threat display, gathers both hands high on
+-- the command, then snaps a double palm thrust at the camera on the last syllable and hangs there
+local TSP = Config.TimeStop.StandOffset
+Clips.WorldTimeStop = {
+	name = "WorldTimeStop",
+	length = TS.done,
+	joints = {
+		["StandHumanoidRootPart"] = {
+			K(0.00, HOVER.root, V3(F.X, F.Y, F.Z)),
+			K(0.40, {6, 0, 0}, TSP + V3(0, 0.4, 0), "cubic", "out"),
+			K(0.85, {4, 0, 0}, TSP, "sine", "inout"),
+			K(1.35, {6, 0, 0}, TSP + V3(0, 0.15, 0), "sine", "inout"),
+			K(TS.snap - 0.35, {10, 0, 0}, TSP + V3(0, 0.4, 0.3), "sine", "inout"),
+			K(TS.snap, {-10, 0, 0}, TSP + V3(0, -0.2, -0.8), "quart", "out"),
+			K(TS.snap + 0.12, {-8, 0, 0}, TSP + V3(0, -0.1, -0.6), "sine", "out"),
+			K(TS.done, {-6, 0, 0}, TSP + V3(0, 0, -0.5), "sine", "inout"),
+		},
+		["Stand Torso"] = {
+			K(0.00, HOVER.torso, HOVER.torsoP),
+			K(0.40, {10, 0, 0}, V3(0, 0.5, 0), "cubic", "out"),
+			K(0.85, {12, 0, 0}, V3(0, 0.48, 0), "sine", "inout"),
+			K(TS.snap - 0.35, {16, 0, 0}, V3(0, 0.55, 0.1), "sine", "inout"),
+			K(TS.snap, {-18, 0, 0}, V3(0, 0.3, -0.25), "quart", "out"),
+			K(TS.done, {-14, 0, 0}, V3(0, 0.35, -0.2), "sine", "inout"),
+		},
+		["Stand Head"] = {
+			K(0.00, HOVER.head),
+			K(0.42, {22, 0, 0}, nil, "cubic", "out"),
+			K(0.85, {24, 0, 0}, nil, "sine", "inout"),
+			K(TS.snap - 0.33, {28, 0, 0}, nil, "sine", "inout"),
+			K(TS.snap + 0.03, {-8, 0, 0}, nil, "quart", "out"),
+			K(TS.done, {-4, 0, 0}, nil, "sine", "inout"),
+		},
+		["Stand Right Arm"] = {
+			K(0.00, HOVER.rArm, HOVER.rArmP),
+			K(0.20, {60, -40, 90}, V3(0.1, 0.1, -0.2), "sine", "inout"),
+			K(0.44, {10, 0, 124}, V3(0.1, 0.15, 0), "back", "out", 1.4),
+			K(0.85, {12, 0, 120}, V3(0.1, 0.15, 0), "sine", "inout"),
+			K(1.35, {14, 0, 122}, V3(0.1, 0.15, 0), "sine", "inout"),
+			K(TS.snap - 0.35, {150, -20, -30}, V3(0.05, 0.2, 0.1), "sine", "inout"),
+			K(TS.snap, {88, 0, 14}, V3(0.1, 0, -0.6), "quart", "out"),
+			K(TS.snap + 0.1, {92, 0, 12}, V3(0.1, 0, -0.55), "sine", "out"),
+			K(TS.done, {90, 0, 12}, V3(0.1, 0, -0.5), "sine", "inout"),
+		},
+		["Stand Left Arm"] = {
+			K(0.00, HOVER.lArm, HOVER.lArmP),
+			K(0.22, {60, 40, -90}, V3(-0.1, 0.1, -0.2), "sine", "inout"),
+			K(0.47, {10, 0, -124}, V3(-0.1, 0.15, 0), "back", "out", 1.4),
+			K(0.85, {12, 0, -120}, V3(-0.1, 0.15, 0), "sine", "inout"),
+			K(1.35, {14, 0, -122}, V3(-0.1, 0.15, 0), "sine", "inout"),
+			K(TS.snap - 0.33, {150, 20, 30}, V3(-0.05, 0.2, 0.1), "sine", "inout"),
+			K(TS.snap + 0.02, {88, 0, -14}, V3(-0.1, 0, -0.6), "quart", "out"),
+			K(TS.snap + 0.12, {92, 0, -12}, V3(-0.1, 0, -0.55), "sine", "out"),
+			K(TS.done, {90, 0, -12}, V3(-0.1, 0, -0.5), "sine", "inout"),
+		},
+		["Stand Right Leg"] = {
+			K(0.00, HOVER.rLeg, HOVER.rLegP),
+			K(0.46, {-30, 0, 24}, V3(0.1, 0.2, -0.5), "sine", "inout"),
+			K(TS.snap - 0.35, {-36, 0, 26}, V3(0.1, 0.25, -0.5), "sine", "inout"),
+			K(TS.snap + 0.02, {-52, 0, 20}, V3(0.1, 0.1, -0.7), "quart", "out"),
+			K(TS.done, {-48, 0, 22}, V3(0.1, 0.12, -0.65), "sine", "inout"),
+		},
+		["Stand Left Leg"] = {
+			K(0.00, HOVER.lLeg, HOVER.lLegP),
+			K(0.48, {-24, 0, -20}, V3(-0.2, 0.35, -0.9), "sine", "inout"),
+			K(TS.snap - 0.35, {-28, 0, -22}, V3(-0.2, 0.4, -0.9), "sine", "inout"),
+			K(TS.snap + 0.03, {-44, 0, -16}, V3(-0.2, 0.25, -1.1), "quart", "out"),
+			K(TS.done, {-40, 0, -18}, V3(-0.2, 0.28, -1.05), "sine", "inout"),
+		},
+	},
+}
+
+-- while time is stopped the world hangs in the thrust pose and breathes, the root sways at half speed
+Clips.WorldStopped = {
+	name = "WorldStopped",
+	length = 100000,
+	loop = true,
+	joints = {
+		["StandHumanoidRootPart"] = function(t, ctx)
+			local walk = ctx.walk or 0
+			local w = t * TAU / 2.5
+			return {p = V3(F.X + 0.05 * sin(w * 0.5), F.Y + 0.06 * sin(w), F.Z + 0.35 * walk), r = {-6 + 1.5 * sin(w) - 8 * walk, 0, 1.2 * sin(w * 0.5)}}
+		end,
+		["Stand Torso"] = function(t)
+			local w = t * TAU / 2.5
+			return {p = V3(0, 0.35 - 0.08 * sin(w), -0.2), r = {-14 - 2 * sin(w), -4, -3}}
+		end,
+		["Stand Head"] = function(t)
+			return {r = {-4 + 2 * sin(t * TAU / 2.5 - 1.2), 6, 0}}
+		end,
+		["Stand Right Arm"] = function(t)
+			local lag = sin(t * TAU / 2.5 - 1.2)
+			return {p = V3(0.1, 0.02 * lag, -0.5), r = {90 + 3 * lag, 0, 12 + 2 * lag}}
+		end,
+		["Stand Left Arm"] = function(t)
+			local lag = sin(t * TAU / 2.5 - 1.2)
+			return {p = V3(-0.1, 0.02 * lag, -0.5), r = {90 + 3 * lag, 0, -12 - 2 * lag}}
+		end,
+		["Stand Right Leg"] = function(t)
+			return {p = V3(0.1, 0.12, -0.65), r = {-48 + 2.5 * sin(t * TAU / 2.5), 0, 22}}
+		end,
+		["Stand Left Leg"] = function(t)
+			return {p = V3(-0.2, 0.28, -1.05), r = {-40 - 2 * sin(t * TAU / 2.5), 0, -18}}
+		end,
 	},
 }
 

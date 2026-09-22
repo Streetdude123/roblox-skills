@@ -1,0 +1,102 @@
+#TWRightKick len=0.333 loop=false frames=17 prio=Action
+TWRightKick|Torso|0.000|-3.6|-41.0|-31.0|0.00|0.09|-0.02|Linear|In
+TWRightKick|Head|0.000|9.5|25.7|-8.5|0.00|-0.00|-0.00|Linear|In
+TWRightKick|Left Leg|0.000|-44.3|-2.3|-14.4|-0.00|-0.11|-0.28|Linear|In
+TWRightKick|Right Arm|0.000|57.2|-96.7|73.6|0.03|-0.07|-0.26|Linear|In
+TWRightKick|Right Leg|0.000|-18.0|-9.4|12.9|0.09|1.02|-1.07|Linear|In
+TWRightKick|Left Arm|0.000|48.6|-121.8|148.1|-0.19|-0.06|-0.42|Linear|In
+TWRightKick|Torso|0.017|-3.5|-40.7|-30.9|0.00|0.09|-0.02|Linear|In
+TWRightKick|Head|0.017|9.4|25.5|-8.3|0.00|-0.00|-0.00|Linear|In
+TWRightKick|Left Leg|0.017|-44.4|-2.4|-14.4|-0.01|-0.11|-0.29|Linear|In
+TWRightKick|Right Arm|0.017|57.2|-96.7|73.5|0.03|-0.07|-0.26|Linear|In
+TWRightKick|Right Leg|0.017|-17.6|-9.3|13.0|0.09|1.01|-1.07|Linear|In
+TWRightKick|Left Arm|0.017|48.6|-121.9|148.1|-0.19|-0.06|-0.42|Linear|In
+TWRightKick|Torso|0.033|-2.7|-38.9|-29.6|0.00|0.09|-0.02|Linear|In
+TWRightKick|Head|0.033|8.9|24.6|-7.3|0.00|-0.00|-0.00|Linear|In
+TWRightKick|Left Leg|0.033|-44.9|-2.8|-14.9|-0.01|-0.09|-0.32|Linear|In
+TWRightKick|Right Arm|0.033|57.3|-96.6|73.5|0.03|-0.07|-0.24|Linear|In
+TWRightKick|Right Leg|0.033|-15.5|-8.9|13.4|0.10|0.99|-1.07|Linear|In
+TWRightKick|Left Arm|0.033|49.1|-123.2|148.0|-0.20|-0.08|-0.38|Linear|In
+TWRightKick|Torso|0.050|-0.4|-34.1|-26.3|0.00|0.09|-0.02|Linear|In
+TWRightKick|Head|0.050|7.4|22.0|-4.4|0.00|-0.00|-0.00|Linear|In
+TWRightKick|Left Leg|0.050|-46.2|-3.8|-16.2|-0.03|-0.04|-0.42|Linear|In
+TWRightKick|Right Arm|0.050|57.6|-96.4|73.2|0.04|-0.08|-0.19|Linear|In
+TWRightKick|Right Leg|0.050|-9.6|-7.7|14.4|0.11|0.94|-1.05|Linear|In
+TWRightKick|Left Arm|0.050|50.2|-126.6|147.8|-0.21|-0.11|-0.29|Linear|In
+TWRightKick|Torso|0.067|4.9|-25.1|-20.6|0.00|0.09|-0.02|Linear|In
+TWRightKick|Head|0.067|4.1|17.3|0.9|0.00|-0.00|-0.00|Linear|In
+TWRightKick|Left Leg|0.067|-48.8|-6.1|-19.0|-0.08|0.07|-0.60|Linear|In
+TWRightKick|Right Arm|0.067|58.1|-96.1|72.8|0.06|-0.09|-0.08|Linear|In
+TWRightKick|Right Leg|0.067|1.9|-5.6|15.9|0.14|0.83|-1.02|Linear|In
+TWRightKick|Left Arm|0.067|52.5|-133.5|147.7|-0.24|-0.16|-0.12|Linear|In
+TWRightKick|Torso|0.083|15.4|-11.3|-12.9|0.00|0.09|-0.02|Linear|In
+TWRightKick|Head|0.083|-2.3|10.2|8.9|0.00|-0.00|-0.00|Linear|In
+TWRightKick|Left Leg|0.083|-52.8|-10.6|-24.2|-0.15|0.24|-0.90|Linear|In
+TWRightKick|Right Arm|0.083|58.9|-95.4|72.0|0.09|-0.12|0.09|Linear|In
+TWRightKick|Right Leg|0.083|20.9|-2.7|17.6|0.18|0.65|-0.96|Linear|In
+TWRightKick|Left Arm|0.083|56.3|-145.8|148.6|-0.29|-0.26|0.17|Linear|In
+TWRightKick|Torso|0.100|27.3|1.9|-7.6|0.00|0.09|-0.02|Linear|In
+TWRightKick|Head|0.100|-9.5|4.1|16.3|0.00|-0.00|-0.00|Linear|In
+TWRightKick|Left Leg|0.100|-56.5|-16.2|-30.6|-0.21|0.41|-1.20|Linear|In
+TWRightKick|Right Arm|0.100|59.7|-94.7|71.2|0.12|-0.14|0.27|Linear|In
+TWRightKick|Right Leg|0.100|40.0|0.2|18.4|0.22|0.48|-0.91|Linear|In
+TWRightKick|Left Arm|0.100|59.8|-159.5|151.2|-0.33|-0.36|0.46|Linear|In
+TWRightKick|Torso|0.117|35.0|10.2|-5.7|0.00|0.09|-0.02|Linear|In
+TWRightKick|Head|0.117|-14.2|0.7|20.4|0.00|-0.00|-0.00|Linear|In
+TWRightKick|Left Leg|0.117|-58.6|-20.3|-35.0|-0.26|0.52|-1.38|Linear|In
+TWRightKick|Right Arm|0.117|60.2|-94.2|70.7|0.13|-0.15|0.38|Linear|In
+TWRightKick|Right Leg|0.117|51.6|2.2|18.3|0.24|0.37|-0.88|Linear|In
+TWRightKick|Left Arm|0.117|61.7|-168.7|153.7|-0.36|-0.42|0.63|Linear|In
+TWRightKick|Torso|0.133|39.0|14.6|-5.3|0.00|0.09|-0.02|Linear|In
+TWRightKick|Head|0.133|-16.7|-0.9|22.4|0.00|-0.00|-0.00|Linear|In
+TWRightKick|Left Leg|0.133|-59.5|-22.6|-37.6|-0.28|0.57|-1.48|Linear|In
+TWRightKick|Right Arm|0.133|60.4|-94.0|70.4|0.14|-0.16|0.43|Linear|In
+TWRightKick|Right Leg|0.133|57.5|3.5|17.9|0.26|0.32|-0.86|Linear|In
+TWRightKick|Left Arm|0.133|62.6|-173.7|155.3|-0.37|-0.45|0.72|Linear|In
+TWRightKick|Torso|0.150|40.4|16.3|-5.2|0.00|0.09|-0.02|Linear|In
+TWRightKick|Head|0.150|-17.7|-1.4|23.2|0.00|-0.00|-0.00|Linear|In
+TWRightKick|Left Leg|0.150|-59.9|-23.4|-38.5|-0.29|0.59|-1.51|Linear|In
+TWRightKick|Right Arm|0.150|60.5|-93.9|70.3|0.15|-0.16|0.45|Linear|In
+TWRightKick|Right Leg|0.150|59.7|4.0|17.7|0.26|0.30|-0.86|Linear|In
+TWRightKick|Left Arm|0.150|63.0|-175.6|155.9|-0.38|-0.46|0.75|Linear|In
+TWRightKick|Torso|0.167|40.7|16.5|-5.2|0.00|0.09|-0.02|Linear|In
+TWRightKick|Head|0.167|-17.8|-1.5|23.3|0.00|-0.00|-0.00|Linear|In
+TWRightKick|Left Leg|0.167|-59.9|-23.6|-38.7|-0.29|0.60|-1.52|Linear|In
+TWRightKick|Right Arm|0.167|60.5|-93.9|70.3|0.15|-0.16|0.45|Linear|In
+TWRightKick|Right Leg|0.167|60.0|4.1|17.7|0.26|0.29|-0.86|Linear|In
+TWRightKick|Left Arm|0.167|63.0|-175.9|156.0|-0.38|-0.46|0.76|Linear|In
+TWRightKick|Torso|0.183|40.7|16.4|-5.2|0.00|0.09|-0.02|Linear|In
+TWRightKick|Head|0.183|-18.4|-1.8|22.6|0.00|-0.00|-0.00|Linear|In
+TWRightKick|Left Leg|0.183|-59.9|-23.6|-38.7|-0.28|0.60|-1.53|Linear|In
+TWRightKick|Right Arm|0.183|59.9|-93.8|70.2|0.15|-0.16|0.45|Linear|In
+TWRightKick|Right Leg|0.183|59.6|4.0|17.8|0.26|0.30|-0.86|Linear|In
+TWRightKick|Left Arm|0.183|63.0|-175.5|155.5|-0.38|-0.46|0.76|Linear|In
+TWRightKick|Torso|0.200|40.7|16.2|-5.2|0.00|0.09|-0.02|Linear|In
+TWRightKick|Head|0.200|-20.1|-2.6|20.4|0.00|-0.00|-0.00|Linear|In
+TWRightKick|Left Leg|0.200|-59.9|-23.6|-38.7|-0.27|0.61|-1.56|Linear|In
+TWRightKick|Right Arm|0.200|58.0|-93.6|70.0|0.15|-0.16|0.45|Linear|In
+TWRightKick|Right Leg|0.200|58.1|3.9|18.0|0.24|0.34|-0.89|Linear|In
+TWRightKick|Left Arm|0.200|62.9|-174.1|154.0|-0.38|-0.46|0.76|Linear|In
+TWRightKick|Torso|0.217|40.7|15.9|-5.2|0.00|0.09|-0.02|Linear|In
+TWRightKick|Head|0.217|-22.5|-4.0|17.1|0.00|-0.00|-0.00|Linear|In
+TWRightKick|Left Leg|0.217|-59.9|-23.6|-38.7|-0.26|0.63|-1.60|Linear|In
+TWRightKick|Right Arm|0.217|55.1|-93.3|69.6|0.15|-0.16|0.45|Linear|In
+TWRightKick|Right Leg|0.217|56.0|3.7|18.2|0.22|0.38|-0.92|Linear|In
+TWRightKick|Left Arm|0.217|62.8|-172.1|151.8|-0.38|-0.46|0.76|Linear|In
+TWRightKick|Torso|0.233|40.7|15.7|-5.2|0.00|0.09|-0.02|Linear|In
+TWRightKick|Head|0.233|-24.1|-5.0|14.8|0.00|-0.00|-0.00|Linear|In
+TWRightKick|Left Leg|0.233|-59.9|-23.6|-38.7|-0.25|0.65|-1.63|Linear|In
+TWRightKick|Right Arm|0.233|53.2|-93.2|69.5|0.15|-0.16|0.45|Linear|In
+TWRightKick|Right Leg|0.233|54.6|3.5|18.4|0.21|0.42|-0.94|Linear|In
+TWRightKick|Left Arm|0.233|62.7|-170.8|150.3|-0.38|-0.46|0.76|Linear|In
+TWRightKick|Torso|0.250|40.7|15.6|-5.2|0.00|0.09|-0.02|Linear|In
+TWRightKick|Head|0.250|-24.7|-5.4|14.0|0.00|-0.00|-0.00|Linear|In
+TWRightKick|Left Leg|0.250|-59.9|-23.6|-38.7|-0.24|0.65|-1.64|Linear|In
+TWRightKick|Right Arm|0.250|52.5|-93.1|69.4|0.15|-0.16|0.45|Linear|In
+TWRightKick|Right Leg|0.250|54.1|3.5|18.4|0.21|0.43|-0.94|Linear|In
+TWRightKick|Left Arm|0.250|62.7|-170.4|149.8|-0.38|-0.46|0.76|Linear|In
+TWRightKick|Torso|0.333|40.7|13.0|-5.2|0.00|0.09|-0.02|Linear|In
+TWRightKick|Left Leg|0.333|-55.6|-20.8|-35.4|-0.24|0.65|-1.64|Linear|In
+TWRightKick|Right Arm|0.333|54.7|-93.3|69.6|0.15|-0.16|0.45|Linear|In
+TWRightKick|Right Leg|0.333|50.8|3.2|18.7|0.21|0.43|-0.94|Linear|In
+TWRightKick|Left Arm|0.333|62.0|-165.0|143.7|-0.38|-0.46|0.76|Linear|In

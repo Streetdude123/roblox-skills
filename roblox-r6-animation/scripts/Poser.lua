@@ -117,6 +117,79 @@ function Poser.compile(clip)
 	return clip
 end
 
+-- a keyframesequence becomes a clip of raw keys: every pose cframe is a transform already so it is wrapped back into
+-- pose space with the wraps table (part name to c0 rotation) and the same wrap undoes it at play time
+-- opts.map renames pose names to rig joint names, opts.trimStart drops the lead in so a loop is seamless,
+-- opts.extra adds procedural joints (a float root) and opts.loop overrides the sequence flag
+function Poser.fromSequence(kfs, wraps, opts)
+	opts = opts or {}
+	local map = opts.map or {}
+	local start = opts.trimStart or 0
+	local clip = {name = opts.name or kfs.Name, joints = {}, loop = kfs.Loop, compiled = true}
+	if opts.loop ~= nil then
+		clip.loop = opts.loop
+	end
+	local frames = kfs:GetKeyframes()
+	table.sort(frames, function(a, b)
+		return a.Time < b.Time
+	end)
+	local last = 0
+	for _, kf in ipairs(frames) do
+		local t = kf.Time - start
+		if t >= -0.0001 then
+			t = math.max(0, t)
+			last = math.max(last, t)
+			for _, p in ipairs(kf:GetDescendants()) do
+				if p:IsA("Pose") and p.Weight > 0 and p.Name ~= "HumanoidRootPart" then
+					local name = map[p.Name] or p.Name
+					local r = wraps[name]
+					if r then
+						local keys = clip.joints[name]
+						if not keys then
+							keys = {}
+							clip.joints[name] = keys
+						end
+						table.insert(keys, {t = t, cf = r * p.CFrame * r:Inverse(), e = "linear"})
+					end
+				end
+			end
+		end
+	end
+	for _, keys in pairs(clip.joints) do
+		table.sort(keys, function(a, b)
+			return a.t < b.t
+		end)
+	end
+	clip.length = opts.length or last
+	if opts.extra then
+		for name, fn in pairs(opts.extra) do
+			clip.joints[name] = fn
+		end
+	end
+	return clip
+end
+
+-- the wrap table for a template so clips can be built before any rig is attached
+function Poser.wrapsOf(model)
+	local wraps = {}
+	for _, m in ipairs(model:GetDescendants()) do
+		if m:IsA("Motor6D") and m.Part1 then
+			wraps[m.Part1.Name] = m.C0.Rotation
+		end
+	end
+	return wraps
+end
+
+-- samples one joint of a clip at a time into pose space so a clip can start from another clip's pose
+function Poser.sample(clip, name, t, ctx)
+	Poser.compile(clip)
+	local keys = clip.joints[name]
+	if not keys then
+		return CFrame.new()
+	end
+	return sampleJoint(keys, t, ctx or {})
+end
+
 local rigs = {}
 local conn
 

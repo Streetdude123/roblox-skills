@@ -1,0 +1,247 @@
+#Barrage len=0.667 loop=true frames=41 prio=Action
+Barrage|Torso|0.000|-11.8|15.4|-6.7|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.000|6.5|-14.9|-0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.000|-12.5|2.4|3.3|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.000|42.4|84.3|-60.4|0.23|-0.23|-0.39|Linear|In
+Barrage|Right Leg|0.000|-18.1|7.9|32.9|-0.07|0.30|-0.65|Linear|In
+Barrage|Left Arm|0.000|40.3|38.0|-44.6|0.23|0.42|0.52|Linear|In
+Barrage|Torso|0.017|-11.9|10.4|-6.3|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.017|6.5|-10.2|-0.0|-0.00|0.00|-0.00|Linear|In
+Barrage|Left Leg|0.017|-12.6|2.2|2.7|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.017|47.6|82.0|-59.7|0.23|-0.21|-0.35|Linear|In
+Barrage|Right Leg|0.017|-18.0|8.1|33.6|-0.08|0.31|-0.67|Linear|In
+Barrage|Left Arm|0.017|45.0|35.6|-41.0|0.16|0.43|0.45|Linear|In
+Barrage|Torso|0.033|-12.1|-4.7|-5.1|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.033|6.5|4.0|0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.033|-12.6|1.9|1.1|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.033|63.0|72.1|-54.4|0.22|-0.17|-0.23|Linear|In
+Barrage|Right Leg|0.033|-17.8|8.7|35.6|-0.12|0.35|-0.71|Linear|In
+Barrage|Left Arm|0.033|58.0|23.5|-25.9|-0.03|0.46|0.22|Linear|In
+Barrage|Torso|0.050|-13.0|-27.3|-3.5|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.050|6.5|25.3|0.0|-0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.050|-12.7|1.4|-1.3|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.050|80.7|7.1|4.1|0.21|-0.10|-0.06|Linear|In
+Barrage|Right Leg|0.050|-17.3|9.6|38.5|-0.18|0.40|-0.78|Linear|In
+Barrage|Left Arm|0.050|69.1|-22.3|24.2|-0.33|0.51|-0.13|Linear|In
+Barrage|Torso|0.067|-14.0|-42.5|-2.7|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.067|6.5|39.5|0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.067|-12.7|1.0|-2.9|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.067|72.7|-61.7|68.8|0.20|-0.05|0.05|Linear|In
+Barrage|Right Leg|0.067|-17.0|10.2|40.5|-0.22|0.44|-0.83|Linear|In
+Barrage|Left Arm|0.067|64.3|-59.0|63.7|-0.53|0.54|-0.36|Linear|In
+Barrage|Torso|0.083|-14.3|-47.5|-2.5|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.083|6.5|44.3|-0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.083|-12.7|0.9|-3.5|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.083|68.0|-70.0|75.6|0.20|-0.04|0.09|Linear|In
+Barrage|Right Leg|0.083|-16.9|10.4|41.1|-0.23|0.45|-0.84|Linear|In
+Barrage|Left Arm|0.083|61.0|-67.1|72.8|-0.60|0.55|-0.44|Linear|In
+Barrage|Torso|0.100|-15.5|-8.4|-4.9|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.100|7.3|5.9|0.3|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.100|-11.4|-0.1|-8.9|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.100|63.2|-73.5|79.4|0.23|-0.05|0.01|Linear|In
+Barrage|Right Leg|0.100|-17.0|10.4|41.1|-0.25|0.57|-0.89|Linear|In
+Barrage|Left Arm|0.100|68.5|-47.7|56.4|-0.35|0.35|-0.30|Linear|In
+Barrage|Torso|0.117|-17.2|22.1|-5.8|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.117|7.8|-24.0|0.9|0.00|-0.00|0.00|Linear|In
+Barrage|Left Leg|0.117|-10.4|-0.8|-13.1|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.117|59.4|-75.4|81.7|0.25|-0.05|-0.04|Linear|In
+Barrage|Right Leg|0.117|-17.0|10.4|41.1|-0.26|0.67|-0.92|Linear|In
+Barrage|Left Arm|0.117|71.9|-24.1|35.1|-0.16|0.20|-0.20|Linear|In
+Barrage|Torso|0.133|-18.7|44.2|-5.9|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.133|7.9|-45.4|1.4|0.00|-0.00|0.00|Linear|In
+Barrage|Left Leg|0.133|-9.6|-1.2|-16.1|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.133|56.6|-76.5|83.0|0.27|-0.06|-0.09|Linear|In
+Barrage|Right Leg|0.133|-17.1|10.4|41.1|-0.27|0.73|-0.95|Linear|In
+Barrage|Left Arm|0.133|72.3|-4.0|16.6|-0.03|0.09|-0.13|Linear|In
+Barrage|Torso|0.150|-19.5|57.5|-5.6|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.150|7.8|-58.3|1.7|-0.00|-0.00|0.00|Linear|In
+Barrage|Left Leg|0.150|-9.1|-1.4|-17.9|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.150|55.0|-77.1|83.6|0.28|-0.06|-0.11|Linear|In
+Barrage|Right Leg|0.150|-17.1|10.4|41.2|-0.28|0.78|-0.96|Linear|In
+Barrage|Left Arm|0.150|71.6|7.7|5.9|0.05|0.02|-0.08|Linear|In
+Barrage|Torso|0.167|-19.7|61.9|-5.5|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.167|7.8|-62.5|1.8|-0.00|-0.00|0.00|Linear|In
+Barrage|Left Leg|0.167|-9.0|-1.5|-18.5|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.167|54.4|-77.3|83.9|0.28|-0.06|-0.12|Linear|In
+Barrage|Right Leg|0.167|-17.1|10.4|41.2|-0.28|0.79|-0.97|Linear|In
+Barrage|Left Arm|0.167|71.2|11.4|2.6|0.08|0.00|-0.07|Linear|In
+Barrage|Torso|0.183|-17.2|22.1|-5.8|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.183|7.8|-24.1|0.9|0.00|-0.00|0.00|Linear|In
+Barrage|Left Leg|0.183|-10.4|-0.8|-13.1|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.183|59.4|-75.4|81.7|0.16|-0.06|-0.08|Linear|In
+Barrage|Right Leg|0.183|-17.0|10.4|41.1|-0.26|0.67|-0.92|Linear|In
+Barrage|Left Arm|0.183|71.9|-24.1|35.1|-0.03|0.22|-0.14|Linear|In
+Barrage|Torso|0.200|-15.5|-8.4|-4.9|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.200|7.3|5.7|0.3|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.200|-11.4|-0.1|-8.9|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.200|63.2|-73.5|79.4|0.07|-0.07|-0.04|Linear|In
+Barrage|Right Leg|0.200|-17.0|10.4|41.1|-0.25|0.57|-0.89|Linear|In
+Barrage|Left Arm|0.200|68.5|-47.7|56.4|-0.12|0.39|-0.19|Linear|In
+Barrage|Torso|0.217|-14.6|-30.2|-3.7|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.217|6.9|27.0|0.1|0.00|-0.00|0.00|Linear|In
+Barrage|Left Leg|0.217|-12.2|0.4|-5.9|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.217|65.9|-71.7|77.5|0.01|-0.07|-0.02|Linear|In
+Barrage|Right Leg|0.217|-16.9|10.4|41.1|-0.24|0.50|-0.86|Linear|In
+Barrage|Left Arm|0.217|64.6|-59.8|66.8|-0.19|0.51|-0.23|Linear|In
+Barrage|Torso|0.233|-14.4|-43.2|-2.8|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.233|6.6|39.8|0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.233|-12.6|0.8|-4.1|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.233|67.5|-70.4|76.1|-0.03|-0.07|-0.01|Linear|In
+Barrage|Right Leg|0.233|-16.9|10.4|41.1|-0.23|0.46|-0.85|Linear|In
+Barrage|Left Arm|0.233|61.9|-65.4|71.5|-0.23|0.58|-0.25|Linear|In
+Barrage|Torso|0.250|-14.3|-47.5|-2.5|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.250|6.5|44.0|-0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.250|-12.7|0.9|-3.5|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.250|68.0|-70.0|75.6|-0.04|-0.07|-0.00|Linear|In
+Barrage|Right Leg|0.250|-16.9|10.4|41.1|-0.23|0.45|-0.84|Linear|In
+Barrage|Left Arm|0.250|61.0|-67.1|72.8|-0.24|0.61|-0.25|Linear|In
+Barrage|Torso|0.267|-15.5|-8.4|-4.9|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.267|6.5|4.9|0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.267|-11.4|-0.1|-8.9|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.267|63.2|-73.5|79.4|0.07|-0.07|-0.04|Linear|In
+Barrage|Right Leg|0.267|-17.0|10.4|41.1|-0.25|0.57|-0.89|Linear|In
+Barrage|Left Arm|0.267|68.5|-47.7|56.4|-0.23|0.36|-0.18|Linear|In
+Barrage|Torso|0.283|-17.2|22.1|-5.8|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.283|6.5|-25.6|-0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.283|-10.4|-0.8|-13.1|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.283|59.4|-75.4|81.7|0.16|-0.06|-0.08|Linear|In
+Barrage|Right Leg|0.283|-17.0|10.4|41.1|-0.26|0.67|-0.92|Linear|In
+Barrage|Left Arm|0.283|71.9|-24.1|35.1|-0.23|0.17|-0.12|Linear|In
+Barrage|Torso|0.300|-18.7|44.2|-5.9|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.300|6.5|-47.3|-0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.300|-9.6|-1.2|-16.1|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.300|56.6|-76.5|83.0|0.23|-0.06|-0.10|Linear|In
+Barrage|Right Leg|0.300|-17.1|10.4|41.1|-0.27|0.73|-0.95|Linear|In
+Barrage|Left Arm|0.300|72.3|-4.0|16.6|-0.22|0.04|-0.08|Linear|In
+Barrage|Torso|0.317|-19.5|57.5|-5.6|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.317|6.5|-60.3|-0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.317|-9.1|-1.4|-17.9|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.317|55.0|-77.1|83.6|0.27|-0.06|-0.11|Linear|In
+Barrage|Right Leg|0.317|-17.1|10.4|41.2|-0.28|0.78|-0.96|Linear|In
+Barrage|Left Arm|0.317|71.6|7.7|5.9|-0.22|-0.04|-0.06|Linear|In
+Barrage|Torso|0.333|-19.7|61.9|-5.5|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.333|6.5|-64.7|-0.0|-0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.333|-9.0|-1.5|-18.5|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.333|54.4|-77.3|83.9|0.28|-0.06|-0.12|Linear|In
+Barrage|Right Leg|0.333|-17.1|10.4|41.2|-0.28|0.79|-0.97|Linear|In
+Barrage|Left Arm|0.333|71.2|11.4|2.6|-0.22|-0.07|-0.05|Linear|In
+Barrage|Torso|0.350|-17.2|22.1|-5.8|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.350|6.5|-26.5|-0.0|-0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.350|-10.4|-0.8|-13.1|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.350|59.4|-75.4|81.7|0.25|-0.05|-0.04|Linear|In
+Barrage|Right Leg|0.350|-17.0|10.4|41.1|-0.26|0.67|-0.92|Linear|In
+Barrage|Left Arm|0.350|71.9|-24.1|35.1|-0.35|0.15|-0.19|Linear|In
+Barrage|Torso|0.367|-15.5|-8.4|-4.9|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.367|6.5|3.3|-0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.367|-11.4|-0.1|-8.9|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.367|63.2|-73.5|79.4|0.23|-0.05|0.01|Linear|In
+Barrage|Right Leg|0.367|-17.0|10.4|41.1|-0.25|0.57|-0.89|Linear|In
+Barrage|Left Arm|0.367|68.5|-47.7|56.4|-0.46|0.33|-0.30|Linear|In
+Barrage|Torso|0.383|-14.6|-30.2|-3.7|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.383|6.5|24.5|-0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.383|-12.2|0.4|-5.9|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.383|65.9|-71.7|77.5|0.21|-0.04|0.06|Linear|In
+Barrage|Right Leg|0.383|-16.9|10.4|41.1|-0.24|0.50|-0.86|Linear|In
+Barrage|Left Arm|0.383|64.6|-59.8|66.8|-0.54|0.45|-0.37|Linear|In
+Barrage|Torso|0.400|-14.4|-43.2|-2.8|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.400|6.5|37.2|-0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.400|-12.6|0.8|-4.1|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.400|67.5|-70.4|76.1|0.20|-0.04|0.08|Linear|In
+Barrage|Right Leg|0.400|-16.9|10.4|41.1|-0.23|0.46|-0.85|Linear|In
+Barrage|Left Arm|0.400|61.9|-65.4|71.5|-0.58|0.53|-0.42|Linear|In
+Barrage|Torso|0.417|-14.3|-47.5|-2.5|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.417|6.5|41.5|-0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.417|-12.7|0.9|-3.5|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.417|68.0|-70.0|75.6|0.20|-0.04|0.09|Linear|In
+Barrage|Right Leg|0.417|-16.9|10.4|41.1|-0.23|0.45|-0.84|Linear|In
+Barrage|Left Arm|0.417|61.0|-67.1|72.8|-0.60|0.55|-0.44|Linear|In
+Barrage|Torso|0.433|-15.5|-8.4|-4.9|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.433|6.5|3.1|0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.433|-11.4|-0.1|-8.9|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.433|63.2|-73.5|79.4|0.23|-0.05|0.01|Linear|In
+Barrage|Right Leg|0.433|-17.0|10.4|41.1|-0.25|0.57|-0.89|Linear|In
+Barrage|Left Arm|0.433|68.5|-47.7|56.4|-0.44|0.33|-0.30|Linear|In
+Barrage|Torso|0.450|-17.2|22.1|-5.8|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.450|6.5|-26.8|-0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.450|-10.4|-0.8|-13.1|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.450|59.4|-75.4|81.7|0.25|-0.05|-0.04|Linear|In
+Barrage|Right Leg|0.450|-17.0|10.4|41.1|-0.26|0.67|-0.92|Linear|In
+Barrage|Left Arm|0.450|71.9|-24.1|35.1|-0.32|0.16|-0.19|Linear|In
+Barrage|Torso|0.467|-18.7|44.2|-5.9|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.467|6.5|-48.1|-0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.467|-9.6|-1.2|-16.1|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.467|56.6|-76.5|83.0|0.27|-0.06|-0.09|Linear|In
+Barrage|Right Leg|0.467|-17.1|10.4|41.1|-0.27|0.73|-0.95|Linear|In
+Barrage|Left Arm|0.467|72.3|-4.0|16.6|-0.24|0.04|-0.11|Linear|In
+Barrage|Torso|0.483|-19.5|57.5|-5.6|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.483|6.5|-60.9|0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.483|-9.1|-1.4|-17.9|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.483|55.0|-77.1|83.6|0.28|-0.06|-0.11|Linear|In
+Barrage|Right Leg|0.483|-17.1|10.4|41.2|-0.28|0.78|-0.96|Linear|In
+Barrage|Left Arm|0.483|71.6|7.7|5.9|-0.19|-0.03|-0.07|Linear|In
+Barrage|Torso|0.500|-19.7|61.9|-5.5|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.500|6.5|-65.1|-0.0|-0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.500|-9.0|-1.5|-18.5|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.500|54.4|-77.3|83.9|0.28|-0.06|-0.12|Linear|In
+Barrage|Right Leg|0.500|-17.1|10.4|41.2|-0.28|0.79|-0.97|Linear|In
+Barrage|Left Arm|0.500|71.2|11.4|2.6|-0.17|-0.06|-0.05|Linear|In
+Barrage|Torso|0.517|-17.2|22.1|-5.8|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.517|6.5|-25.7|0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.517|-10.4|-0.8|-13.1|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.517|59.4|-75.4|81.7|0.19|-0.06|-0.07|Linear|In
+Barrage|Right Leg|0.517|-17.0|10.4|41.1|-0.26|0.67|-0.92|Linear|In
+Barrage|Left Arm|0.517|71.9|-24.1|35.1|-0.32|0.16|-0.19|Linear|In
+Barrage|Torso|0.533|-15.5|-8.4|-4.9|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.533|6.5|5.0|0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.533|-11.4|-0.1|-8.9|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.533|63.2|-73.5|79.4|0.11|-0.06|-0.03|Linear|In
+Barrage|Right Leg|0.533|-17.0|10.4|41.1|-0.25|0.57|-0.89|Linear|In
+Barrage|Left Arm|0.533|68.5|-47.7|56.4|-0.44|0.33|-0.30|Linear|In
+Barrage|Torso|0.550|-14.6|-30.2|-3.7|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.550|6.5|26.9|0.0|-0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.550|-12.2|0.4|-5.9|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.550|65.9|-71.7|77.5|0.06|-0.06|0.00|Linear|In
+Barrage|Right Leg|0.550|-16.9|10.4|41.1|-0.24|0.50|-0.86|Linear|In
+Barrage|Left Arm|0.550|64.6|-59.8|66.8|-0.53|0.46|-0.38|Linear|In
+Barrage|Torso|0.567|-14.4|-43.2|-2.8|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.567|6.5|40.1|-0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.567|-12.6|0.8|-4.1|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.567|67.5|-70.4|76.1|0.03|-0.06|0.02|Linear|In
+Barrage|Right Leg|0.567|-16.9|10.4|41.1|-0.23|0.46|-0.85|Linear|In
+Barrage|Left Arm|0.567|61.9|-65.4|71.5|-0.58|0.53|-0.42|Linear|In
+Barrage|Torso|0.583|-14.3|-47.5|-2.5|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.583|6.5|44.4|-0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.583|-12.7|0.9|-3.5|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.583|68.0|-70.0|75.6|0.02|-0.06|0.02|Linear|In
+Barrage|Right Leg|0.583|-16.9|10.4|41.1|-0.23|0.45|-0.84|Linear|In
+Barrage|Left Arm|0.583|61.0|-67.1|72.8|-0.60|0.55|-0.44|Linear|In
+Barrage|Torso|0.600|-15.5|-8.4|-4.9|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.600|6.5|5.6|0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.600|-11.4|-0.1|-8.9|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.600|63.2|-73.5|79.4|0.11|-0.06|-0.03|Linear|In
+Barrage|Right Leg|0.600|-17.0|10.4|41.1|-0.25|0.57|-0.89|Linear|In
+Barrage|Left Arm|0.600|68.5|-47.7|56.4|-0.46|0.33|-0.30|Linear|In
+Barrage|Torso|0.617|-17.2|22.1|-5.8|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.617|6.5|-24.6|-0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.617|-10.4|-0.8|-13.1|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.617|59.4|-75.4|81.7|0.19|-0.06|-0.07|Linear|In
+Barrage|Right Leg|0.617|-17.0|10.4|41.1|-0.26|0.67|-0.92|Linear|In
+Barrage|Left Arm|0.617|71.9|-24.1|35.1|-0.36|0.15|-0.19|Linear|In
+Barrage|Torso|0.633|-18.7|44.2|-5.9|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.633|6.5|-46.1|0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.633|-9.6|-1.2|-16.1|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.633|56.6|-76.5|83.0|0.24|-0.06|-0.10|Linear|In
+Barrage|Right Leg|0.633|-17.1|10.4|41.1|-0.27|0.73|-0.95|Linear|In
+Barrage|Left Arm|0.633|72.3|-4.0|16.6|-0.29|0.03|-0.11|Linear|In
+Barrage|Torso|0.650|-19.5|57.5|-5.6|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.650|6.5|-59.1|-0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.650|-9.1|-1.4|-17.9|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.650|55.0|-77.1|83.6|0.27|-0.06|-0.11|Linear|In
+Barrage|Right Leg|0.650|-17.1|10.4|41.2|-0.28|0.78|-0.96|Linear|In
+Barrage|Left Arm|0.650|71.6|7.7|5.9|-0.24|-0.05|-0.06|Linear|In
+Barrage|Torso|0.667|-19.7|61.9|-5.5|0.00|0.00|0.00|Linear|In
+Barrage|Head|0.667|6.5|-63.4|-0.0|0.00|0.00|0.00|Linear|In
+Barrage|Left Leg|0.667|-9.0|-1.5|-18.5|-0.27|0.26|-0.53|Linear|In
+Barrage|Right Arm|0.667|54.4|-77.3|83.9|0.28|-0.06|-0.12|Linear|In
+Barrage|Right Leg|0.667|-17.1|10.4|41.2|-0.28|0.79|-0.97|Linear|In
+Barrage|Left Arm|0.667|71.2|11.4|2.6|-0.23|-0.07|-0.05|Linear|In

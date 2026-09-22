@@ -77,6 +77,41 @@ seven sparkles, light spike 3 then 0.6, camera kick 0.22; rise = a `star4` trail
 stand materialises over 0.22 s; settle = an idle aura at 4 + 6 per second welded to the stand. Beats:
 pop 0.25, rise 0.27, settle 0.55, lock 0.85, done 1.3.
 
+**The World's vocabulary (built 2026-09-21, replaces the stars on every stand beat)**: gather = a
+`ChainRing` rune ring stood on its edge behind the back (tint gold to pale, scale 1.5, floor emitters
+on with RotSpeed 120 to 160, chain beams off) inside an `EyeRing` rim (Neon, 5.2 studs, 0.5
+transparency) with one `lightray` Beam hand on a carrier the follow loop spins up from 3 to 14 turns
+a second, plus a gold light; pop = the hand stops dead on twelve and the rim flashes white for three
+frames, `Crack` at the back (pale, scale 1.3), `ShieldBreak` (14 specs, gold to pale, scale 1.2), 12
+`shards` at speed 6 to 14 with gravity, one `Shock` at the feet in lavender; rise = three gold echoes
+(`SummonVfx.afterimage`: the visible parts cloned as Neon gold at 0.5 fading over 0.3 to 0.42 s) at
+0.06, 0.13 and 0.20 while the clock fades; settle = the `Charge` piece welded to the torso at rate 4
+(gold to amber, scale 0.7, core off) and a green heart light pulsing 0.25 to 1.0 every 0.86 s.
+Barrage = the `Wind` piece at the fists pointing forward (rate 28, speed 26 to 40, life 0.16 to 0.26,
+spread 14, gold to pale), a `glow` fist flash of 2 per beat at 12 a second in a 2.6 stud box, an echo
+of the arm meshes every other beat for 0.18 s, `MudaRush` + `BarrageSFX`, camera kick 0.09 per beat;
+finisher = `Hit3` 1.5, `RingShock` 1.6, `SlashImpact` with 10 + 8 specs, `StrongMuda`, `HitStrong`,
+three echoes, kick 0.55. Hits on a target: `Hit1` gold with `HitSoundTW` limited to one per 0.11 s;
+frozen hits lavender with `LMB1`; the release burst `Hit3` 2.0 + `ShieldBreak` 1.8 + `RingShock` 2.2
++ 18 lavender shards + `HitStrong` + `Bass`.
+
+**Time stop (cinematic move, 3.1 s call + 6 s stopped)**: beats from the "the world 2" envelope:
+call 0 (za warudo 0.13 to 0.85), pause 0.85, command 1.35 (toki wo tomare 1.35 to 2.88), snap 2.45,
+frames 2.5, done 3.1; the resume voice "Zero..." starts 1.6 s before time moves. Shots: front push-in
+angle 148 to 158 dist 13.5 to 10.8 fov 62 with bars; a cut to a low shot up at the stand at angle 196
+dist 9.6 height 0.5 lookY 5.4 fov 58 roll -3 drifting to 8.6 and +2 with a 0.35 vignette and one
+`Heartbeat`; the `Rays` fan (gold to lavender, scale 1.6) opens on the command while the stand light
+climbs to 3.2 and the clock (scale 2.6, rim 4 x scale) races; the snap = clock stop, `Bass`, `Shock`,
+`ShieldBreak` at both hands (16 specs, scale 1.6), a `Crack` plane facing the camera at scale 2.6,
+three gold echoes, a 0.5 pale flash, impact frames gold 0.05 / purple 0.05 / white 0.04 with the
+camera frozen, kick 0.6, and the ripple: a `FancySphere` in ForceField lavender 2 to 260 studs over
+0.8 s + a Glass ball 2 to 240 over 0.72 s + the `Ripple` ground mesh 4 to 140 + `RingShock` scale 3;
+the colour drains through a shared `Lighting.TimeStopCC` (brightness 0.25 and tint 190,160,255 for
+two frames, then saturation -1, contrast 0.12, tint 215,212,240 over 0.45 s); pull back to a rear
+three quarter angle 32 to 18 dist 17 to 13.5 and hand the default camera back with `CameraRig.cut`.
+Resume = the ripple runs back in over 0.5 s, saturation to 0 over 0.4 s, two lavender echoes, queued
+hits land at once with the release burst.
+
 **Cinematic (final schedule)**: hold 1.4, charge 3.4, peak 3.95, slash 4.5, impact 4.55, follow 4.69,
 crown 4.77, crownEnd 5.2, pillar 5.36, ret 6.41, mid 6.85, freeze 7.29, collapse 7.85, burst 8.11,
 wave2 8.55, wave3 9.0, after 10.35, fade 11.25, black 12.05, fadeIn 12.55; 16 s, cooldown 20.
@@ -118,6 +153,15 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   the VFX so crazy like impact frames for summoning, lower down the tone, simple small vfx".
 - 2026-09-21: "star vfx doesn't really suit the world, try coming up with more creative VFX that fits
   the world more and stands" and "I'll always add vfx packs you can use".
+- 2026-09-21 (later): "i have vfx packs in server storage use that please" while the World vocabulary
+  above was built; every piece came from `Assets.Vfx` (his kit) plus carriers, beams and code emitters.
+  The old stand's mesh ids had died and drew as orange boxes ("what is this? appeared on my second
+  summon"): a MeshPart whose mesh fails to load renders as a plain box of its Size and Color, and
+  `ContentProvider:PreloadAsync` on id strings reports Failure for meshes that load fine, so judge a
+  dead mesh by a capture of the model, not by the preload status. The stand body is now his free model.
+- 2026-09-21 (later): he asked for a "super cool cinematic cutscene" for the time stop with voice
+  lines; the beat table came from the voice line's `PlaybackLoudness` envelope (see sound.md), and
+  the cutscene locks the body 3.1 s, which he accepted for this move.
 
 ## Reference index
 
@@ -132,6 +176,7 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
 
 - `scripts/Tw.lua`, `scripts/Emitters.lua`, `scripts/Kit.lua` - tween, code emitters and kit template helpers.
 - `scripts/CameraRig.lua`, `scripts/ScreenFx.lua`, `scripts/ImpactFrames.lua`, `scripts/SpeedLines.lua` - the cinematic layer.
-- `scripts/SummonVfx.lua` - the small rung worked example (DIO summon with the join-time warm-up).
+- `scripts/SummonVfx.lua` - the small rung worked example (DIO summon: the clock gather, the tick pop, gold echoes, the charge and heartbeat idle, the join-time warm-up, `afterimage`, `standParts` that skips `Tr 1` parts, `rigOf`).
+- `scripts/Moves.lua`, `scripts/TimeStop.lua`, `scripts/MovesServer.lua` - the move rung (barrage with fist streaks, flashes, arm echoes and a finisher) and the cinematic move (the time stop call, the freeze, the resume) with the server that runs hitboxes, freezes the world, queues damage in stopped time and launches knockback through a 0.22 s `LinearVelocity`.
 - `scripts/UltimateVfx.lua` - the cinematic rung worked example (sword ultimate, 2272 lines).
 - `scripts/ScanPack.lua`, `scripts/MeshGallery.lua`, `scripts/BlankDeadSounds.lua` - the pack intake tools.

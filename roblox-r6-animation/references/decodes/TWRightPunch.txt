@@ -1,0 +1,113 @@
+#TWRightPunch len=0.417 loop=false frames=22 prio=Action
+TWRightPunch|Torso|0.000|-19.1|-76.0|-4.6|0.00|0.09|-0.02|Linear|In
+TWRightPunch|Head|0.000|17.7|67.7|-3.6|0.00|-0.00|-0.00|Linear|In
+TWRightPunch|Left Leg|0.000|-45.6|-5.5|-18.6|0.04|-0.13|-0.02|Linear|In
+TWRightPunch|Right Arm|0.000|55.4|-85.7|97.5|-0.09|-0.16|0.32|Linear|In
+TWRightPunch|Right Leg|0.000|-0.2|-9.0|20.0|0.05|0.66|-0.66|Linear|In
+TWRightPunch|Left Arm|0.000|68.1|130.7|-134.1|0.04|-0.02|0.25|Linear|In
+TWRightPunch|Torso|0.017|-19.2|-76.0|-4.5|0.00|0.09|-0.02|Linear|In
+TWRightPunch|Head|0.017|17.7|67.7|-3.6|-0.00|-0.00|0.00|Linear|In
+TWRightPunch|Left Leg|0.017|-45.6|-5.5|-18.6|0.04|-0.13|-0.03|Linear|In
+TWRightPunch|Right Arm|0.017|55.4|-86.0|97.8|-0.09|-0.16|0.32|Linear|In
+TWRightPunch|Right Leg|0.017|-0.2|-9.0|19.8|0.06|0.66|-0.65|Linear|In
+TWRightPunch|Left Arm|0.017|68.2|130.8|-134.2|0.04|-0.02|0.25|Linear|In
+TWRightPunch|Torso|0.033|-19.5|-76.0|-4.5|0.00|0.09|-0.02|Linear|In
+TWRightPunch|Head|0.033|17.7|67.7|-3.6|0.00|-0.00|-0.00|Linear|In
+TWRightPunch|Left Leg|0.033|-45.6|-5.5|-18.6|0.04|-0.13|-0.05|Linear|In
+TWRightPunch|Right Arm|0.033|55.4|-86.8|98.8|-0.09|-0.16|0.32|Linear|In
+TWRightPunch|Right Leg|0.033|-0.1|-9.0|19.1|0.07|0.66|-0.65|Linear|In
+TWRightPunch|Left Arm|0.033|68.3|131.1|-134.6|0.04|-0.02|0.25|Linear|In
+TWRightPunch|Torso|0.050|-19.9|-76.0|-4.4|0.00|0.09|-0.02|Linear|In
+TWRightPunch|Head|0.050|17.7|67.7|-3.6|0.00|-0.00|-0.00|Linear|In
+TWRightPunch|Left Leg|0.050|-45.6|-5.5|-18.6|0.04|-0.13|-0.07|Linear|In
+TWRightPunch|Right Arm|0.050|55.4|-88.2|100.5|-0.10|-0.16|0.33|Linear|In
+TWRightPunch|Right Leg|0.050|0.1|-9.0|18.0|0.08|0.66|-0.65|Linear|In
+TWRightPunch|Left Arm|0.050|68.5|131.7|-135.1|0.04|-0.02|0.25|Linear|In
+TWRightPunch|Torso|0.067|-20.4|-75.9|-4.2|0.00|0.09|-0.02|Linear|In
+TWRightPunch|Head|0.067|17.7|67.7|-3.6|0.00|-0.00|-0.00|Linear|In
+TWRightPunch|Left Leg|0.067|-45.6|-5.5|-18.6|0.04|-0.13|-0.11|Linear|In
+TWRightPunch|Right Arm|0.067|55.5|-90.1|102.8|-0.10|-0.16|0.33|Linear|In
+TWRightPunch|Right Leg|0.067|0.3|-9.0|16.5|0.11|0.66|-0.65|Linear|In
+TWRightPunch|Left Arm|0.067|68.9|132.4|-136.0|0.04|-0.02|0.25|Linear|In
+TWRightPunch|Torso|0.083|-21.2|-75.9|-4.0|0.00|0.09|-0.02|Linear|In
+TWRightPunch|Head|0.083|17.7|67.7|-3.6|0.00|-0.00|-0.00|Linear|In
+TWRightPunch|Left Leg|0.083|-45.6|-5.5|-18.6|0.05|-0.13|-0.16|Linear|In
+TWRightPunch|Right Arm|0.083|55.4|-92.6|105.9|-0.11|-0.17|0.34|Linear|In
+TWRightPunch|Right Leg|0.083|0.7|-8.9|14.5|0.14|0.67|-0.64|Linear|In
+TWRightPunch|Left Arm|0.083|69.3|133.5|-137.1|0.04|-0.02|0.25|Linear|In
+TWRightPunch|Torso|0.100|-21.9|-75.8|-3.8|0.00|0.09|-0.02|Linear|In
+TWRightPunch|Head|0.100|17.7|67.7|-3.6|0.00|-0.00|-0.00|Linear|In
+TWRightPunch|Left Leg|0.100|-45.6|-5.5|-18.6|0.05|-0.13|-0.21|Linear|In
+TWRightPunch|Right Arm|0.100|55.3|-95.0|108.8|-0.11|-0.17|0.35|Linear|In
+TWRightPunch|Right Leg|0.100|1.0|-8.9|12.5|0.17|0.67|-0.64|Linear|In
+TWRightPunch|Left Arm|0.100|69.7|134.5|-138.2|0.04|-0.02|0.25|Linear|In
+TWRightPunch|Torso|0.117|-22.5|-75.7|-3.7|0.00|0.09|-0.02|Linear|In
+TWRightPunch|Head|0.117|17.7|67.7|-3.6|0.00|-0.00|-0.00|Linear|In
+TWRightPunch|Left Leg|0.117|-45.6|-5.5|-18.6|0.05|-0.13|-0.24|Linear|In
+TWRightPunch|Right Arm|0.117|55.2|-96.9|111.2|-0.12|-0.17|0.36|Linear|In
+TWRightPunch|Right Leg|0.117|1.2|-8.9|11.0|0.19|0.68|-0.63|Linear|In
+TWRightPunch|Left Arm|0.117|70.0|135.4|-139.1|0.04|-0.02|0.25|Linear|In
+TWRightPunch|Torso|0.133|-22.9|-75.7|-3.5|0.00|0.09|-0.02|Linear|In
+TWRightPunch|Head|0.133|17.7|67.7|-3.6|0.00|-0.00|-0.00|Linear|In
+TWRightPunch|Left Leg|0.133|-45.6|-5.5|-18.6|0.05|-0.13|-0.27|Linear|In
+TWRightPunch|Right Arm|0.133|55.1|-98.3|112.8|-0.12|-0.17|0.36|Linear|In
+TWRightPunch|Right Leg|0.133|1.4|-8.9|9.8|0.21|0.68|-0.63|Linear|In
+TWRightPunch|Left Arm|0.133|70.2|136.0|-139.8|0.04|-0.02|0.25|Linear|In
+TWRightPunch|Torso|0.150|-23.2|-75.6|-3.5|0.00|0.09|-0.02|Linear|In
+TWRightPunch|Head|0.150|17.7|67.7|-3.6|0.00|-0.00|-0.00|Linear|In
+TWRightPunch|Left Leg|0.150|-45.6|-5.5|-18.6|0.06|-0.13|-0.29|Linear|In
+TWRightPunch|Right Arm|0.150|55.0|-99.1|113.8|-0.12|-0.17|0.36|Linear|In
+TWRightPunch|Right Leg|0.150|1.5|-8.8|9.2|0.22|0.68|-0.63|Linear|In
+TWRightPunch|Left Arm|0.150|70.4|136.4|-140.2|0.04|-0.02|0.25|Linear|In
+TWRightPunch|Torso|0.167|-23.2|-75.6|-3.5|0.00|0.09|-0.02|Linear|In
+TWRightPunch|Head|0.167|17.7|67.7|-3.6|0.00|-0.00|-0.00|Linear|In
+TWRightPunch|Left Leg|0.167|-45.6|-5.5|-18.6|0.06|-0.13|-0.29|Linear|In
+TWRightPunch|Right Arm|0.167|54.9|-99.3|114.1|-0.12|-0.17|0.36|Linear|In
+TWRightPunch|Right Leg|0.167|1.5|-8.8|9.0|0.22|0.68|-0.63|Linear|In
+TWRightPunch|Left Arm|0.167|70.4|136.5|-140.3|0.04|-0.02|0.25|Linear|In
+TWRightPunch|Torso|0.183|-24.0|-65.6|-1.9|0.00|0.09|-0.02|Linear|In
+TWRightPunch|Head|0.183|17.3|58.3|-3.5|-0.00|-0.00|-0.00|Linear|In
+TWRightPunch|Left Leg|0.183|-45.6|-5.7|-18.9|0.06|-0.11|-0.30|Linear|In
+TWRightPunch|Right Arm|0.183|54.9|-99.3|114.1|-0.11|-0.16|0.31|Linear|In
+TWRightPunch|Right Leg|0.183|1.4|-8.9|9.5|0.22|0.68|-0.63|Linear|In
+TWRightPunch|Left Arm|0.183|69.6|134.2|-137.8|0.05|-0.02|0.27|Linear|In
+TWRightPunch|Torso|0.200|-24.7|-35.3|3.3|0.00|0.09|-0.02|Linear|In
+TWRightPunch|Head|0.200|16.3|30.2|-3.8|-0.00|-0.00|-0.00|Linear|In
+TWRightPunch|Left Leg|0.200|-45.5|-6.2|-19.7|0.08|-0.08|-0.34|Linear|In
+TWRightPunch|Right Arm|0.200|54.9|-99.3|114.1|-0.07|-0.14|0.16|Linear|In
+TWRightPunch|Right Leg|0.200|1.2|-8.9|11.2|0.19|0.68|-0.63|Linear|In
+TWRightPunch|Left Arm|0.200|66.8|128.2|-131.3|0.06|-0.04|0.33|Linear|In
+TWRightPunch|Torso|0.217|-21.2|9.7|10.0|0.00|0.09|-0.02|Linear|In
+TWRightPunch|Head|0.217|15.2|-11.7|-5.1|0.00|-0.00|-0.00|Linear|In
+TWRightPunch|Left Leg|0.217|-45.4|-7.0|-20.8|0.10|-0.02|-0.40|Linear|In
+TWRightPunch|Right Arm|0.217|54.9|-99.3|114.1|-0.02|-0.10|-0.06|Linear|In
+TWRightPunch|Right Leg|0.217|0.8|-8.9|13.7|0.15|0.67|-0.64|Linear|In
+TWRightPunch|Left Arm|0.217|62.3|121.6|-124.1|0.08|-0.06|0.42|Linear|In
+TWRightPunch|Torso|0.233|-16.8|38.6|12.0|0.00|0.09|-0.02|Linear|In
+TWRightPunch|Head|0.233|15.1|-39.6|-6.3|0.00|-0.00|-0.00|Linear|In
+TWRightPunch|Left Leg|0.233|-45.3|-7.5|-21.5|0.11|0.01|-0.44|Linear|In
+TWRightPunch|Right Arm|0.233|54.9|-99.3|114.1|0.02|-0.08|-0.21|Linear|In
+TWRightPunch|Right Leg|0.233|0.5|-9.0|15.4|0.13|0.67|-0.64|Linear|In
+TWRightPunch|Left Arm|0.233|59.2|118.3|-120.3|0.10|-0.08|0.48|Linear|In
+TWRightPunch|Torso|0.250|-15.2|48.0|12.2|0.00|0.09|-0.02|Linear|In
+TWRightPunch|Head|0.250|15.2|-48.9|-6.6|0.00|-0.00|-0.00|Linear|In
+TWRightPunch|Left Leg|0.250|-45.3|-7.7|-21.8|0.12|0.02|-0.45|Linear|In
+TWRightPunch|Right Arm|0.250|54.9|-99.3|114.1|0.03|-0.07|-0.26|Linear|In
+TWRightPunch|Right Leg|0.250|0.4|-9.0|15.9|0.12|0.67|-0.64|Linear|In
+TWRightPunch|Left Arm|0.250|58.1|117.4|-119.2|0.10|-0.08|0.50|Linear|In
+TWRightPunch|Torso|0.333|-19.4|46.8|8.1|0.00|0.09|-0.02|Linear|In
+TWRightPunch|Head|0.333|16.3|-49.2|-5.2|0.00|-0.00|-0.00|Linear|In
+TWRightPunch|Left Leg|0.333|-49.2|-8.3|-22.6|0.12|0.02|-0.45|Linear|In
+TWRightPunch|Right Arm|0.333|64.1|-102.3|117.5|0.03|-0.07|-0.26|Linear|In
+TWRightPunch|Right Leg|0.333|-2.0|-9.0|15.5|0.12|0.67|-0.64|Linear|In
+TWRightPunch|Left Arm|0.333|45.7|110.4|-110.4|0.10|-0.08|0.50|Linear|In
+TWRightPunch|Head|0.350|16.4|-49.3|-5.1|0.00|-0.00|-0.00|Linear|In
+TWRightPunch|Head|0.367|16.8|-49.4|-4.6|0.00|-0.00|-0.00|Linear|In
+TWRightPunch|Head|0.383|17.4|-49.6|-4.0|-0.00|-0.00|-0.00|Linear|In
+TWRightPunch|Head|0.400|17.7|-49.8|-3.5|0.00|-0.00|-0.00|Linear|In
+TWRightPunch|Torso|0.417|-19.4|45.6|8.1|0.00|0.09|-0.02|Linear|In
+TWRightPunch|Head|0.417|17.9|-49.8|-3.4|0.00|-0.00|-0.00|Linear|In
+TWRightPunch|Left Leg|0.417|-46.4|-7.9|-22.0|0.12|0.02|-0.45|Linear|In
+TWRightPunch|Right Arm|0.417|62.2|-101.5|116.7|0.03|-0.07|-0.26|Linear|In
+TWRightPunch|Right Leg|0.417|-0.2|-9.0|15.8|0.12|0.67|-0.64|Linear|In
+TWRightPunch|Left Arm|0.417|49.8|112.1|-112.8|0.10|-0.08|0.50|Linear|In

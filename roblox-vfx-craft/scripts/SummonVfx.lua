@@ -81,6 +81,11 @@ local function mixSetup(state)
 	state.mix = g
 	activeMix = g
 end
+SummonVfx.mixSetup = mixSetup
+
+function SummonVfx.mix()
+	return activeMix or SoundService:FindFirstChild("StandMix")
+end
 
 local function sfx(name, at, volume, speed)
 	local template = Sounds:FindFirstChild(name)
@@ -94,12 +99,13 @@ local function sfx(name, at, volume, speed)
 	s.RollOffMode = Enum.RollOffMode.InverseTapered
 	s.RollOffMinDistance = 25
 	s.RollOffMaxDistance = 300
-	s.SoundGroup = activeMix
+	s.SoundGroup = SummonVfx.mix()
 	s.Parent = at
 	s:Play()
 	Debris:AddItem(s, 10 * Tw.S())
 	return s
 end
+SummonVfx.sfx = sfx
 
 -- follows keep a piece pinned to a body part while the clip moves it
 local function startFollows(state)
@@ -121,15 +127,17 @@ local function follow(state, part, target, offset)
 	end
 end
 
+-- the base parts the artist left invisible carry Tr 1 and never join a ghost or a fade
 local function standParts(stand)
 	local list = {}
 	for _, d in ipairs(stand:GetDescendants()) do
-		if d:IsA("BasePart") and d.Name ~= "StandHumanoidRootPart" then
+		if d:IsA("BasePart") and d.Name ~= "StandHumanoidRootPart" and d:GetAttribute("Tr") ~= 1 then
 			table.insert(list, d)
 		end
 	end
 	return list
 end
+SummonVfx.standParts = standParts
 
 -- the stand lives hidden in the character so a summon only reveals it and never clones anything
 local function remember(state)
@@ -172,60 +180,150 @@ local function hide(state)
 	end
 end
 
-local function backOf(state)
-	return state.torso.CFrame * CFrame.new(0.4, 0.2, 1.0)
+-- a time echo: the visible stand parts frozen where they are as gold neon that fades, the mark of a body
+-- that moves faster than time; the clone keeps only its mesh so it draws flat
+function SummonVfx.afterimage(stand, parent, life, color, start)
+	local m = Instance.new("Model")
+	m.Name = "Echo"
+	for _, p in ipairs(standParts(stand)) do
+		if p.Transparency < 0.9 then
+			local c = p:Clone()
+			for _, d in ipairs(c:GetChildren()) do
+				if d:IsA("DataModelMesh") then
+					pcall(function()
+						d.TextureId = ""
+					end)
+				else
+					d:Destroy()
+				end
+			end
+			if c:IsA("MeshPart") then
+				c.TextureID = ""
+			end
+			c.Anchored = true
+			c.CanCollide = false
+			c.CanQuery = false
+			c.CanTouch = false
+			c.CastShadow = false
+			c.Massless = true
+			c.Material = Enum.Material.Neon
+			c.Color = color or P.gold
+			c.Transparency = start or 0.55
+			c.CFrame = p.CFrame
+			c.Parent = m
+			Tw.play(c, {Transparency = 1}, life or 0.35, Quad, In)
+		end
+	end
+	m.Parent = parent
+	Debris:AddItem(m, (life or 0.35) * Tw.S() + 0.1)
+	return m
 end
 
--- the wind up only gathers a little light at the back so the eye knows where to look
+local function backOf(state)
+	return state.torso.CFrame * CFrame.new(0.4, 0.3, 1.1)
+end
+
+-- the wind up draws a clock behind dio's back: a gold rune ring stood on its edge with a thin rim, one
+-- beam hand that spins faster and faster, and a little gold light; time winds up before the world breaks out
 local function phaseGather(state)
 	local back = backOf(state)
-	local gather = Emitters.carrier(state.fx, back, V3(4, 4, 4))
-	follow(state, gather, state.torso, CFrame.new(0.4, 0.2, 1.0))
-	Emitters.make(gather, {
-		texture = "star4",
-		Shape = Enum.ParticleEmitterShape.Sphere,
-		ShapeInOut = Enum.ParticleEmitterShapeInOut.Inward,
-		ShapeStyle = Enum.ParticleEmitterShapeStyle.Surface,
-		Speed = NumberRange.new(5, 8),
-		Lifetime = NumberRange.new(0.25, 0.35),
-		Size = Tw.seq({{0, 0}, {0.4, 0.5}, {1, 0.1}}),
-		Color = Tw.cseq({{0, P.gold}, {1, P.white}}),
-		Transparency = Tw.seq({{0, 0.5}, {1, 0}}),
-		Enabled = true,
-		Rate = 24,
-	})
-	Emitters.make(gather, {
-		texture = "circle",
-		Shape = Enum.ParticleEmitterShape.Sphere,
-		ShapeInOut = Enum.ParticleEmitterShapeInOut.Inward,
-		ShapeStyle = Enum.ParticleEmitterShapeStyle.Surface,
-		Speed = NumberRange.new(5, 8),
-		Lifetime = NumberRange.new(0.25, 0.35),
-		Size = Tw.seq({{0, 0}, {0.4, 0.2}, {1, 0}}),
-		Color = ColorSequence.new(P.lavender),
-		Enabled = true,
-		Rate = 16,
-	})
-	state.gather = gather
-	state.backLight = light(state.torso, P.violet, 0, 8)
+	local face = back * CFrame.Angles(math.pi / 2, 0, 0)
+	local ring = Kit.spawn("ChainRing", face, state.fx)
+	if ring then
+		Kit.tint(ring, P.gold, P.pale)
+		Kit.scale(ring, 1.5)
+		Kit.glow(ring, 1)
+		Kit.set(ring, {RotSpeed = NumberRange.new(120, 160)}, {Floor1 = 1, Floor2 = 1, Floor3 = 1})
+		Kit.enable(ring, true, {Floor1 = 1, Floor2 = 1, Floor3 = 1})
+		Kit.eachBeam(ring, function(b)
+			b.Enabled = false
+		end)
+		follow(state, ring, state.torso, CFrame.new(0.4, 0.3, 1.1) * CFrame.Angles(math.pi / 2, 0, 0))
+		state.ring = ring
+	end
+	local rim = Kit.mesh("EyeRing", state.fx, back, V3(5.2, 5.2, 0.14), P.gold, 1)
+	if rim then
+		rim.Anchored = true
+		rim.CanCollide = false
+		rim.CanQuery = false
+		rim.Material = Enum.Material.Neon
+		Tw.play(rim, {Transparency = 0.5}, T.pop, Quad, Out)
+		follow(state, rim, state.torso, CFrame.new(0.4, 0.3, 1.1))
+		state.rim = rim
+	end
+	-- the clock hand is one beam from the centre to the rim on a carrier the follow loop turns
+	local hub = Emitters.carrier(state.fx, back, V3(0.2, 0.2, 0.2))
+	local a0 = Instance.new("Attachment")
+	a0.Parent = hub
+	local a1 = Instance.new("Attachment")
+	a1.Position = V3(0, 2.3, 0)
+	a1.Parent = hub
+	local hand = Instance.new("Beam")
+	hand.Attachment0 = a0
+	hand.Attachment1 = a1
+	hand.Texture = Emitters.TEX.lightray
+	hand.TextureMode = Enum.TextureMode.Stretch
+	hand.Width0 = 0.12
+	hand.Width1 = 0.5
+	hand.Color = ColorSequence.new(P.pale)
+	hand.Transparency = NumberSequence.new(0.1)
+	hand.LightEmission = 1
+	hand.FaceCamera = true
+	hand.Parent = hub
+	state.hand = hub
+	state.handAngle = 0
+	state.handSpeed = 3
+	state.follows[hub] = function()
+		if not state.handStopped then
+			state.handAngle += state.handSpeed * math.pi * 2 / 60
+			state.handSpeed = math.min(14, state.handSpeed + 0.35)
+		end
+		hub.CFrame = state.torso.CFrame * CFrame.new(0.4, 0.3, 1.15) * CFrame.Angles(0, 0, -state.handAngle)
+	end
+	state.backLight = light(state.torso, P.gold, 0, 9)
 	Tw.play(state.backLight, {Brightness = 1.2}, T.pop, Quad, In)
 	sfx("Ambience", state.hrp, 0.35, 0.9)
 end
 
--- the pop is one small flash a soft ring at the feet and a handful of stars while the ghost shows
+-- the pop is the tick: the hand stops dead on twelve, the clock flashes white, the glass of the moment cracks
+-- and the shards fly while the gold ghost shows; one ring at the feet so the ground knows
 local function phasePop(state)
 	local back = backOf(state)
-	if state.gather then
-		Kit.kill(state.gather, 0.6)
-		state.gather = nil
+	state.handStopped = true
+	state.handAngle = 0
+	if state.rim then
+		state.rim.Color = P.white
+		state.rim.Transparency = 0.1
+		Tw.play(state.rim, {Transparency = 0.5}, 0.12, Quad, Out)
+		task.delay(0.05 * Tw.S(), function()
+			if state.rim.Parent then
+				state.rim.Color = P.gold
+			end
+		end)
+	end
+	if state.ring then
+		Kit.tint(state.ring, P.white, P.gold)
+		Kit.set(state.ring, {RotSpeed = NumberRange.new(0, 0)}, {Floor1 = 1, Floor2 = 1, Floor3 = 1})
 	end
 	ghost(state, 0.35)
-	Kit.burst("Hit2", back * CFrame.new(0, 0.6, 0), state.fx, 1, {color = P.pale, scale = 1.1, glow = 1, life = 0.8})
-	Kit.burst("Shock", state.base * CFrame.new(0, 0.4, 0) * CFrame.Angles(math.pi / 2, 0, 0), state.fx, 1, {color = P.violet, scale = 1.2, glow = 1, life = 0.8})
-	Kit.burst("Lightning", back, state.fx, {Lighting1 = 1, Lighting2 = 1}, {color = P.lavender, scale = 1.4, life = 0.6})
-	Emitters.sparkleBurst(state.fx, back, V3(2, 2, 2), 7, {speed = NumberRange.new(3, 9), drag = 2.5, size = 0.55, life = NumberRange.new(0.5, 0.9)})
-	Tw.play(state.backLight, {Brightness = 3, Range = 11}, 0.04)
-	Tw.play(state.backLight, {Brightness = 0.6, Range = 8}, 0.5, Quad, Out, 0.06)
+	Kit.burst("Crack", back * CFrame.new(0, 0, 0.1) * CFrame.Angles(math.pi / 2, 0, 0), state.fx, {Floor1 = 1, Floor2 = 1}, {color = P.pale, scale = 1.3, glow = 1, life = 1.0})
+	Kit.burst("ShieldBreak", back, state.fx, {Specs = 14, Shockwave = 1}, {color = P.gold, color2 = P.pale, scale = 1.2, glow = 1, life = 1.0})
+	Emitters.burst(state.fx, back, V3(2, 2, 1), {
+		texture = "shards",
+		Speed = NumberRange.new(6, 14),
+		Drag = 3,
+		Acceleration = V3(0, -12, 0),
+		SpreadAngle = Vector2.new(180, 180),
+		Lifetime = NumberRange.new(0.5, 0.9),
+		Size = Tw.seq({{0, 0.5}, {1, 0.2}}),
+		Color = Tw.cseq({{0, P.white}, {0.4, P.gold}, {1, P.amber}}),
+		Transparency = Tw.seq({{0, 0.1}, {0.7, 0.2}, {1, 1}}),
+		Rotation = NumberRange.new(0, 360),
+		RotSpeed = NumberRange.new(-240, 240),
+	}, 12, 1.2)
+	Kit.burst("Shock", state.base * CFrame.new(0, 0.4, 0) * CFrame.Angles(math.pi / 2, 0, 0), state.fx, 1, {color = P.lavender, scale = 1.2, glow = 1, life = 0.8})
+	Tw.play(state.backLight, {Brightness = 3, Range = 12}, 0.04)
+	Tw.play(state.backLight, {Brightness = 0.6, Range = 9}, 0.5, Quad, Out, 0.06)
 	CameraRig.kick(0.22)
 	sfx("SummonSound", state.hrp, 1.2, 1)
 	sfx("StandSFX", state.hrp, 0.9, 1.05)
@@ -234,7 +332,7 @@ local function phasePop(state)
 	end
 end
 
--- the rise turns the ghost real and leaves a thin trail of stars behind the stand
+-- the rise turns the ghost real and leaves three gold echoes behind it while the clock fades out
 local function phaseRise(state)
 	state.rigStand:play(Clips.WorldAppear, {fadeIn = 0})
 	task.delay(0.12 * Tw.S(), function()
@@ -242,67 +340,76 @@ local function phaseRise(state)
 			materialize(state, 0.22)
 		end
 	end)
+	for i, at in ipairs({0.06, 0.13, 0.2}) do
+		task.delay(at * Tw.S(), function()
+			if state.alive then
+				SummonVfx.afterimage(state.stand, state.fx, 0.3 + i * 0.04, P.gold, 0.5)
+			end
+		end)
+	end
+	if state.ring then
+		Kit.kill(state.ring, 1.0)
+	end
+	if state.rim then
+		Tw.play(state.rim, {Transparency = 1, Size = V3(6.5, 6.5, 0.14)}, 0.3, Quad, In)
+	end
+	if state.hand then
+		for _, b in ipairs(state.hand:GetDescendants()) do
+			if b:IsA("Beam") then
+				Tw.play(b, {Width0 = 0, Width1 = 0}, 0.25, Quad, In)
+			end
+		end
+	end
 	local torso = state.stand["Stand Torso"]
-	local trail = Emitters.carrier(state.fx, torso.CFrame, V3(2, 3, 1.5))
-	follow(state, trail, torso, CFrame.new())
-	Emitters.make(trail, {
-		texture = "star4",
-		Speed = NumberRange.new(0.5, 1.5),
-		Acceleration = V3(0, 1, 0),
-		Lifetime = NumberRange.new(0.5, 0.9),
-		Size = Tw.seq({{0, 0}, {0.3, 0.45}, {1, 0}}),
-		Color = Tw.cseq({{0, P.white}, {0.5, P.gold}, {1, P.violet}}),
-		SpreadAngle = Vector2.new(180, 180),
-		Enabled = true,
-		Rate = 26,
-	})
-	state.trail = trail
 	state.standLight = light(torso, P.gold, 0, 10)
 	Tw.play(state.standLight, {Brightness = 1.6}, T.settle - T.rise, Quad, Out)
 end
 
--- the settle drops every summon piece and leaves the small idle aura on the stand
+-- the heart of the world beats green under the gold: one light pulse every 0.86 s
+local function heartbeat(state, torso)
+	local heart = torso:FindFirstChild("HeartLight") or light(torso, P.green, 0.25, 6)
+	heart.Name = "HeartLight"
+	state.heart = heart
+	state.heartRunning = true
+	task.spawn(function()
+		while state.heartRunning and heart.Parent do
+			Tw.play(heart, {Brightness = 1.0, Range = 7}, 0.09, Quad, Out)
+			Tw.play(heart, {Brightness = 0.25, Range = 6}, 0.5, Quad, Out, 0.1)
+			Tw.wait(0.86)
+		end
+	end)
+end
+
+-- the settle drops every summon piece and leaves a slow gold draw of energy into the torso and the heartbeat
 local function phaseSettle(state)
 	local torso = state.stand["Stand Torso"]
-	if state.trail then
-		Kit.kill(state.trail, 1.2)
-		state.trail = nil
-	end
 	Tw.play(state.backLight, {Brightness = 0}, 0.4)
 	Tw.play(state.standLight, {Brightness = 0.7, Range = 8}, 0.6)
 	local idle = state.stand:FindFirstChild("IdleAura")
 	if not idle then
-		idle = Emitters.carrier(state.stand, torso.CFrame, V3(2, 4, 2))
-		idle.Name = "IdleAura"
-		idle.Anchored = false
-		idle.Massless = true
-		local weld = Instance.new("Weld")
-		weld.Part0 = torso
-		weld.Part1 = idle
-		weld.Parent = idle
-		Emitters.make(idle, {
-			texture = "star4",
-			Speed = NumberRange.new(0.3, 1),
-			Acceleration = V3(0, 1, 0),
-			Lifetime = NumberRange.new(0.8, 1.3),
-			Size = Tw.seq({{0, 0}, {0.3, 0.4}, {1, 0}}),
-			Color = Tw.cseq({{0, P.white}, {0.4, P.gold}, {1, P.violet}}),
-			SpreadAngle = Vector2.new(180, 180),
-			Rate = 4,
-		})
-		Emitters.make(idle, {
-			texture = "circle",
-			Speed = NumberRange.new(0.3, 0.8),
-			Acceleration = V3(0, 0.8, 0),
-			Lifetime = NumberRange.new(0.9, 1.5),
-			Size = Tw.seq({{0, 0}, {0.3, 0.16}, {1, 0}}),
-			Color = ColorSequence.new(P.lavender),
-			SpreadAngle = Vector2.new(180, 180),
-			Rate = 6,
-		})
+		idle = Kit.spawn("Charge", torso.CFrame, state.stand)
+		if idle then
+			idle.Name = "IdleAura"
+			idle.Anchored = false
+			idle.Massless = true
+			idle.CanCollide = false
+			idle.CanQuery = false
+			local weld = Instance.new("Weld")
+			weld.Part0 = torso
+			weld.Part1 = idle
+			weld.Parent = idle
+			Kit.tint(idle, P.gold, P.amber)
+			Kit.glow(idle, 1)
+			Kit.scale(idle, 0.7)
+			Kit.set(idle, {Rate = 4}, {Energy1 = 1, Energy2 = 1})
+			Kit.set(idle, {Rate = 0}, "Core1")
+		end
 	end
-	Kit.enable(idle, true)
-	state.idleAura = idle
+	if idle then
+		Kit.enable(idle, true, {Energy1 = 1, Energy2 = 1})
+		state.idleAura = idle
+	end
+	heartbeat(state, torso)
 end
 
 local function setup(character, isLocal)
@@ -387,6 +494,7 @@ function SummonVfx.summon(character, isLocal)
 	local old = active[character]
 	if old then
 		old.alive = false
+		old.heartRunning = false
 	end
 	local state = setup(character, isLocal)
 	if not state then
@@ -403,7 +511,13 @@ function SummonVfx.summon(character, isLocal)
 	end
 end
 
--- the dismiss folds the stand back into the body and fades it out with a few stars
+-- the stand rig of a live summon so a move can drive the same joints
+function SummonVfx.rigOf(character)
+	local state = active[character]
+	return state and state.rigStand, state
+end
+
+-- the dismiss folds the stand back into the body and fades it out behind two echoes
 function SummonVfx.dismiss(character, isLocal)
 	local state = active[character]
 	active[character] = nil
@@ -429,9 +543,12 @@ function SummonVfx.dismiss(character, isLocal)
 		c:Play()
 		Debris:AddItem(c, 3)
 	end
-	local torso = stand:FindFirstChild("Stand Torso")
-	if torso then
-		Emitters.sparkleBurst(fx, torso.CFrame, V3(2, 3, 2), 6, {speed = NumberRange.new(2, 6), size = 0.5, life = NumberRange.new(0.4, 0.8)})
+	for i, at in ipairs({0.04, 0.12}) do
+		task.delay(at * Tw.S(), function()
+			if stand.Parent then
+				SummonVfx.afterimage(stand, fx, 0.28 + i * 0.04, P.gold, 0.55)
+			end
+		end)
 	end
 	for _, p in ipairs(standParts(stand)) do
 		Tw.play(p, {Transparency = 1}, 0.26, Quad, In, 0.08)
@@ -441,6 +558,7 @@ function SummonVfx.dismiss(character, isLocal)
 	end)
 	if state then
 		state.alive = false
+		state.heartRunning = false
 		if state.idleAura then
 			Kit.enable(state.idleAura, false)
 		end
@@ -450,10 +568,18 @@ function SummonVfx.dismiss(character, isLocal)
 		if state.backLight then
 			state.backLight:Destroy()
 		end
+		if state.heart then
+			state.heart:Destroy()
+		end
 	else
 		local idle = stand:FindFirstChild("IdleAura")
 		if idle then
 			Kit.enable(idle, false)
+		end
+		local torso = stand:FindFirstChild("Stand Torso")
+		local heart = torso and torso:FindFirstChild("HeartLight")
+		if heart then
+			heart:Destroy()
 		end
 	end
 end
@@ -472,7 +598,7 @@ function SummonVfx.warm(character)
 	local parts = standParts(stand)
 	local fx = newModel("StandWarm")
 	local at = hrp.CFrame
-	for _, name in ipairs({"Hit2", "Shock", "Lightning"}) do
+	for _, name in ipairs({"ChainRing", "Crack", "ShieldBreak", "Shock", "Charge", "Hit1", "Hit3", "Wind", "RingShock", "Slashes", "SlashImpact"}) do
 		local inst = Kit.spawn(name, at, fx)
 		if inst then
 			for _, d in ipairs(inst:GetDescendants()) do
@@ -491,10 +617,27 @@ function SummonVfx.warm(character)
 			end
 		end
 	end
+	for _, name in ipairs({"EyeRing", "FancySphere", "Ripple"}) do
+		local m = Kit.mesh(name, fx, at, V3(2, 2, 2), P.gold, 0.98)
+		if m then
+			m.Anchored = true
+			m.CanCollide = false
+			m.Material = Enum.Material.Neon
+		end
+	end
+	local ff = Instance.new("Part")
+	ff.Shape = Enum.PartType.Ball
+	ff.Material = Enum.Material.ForceField
+	ff.Transparency = 0.98
+	ff.Size = V3(2, 2, 2)
+	ff.Anchored = true
+	ff.CanCollide = false
+	ff.CFrame = at
+	ff.Parent = fx
 	local sp = Emitters.carrier(fx, at, V3(1, 1, 1))
-	for _, item in ipairs(Emitters.sparkles(sp, {size = 0.2, life = NumberRange.new(0.05, 0.1)})) do
-		item.e.Transparency = NumberSequence.new(1)
-		item.e:Emit(1)
+	for _, tex in ipairs({"shards", "lightray", "windA", "circle", "glow"}) do
+		local e = Emitters.make(sp, {texture = tex, Lifetime = NumberRange.new(0.05, 0.1), Transparency = NumberSequence.new(1)})
+		e:Emit(1)
 	end
 	for _, p in ipairs(parts) do
 		p.Transparency = 0.98

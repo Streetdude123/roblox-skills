@@ -5,6 +5,23 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-21 — The World stand set, raw sequence playback, barrage and time stop (user-authorized)
+
+- `roblox-r6-animation`: new reference `the-world-clips.md` decoding the eight Moon
+  Animator clips of a free-model The World (piston punches, a torso-engine barrage at six
+  hits a second, end-to-start combo chaining, a 2.5 s float idle, 1 to 2 stud limb
+  translations) with the raw decodes under `references/decodes/` and
+  `scripts/AnalyzeClips.js` to summarise them.
+- `Poser.fromSequence`, `Poser.wrapsOf` and `Poser.sample` play a KeyframeSequence
+  through the Poser with no upload; `Clips.lua` now carries the stand float, barrage,
+  heavy, combo, time stop and stopped clips plus DIO's bladed point and time stop poses.
+- SKILL.md: a stand rush rung in the decision framework, the stand numbers, piston punch
+  and combo chaining rules, the still bladed point the user holds, and three feedback entries.
+- `roblox-vfx-craft`: The World's time vocabulary (clock gather, tick pop, gold echoes,
+  charge and heartbeat idle), the barrage and time stop numbers, the voice-line beat table,
+  the dead-mesh diagnosis, and worked examples `Moves.lua`, `TimeStop.lua`,
+  `MovesServer.lua` with the reworked `SummonVfx.lua`.
+
 ## 2026-09-22 — Added the roblox-r6-animation skill (user-authorized)
 
 - New package `roblox-r6-animation`: SKILL.md, five references (idle-run-land,

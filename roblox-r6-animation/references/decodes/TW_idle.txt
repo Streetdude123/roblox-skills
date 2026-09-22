@@ -1,0 +1,907 @@
+#TW_idle len=2.500 loop=true frames=151 prio=Action
+TW_idle|Torso|0.000|-14.7|-8.1|-6.0|0.00|0.46|0.00|Linear|In
+TW_idle|Head|0.000|3.8|13.5|-3.5|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.000|-33.6|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.000|-5.6|-93.5|53.3|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.000|-42.3|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.000|26.3|-92.4|124.4|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.017|-14.7|-8.1|-6.0|0.00|0.46|0.00|Linear|In
+TW_idle|Head|0.017|3.8|13.5|-3.5|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.017|-33.6|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.017|-5.6|-93.5|53.3|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.017|-42.3|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.017|26.3|-92.4|124.4|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.033|-14.7|-8.1|-6.0|0.00|0.46|0.00|Linear|In
+TW_idle|Head|0.033|3.8|13.5|-3.5|0.00|0.00|0.00|Linear|In
+TW_idle|Left Leg|0.033|-33.6|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.033|-5.6|-93.5|53.4|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.033|-42.3|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.033|26.3|-92.4|124.4|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.050|-14.7|-8.1|-6.0|0.00|0.46|0.00|Linear|In
+TW_idle|Head|0.050|3.8|13.5|-3.5|0.00|0.00|0.00|Linear|In
+TW_idle|Left Leg|0.050|-33.6|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.050|-5.6|-93.5|53.4|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.050|-42.3|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.050|26.3|-92.4|124.4|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.067|-14.7|-8.1|-6.0|0.00|0.45|0.00|Linear|In
+TW_idle|Head|0.067|3.8|13.5|-3.5|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.067|-33.6|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.067|-5.6|-93.5|53.4|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.067|-42.3|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.067|26.3|-92.4|124.4|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.083|-14.7|-8.1|-6.0|0.00|0.45|0.00|Linear|In
+TW_idle|Head|0.083|3.7|13.5|-3.5|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.083|-33.7|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.083|-5.6|-93.5|53.4|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.083|-42.4|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.083|26.3|-92.4|124.4|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.100|-14.7|-8.1|-6.0|0.00|0.45|0.00|Linear|In
+TW_idle|Head|0.100|3.7|13.5|-3.4|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.100|-33.7|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.100|-5.7|-93.5|53.5|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.100|-42.4|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.100|26.2|-92.4|124.4|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.117|-14.7|-8.1|-6.0|0.00|0.45|0.00|Linear|In
+TW_idle|Head|0.117|3.7|13.5|-3.4|0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.117|-33.7|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.117|-5.7|-93.5|53.5|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.117|-42.4|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.117|26.2|-92.4|124.4|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.133|-14.8|-8.1|-6.1|0.00|0.45|0.00|Linear|In
+TW_idle|Head|0.133|3.7|13.5|-3.4|0.00|0.00|0.00|Linear|In
+TW_idle|Left Leg|0.133|-33.8|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.133|-5.7|-93.5|53.6|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.133|-42.5|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.133|26.1|-92.4|124.4|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.150|-14.8|-8.1|-6.1|0.00|0.45|0.00|Linear|In
+TW_idle|Head|0.150|3.6|13.5|-3.4|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.150|-33.8|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.150|-5.8|-93.5|53.6|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.150|-42.5|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.150|26.1|-92.4|124.4|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.167|-14.8|-8.1|-6.1|0.00|0.45|0.00|Linear|In
+TW_idle|Head|0.167|3.6|13.5|-3.4|0.00|0.00|0.00|Linear|In
+TW_idle|Left Leg|0.167|-33.9|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.167|-5.9|-93.5|53.7|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.167|-42.6|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.167|26.0|-92.4|124.4|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.183|-14.8|-8.1|-6.1|0.00|0.45|0.00|Linear|In
+TW_idle|Head|0.183|3.6|13.5|-3.4|0.00|0.00|0.00|Linear|In
+TW_idle|Left Leg|0.183|-33.9|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.183|-5.9|-93.5|53.8|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.183|-42.7|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.183|26.0|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.200|-14.9|-8.1|-6.1|0.00|0.45|0.00|Linear|In
+TW_idle|Head|0.200|3.5|13.5|-3.4|0.00|0.00|0.00|Linear|In
+TW_idle|Left Leg|0.200|-34.0|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.200|-6.0|-93.5|53.9|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.200|-42.8|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.200|25.9|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.217|-14.9|-8.2|-6.1|0.00|0.44|0.00|Linear|In
+TW_idle|Head|0.217|3.5|13.5|-3.4|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.217|-34.1|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.217|-6.1|-93.4|54.0|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.217|-42.9|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.217|25.8|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.233|-14.9|-8.2|-6.2|0.00|0.44|0.01|Linear|In
+TW_idle|Head|0.233|3.5|13.5|-3.4|0.00|0.00|0.00|Linear|In
+TW_idle|Left Leg|0.233|-34.2|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.233|-6.2|-93.4|54.1|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.233|-43.0|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.233|25.7|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.250|-15.0|-8.2|-6.2|0.00|0.44|0.01|Linear|In
+TW_idle|Head|0.250|3.4|13.5|-3.4|0.00|0.00|0.00|Linear|In
+TW_idle|Left Leg|0.250|-34.3|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.250|-6.2|-93.4|54.2|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.250|-43.1|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.250|25.7|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.267|-15.0|-8.2|-6.2|0.00|0.44|0.01|Linear|In
+TW_idle|Head|0.267|3.4|13.5|-3.4|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.267|-34.4|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.267|-6.3|-93.4|54.3|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.267|-43.2|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.267|25.6|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.283|-15.0|-8.2|-6.2|0.00|0.44|0.01|Linear|In
+TW_idle|Head|0.283|3.3|13.5|-3.4|0.00|0.00|0.00|Linear|In
+TW_idle|Left Leg|0.283|-34.5|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.283|-6.4|-93.4|54.4|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.283|-43.3|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.283|25.5|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.300|-15.1|-8.2|-6.3|0.01|0.43|0.01|Linear|In
+TW_idle|Head|0.300|3.3|13.5|-3.3|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.300|-34.6|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.300|-6.6|-93.4|54.6|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.300|-43.4|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.300|25.4|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.317|-15.1|-8.2|-6.3|0.01|0.43|0.01|Linear|In
+TW_idle|Head|0.317|3.2|13.5|-3.3|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.317|-34.7|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.317|-6.7|-93.4|54.7|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.317|-43.5|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.317|25.3|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.333|-15.2|-8.2|-6.3|0.01|0.43|0.01|Linear|In
+TW_idle|Head|0.333|3.1|13.5|-3.3|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.333|-34.8|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.333|-6.8|-93.4|54.9|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.333|-43.7|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.333|25.1|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.350|-15.2|-8.2|-6.4|0.01|0.42|0.01|Linear|In
+TW_idle|Head|0.350|3.1|13.5|-3.3|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.350|-34.9|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.350|-6.9|-93.4|55.0|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.350|-43.8|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.350|25.0|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.367|-15.3|-8.2|-6.4|0.01|0.42|0.01|Linear|In
+TW_idle|Head|0.367|3.0|13.5|-3.3|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.367|-35.0|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.367|-7.0|-93.4|55.2|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.367|-44.0|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.367|24.9|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.383|-15.3|-8.2|-6.4|0.01|0.42|0.02|Linear|In
+TW_idle|Head|0.383|2.9|13.5|-3.3|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.383|-35.2|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.383|-7.2|-93.4|55.4|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.383|-44.1|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.383|24.8|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.400|-15.4|-8.3|-6.5|0.01|0.41|0.02|Linear|In
+TW_idle|Head|0.400|2.9|13.5|-3.2|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.400|-35.3|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.400|-7.3|-93.4|55.5|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.400|-44.3|-1.8|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.400|24.6|-92.3|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.417|-15.4|-8.3|-6.5|0.01|0.41|0.02|Linear|In
+TW_idle|Head|0.417|2.8|13.5|-3.2|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.417|-35.5|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.417|-7.5|-93.4|55.7|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.417|-44.5|-1.8|27.5|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.417|24.5|-92.3|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.433|-15.5|-8.3|-6.5|0.01|0.41|0.02|Linear|In
+TW_idle|Head|0.433|2.7|13.5|-3.2|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.433|-35.6|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.433|-7.6|-93.4|55.9|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.433|-44.7|-1.8|27.5|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.433|24.3|-92.3|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.450|-15.6|-8.3|-6.6|0.01|0.40|0.02|Linear|In
+TW_idle|Head|0.450|2.6|13.5|-3.2|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.450|-35.8|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.450|-7.8|-93.3|56.1|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.450|-44.8|-1.8|27.5|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.450|24.2|-92.3|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.467|-15.6|-8.3|-6.6|0.01|0.40|0.02|Linear|In
+TW_idle|Head|0.467|2.5|13.4|-3.2|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.467|-36.0|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.467|-8.0|-93.3|56.3|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.467|-45.0|-1.8|27.5|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.467|24.0|-92.3|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.483|-15.7|-8.3|-6.7|0.01|0.40|0.02|Linear|In
+TW_idle|Head|0.483|2.4|13.4|-3.1|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.483|-36.1|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.483|-8.1|-93.3|56.6|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.483|-45.2|-1.8|27.5|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.483|23.8|-92.3|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.500|-15.8|-8.3|-6.7|0.02|0.39|0.03|Linear|In
+TW_idle|Head|0.500|2.3|13.4|-3.1|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.500|-36.3|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.500|-8.3|-93.3|56.8|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.500|-45.4|-1.8|27.5|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.500|23.6|-92.3|124.2|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.517|-15.9|-8.3|-6.8|0.02|0.39|0.03|Linear|In
+TW_idle|Head|0.517|2.2|13.4|-3.1|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.517|-36.5|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.517|-8.5|-93.3|57.0|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.517|-45.7|-1.8|27.5|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.517|23.5|-92.3|124.2|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.533|-15.9|-8.4|-6.8|0.02|0.38|0.03|Linear|In
+TW_idle|Head|0.533|2.1|13.4|-3.1|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.533|-36.7|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.533|-8.7|-93.3|57.3|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.533|-45.9|-1.8|27.5|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.533|23.3|-92.3|124.2|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.550|-16.0|-8.4|-6.9|0.02|0.38|0.03|Linear|In
+TW_idle|Head|0.550|2.0|13.4|-3.0|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.550|-36.9|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.550|-8.9|-93.2|57.5|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.550|-46.1|-1.8|27.5|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.550|23.1|-92.3|124.2|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.567|-16.1|-8.4|-6.9|0.02|0.37|0.03|Linear|In
+TW_idle|Head|0.567|1.9|13.4|-3.0|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.567|-37.1|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.567|-9.1|-93.2|57.8|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.567|-46.4|-1.8|27.5|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.567|22.9|-92.3|124.2|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.583|-16.2|-8.4|-7.0|0.02|0.37|0.04|Linear|In
+TW_idle|Head|0.583|1.8|13.4|-3.0|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.583|-37.3|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.583|-9.3|-93.2|58.0|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.583|-46.6|-1.8|27.5|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.583|22.7|-92.3|124.2|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.600|-16.3|-8.4|-7.1|0.02|0.36|0.04|Linear|In
+TW_idle|Head|0.600|1.7|13.4|-3.0|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.600|-37.5|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.600|-9.5|-93.2|58.3|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.600|-46.8|-1.8|27.4|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.600|22.5|-92.3|124.2|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.617|-16.4|-8.4|-7.1|0.02|0.36|0.04|Linear|In
+TW_idle|Head|0.617|1.6|13.4|-2.9|0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.617|-37.7|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.617|-9.8|-93.1|58.6|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.617|-47.1|-1.8|27.4|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.617|22.2|-92.3|124.2|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.633|-16.5|-8.5|-7.2|0.02|0.35|0.04|Linear|In
+TW_idle|Head|0.633|1.5|13.4|-2.9|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.633|-38.0|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.633|-10.0|-93.1|58.9|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.633|-47.4|-1.9|27.4|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.633|22.0|-92.3|124.2|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.650|-16.5|-8.5|-7.2|0.03|0.35|0.04|Linear|In
+TW_idle|Head|0.650|1.3|13.4|-2.9|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.650|-38.2|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.650|-10.2|-93.1|59.1|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.650|-47.6|-1.9|27.4|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.650|21.8|-92.3|124.2|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.667|-16.6|-8.5|-7.3|0.03|0.34|0.05|Linear|In
+TW_idle|Head|0.667|1.2|13.4|-2.8|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.667|-38.4|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.667|-10.4|-93.1|59.4|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.667|-47.9|-1.9|27.4|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.667|21.6|-92.3|124.2|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.683|-16.7|-8.5|-7.4|0.03|0.33|0.05|Linear|In
+TW_idle|Head|0.683|1.1|13.4|-2.8|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.683|-38.7|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.683|-10.6|-93.0|59.7|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.683|-48.2|-1.9|27.4|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.683|21.4|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.700|-16.8|-8.6|-7.4|0.03|0.33|0.05|Linear|In
+TW_idle|Head|0.700|0.9|13.4|-2.8|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.700|-38.9|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.700|-10.8|-93.0|59.9|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.700|-48.5|-1.9|27.4|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.700|21.2|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.717|-17.0|-8.6|-7.5|0.03|0.32|0.05|Linear|In
+TW_idle|Head|0.717|0.8|13.4|-2.8|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.717|-39.2|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.717|-11.0|-93.0|60.2|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.717|-48.8|-1.9|27.3|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.717|21.0|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.733|-17.1|-8.6|-7.6|0.03|0.32|0.06|Linear|In
+TW_idle|Head|0.733|0.7|13.4|-2.7|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.733|-39.4|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.733|-11.2|-92.9|60.4|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.733|-49.1|-1.9|27.3|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.733|20.8|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.750|-17.2|-8.6|-7.7|0.03|0.31|0.06|Linear|In
+TW_idle|Head|0.750|0.5|13.4|-2.7|0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.750|-39.7|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.750|-11.4|-92.9|60.6|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.750|-49.3|-1.9|27.3|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.750|20.7|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.767|-17.3|-8.6|-7.7|0.04|0.30|0.06|Linear|In
+TW_idle|Head|0.767|0.4|13.4|-2.7|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.767|-40.0|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.767|-11.6|-92.9|60.9|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.767|-49.6|-1.9|27.3|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.767|20.5|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.783|-17.4|-8.7|-7.8|0.04|0.30|0.06|Linear|In
+TW_idle|Head|0.783|0.2|13.4|-2.6|0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.783|-40.3|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.783|-11.7|-92.9|61.1|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.783|-49.9|-1.9|27.3|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.783|20.3|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.800|-17.5|-8.7|-7.9|0.04|0.29|0.07|Linear|In
+TW_idle|Head|0.800|0.1|13.4|-2.6|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.800|-40.5|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.800|-11.9|-92.8|61.3|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.800|-50.1|-2.0|27.3|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.800|20.2|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.817|-17.6|-8.7|-7.9|0.04|0.29|0.07|Linear|In
+TW_idle|Head|0.817|-0.1|13.4|-2.5|0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.817|-40.8|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.817|-12.0|-92.8|61.5|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.817|-50.4|-2.0|27.3|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.817|20.0|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.833|-17.7|-8.7|-8.0|0.04|0.28|0.07|Linear|In
+TW_idle|Head|0.833|-0.2|13.4|-2.5|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.833|-41.0|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.833|-12.2|-92.8|61.7|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.833|-50.6|-2.0|27.3|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.833|19.9|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.850|-17.8|-8.8|-8.1|0.04|0.27|0.07|Linear|In
+TW_idle|Head|0.850|-0.3|13.4|-2.5|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.850|-41.2|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.850|-12.3|-92.8|61.8|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.850|-50.8|-2.0|27.2|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.850|19.7|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.867|-17.9|-8.8|-8.1|0.04|0.27|0.08|Linear|In
+TW_idle|Head|0.867|-0.5|13.4|-2.4|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.867|-41.5|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.867|-12.5|-92.7|62.0|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.867|-51.1|-2.0|27.2|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.867|19.6|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.883|-18.0|-8.8|-8.2|0.04|0.26|0.08|Linear|In
+TW_idle|Head|0.883|-0.6|13.4|-2.4|0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.883|-41.7|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.883|-12.6|-92.7|62.2|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.883|-51.3|-2.0|27.2|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.883|19.5|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.900|-18.0|-8.8|-8.2|0.05|0.26|0.08|Linear|In
+TW_idle|Head|0.900|-0.7|13.4|-2.4|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.900|-41.9|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.900|-12.7|-92.7|62.4|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.900|-51.5|-2.0|27.2|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.900|19.4|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.917|-18.1|-8.8|-8.3|0.05|0.25|0.08|Linear|In
+TW_idle|Head|0.917|-0.9|13.4|-2.4|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.917|-42.1|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.917|-12.8|-92.7|62.5|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.917|-51.7|-2.0|27.2|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.917|19.2|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.933|-18.2|-8.9|-8.4|0.05|0.25|0.08|Linear|In
+TW_idle|Head|0.933|-1.0|13.4|-2.3|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.933|-42.4|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.933|-13.0|-92.6|62.7|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.933|-51.9|-2.0|27.2|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.933|19.1|-92.3|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.950|-18.3|-8.9|-8.4|0.05|0.24|0.09|Linear|In
+TW_idle|Head|0.950|-1.1|13.4|-2.3|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.950|-42.6|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.950|-13.1|-92.6|62.8|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.950|-52.1|-2.0|27.2|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.950|19.0|-92.3|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.967|-18.4|-8.9|-8.5|0.05|0.24|0.09|Linear|In
+TW_idle|Head|0.967|-1.2|13.4|-2.3|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.967|-42.8|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.967|-13.2|-92.6|62.9|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.967|-52.2|-2.1|27.2|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.967|18.9|-92.3|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|0.983|-18.4|-8.9|-8.5|0.05|0.24|0.09|Linear|In
+TW_idle|Head|0.983|-1.3|13.4|-2.2|0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|0.983|-42.9|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|0.983|-13.3|-92.6|63.0|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|0.983|-52.4|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|0.983|18.8|-92.3|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.000|-18.5|-8.9|-8.6|0.05|0.23|0.09|Linear|In
+TW_idle|Head|1.000|-1.5|13.4|-2.2|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.000|-43.1|-0.2|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.000|-13.4|-92.6|63.2|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.000|-52.6|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.000|18.7|-92.3|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.017|-18.6|-8.9|-8.6|0.05|0.23|0.09|Linear|In
+TW_idle|Head|1.017|-1.6|13.4|-2.2|0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.017|-43.3|-0.2|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.017|-13.4|-92.5|63.3|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.017|-52.7|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.017|18.7|-92.3|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.033|-18.6|-9.0|-8.7|0.05|0.22|0.09|Linear|In
+TW_idle|Head|1.033|-1.7|13.4|-2.2|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.033|-43.5|-0.2|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.033|-13.5|-92.5|63.4|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.033|-52.9|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.033|18.6|-92.3|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.050|-18.7|-9.0|-8.7|0.06|0.22|0.10|Linear|In
+TW_idle|Head|1.050|-1.8|13.4|-2.1|0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.050|-43.6|-0.2|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.050|-13.6|-92.5|63.5|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.050|-53.0|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.050|18.5|-92.3|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.067|-18.8|-9.0|-8.7|0.06|0.22|0.10|Linear|In
+TW_idle|Head|1.067|-1.9|13.4|-2.1|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.067|-43.8|-0.2|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.067|-13.6|-92.5|63.5|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.067|-53.2|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.067|18.5|-92.3|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.083|-18.8|-9.0|-8.8|0.06|0.21|0.10|Linear|In
+TW_idle|Head|1.083|-2.0|13.4|-2.1|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.083|-44.0|-0.2|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.083|-13.7|-92.5|63.6|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.083|-53.3|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.083|18.4|-92.3|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.100|-18.9|-9.0|-8.8|0.06|0.21|0.10|Linear|In
+TW_idle|Head|1.100|-2.1|13.4|-2.1|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.100|-44.1|-0.2|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.100|-13.7|-92.5|63.7|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.100|-53.4|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.100|18.4|-92.3|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.117|-18.9|-9.0|-8.9|0.06|0.21|0.10|Linear|In
+TW_idle|Head|1.117|-2.1|13.4|-2.0|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.117|-44.3|-0.2|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.117|-13.8|-92.5|63.7|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.117|-53.5|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.117|18.3|-92.3|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.133|-19.0|-9.1|-8.9|0.06|0.20|0.10|Linear|In
+TW_idle|Head|1.133|-2.2|13.4|-2.0|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.133|-44.4|-0.2|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.133|-13.8|-92.5|63.8|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.133|-53.7|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.133|18.3|-92.2|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.150|-19.1|-9.1|-8.9|0.06|0.20|0.10|Linear|In
+TW_idle|Head|1.150|-2.3|13.4|-2.0|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.150|-44.5|-0.2|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.150|-13.9|-92.4|63.8|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.150|-53.8|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.150|18.2|-92.2|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.167|-19.1|-9.1|-9.0|0.06|0.20|0.10|Linear|In
+TW_idle|Head|1.167|-2.4|13.4|-2.0|0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.167|-44.6|-0.2|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.167|-13.9|-92.4|63.9|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.167|-53.9|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.167|18.2|-92.2|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.183|-19.1|-9.1|-9.0|0.06|0.19|0.11|Linear|In
+TW_idle|Head|1.183|-2.5|13.4|-2.0|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.183|-44.8|-0.2|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.183|-13.9|-92.4|63.9|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.183|-53.9|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.183|18.2|-92.2|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.200|-19.2|-9.1|-9.0|0.06|0.19|0.11|Linear|In
+TW_idle|Head|1.200|-2.5|13.5|-2.0|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.200|-44.9|-0.2|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.200|-13.9|-92.4|63.9|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.200|-54.0|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.200|18.2|-92.2|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.217|-19.2|-9.1|-9.1|0.06|0.19|0.11|Linear|In
+TW_idle|Head|1.217|-2.6|13.5|-1.9|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.217|-45.0|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.217|-13.9|-92.4|63.9|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.217|-54.1|-2.1|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.217|18.2|-92.2|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.233|-19.3|-9.1|-9.1|0.06|0.19|0.11|Linear|In
+TW_idle|Head|1.233|-2.7|13.5|-1.9|0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.233|-45.1|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.233|-13.9|-92.4|63.9|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.233|-54.2|-2.1|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.233|18.2|-92.2|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.250|-19.3|-9.1|-9.1|0.06|0.18|0.11|Linear|In
+TW_idle|Head|1.250|-2.7|13.5|-1.9|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.250|-45.2|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.250|-14.0|-92.4|63.9|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.250|-54.2|-2.1|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.250|18.2|-92.2|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.267|-19.3|-9.1|-9.1|0.06|0.18|0.11|Linear|In
+TW_idle|Head|1.267|-2.8|13.5|-1.9|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.267|-45.3|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.267|-14.0|-92.4|64.0|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.267|-54.3|-2.2|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.267|18.1|-92.2|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.283|-19.4|-9.1|-9.2|0.06|0.18|0.11|Linear|In
+TW_idle|Head|1.283|-2.8|13.5|-1.9|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.283|-45.3|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.283|-14.0|-92.4|64.0|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.283|-54.3|-2.2|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.283|18.1|-92.2|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.300|-19.4|-9.1|-9.2|0.06|0.18|0.11|Linear|In
+TW_idle|Head|1.300|-2.9|13.5|-1.9|0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.300|-45.4|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.300|-14.1|-92.4|64.1|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.300|-54.4|-2.2|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.300|18.1|-92.2|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.317|-19.4|-9.2|-9.2|0.06|0.18|0.11|Linear|In
+TW_idle|Head|1.317|-3.0|13.5|-1.9|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.317|-45.5|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.317|-14.1|-92.4|64.1|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.317|-54.4|-2.2|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.317|18.0|-92.2|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.333|-19.4|-9.2|-9.2|0.07|0.18|0.11|Linear|In
+TW_idle|Head|1.333|-3.0|13.5|-1.8|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.333|-45.6|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.333|-14.1|-92.4|64.1|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.333|-54.4|-2.2|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.333|18.0|-92.2|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.350|-19.5|-9.2|-9.2|0.07|0.18|0.11|Linear|In
+TW_idle|Head|1.350|-3.0|13.5|-1.8|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.350|-45.6|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.350|-14.1|-92.4|64.1|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.350|-54.4|-2.2|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.350|18.0|-92.2|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.367|-19.5|-9.2|-9.2|0.07|0.17|0.11|Linear|In
+TW_idle|Head|1.367|-3.1|13.5|-1.8|0.00|-0.00|0.00|Linear|In
+TW_idle|Left Leg|1.367|-45.7|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.367|-14.1|-92.4|64.1|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.367|-54.5|-2.2|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.367|18.0|-92.2|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.383|-19.5|-9.2|-9.2|0.07|0.17|0.11|Linear|In
+TW_idle|Head|1.383|-3.1|13.5|-1.8|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.383|-45.7|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.383|-14.1|-92.4|64.1|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.383|-54.5|-2.2|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.383|18.1|-92.2|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.400|-19.5|-9.2|-9.3|0.07|0.17|0.11|Linear|In
+TW_idle|Head|1.400|-3.2|13.5|-1.8|0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.400|-45.7|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.400|-14.0|-92.4|64.0|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.400|-54.5|-2.2|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.400|18.1|-92.2|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.417|-19.5|-9.2|-9.3|0.07|0.17|0.12|Linear|In
+TW_idle|Head|1.417|-3.2|13.5|-1.8|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.417|-45.8|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.417|-14.0|-92.4|64.0|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.417|-54.5|-2.2|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.417|18.1|-92.2|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.433|-19.5|-9.2|-9.3|0.07|0.17|0.12|Linear|In
+TW_idle|Head|1.433|-3.2|13.5|-1.8|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.433|-45.8|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.433|-14.0|-92.4|64.0|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.433|-54.5|-2.2|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.433|18.1|-92.2|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.450|-19.5|-9.2|-9.3|0.07|0.17|0.12|Linear|In
+TW_idle|Head|1.450|-3.2|13.5|-1.8|-0.00|-0.00|0.00|Linear|In
+TW_idle|Left Leg|1.450|-45.8|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.450|-13.9|-92.4|63.9|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.450|-54.5|-2.2|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.450|18.2|-92.2|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.467|-19.5|-9.2|-9.3|0.07|0.17|0.12|Linear|In
+TW_idle|Head|1.467|-3.3|13.5|-1.8|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.467|-45.8|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.467|-13.9|-92.4|63.8|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.467|-54.5|-2.2|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.467|18.2|-92.2|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.483|-19.5|-9.2|-9.3|0.07|0.17|0.12|Linear|In
+TW_idle|Head|1.483|-3.3|13.5|-1.8|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.483|-45.9|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.483|-13.8|-92.5|63.7|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.483|-54.5|-2.2|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.483|18.3|-92.2|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.500|-19.5|-9.2|-9.3|0.07|0.17|0.12|Linear|In
+TW_idle|Head|1.500|-3.3|13.5|-1.8|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.500|-45.9|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.500|-13.7|-92.5|63.7|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.500|-54.5|-2.2|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.500|18.4|-92.3|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.517|-19.5|-9.2|-9.3|0.07|0.17|0.12|Linear|In
+TW_idle|Head|1.517|-3.3|13.5|-1.8|0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.517|-45.9|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.517|-13.7|-92.5|63.6|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.517|-54.5|-2.2|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.517|18.4|-92.3|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.533|-19.5|-9.2|-9.3|0.07|0.17|0.12|Linear|In
+TW_idle|Head|1.533|-3.3|13.5|-1.8|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.533|-45.9|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.533|-13.6|-92.5|63.5|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.533|-54.5|-2.2|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.533|18.5|-92.3|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.550|-19.6|-9.2|-9.3|0.07|0.17|0.12|Linear|In
+TW_idle|Head|1.550|-3.3|13.5|-1.8|0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.550|-45.9|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.550|-13.5|-92.5|63.4|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.550|-54.4|-2.2|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.550|18.6|-92.3|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.567|-19.6|-9.2|-9.3|0.07|0.17|0.12|Linear|In
+TW_idle|Head|1.567|-3.3|13.5|-1.8|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.567|-45.9|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.567|-13.4|-92.5|63.2|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.567|-54.4|-2.2|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.567|18.7|-92.3|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.583|-19.6|-9.2|-9.3|0.07|0.17|0.12|Linear|In
+TW_idle|Head|1.583|-3.3|13.5|-1.8|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.583|-45.9|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.583|-13.3|-92.6|63.1|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.583|-54.3|-2.2|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.583|18.8|-92.3|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.600|-19.6|-9.2|-9.3|0.07|0.17|0.12|Linear|In
+TW_idle|Head|1.600|-3.3|13.5|-1.8|-0.00|-0.00|0.00|Linear|In
+TW_idle|Left Leg|1.600|-45.9|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.600|-13.2|-92.6|63.0|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.600|-54.2|-2.1|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.600|18.9|-92.3|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.617|-19.5|-9.2|-9.3|0.07|0.17|0.12|Linear|In
+TW_idle|Head|1.617|-3.3|13.5|-1.8|-0.00|-0.00|0.00|Linear|In
+TW_idle|Left Leg|1.617|-45.9|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.617|-13.1|-92.6|62.8|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.617|-54.1|-2.1|27.0|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.617|19.0|-92.3|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.633|-19.5|-9.2|-9.3|0.07|0.17|0.12|Linear|In
+TW_idle|Head|1.633|-3.3|13.5|-1.8|-0.00|-0.00|0.00|Linear|In
+TW_idle|Left Leg|1.633|-45.8|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.633|-13.0|-92.6|62.7|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.633|-54.0|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.633|19.1|-92.3|124.0|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.650|-19.5|-9.2|-9.2|0.07|0.17|0.11|Linear|In
+TW_idle|Head|1.650|-3.3|13.5|-1.8|-0.00|-0.00|0.00|Linear|In
+TW_idle|Left Leg|1.650|-45.8|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.650|-12.8|-92.7|62.5|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.650|-53.9|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.650|19.2|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.667|-19.5|-9.2|-9.2|0.07|0.17|0.11|Linear|In
+TW_idle|Head|1.667|-3.3|13.5|-1.8|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.667|-45.7|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.667|-12.7|-92.7|62.3|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.667|-53.7|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.667|19.4|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.683|-19.4|-9.2|-9.2|0.07|0.18|0.11|Linear|In
+TW_idle|Head|1.683|-3.3|13.5|-1.8|0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.683|-45.7|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.683|-12.6|-92.7|62.1|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.683|-53.6|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.683|19.5|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.700|-19.4|-9.2|-9.2|0.06|0.18|0.11|Linear|In
+TW_idle|Head|1.700|-3.3|13.5|-1.8|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.700|-45.6|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.700|-12.4|-92.7|61.9|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.700|-53.4|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.700|19.7|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.717|-19.3|-9.1|-9.1|0.06|0.18|0.11|Linear|In
+TW_idle|Head|1.717|-3.3|13.5|-1.8|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.717|-45.5|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.717|-12.3|-92.8|61.7|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.717|-53.2|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.717|19.8|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.733|-19.3|-9.1|-9.1|0.06|0.19|0.11|Linear|In
+TW_idle|Head|1.733|-3.2|13.5|-1.8|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.733|-45.3|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.733|-12.1|-92.8|61.5|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.733|-53.1|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.733|20.0|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.750|-19.2|-9.1|-9.1|0.06|0.19|0.11|Linear|In
+TW_idle|Head|1.750|-3.2|13.5|-1.8|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.750|-45.2|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.750|-11.9|-92.8|61.3|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.750|-52.9|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.750|20.1|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.767|-19.2|-9.1|-9.0|0.06|0.19|0.11|Linear|In
+TW_idle|Head|1.767|-3.1|13.5|-1.8|0.00|-0.00|0.00|Linear|In
+TW_idle|Left Leg|1.767|-45.0|-0.3|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.767|-11.7|-92.9|61.1|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.767|-52.6|-2.1|27.1|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.767|20.3|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.783|-19.1|-9.1|-9.0|0.06|0.20|0.10|Linear|In
+TW_idle|Head|1.783|-3.0|13.5|-1.8|0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.783|-44.9|-0.2|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.783|-11.6|-92.9|60.9|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.783|-52.4|-2.1|27.2|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.783|20.5|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.800|-19.0|-9.1|-8.9|0.06|0.20|0.10|Linear|In
+TW_idle|Head|1.800|-2.9|13.5|-1.9|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.800|-44.7|-0.2|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.800|-11.4|-92.9|60.6|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.800|-52.2|-2.0|27.2|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.800|20.7|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.817|-18.9|-9.0|-8.8|0.06|0.21|0.10|Linear|In
+TW_idle|Head|1.817|-2.9|13.5|-1.9|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.817|-44.5|-0.2|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.817|-11.2|-93.0|60.4|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.817|-51.9|-2.0|27.2|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.817|20.9|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.833|-18.8|-9.0|-8.8|0.06|0.21|0.10|Linear|In
+TW_idle|Head|1.833|-2.7|13.5|-1.9|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.833|-44.2|-0.2|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.833|-11.0|-93.0|60.1|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.833|-51.6|-2.0|27.2|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.833|21.1|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.850|-18.7|-9.0|-8.7|0.06|0.22|0.10|Linear|In
+TW_idle|Head|1.850|-2.6|13.5|-1.9|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.850|-44.0|-0.2|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.850|-10.8|-93.0|59.8|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.850|-51.3|-2.0|27.2|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.850|21.3|-92.3|124.1|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.867|-18.6|-9.0|-8.6|0.05|0.22|0.09|Linear|In
+TW_idle|Head|1.867|-2.5|13.4|-2.0|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.867|-43.7|-0.2|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.867|-10.5|-93.0|59.6|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.867|-51.0|-2.0|27.2|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.867|21.5|-92.3|124.2|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.883|-18.5|-8.9|-8.6|0.05|0.23|0.09|Linear|In
+TW_idle|Head|1.883|-2.4|13.4|-2.0|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.883|-43.4|-0.2|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.883|-10.3|-93.1|59.3|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.883|-50.7|-2.0|27.2|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.883|21.7|-92.3|124.2|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.900|-18.4|-8.9|-8.5|0.05|0.24|0.09|Linear|In
+TW_idle|Head|1.900|-2.2|13.4|-2.0|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.900|-43.1|-0.2|-8.1|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.900|-10.1|-93.1|59.0|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.900|-50.4|-2.0|27.3|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.900|21.9|-92.3|124.2|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.917|-18.3|-8.9|-8.4|0.05|0.25|0.09|Linear|In
+TW_idle|Head|1.917|-2.0|13.4|-2.1|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.917|-42.8|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.917|-9.8|-93.1|58.7|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.917|-50.1|-2.0|27.3|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.917|22.2|-92.3|124.2|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.933|-18.1|-8.8|-8.3|0.05|0.25|0.08|Linear|In
+TW_idle|Head|1.933|-1.9|13.4|-2.1|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.933|-42.5|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.933|-9.6|-93.2|58.4|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.933|-49.7|-1.9|27.3|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.933|22.4|-92.3|124.2|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.950|-18.0|-8.8|-8.2|0.05|0.26|0.08|Linear|In
+TW_idle|Head|1.950|-1.7|13.4|-2.2|0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.950|-42.2|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.950|-9.4|-93.2|58.1|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.950|-49.4|-1.9|27.3|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.950|22.6|-92.3|124.2|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.967|-17.9|-8.8|-8.1|0.04|0.27|0.08|Linear|In
+TW_idle|Head|1.967|-1.5|13.4|-2.2|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.967|-41.8|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.967|-9.1|-93.2|57.8|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.967|-49.0|-1.9|27.3|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.967|22.9|-92.3|124.2|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|1.983|-17.7|-8.7|-8.0|0.04|0.28|0.07|Linear|In
+TW_idle|Head|1.983|-1.3|13.4|-2.3|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|1.983|-41.4|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|1.983|-8.9|-93.2|57.5|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|1.983|-48.6|-1.9|27.4|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|1.983|23.1|-92.3|124.2|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.000|-17.5|-8.7|-7.9|0.04|0.29|0.07|Linear|In
+TW_idle|Head|2.000|-1.0|13.4|-2.3|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.000|-41.0|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.000|-8.7|-93.3|57.2|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.000|-48.2|-1.9|27.4|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.000|23.3|-92.3|124.2|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.017|-17.4|-8.7|-7.8|0.04|0.30|0.06|Linear|In
+TW_idle|Head|2.017|-0.8|13.4|-2.4|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.017|-40.6|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.017|-8.5|-93.3|57.0|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.017|-47.8|-1.9|27.4|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.017|23.5|-92.3|124.2|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.033|-17.2|-8.6|-7.7|0.03|0.31|0.06|Linear|In
+TW_idle|Head|2.033|-0.6|13.4|-2.4|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.033|-40.2|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.033|-8.3|-93.3|56.7|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.033|-47.4|-1.9|27.4|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.033|23.7|-92.3|124.2|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.050|-17.0|-8.6|-7.6|0.03|0.32|0.06|Linear|In
+TW_idle|Head|2.050|-0.3|13.4|-2.5|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.050|-39.7|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.050|-8.1|-93.3|56.5|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.050|-47.1|-1.8|27.4|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.050|23.9|-92.3|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.067|-16.9|-8.6|-7.4|0.03|0.33|0.05|Linear|In
+TW_idle|Head|2.067|-0.0|13.4|-2.5|0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.067|-39.3|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.067|-7.9|-93.3|56.3|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.067|-46.7|-1.8|27.4|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.067|24.0|-92.3|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.083|-16.7|-8.5|-7.3|0.03|0.34|0.05|Linear|In
+TW_idle|Head|2.083|0.2|13.4|-2.6|0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.083|-38.9|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.083|-7.7|-93.4|56.0|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.083|-46.4|-1.8|27.5|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.083|24.2|-92.3|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.100|-16.5|-8.5|-7.2|0.03|0.35|0.04|Linear|In
+TW_idle|Head|2.100|0.5|13.4|-2.7|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.100|-38.4|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.100|-7.6|-93.4|55.8|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.100|-46.1|-1.8|27.5|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.100|24.4|-92.3|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.117|-16.4|-8.5|-7.1|0.02|0.36|0.04|Linear|In
+TW_idle|Head|2.117|0.8|13.4|-2.7|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.117|-38.0|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.117|-7.4|-93.4|55.6|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.117|-45.8|-1.8|27.5|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.117|24.5|-92.3|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.133|-16.2|-8.4|-7.0|0.02|0.36|0.04|Linear|In
+TW_idle|Head|2.133|1.0|13.4|-2.8|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.133|-37.7|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.133|-7.2|-93.4|55.4|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.133|-45.5|-1.8|27.5|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.133|24.7|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.150|-16.1|-8.4|-6.9|0.02|0.37|0.03|Linear|In
+TW_idle|Head|2.150|1.3|13.4|-2.9|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.150|-37.3|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.150|-7.1|-93.4|55.2|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.150|-45.2|-1.8|27.5|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.150|24.8|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.167|-16.0|-8.4|-6.9|0.02|0.38|0.03|Linear|In
+TW_idle|Head|2.167|1.5|13.4|-2.9|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.167|-37.0|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.167|-7.0|-93.4|55.1|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.167|-44.9|-1.8|27.5|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.167|25.0|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.183|-15.8|-8.3|-6.8|0.02|0.39|0.03|Linear|In
+TW_idle|Head|2.183|1.7|13.4|-3.0|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.183|-36.6|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.183|-6.8|-93.4|54.9|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.183|-44.6|-1.8|27.5|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.183|25.1|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.200|-15.7|-8.3|-6.7|0.01|0.39|0.02|Linear|In
+TW_idle|Head|2.200|1.9|13.4|-3.0|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.200|-36.3|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.200|-6.7|-93.4|54.7|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.200|-44.4|-1.8|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.200|25.2|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.217|-15.6|-8.3|-6.6|0.01|0.40|0.02|Linear|In
+TW_idle|Head|2.217|2.1|13.4|-3.1|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.217|-36.0|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.217|-6.6|-93.4|54.6|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.217|-44.2|-1.8|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.217|25.4|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.233|-15.5|-8.3|-6.5|0.01|0.41|0.02|Linear|In
+TW_idle|Head|2.233|2.3|13.4|-3.1|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.233|-35.7|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.233|-6.4|-93.4|54.4|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.233|-44.0|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.233|25.5|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.250|-15.4|-8.3|-6.5|0.01|0.41|0.02|Linear|In
+TW_idle|Head|2.250|2.5|13.4|-3.2|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.250|-35.5|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.250|-6.3|-93.4|54.3|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.250|-43.7|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.250|25.6|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.267|-15.3|-8.2|-6.4|0.01|0.42|0.02|Linear|In
+TW_idle|Head|2.267|2.7|13.5|-3.2|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.267|-35.2|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.267|-6.2|-93.4|54.2|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.267|-43.6|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.267|25.7|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.283|-15.2|-8.2|-6.4|0.01|0.42|0.01|Linear|In
+TW_idle|Head|2.283|2.8|13.5|-3.2|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.283|-35.0|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.283|-6.1|-93.4|54.1|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.283|-43.4|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.283|25.8|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.300|-15.1|-8.2|-6.3|0.01|0.43|0.01|Linear|In
+TW_idle|Head|2.300|3.0|13.5|-3.3|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.300|-34.8|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.300|-6.1|-93.5|54.0|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.300|-43.2|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.300|25.8|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.317|-15.1|-8.2|-6.3|0.01|0.43|0.01|Linear|In
+TW_idle|Head|2.317|3.1|13.5|-3.3|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.317|-34.6|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.317|-6.0|-93.5|53.9|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.317|-43.1|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.317|25.9|-92.4|124.3|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.333|-15.0|-8.2|-6.2|0.00|0.44|0.01|Linear|In
+TW_idle|Head|2.333|3.2|13.5|-3.3|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.333|-34.4|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.333|-5.9|-93.5|53.8|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.333|-42.9|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.333|26.0|-92.4|124.4|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.350|-14.9|-8.2|-6.2|0.00|0.44|0.01|Linear|In
+TW_idle|Head|2.350|3.3|13.5|-3.4|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.350|-34.3|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.350|-5.8|-93.5|53.7|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.350|-42.8|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.350|26.1|-92.4|124.4|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.367|-14.9|-8.2|-6.1|0.00|0.44|0.00|Linear|In
+TW_idle|Head|2.367|3.4|13.5|-3.4|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.367|-34.1|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.367|-5.8|-93.5|53.6|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.367|-42.7|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.367|26.1|-92.4|124.4|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.383|-14.8|-8.1|-6.1|0.00|0.45|0.00|Linear|In
+TW_idle|Head|2.383|3.5|13.5|-3.4|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.383|-34.0|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.383|-5.7|-93.5|53.6|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.383|-42.6|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.383|26.2|-92.4|124.4|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.400|-14.8|-8.1|-6.1|0.00|0.45|0.00|Linear|In
+TW_idle|Head|2.400|3.6|13.5|-3.4|-0.00|0.00|0.00|Linear|In
+TW_idle|Left Leg|2.400|-33.9|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.400|-5.7|-93.5|53.5|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.400|-42.5|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.400|26.2|-92.4|124.4|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.417|-14.8|-8.1|-6.1|0.00|0.45|0.00|Linear|In
+TW_idle|Head|2.417|3.6|13.5|-3.4|0.00|0.00|0.00|Linear|In
+TW_idle|Left Leg|2.417|-33.8|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.417|-5.6|-93.5|53.4|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.417|-42.4|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.417|26.2|-92.4|124.4|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.433|-14.7|-8.1|-6.0|0.00|0.45|0.00|Linear|In
+TW_idle|Head|2.433|3.7|13.5|-3.4|-0.00|-0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.433|-33.7|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.433|-5.6|-93.5|53.4|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.433|-42.4|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.433|26.3|-92.4|124.4|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.450|-14.7|-8.1|-6.0|0.00|0.45|0.00|Linear|In
+TW_idle|Head|2.450|3.7|13.5|-3.5|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.450|-33.7|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.450|-5.6|-93.5|53.4|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.450|-42.3|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.450|26.3|-92.4|124.4|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.467|-14.7|-8.1|-6.0|0.00|0.46|0.00|Linear|In
+TW_idle|Head|2.467|3.8|13.5|-3.5|-0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.467|-33.6|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.467|-5.6|-93.5|53.4|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.467|-42.3|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.467|26.3|-92.4|124.4|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.483|-14.7|-8.1|-6.0|0.00|0.46|0.00|Linear|In
+TW_idle|Head|2.483|3.8|13.5|-3.5|0.00|0.00|0.00|Linear|In
+TW_idle|Left Leg|2.483|-33.6|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.483|-5.6|-93.5|53.3|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.483|-42.3|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.483|26.3|-92.4|124.4|0.16|-0.62|-0.15|Linear|In
+TW_idle|Torso|2.500|-14.7|-8.1|-6.0|0.00|0.46|0.00|Linear|In
+TW_idle|Head|2.500|3.8|13.5|-3.5|0.00|0.00|-0.00|Linear|In
+TW_idle|Left Leg|2.500|-33.6|-0.2|-8.0|-0.24|0.37|-1.00|Linear|In
+TW_idle|Right Arm|2.500|-5.6|-93.5|53.3|0.16|-0.07|-0.36|Linear|In
+TW_idle|Right Leg|2.500|-42.3|-1.7|27.6|0.09|0.13|-0.55|Linear|In
+TW_idle|Left Arm|2.500|26.3|-92.4|124.4|0.16|-0.62|-0.15|Linear|In

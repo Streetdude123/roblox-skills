@@ -43,3 +43,13 @@ One controller per character on every client. It disables the Roblox `Animate` s
 ## Handing clips to an animator
 
 `scripts/Bake.lua` writes every clip into `ServerStorage.StandAnimRig.AnimSaves` (a rig with the stand attached). The Roblox Animation Editor loads a KeyframeSequence from a rig's AnimSaves and publishes it; Moon Animator imports a published id or reads exported KeyframeSequences (see moon-animator.md). To learn from a clip that comes back, run ReadClips on it and, if it should drive the game, convert its keys into a Clips entry with `e = "linear"` at the exported frame rate.
+
+## Playing a clip that came back, without an upload
+
+`Poser.fromSequence(kfs, wraps, opts)` makes a clip straight from a KeyframeSequence instance (a rig's AnimSaves, a free model's set, a Moon export). Every `Pose.CFrame` is already a `Motor6D.Transform`, so the loader wraps it into pose space with the rig's C0 rotation (`Poser.wrapsOf(template)`) and `toTransform` undoes the wrap at play time: the round trip is exact to the decimal (the float torso sampled back as -14.7, -8.1, -6.0 with y 0.456, the decode's own numbers). Options: `map` renames pose names to the rig's joint names (`Torso` to `Stand Torso`), `trimStart` drops a lead-in so a loop's seam is a normal beat, `extra` adds procedural joints (the float root that lives outside the sequence), `loop` overrides the sequence flag, `length` overrides the last key. Keys carry `e = "linear"`; a 60 fps bake has 150 keys per joint and plays fine. Strip the Moon Animator metadata (`Ease` folders, IntValues, StringValues) before shipping a sequence to ReplicatedStorage; only Keyframes and Poses are needed.
+
+Blending in from an authored clip: `Rig:play` lerps from the live Transform, so an authored clip that hands to a sequence must end on the sequence's frame 0 pose. Read that pose from the decode and paste it as the authored clip's last key.
+
+`player:SetAttribute("PoseHold", "Stand:WorldBarrage:0.25")` holds a frame of a stand clip on the live stand rig (the body hook stays `"DioBarrage:0.8"`); an empty value releases both. Hold poses only when no move is running, because a move's own hand-off overrides a hold.
+
+The Edit VM caches `require` per module across `execute_luau` calls: after a Source push, validate on a fresh clone of the whole folder (`Stand:Clone()` then require the clone's module), not on the live instance, or the old Poser answers.
