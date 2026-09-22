@@ -52,30 +52,28 @@ explicitly documents the bundled importer and baker's limits.
 
 ### `roblox-vfx-craft`
 
-Builds ability VFX from the VFX packs that ship with each place: small stand
-summons, moves, and full cinematic ultimates with a scripted camera, anime
-impact frames, screen effects and a two-group sound mix. It carries the tone
-ladder (summon, move, cinematic), the taste log of every review sentence, the
-pack intake routine (script scan, archive, mesh gallery, dead sounds, template
-folder, join-time warm-up), the module APIs, the sword ultimate's schedule and
-cut list, the mix numbers measured from a recording, and the Studio
-verification routine (quality level, capture cache, phase polling, first-cast
-frame profiling).
+Designs and refines VFX through reference breakdowns, shape and timing block-ins,
+editable instance templates, asset craft, playback critique, and measured performance.
+Covers gameplay impacts, slashes, projectiles, beams, auras, elemental/environmental
+effects, summons, and requested cinematics.
 
 Package layout:
 
-- `SKILL.md` - the tone ladder, the workflow, the rules he taught, the
-  measured numbers and the feedback log.
-- `references/` - `taste.md`, `kit-workflow.md`, `modules.md`, `cinematic.md`,
-  `sound.md`, `verification.md`.
-- `scripts/` - `Tw.lua`, `Emitters.lua`, `Kit.lua`, `CameraRig.lua`,
-  `ScreenFx.lua`, `ImpactFrames.lua`, `SpeedLines.lua`, the two worked
-  examples `SummonVfx.lua` and `UltimateVfx.lua` with their client, server and
-  config files, and the intake tools `ScanPack.lua`, `MeshGallery.lua` and
-  `BlankDeadSounds.lua`.
+- `SKILL.md` - the authoring workflow, scope decisions, and quality gates.
+- `references/` - art direction, design principles, texture/flipbook/mesh craft,
+  Roblox API details, instance construction, effect recipes, pack intake,
+  source-inspected module contracts, cinematics, sound, and verification.
+- `references/sources.md` - linked artist tutorials, production breakdowns, and
+  official Roblox documentation, with the evidence scope for each.
+- `templates/` - a compact effect plan and evidence-based review record.
+- `scripts/` - preserved DIO and sword showcase code. The referenced place assets
+  are not all included, and the examples are not a drop-in framework.
+- `references/project-history.md` and `references/taste.md` - scoped historical
+  measurements and preferences for the original places.
 
-The Lua scripts run inside Roblox Studio through an execute-Luau bridge; they
-are not covered by the Python test suite.
+The revision changes authoring guidance, not the bundled Luau runtime. Existing
+Python tests do not verify Roblox rendering, playback, replication, or performance.
+Those checks require Studio and the intended target devices.
 
 ## Using these skills in a new chat
 
