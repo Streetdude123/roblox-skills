@@ -96,6 +96,19 @@ through cutout frames, and nothing ever pans back to the rig.
 - **Dismiss**: the vanish clip, camera offset back, Desummon clip, six sparkles, parts fade to 1 over
   0.26 s after a 0.08 s wait, the rig stops at 0.36 s, the aura disables, lights destroyed.
 
+## The phases of the road roller (the second cinematic piece)
+
+One `T` table again (`Config.RoadRoller.Beats`), every phase a function into `state.fx`, `cleanup` at the end. The body is anchored and its root written every Heartbeat from `rootAt(t)`; the roller is one anchored MeshPart moved by `PivotTo` from `rollerCF(t)`. Only the caster runs the camera; every client runs the bodies, the roller and the effects, so the spectators see the same roller fall.
+
+1. **Call (0 to 0.3)**: `DioRollerUp` from its LOAD crouch, the voice line, the bed and the wind-up start, a close rear take at dist 16, bars and vignette.
+2. **Leap (0.3 to 1.8)**: a gold `Shock` ring at the feet, the jump sound, a `Wind` trail under the root pointing down, a 0.6 speed line pulse, a shot to dist 21 looking at the apex minus 2. The root rises 36 on a `quad` out over 1.3 s. The roller appears at 1.3 (transparency 0 plus its gold light) 75 up and falls.
+3. **Catch (1.8 to 3.0)**: a small `Impact`, a cut to the sky looking down (angle 200, height 44) that falls with them to height 12 on a `quad` in; the root settles onto the roller top.
+4. **Land (3.0)**: `BigCrack`, `RingShock`, rocks, tan smoke, an amber light, the land sound + `Bass` + `GroundSlamSFX`, a 0.15 freeze, impact frames with the roller, kick 1.0, speed lines 0.8, flash 0.6; the server blasts 45 in radius 14. 0.2 s later a cut to angle 40 dist 22 drifting to angle 110 over the rush.
+5. **Rush (3.5 to 8.5)**: `DioPoint` on the body, the stand's raw barrage leaned into the deck, a fist flash and sparks every beat, a hit sound every six beats, a 0.09 kick per beat, arm echoes every 0.25 s, the roller sinking 1.25 with a 12 Hz jitter.
+6. **Boom (8.5)**: the roller hidden, `BigExplosion` + `RealExplosion` + `PackExplosion` + shards + dark smoke, light 6 / 60, impact frames gold-red-white, kick 1.2, flash 0.7, speed lines 0.9; the server blasts 30 in radius 18. `DioRollerOff` leaps the body 14 back; a wide cut (dist 44, fov 66) drawing to 36.
+7. **Off (9.3)**: the anchor and the freeze released, `DioMove` under the walk 0.5 s later, the laugh runs on the voice line.
+8. **Fade (11.2 to 12.0)**: fade to black in 0.4, the default camera wakes behind the body, bars and vignette off, fade in 0.5. The server restores WalkSpeed and JumpPower at done; the client never touches them.
+
 ## Reference material he sent
 
 - A DevForge Studio TikTok for the ultimate: white flash frame, red dome, spiked crown, pillar with

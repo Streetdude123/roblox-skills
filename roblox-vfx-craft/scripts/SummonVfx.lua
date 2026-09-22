@@ -1,3 +1,4 @@
+local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Debris = game:GetService("Debris")
 local SoundService = game:GetService("SoundService")
@@ -598,7 +599,7 @@ function SummonVfx.warm(character)
 	local parts = standParts(stand)
 	local fx = newModel("StandWarm")
 	local at = hrp.CFrame
-	for _, name in ipairs({"ChainRing", "Crack", "ShieldBreak", "Shock", "Charge", "Hit1", "Hit3", "Wind", "RingShock", "Slashes", "SlashImpact"}) do
+	for _, name in ipairs({"ChainRing", "Crack", "ShieldBreak", "Shock", "Charge", "Hit1", "Hit3", "Wind", "RingShock", "Slashes", "SlashImpact", "BigCrack", "BigExplosion", "RealExplosion", "PackExplosion", "PackF", "Smoke", "Rays"}) do
 		local inst = Kit.spawn(name, at, fx)
 		if inst then
 			for _, d in ipairs(inst:GetDescendants()) do
@@ -617,7 +618,17 @@ function SummonVfx.warm(character)
 			end
 		end
 	end
-	for _, name in ipairs({"EyeRing", "FancySphere", "Ripple"}) do
+	-- the road roller draws once too
+	local rr = root.Assets.RoadRoller:Clone()
+	for _, p in ipairs(rr:GetDescendants()) do
+		if p:IsA("BasePart") then
+			p.Transparency = 0.98
+			p.Anchored = true
+		end
+	end
+	rr:PivotTo(at * CFrame.new(0, 6, 0))
+	rr.Parent = fx
+	for _, name in ipairs({"EyeRing", "Sphere", "Ripple"}) do
 		local m = Kit.mesh(name, fx, at, V3(2, 2, 2), P.gold, 0.98)
 		if m then
 			m.Anchored = true
@@ -655,6 +666,47 @@ function SummonVfx.warm(character)
 		p.Color = p:GetAttribute("Col") or p.Color
 		p.Transparency = 1
 	end
+	-- the impact frames draw neon clones inside a viewport, a separate first draw: the body, the stand and the roller go through it once here
+	local gui = Instance.new("ScreenGui")
+	gui.Name = "StandWarmViewport"
+	gui.ResetOnSpawn = false
+	local vp = Instance.new("ViewportFrame")
+	vp.Size = UDim2.fromScale(1, 1)
+	vp.BackgroundTransparency = 1
+	vp.ImageTransparency = 0.99
+	vp.Parent = gui
+	local vcam = Instance.new("Camera")
+	vcam.CFrame = CFrame.lookAt(at.Position + V3(0, 6, 18), at.Position + V3(0, 4, 0))
+	vcam.Parent = vp
+	vp.CurrentCamera = vcam
+	local sources = {rr.PrimaryPart}
+	for _, p in ipairs(character:GetDescendants()) do
+		if p:IsA("BasePart") and p.Name ~= "HumanoidRootPart" then
+			table.insert(sources, p)
+		end
+	end
+	for _, src in ipairs(sources) do
+		if src then
+			local c = src:Clone()
+			for _, d in ipairs(c:GetChildren()) do
+				if not d:IsA("DataModelMesh") then
+					d:Destroy()
+				end
+			end
+			c.Material = Enum.Material.Neon
+			c.Transparency = 0
+			c.Anchored = true
+			if c:IsA("MeshPart") then
+				c.TextureID = ""
+			end
+			c.CFrame = at * CFrame.new(0, 4, 0)
+			c.Parent = vp
+		end
+	end
+	gui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
+	RunService.RenderStepped:Wait()
+	RunService.RenderStepped:Wait()
+	gui:Destroy()
 	fx:Destroy()
 end
 

@@ -89,3 +89,5 @@ Studio's `multi_edit` handles short files; a long module goes through `scripts/s
 - Remotes cannot be fired from the Edit VM; fire them from the Client VM in play, or use the `CastStand` / `CastUlt` attribute hooks.
 
 `solveFootY(tp, r, p, sideSign)` in `Clips.lua` puts a planted foot on the floor under a copied torso that leans and rolls: the foot bottom is `torsoPose * hip(sideSign, -1, 0) * legPose * (-0.5 sideSign, -2, 0)` in root axes, so the leg offset is one linear solve to y -3. `legY(torsoY, lift, torsoLift)` is the cheap form for authored poses; the torso pitch swings the hips, so a 10 degree forward lean makes a 28 degree rear leg read 38 and float 0.19 without that term.
+
+A strip in play clones `player.Character`; the character's `Archivable` is false in play so `Clone()` returns nil until it is set true. `_G.strip2` (in `scripts/StandStrip.lua`) takes `{clipName or clip, t}` pairs, a spacing and a z offset, and reads the hand directions in root space: `root.CFrame:VectorToObjectSpace(-arm.CFrame.UpVector)` is (out, up, forward negative).

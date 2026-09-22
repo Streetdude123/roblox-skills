@@ -11,6 +11,7 @@ local Locomotion = require(root.Modules.Locomotion)
 local Clips = require(root.Modules.Clips)
 local Moves = require(root.Modules.Moves)
 local TimeStop = require(root.Modules.TimeStop)
+local RoadRoller = require(root.Modules.RoadRoller)
 local Remotes = root.Remotes
 
 local player = Players.LocalPlayer
@@ -50,6 +51,11 @@ task.spawn(function()
 	-- the stand meshes load at join so the first summon never hitches on them
 	for _, d in ipairs(root.Assets.TheWorld:GetDescendants()) do
 		if d:IsA("MeshPart") or d:IsA("SpecialMesh") then
+			table.insert(list, d)
+		end
+	end
+	for _, d in ipairs(root.Assets.RoadRoller:GetDescendants()) do
+		if d:IsA("MeshPart") then
 			table.insert(list, d)
 		end
 	end
@@ -110,6 +116,8 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
 		Remotes.MoveRequest:FireServer("Barrage", true)
 	elseif input.KeyCode == Config.Keys.TimeStop and standOut() then
 		Remotes.MoveRequest:FireServer("TimeStop", true)
+	elseif input.KeyCode == Config.Keys.RoadRoller and standOut() then
+		Remotes.MoveRequest:FireServer("RoadRoller", true)
 	end
 end)
 
@@ -155,6 +163,8 @@ Remotes.Move.OnClientEvent:Connect(function(caster, name, on)
 		ok, err = pcall(Moves.barrage, character, isLocal, on)
 	elseif name == "M1" then
 		ok, err = pcall(Moves.m1, character, isLocal, on)
+	elseif name == "RoadRoller" then
+		ok, err = pcall(RoadRoller.start, character, isLocal, on)
 	elseif name == "TimeStop" then
 		if on then
 			ok, err = pcall(TimeStop.start, character, isLocal)

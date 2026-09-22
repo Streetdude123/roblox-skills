@@ -5,6 +5,7 @@ Config.Keys = {
 	Summon = Enum.KeyCode.Q,
 	Barrage = Enum.KeyCode.E,
 	TimeStop = Enum.KeyCode.F,
+	RoadRoller = Enum.KeyCode.R,
 }
 -- seconds between a summon and the next toggle
 Config.Cooldown = 3
@@ -92,6 +93,41 @@ Config.TimeStop = {
 		snap = "Bass",
 		resume = "TSEndSFX",
 		heartbeat = "Heartbeat",
+	},
+}
+
+-- the road roller is a twelve second cutscene keyed to the "road roller voice" track: the call at 0.7 to 1.7, a
+-- silent fall to 3.0, the scream 3.1 to 8.5, a gap at 8.6 for the blast, the laugh to 11.8
+Config.RoadRoller = {
+	Beats = {
+		leap = 0.30,
+		reach = 1.30,
+		catch = 1.80,
+		land = 3.00,
+		brace = 3.10,
+		point = 3.50,
+		boom = 8.50,
+		off = 8.55,
+		fade = 11.2,
+		done = 12.0,
+	},
+	Cooldown = 45,
+	ImpactAhead = 10,
+	Apex = 36,
+	LandDamage = 45,
+	LandRadius = 14,
+	BoomDamage = 30,
+	BoomRadius = 18,
+	Fling = 55,
+	-- where the stand hangs over the roller deck, leaning down into it
+	StandOffset = Vector3.new(0.6, -0.4, -3.4),
+	Voice = {
+		track = "RoadRollerDA",
+		bed = "RoadRollerStart",
+		windup = "RoadRollerSFX",
+		jump = "StandJumpSFX",
+		land = "RoadRollerLand",
+		hit = "RoadRollerHits",
 	},
 }
 

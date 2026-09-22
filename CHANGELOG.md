@@ -5,6 +5,21 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-22 — Canon ZA WARUDO, the road roller cutscene (user-authorized)
+
+- `roblox-r6-animation`: `DioTimeStop` remade from the show's two frames (arms crossed in an X
+  in a forward crouch, then flung up and out into a wide V) after the user rejected the quiet
+  one-hand version; the accepted numbers and the two strip rounds are under ZA WARUDO in SKILL.md.
+  New `DioRollerUp` and `DioRollerOff` for the road roller with a procedural root;
+  `WorldRollerBarrage` leans the stand's raw barrage into the deck. `references/principles.md`
+  (animation principles translated to R6) is now in the package. The strip helper needs
+  `Character.Archivable = true` in play.
+- `roblox-vfx-craft`: `scripts/RoadRoller.lua`, a 12 s cinematic keyed to the RoadRollerDA voice
+  line (leap, sky cut, land with the roller in the impact frames, the rush on the deck, the boom,
+  the fade); the road roller phases in `references/cinematic.md`; two traps in SKILL.md (the client
+  must not restore WalkSpeed the server owns; the impact-frame viewport is a first draw the warm-up
+  now covers). Scripts synced: SummonVfx, MovesServer, StandClient, Config.summon.
+
 ## 2026-09-21 — The World stand set, raw sequence playback, barrage and time stop (user-authorized)
 
 - `roblox-r6-animation`: new reference `the-world-clips.md` decoding the eight Moon

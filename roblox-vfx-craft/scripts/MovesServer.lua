@@ -9,6 +9,7 @@ local TS = Config.TimeStop
 
 local cool = {}
 local barrages = {}
+local rollers = {}
 local stop = nil
 
 local function now()
@@ -143,7 +144,7 @@ end
 
 local function startBarrage(player)
 	local character, humanoid, hrp = alive(player)
-	if not character or barrages[player] or frozen(character) then
+	if not character or barrages[player] or rollers[player] or frozen(character) then
 		return
 	end
 	local c = cool[player]
@@ -178,7 +179,7 @@ local combos = {}
 
 local function m1(player)
 	local character, humanoid, hrp = alive(player)
-	if not character or barrages[player] or frozen(character) then
+	if not character or barrages[player] or rollers[player] or frozen(character) then
 		return
 	end
 	if stop and stop.character == character and not stop.frozenNow then
@@ -330,7 +331,7 @@ end
 
 local function startTimeStop(player)
 	local character, humanoid, hrp = alive(player)
-	if not character or stop or frozen(character) or barrages[player] then
+	if not character or stop or frozen(character) or barrages[player] or rollers[player] then
 		return
 	end
 	if not ready(player, "TimeStop", TS.Cooldown) then
@@ -370,6 +371,80 @@ local function startTimeStop(player)
 	end)
 end
 
+-- the road roller: the impact sits ten studs ahead on the ground, every client runs the same twelve second
+-- timeline from that frame, and the server lands the two blasts of damage on the beats
+local RR = Config.RoadRoller
+
+local function groundAhead(hrp)
+	local ahead = hrp.CFrame * CFrame.new(0, 0, -RR.ImpactAhead)
+	local params = RaycastParams.new()
+	params.FilterType = Enum.RaycastFilterType.Exclude
+	params.FilterDescendantsInstances = {hrp.Parent}
+	local hit = workspace:Raycast(ahead.Position + Vector3.new(0, 6, 0), Vector3.new(0, -60, 0), params)
+	local y = hit and hit.Position.Y or (hrp.Position.Y - 3)
+	local look = hrp.CFrame.LookVector * Vector3.new(1, 0, 1)
+	if look.Magnitude < 0.01 then
+		look = Vector3.new(0, 0, -1)
+	end
+	local p = Vector3.new(ahead.Position.X, y, ahead.Position.Z)
+	return CFrame.lookAt(p, p + look)
+end
+
+local function blast(player, character, impact, radius, amount, fling)
+	local params = OverlapParams.new()
+	params.FilterType = Enum.RaycastFilterType.Exclude
+	params.FilterDescendantsInstances = {character}
+	for _, hit in ipairs(humanoidsIn(impact * CFrame.new(0, radius / 2, 0), Vector3.new(radius * 2, radius, radius * 2), character)) do
+		local hrp = hit.model:FindFirstChild("HumanoidRootPart")
+		local away = hrp and (hrp.Position - impact.Position) * Vector3.new(1, 0, 1)
+		local dir = (away and away.Magnitude > 0.5) and away.Unit or impact.LookVector
+		damage(player, hit, amount, "Heavy", dir * fling + Vector3.new(0, 24, 0))
+	end
+end
+
+local function startRoadRoller(player)
+	local character, humanoid, hrp = alive(player)
+	if not character or barrages[player] or rollers[player] or frozen(character) then
+		return
+	end
+	if stop and stop.character == character and not stop.frozenNow then
+		return
+	end
+	if not ready(player, "RoadRoller", RR.Cooldown) then
+		return
+	end
+	local impact = groundAhead(hrp)
+	local state = {speed0 = humanoid.WalkSpeed, jump0 = humanoid.JumpPower}
+	rollers[player] = state
+	humanoid.WalkSpeed = 0
+	humanoid.JumpPower = 0
+	Remotes.Move:FireAllClients(player, "RoadRoller", {impact = impact})
+	task.delay(RR.Beats.land, function()
+		if rollers[player] == state and humanoid.Parent and humanoid.Health > 0 then
+			blast(player, character, impact, RR.LandRadius, RR.LandDamage, RR.Fling)
+		end
+	end)
+	task.delay(RR.Beats.boom, function()
+		if rollers[player] == state and humanoid.Parent and humanoid.Health > 0 then
+			blast(player, character, impact, RR.BoomRadius, RR.BoomDamage, RR.Fling * 0.8)
+		end
+	end)
+	task.delay(RR.Beats.done, function()
+		if rollers[player] == state then
+			rollers[player] = nil
+			if humanoid.Parent then
+				humanoid.WalkSpeed = state.speed0
+				humanoid.JumpPower = state.jump0
+			end
+		end
+	end)
+	humanoid.Died:Once(function()
+		if rollers[player] == state then
+			rollers[player] = nil
+		end
+	end)
+end
+
 Remotes.MoveRequest.OnServerEvent:Connect(function(player, name, on)
 	if name == "Barrage" then
 		if on then
@@ -395,6 +470,8 @@ Remotes.MoveRequest.OnServerEvent:Connect(function(player, name, on)
 		startTimeStop(player)
 	elseif name == "M1" then
 		m1(player)
+	elseif name == "RoadRoller" and on then
+		startRoadRoller(player)
 	end
 end)
 
@@ -402,6 +479,7 @@ Players.PlayerRemoving:Connect(function(player)
 	cool[player] = nil
 	barrages[player] = nil
 	combos[player] = nil
+	rollers[player] = nil
 	if stop and stop.player == player then
 		Remotes.Move:FireAllClients(player, "TimeStop", false)
 		resumeWorld()

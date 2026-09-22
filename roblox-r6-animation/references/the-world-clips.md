@@ -104,6 +104,13 @@ the raw sequences live in `ReplicatedStorage.Stand.Assets.Anims`.
   Claude authors only the pieces the set lacks (appear, vanish, the time stop) and re-targets its
   own poses to the set's idle frame so nothing pops on the hand-off.
 - A rush loop is a torso engine at 6 beats a second with the head countering; fists ride.
+- The user's ZA WARUDO is the show's two frames and nothing else: arms crossed in an X in a forward
+  crouch, then flung up and out into a wide V with the chest out and the head back, held with a
+  tremble and one jolt on the freeze. A quiet one-hand version and an arms-flung-then-lunge version
+  were both rejected; the numbers that passed are in `SKILL.md` under ZA WARUDO.
+- On the road roller the stand plays its own `Barrage` sequence raw with a procedural root leaned
+  38 degrees down at the deck and a 12 Hz shiver (`WorldRollerBarrage`); the user holds the Jotaro
+  point on top. The stand never gets an authored clip for it.
 - Combo clips must chain end pose to start pose; author the last key of one as the first key of the next.
 - Piston punches: freeze the arm angle on the strike frames, translate the part, let the torso reach.
 - Stand limbs may translate 1 to 2 studs; humanoid limbs stay under 0.5.

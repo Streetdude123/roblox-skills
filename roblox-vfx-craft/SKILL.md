@@ -186,6 +186,32 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   thick yellow streaks. A slowed client (TimeScale) desyncs from the unscaled server resume, whose reverse
   ripple then lands inside the slowed cutscene; judge the bubble from an isolated spawn of the same
   objects, and never trust a scaled capture taken after the server's resume time.
+- 2026-09-22 (later): "Add the truck roller too, make sure thats a cutscene please. You may use a
+  free model for the truck". `RoadRoller.lua` is the second cinematic rung piece: 12 s keyed to the
+  `RoadRollerDA` voice line (call 0.7 to 1.7, the fall silent to 3.0, the scream 3.1 to 8.5, the laugh
+  to 11.8) with `RoadRollerStart` as the bed. Beats: leap 0.30, reach 1.30, catch 1.80, land 3.00,
+  brace 3.10, point 3.50, boom 8.50, off 8.55, fade 11.2, done 12.0. The roller is the free model's
+  one MeshPart (`Assets.RoadRoller`, 10 x 8.6 x 16) anchored and driven by `PivotTo` from y 75 to the
+  ground; it carries a gold PointLight 1.6 / 44 from the moment it shows or the catch shot is a black
+  lump. Land: `BigCrack` 2.2, `RingShock` 4, `PackF` rocks 22, tan `Smoke` 40 (165, 150, 125), a 0.15
+  freeze, impact frames white-black-gold with the roller in the silhouette, kick 1.0, speed lines 0.8.
+  Rush: the stand's raw barrage on the deck, a fist flash and sparks every 0.083 s, a hit sound every
+  six, a 0.09 kick per beat. Boom: the roller hidden under `BigExplosion` 2.4 + `RealExplosion` 2.6 +
+  `PackExplosion` 2.2 + `PackF` shards + dark `Smoke` 60, light 6 / 60, impact frames gold-red-white,
+  kick 1.2, flash 0.7. Camera: a close rear take (angle 150, dist 16), the leap shot at dist 21 looking
+  at the apex minus 2 (at dist 28 looking at apex minus 6 the pair filled a tenth of the frame at the
+  top: an empty sky shot), a sky cut looking down (angle 200, height 44) that falls with them to
+  height 12, a cut to angle 40 dist 22 at the land drifting to 110, a wide cut at the boom (dist 44,
+  fov 66) drawing to 36, fade at 11.2, the default camera wakes behind the body in the black.
+  The leap gets a `Wind` trail welded under the root pointing down (rate 34, speed 30 to 46) and a
+  0.6 speed line pulse so the sky shot is not empty.
+- Two traps from the road roller. The server zeroes WalkSpeed and JumpPower at the cast and restores
+  them at done; the client MUST NOT restore them from a value it read at start (the server's zero
+  had already replicated, so the client put the body back to 0 after the server's 16). The client
+  owns only AutoRotate and the anchor. Second: the impact frames draw Neon clones inside a
+  ViewportFrame, a first draw the world warm-up does not cover; the first road roller hitched 884 ms
+  on the land. `SummonVfx.warm` now holds a ViewportFrame at ImageTransparency 0.99 with flat Neon
+  clones of the body, the stand and the roller for two frames at join.
 
 ## Reference index
 
@@ -203,4 +229,5 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
 - `scripts/SummonVfx.lua` - the small rung worked example (DIO summon: the clock gather, the tick pop, gold echoes, the charge and heartbeat idle, the join-time warm-up, `afterimage`, `standParts` that skips `Tr 1` parts, `rigOf`).
 - `scripts/Moves.lua`, `scripts/TimeStop.lua`, `scripts/MovesServer.lua` - the move rung (barrage with fist streaks, flashes, arm echoes and a finisher) and the cinematic move (the time stop call, the freeze, the resume) with the server that runs hitboxes, freezes the world, queues damage in stopped time and launches knockback through a 0.22 s `LinearVelocity`.
 - `scripts/UltimateVfx.lua` - the cinematic rung worked example (sword ultimate, 2272 lines).
+- `scripts/RoadRoller.lua` - the second cinematic piece (the road roller: a procedural root and roller on one beat table, the land, the rush on the deck, the boom, the fade; the server side is `startRoadRoller` and `blast` in `MovesServer.lua`).
 - `scripts/ScanPack.lua`, `scripts/MeshGallery.lua`, `scripts/BlankDeadSounds.lua` - the pack intake tools.
