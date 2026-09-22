@@ -1,61 +1,45 @@
-# Sound for an effect
+# Sound supporting VFX
 
-## The mix (measured from his recording)
+Use when audio is requested or an existing audiovisual effect is being refined.
+Keep the current audio architecture. Sound is a supporting design pass, not a
+substitute for a readable world effect.
 
-The first mix clipped for 2.5 s: an Impact at volume 4 sat outside the compressor and stacked
-Explosion layers pinned the master. True peak +0.6 dBFS with 12,000 clipped samples, RMS -9.9 dB.
-The second recording after the fix: peak -3.5 dBFS, RMS -19.3, zero clips, but the pillar sat 10 dB
-under the hit, the explosion no louder than the hit, and highs 15 to 25 dB under lows.
+## Design and align
 
-Rules that came out of it:
-- Two `SoundGroup`s in `SoundService`: a bed group that ducks and muffles as a whole (`UltMix`) and a
-  hits group that only gets limited (`UltHits`) so a hit still cuts through a full duck.
-- A `CompressorSoundEffect` on each as a limiter: Threshold -9, Ratio 12, Attack 0.001, Release 0.12,
-  GainMakeup 0. An `EqualizerSoundEffect` with +3 dB HighGain on both for air, a second EQ on the bed
-  for the muffle (HighGain -30, MidGain -12 on the hit stop, back over 0.5 s), a `ReverbSoundEffect`
-  on the bed (DecayTime 2.2, WetLevel -80 at rest, -6 on the burst).
-- Stacked layers 8 to 10 dB lower than instinct: Impact 1.7, Explosion 1.3 to 1.9, Rumble 0.6,
-  Aftermath 2.2, PillarLoop 1.1 to 1.9, sub stab 1.7, wave two 1.5 and 1.2.
-- A slowed sub hit becomes a drone: `stab(sound, hold, fadeTime)` fades it after 0.3 to 0.4 s.
-- Ducks: to 0.05 in 0.02 s on the hit stop, back to 1 over 0.12 s when it releases; to zero with the
-  black at the end.
-- Rolloff `InverseTapered`, 40/500 studs for a big effect, 25/300 for a summon.
-- A summon uses one group (`StandMix`) with one limiter and two or three clips (Ambience 0.35,
-  SummonSound 1.2, StandSFX 0.9; the WRY voice line is off by default).
-- A `Start` attribute on a template seeks the clone after `Play` (Crown has a 0.2 s silent head);
-  `LoopRegion` makes a 1 s clip loop cleanly (Aftermath 0.3 to 2.0, PillarLoop 0.15 to 2.55).
+Choose roles: anticipation, motion, contact, body, and tail. Use only the roles the
+brief needs. Align the audible onset with the actual action; a file's start may
+contain silence. Leave space around important transients rather than stacking
+several full-volume impacts.
 
-## Mirelo clips
+Use positional audio for a world source when appropriate. Test from the caster,
+target, and spectator distances. A loop needs a clean entry, seam, and exit. A
+pitch-shifted impact may leave an unwanted long low-frequency tail; listen and
+trim/fade the working copy intentionally.
 
-He generates SFX with the Mirelo TextToSfx plugin (Duration max 1 s, Loop, Samples 2/4/6, Cartoonish or
-Realistic). Prompt like a sound designer labels a file: event noun, its shape, then "single" or
-"loop" ("sharp sword whoosh, single fast swish", "low rumble loop, steady sub bass shake"). Never
-describe the scene or the motion; "sword lifting slowly, gentle wind" produced a constant wind bed.
-Long tails come from a looped 1 s clip faded out in code, not from a long prompt. Clips asked for at
-1 s came back 1 to 4.6 s with fades, silent heads and one falling riser, so measure them.
+Record normal-speed output. Review the visual action muted, then together with
+audio. Inspect relative levels, unwanted masking, distortion, silent starts, and
+abrupt tails. Do not impose the historical example's gain, rolloff, compression,
+or EQ settings on unrelated assets.
 
-## Measuring a clip in Studio
+## Asset and measurement evidence
 
-Clone the Sound template, Play it and sample `PlaybackLoudness` (0 to 1000) every 50 to 100 ms for
-its `TimeLength`: that gives the envelope without downloading the asset. Fix with `LoopRegion`, a
-`Start` attribute and volume ramps in code.
+Check permissions and loading in the target experience. Preserve source IDs when
+repairing a working copy. A PlaybackLoudness trace can help locate an onset in
+Studio; it is not a calibrated loudness meter or proof that a final mix is clean.
 
-## Measuring his recording
+Measure peaks from the actual capture when needed. Sample peaks are not true-peak
+measurements unless the analysis accounts for intersample peaks. Compressor settings
+do not guarantee that a stack cannot clip. Listen as well as inspect measurements.
 
-With no ffmpeg on the machine: a 20 line Node server serves the mp4 and a page; in the built-in
-browser `decodeAudioData` the buffer, mix to mono, take 100 ms RMS and peak in dBFS, count samples
-above 0.985 for clipping, and render through an `OfflineAudioContext` with a lowpass 150 and a
-highpass 4000 `BiquadFilter` for low and high band envelopes. Find the cast onset as the first window
-above -40 dB and subtract it to line up with `T`.
+Connect sound completion and cancellation to the effect lifecycle. Restore only
+owned mix state; overlapping casts must not reset each other's shared groups.
 
-## Dead private audio
+## Historical example
 
-Free packs carry private audio ids that spam "not authorized" on every play start (54 in his kit:
-LightningBolt1-5, Clashing 2-6, Leap, GustLoop, DRSummon, Aura, ...). Blank `SoundId` and keep the old
-id in a `DeadSoundId` attribute (`scripts/BlankDeadSounds.lua`). A pack's own `SFX` folder that keeps
-failing in the console is not ours to fix.
+The original sword effect used separate bed and hit SoundGroups, short ducking,
+and faded low-frequency hits. The summon used fewer layers. Their reported mix
+settings and recordings belong to those projects; see project-history.md.
 
-## Preload
-
-`UltimateClient` and `StandClient` preload every sound, the clip and every particle texture at join,
-else the first cast misses the first clip (Wind was silent on the first cast before that).
+The original Mirelo and generated-sound notes described one plugin version. Check
+current tools and supported duration before using them. Do not add or subscribe to
+a service just because the old example used it.

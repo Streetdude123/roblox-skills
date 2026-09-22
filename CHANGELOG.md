@@ -5,6 +5,19 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-22 - VFX artist workflow and technical reference revision
+
+- Replaced fixed showcase prescriptions with reference analysis, art direction,
+  motion block-in, editable instance construction, asset polish, and playback critique.
+- Added impact, slash, projectile, beam, aura, summon, and environmental recipes,
+  plus texture/flipbook/mesh guidance and concise planning/review templates.
+- Corrected particle, sequence, beam, trail, preload, storage, and module-contract
+  guidance against official Roblox documentation and the bundled implementations.
+- Linked primary artist explanations and production breakdowns with explicit
+  evidence scope. Moved original measurements and cut lists into project history.
+- Kept the existing Luau examples unchanged. Structural checks and the repository
+  test suite do not certify rendered quality; Studio/device verification remains required.
+
 ## 2026-09-22 (night, later) — The knife throw, the hip rule (user-authorized)
 
 - `roblox-r6-animation`: the hip rule — a limb key's translation is the joint gap; `attachLegs` in

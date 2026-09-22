@@ -1,7 +1,23 @@
-# Lepy's VFX taste
+# Original project preferences
 
-Everything here is a sentence he said and what it turned out to mean in practice. He judges from a
-recording or from play, by feel, and he does not explain. The rule is the meaning we found.
+Use only when continuing the original DIO/sword projects. These are preserved
+review notes from the old skill, not independently reverified measurements or
+preferences to assign to every user. Current project instructions take priority.
+The settings below are historical interpretations, not universal engine rules.
+Use SKILL.md and the current references for general authoring and technical advice.
+
+## Contents
+
+- [Dense but readable](#dense-but-readable)
+- [The Megumin vocabulary](#the-megumin-vocabulary-for-the-ultimate-only)
+- [Identity](#the-identity-rule-for-stands-and-characters)
+- [Character outlines](#no-highlight-on-the-rig)
+- [Camera](#camera)
+- [Text](#no-text)
+- [Geometry](#too-geometric)
+- [Supplied kit](#the-kit-rule)
+- [Summon](#the-summon-rung)
+- [Animation](#related-feedback-on-animation)
 
 ## Dense but readable
 
@@ -80,7 +96,7 @@ meshes at random turns, not slabs.
 "Use the VFX kit I have given you, store the vfx you don't need in the server storage to be used for
 later. I checked for backdoors already its fine." And later: "I'll always add vfx packs you can use."
 
-- Every place will have his packs. Catalogue them first, build from them, archive the rest.
+- Those places included supplied packs. Inspect the current place before relying on that history.
 - Still run the script scan on every pack. A free pack shipped a `require(assetId)` backdoor once and a
   free crate carried a Command Bar social-engineering payload in a byte array; his check is a start,
   not a guarantee. See kit-workflow.md.
@@ -94,7 +110,7 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
 - A summon is a gameplay toggle: no camera takeover, no letterbox, no vignette, no impact frames, no
   exposure flash, no world dimming, no body scaling, 1.0 to 1.5 s total, the humanoid free again under
   a second.
-- "No change in quality" means the look stays; the lag fix is a join-time draw warm-up, not fewer pieces.
+- "No change in quality" requested the same look. A draw warm-up helped that recorded build; profile the current build before choosing a fix.
 - It still needs a beat structure: gather, pop, rise, settle. Small is not flat.
 
 ## Related feedback on animation
