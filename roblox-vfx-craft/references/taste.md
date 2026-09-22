@@ -37,6 +37,10 @@ words. Generic sparkles say nothing about a stand.
   cracked glass shards, afterimage silhouettes in gold, the menacing "ゴゴゴ" aura as a slow heavy
   distortion rather than twinkles, a single hard pulse on the summon instead of a burst of stars.
 - A fire stand would be embers and heat shimmer, an ice stand shards and frost rings, and so on.
+- Asta (Black Clover): anti-magic, devil, raw strength. He first asked for "black and dark red,
+  electric sort of", then "definitely not electric, just match the vfx with the references". The
+  show has no lightning on Asta: black smoky flame on the blade with a red outline, red glowing
+  pages. Match the reference frames over the adjective in the first request.
 - The kit is large enough for this: `Auras` (rune ring with chain beams, gold beam fan, green floor
   rays), `Anime` (charge, shiny, lightning flipbooks, shield break rings, crack, shockwave, punch hits,
   wind, smoke, portal), `Big`, `Beams`, `vfx pack` (purple explosion kit), `VFX` (rings, spirals,

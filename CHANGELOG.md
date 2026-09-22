@@ -5,6 +5,20 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-22 (night) — Weapons on R6 and the Asta anti-magic vocabulary (user-authorized)
+
+- `roblox-r6-animation`: new `references/weapons.md` from the Asta greatsword kit (draw from the grimoire,
+  sheathe by a toss into the pages, a four-hit combo): the grip as a three-axis joint (R6 has no visible wrist),
+  sword keys written as a hand direction and a blade direction solved on the arm with Nelder-Mead, the physical
+  twist limit (the shoulder pivots on the arm's inner edge), Euler branch continuity and slerp midpoints (a
+  branch flip sent the blade tip 2.5 studs under the floor), blade tip and turn checks, the onion-skin view,
+  props that grow out of props, the memoized solve cache (4.8 s to 0.07 s) and the welded-part resize cost.
+  New `scripts/WeaponRig.lua` and `scripts/WeaponStrip.lua`; SKILL.md index and the feedback log updated.
+- `roblox-vfx-craft`: feedback log and taste updated with "definitely not electric, just match the vfx with the
+  references" and the anti-magic vocabulary built from the kit (black flame wisps over a dark red rim, red
+  specks, black ash, red pages), plus the lessons on black puffs, hit placement, untinted kit pieces, a
+  floating companion prop and capture time scales.
+
 ## 2026-09-22 (late) — Motion-first animation: spline curves, overlap, springs, planted feet, measured (user-authorized)
 
 - `roblox-r6-animation`: rewritten around the measured cause of "too much still frames": Poser's legacy eases

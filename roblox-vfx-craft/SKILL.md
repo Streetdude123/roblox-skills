@@ -263,6 +263,25 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   stick; a 0.18 kick and a pale `Slashes` streak at each hand on the release. The time stop already
   has its end voice: `TSEndSFX` (2.07 s) fires on the resume signal 1.6 s before time moves and
   `TSEndVoice` (1.01 s) on the resume itself.
+- 2026-09-22 (Asta, Grimoire Battlegrounds): "the 5 lead clover which is demonic so make sure VFX is
+  black and dark red, electric sort of", then while it was being built: "yeah definitely not electric,
+  just match the vfx with the references". The references (the show's frames) have no lightning: a
+  black blade with a red outline, black smoky anti-magic, red glowing pages. The vocabulary built from
+  his kit: black flame wisps (the `Fire-Aura-01` flipbook 16676455805 tinted black, LightEmission 0) over
+  a dark red rim copy (LightEmission 0.9), red specks 8068783649 as embers, the black ash flipbook
+  16955854038, the `Shoot-01` ring as black under dark red, the `Slash-Impact-01` and `Punch-01`
+  flipbooks tinted red over black on hits, `Crack-01` in black for the slam, and a Neon red plate plus a
+  red light (1.4 / 8) on the open pages. Palette: black 8,5,6; smoke 22,14,16; rim 120,6,14; core
+  200,22,30; pale 255,96,96. Move rung for the M1s (a kick 0.14 to 0.42, hit stops 0.05 to 0.1),
+  summon rung for the draw and the sheathe (no camera).
+- Lessons from that build: the `Smoke-01` flipbook tinted pure black draws flat black balls, so puffs
+  use the dark smoke sheet 10180479311 at 0.45 transparency instead; hit effects spawned at the
+  victim's root hide inside its torso, so move them 1.1 studs toward the attacker; an untinted kit
+  piece keeps its own colour (`Big-Crack-01` flashed orange), so tint every piece; page smoke at rate
+  34 engulfed the whole body, 16 reads; a floating companion prop (the grimoire) is a world-space
+  spring (f 1.7, damping 0.85) toward a spot at the shoulder with a bob and a sway on three unrelated
+  beats and a lean from its own velocity, stiffer (f 5.5) when it is presented; with 10 s of tool
+  latency a sub-second hit effect needs TimeScale 30, not 6 to 10, to be in a capture.
 
 ## Reference index
 
