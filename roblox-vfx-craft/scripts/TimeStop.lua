@@ -256,9 +256,11 @@ local function call(state)
 		state.humanoid.WalkSpeed = 0
 		state.humanoid.JumpPower = 0
 		state.humanoid.AutoRotate = false
-		CameraRig.take(hrp.CFrame, {angle = 148, dist = 13.5, height = 2.2, lookY = 2.8, fov = 62})
-		CameraRig.shot({dist = 10.8, height = 3.4, lookY = 3.6, angle = 158}, T.pause, Sine, Out)
+		-- the call orbits from the front left to the front while it pushes in, so the arms open toward the lens
+		CameraRig.take(hrp.CFrame, {angle = 140, dist = 15, height = 2.0, lookY = 2.8, fov = 62})
+		CameraRig.shot({dist = 10.5, height = 3.6, lookY = 3.8, angle = 172, roll = -2}, T.pause, Sine, Out)
 		ScreenFx.bars(true, 0.3)
+		ScreenFx.vignette(0.2, 0.4)
 	end
 	Tw.wait(0.25)
 	if not state.alive then
@@ -272,8 +274,8 @@ local function call(state)
 	-- the pause: a low shot up at the world, one heartbeat, the frame tightens
 	if isLocal then
 		CameraRig.cutTo({angle = 196, dist = 9.6, height = 0.5, lookY = 5.4, fov = 58, roll = -3})
-		CameraRig.shot({dist = 8.6, roll = 2, lookY = 5.2}, T.snap - T.pause, Sine, InOut)
-		ScreenFx.vignette(0.35, 0.5)
+		CameraRig.shot({dist = 8.8, roll = 1, lookY = 5.2}, T.command - T.pause, Sine, InOut)
+		ScreenFx.vignette(0.4, 0.5)
 	end
 	task.delay(0.15 * Tw.S(), function()
 		if state.alive then
@@ -289,7 +291,18 @@ local function call(state)
 	if not state.alive then
 		return
 	end
-	-- the command: the gold fan opens behind it and the light climbs while the clock races
+	-- the command: a tight profile on dio for "toki wo", then back to the low stand shot pushing in for "tomare"
+	if isLocal then
+		CameraRig.cutTo({angle = 96, dist = 5.6, height = 0.9, lookY = 2.3, fov = 50, roll = 2})
+		CameraRig.shot({dist = 5.0, angle = 104}, 0.55, Sine, Out)
+		task.delay(0.6 * Tw.S(), function()
+			if state.alive then
+				CameraRig.cutTo({angle = 200, dist = 9.0, height = 0.4, lookY = 5.3, fov = 56, roll = -2})
+				CameraRig.shot({dist = 7.2, roll = -5, lookY = 5.0}, T.snap - T.command - 0.6, Sine, In)
+			end
+		end)
+	end
+	-- the gold fan opens behind it and the light climbs while the clock races
 	local fan = Kit.spawn("Rays", torso.CFrame * CFrame.new(0, 0.4, 1.0), state.fx)
 	if fan then
 		Kit.tint(fan, P.gold, P.lavender)
@@ -314,6 +327,17 @@ local function call(state)
 	state.base = groundBelow(hrp.CFrame, character)
 	sfx(TS.Voice.snap, hrp, 1.0, 1)
 	sfx("Shock", hrp, 0.6, 0.8)
+	task.delay(0.16 * Tw.S(), function()
+		if hrp.Parent then
+			sfx(TS.Voice.snap, hrp, 0.6, 0.85)
+		end
+	end)
+	-- both rigs hang on the thrust for a beat so the pose burns in
+	state.rig:hold(0.1)
+	local ctrl = Locomotion.get(character)
+	if ctrl then
+		ctrl.rig:hold(0.1)
+	end
 	for _, name in ipairs({"Stand Right Arm", "Stand Left Arm"}) do
 		local arm = stand:FindFirstChild(name)
 		if arm then
@@ -339,24 +363,29 @@ local function call(state)
 	local c = correction()
 	c.Brightness = 0.25
 	c.TintColor = Color3.fromRGB(190, 160, 255)
-	Tw.play(c, {Saturation = -1, Contrast = 0.12, Brightness = 0, TintColor = Color3.fromRGB(215, 212, 240)}, 0.45, Quad, Out, 0.06)
+	Tw.play(c, {Saturation = -1, Contrast = 0.2, Brightness = -0.06, TintColor = Color3.fromRGB(205, 200, 235)}, 0.45, Quad, Out, 0.06)
+	-- stopped time is darker: the exposure drops a third of a stop for as long as the world hangs
+	if Lighting:GetAttribute("TSExposure0") == nil then
+		Lighting:SetAttribute("TSExposure0", Lighting.ExposureCompensation)
+	end
+	Tw.play(Lighting, {ExposureCompensation = Lighting:GetAttribute("TSExposure0") - 0.35}, 0.6, Quad, Out, 0.1)
 	if isLocal then
 		CameraRig.freeze(T.frames - T.snap + 0.1)
-		ScreenFx.flash(0.5, 0.12, P.pale)
-		task.spawn(ImpactFrames.play, {character, stand}, {{"gold", 0.05}, {"purple", 0.05}, {"white", 0.04}})
-		CameraRig.kick(0.6)
+		ScreenFx.flash(0.7, 0.14, P.pale)
+		task.spawn(ImpactFrames.play, {character, stand}, {{"gold", 0.05}, {"purple", 0.05}, {"white", 0.04}, {"black", 0.03}})
+		CameraRig.kick(0.75)
 	end
 	ripple(state, origin, false)
 	Tw.wait(T.frames - T.snap + 0.1)
 	if not state.alive then
 		return
 	end
-	-- the pull back: a wide rear three quarter behind dio while the ripple runs to the horizon
+	-- the pull back: a hard cut to a far rear three quarter that draws in while the ripple runs to the horizon
 	if isLocal then
-		CameraRig.cutTo({angle = 32, dist = 17, height = 5.5, lookY = 3, fov = 66, roll = 0})
-		CameraRig.shot({dist = 13.5, angle = 18, height = 5}, T.done - T.frames - 0.1, Sine, Out)
-		ScreenFx.bars(false, 0.35)
-		ScreenFx.vignette(0, 0.4)
+		CameraRig.cutTo({angle = 34, dist = 26, height = 8, lookY = 3, fov = 68, roll = 0})
+		CameraRig.shot({dist = 15, angle = 18, height = 5.5}, T.done - T.frames - 0.1, Sine, Out)
+		ScreenFx.bars(false, 0.4)
+		ScreenFx.vignette(0.15, 0.4)
 	end
 	Tw.wait(T.done - T.frames - 0.1)
 	if not state.alive then
@@ -370,12 +399,17 @@ local function call(state)
 		state.speed0 = nil
 	end
 	state.rig:play(Clips.WorldStopped, {fadeIn = 0.5})
-	-- the heart keeps time while nothing else does
+	-- the heart keeps time while nothing else does, and dio laughs into the silence
 	state.beating = true
 	task.spawn(function()
 		while state.beating and hrp.Parent do
 			sfx(TS.Voice.heartbeat, hrp, 0.35, 0.85)
 			Tw.wait(0.86)
+		end
+	end)
+	task.delay(0.35 * Tw.S(), function()
+		if state.beating and hrp.Parent then
+			sfx("Laugh", hrp, 0.9, 1)
 		end
 	end)
 end
@@ -440,7 +474,15 @@ function TimeStop.stop(character, isLocal)
 	end
 	task.delay(1.6 * Tw.S(), function()
 		local c = correction()
-		Tw.play(c, {Saturation = 0, Contrast = 0, TintColor = Color3.new(1, 1, 1)}, 0.4, Quad, Out)
+		Tw.play(c, {Saturation = 0, Contrast = 0, Brightness = 0, TintColor = Color3.new(1, 1, 1)}, 0.4, Quad, Out)
+		local e0 = Lighting:GetAttribute("TSExposure0")
+		if e0 ~= nil then
+			Tw.play(Lighting, {ExposureCompensation = e0}, 0.5, Quad, Out)
+			Lighting:SetAttribute("TSExposure0", nil)
+		end
+		if isLocal then
+			ScreenFx.vignette(0, 0.5)
+		end
 		local torso = stand and stand:FindFirstChild("Stand Torso")
 		local fx = newModel("TimeStopFx")
 		Debris:AddItem(fx, 2 * Tw.S())

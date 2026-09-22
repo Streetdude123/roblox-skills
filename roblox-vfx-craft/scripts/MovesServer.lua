@@ -163,6 +163,75 @@ local function startBarrage(player)
 	end)
 end
 
+-- the m1 chain: one request per hit, accepted once most of the current hit has played, index reset after
+-- the window; the hit box lands on the clip's strike frame and the fifth hit flings
+local M1 = Config.M1
+local combos = {}
+
+local function m1(player)
+	local character, humanoid, hrp = alive(player)
+	if not character or barrages[player] or frozen(character) then
+		return
+	end
+	if stop and stop.character == character and not stop.frozenNow then
+		return
+	end
+	local c = combos[player]
+	if not c then
+		c = {index = 0, last = 0, busyUntil = 0, speed0 = nil}
+		combos[player] = c
+	end
+	local t = now()
+	if t < c.busyUntil then
+		-- one early click waits for the busy window so a masher never drops a hit
+		if not c.queued then
+			c.queued = true
+			task.delay(c.busyUntil - t + 0.01, function()
+				if c.queued then
+					c.queued = false
+					m1(player)
+				end
+			end)
+		end
+		return
+	end
+	c.queued = false
+	if t - c.last > M1.Window then
+		c.index = 0
+	end
+	if c.index >= #M1.Lengths then
+		if t - c.last < M1.Cooldown then
+			return
+		end
+		c.index = 0
+	end
+	c.index += 1
+	c.last = t
+	local i = c.index
+	local len = M1.Lengths[i]
+	c.busyUntil = t + len * 0.8
+	if not c.speed0 then
+		c.speed0 = humanoid.WalkSpeed
+	end
+	humanoid.WalkSpeed = 0
+	Remotes.Move:FireAllClients(player, "M1", i)
+	task.delay(M1.Strike[i], function()
+		if humanoid.Parent and humanoid.Health > 0 and c.index == i then
+			local box = hrp.CFrame * CFrame.new(0, 0.5, -M1.Reach / 2 - 1)
+			local fling = i == #M1.Lengths and (hrp.CFrame.LookVector * M1.Fling + Vector3.new(0, 12, 0)) or nil
+			for _, hit in ipairs(humanoidsIn(box, Vector3.new(M1.Width, 6, M1.Reach), character)) do
+				damage(player, hit, M1.Damage[i], i == #M1.Lengths and "Heavy" or "M1", fling)
+			end
+		end
+	end)
+	task.delay(len + 0.25, function()
+		if c.index == i and now() - c.last >= len + 0.2 and humanoid.Parent and c.speed0 then
+			humanoid.WalkSpeed = c.speed0
+			c.speed0 = nil
+		end
+	end)
+end
+
 -- freezes every other body: anchored roots, walk speeds parked in an attribute, loose parts held with
 -- their velocity saved so they fly on when time moves again
 local function freezeWorld(caster)
@@ -305,12 +374,15 @@ Remotes.MoveRequest.OnServerEvent:Connect(function(player, name, on)
 		end
 	elseif name == "TimeStop" and on then
 		startTimeStop(player)
+	elseif name == "M1" then
+		m1(player)
 	end
 end)
 
 Players.PlayerRemoving:Connect(function(player)
 	cool[player] = nil
 	barrages[player] = nil
+	combos[player] = nil
 	if stop and stop.player == player then
 		Remotes.Move:FireAllClients(player, "TimeStop", false)
 		resumeWorld()

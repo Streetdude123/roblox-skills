@@ -162,6 +162,18 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
 - 2026-09-21 (later): he asked for a "super cool cinematic cutscene" for the time stop with voice
   lines; the beat table came from the voice line's `PlaybackLoudness` envelope (see sound.md), and
   the cutscene locks the body 3.1 s, which he accepted for this move.
+- 2026-09-21 night (later): "make everything more dramatic please except for the summon". What went
+  up one notch on the MOVE rung: barrage ticks 3.0 and a 22 finisher with a 62 stud LinearVelocity
+  fling, a 0.08 s hit stop on both rigs, two impact frames (gold 0.05, white 0.04) with the camera
+  frozen, a 0.9 speed line pulse, a 0.35 pale flash, `Wry` under `StrongMuda`, `Hit3` 2.0 +
+  `RingShock` 2.2 + `SlashImpact` 14/12 + `ShieldBreak` 16, kick 0.8, spark bursts of 3 per beat;
+  the M1 chain gets a gold `Slashes` streak per hit, `Punch` + `HitSoundTW` on contact, hit stops
+  0.05 on hits 3 and 4 and 0.08 on the fifth with `ShieldBreak`, two echoes and a 0.4 kick. The time
+  stop (CINEMATIC rung) grew a front orbit that pushes in (angle 140 to 172), a profile close up on
+  "toki wo" (angle 96, dist 5.6, fov 50), a push to dist 7.2 with roll -5 for "tomare", a four step
+  impact frame set, a 0.7 flash, a double `Bass`, both rigs held 0.1 s on the thrust, exposure -0.35
+  and contrast 0.2 for the stopped world, a hard cut to dist 26 drawing to 15, a 0.15 vignette while
+  stopped, and `Laugh` 0.35 s after the hand back. The summon was not touched.
 
 ## Reference index
 

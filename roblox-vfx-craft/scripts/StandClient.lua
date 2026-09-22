@@ -9,6 +9,8 @@ local Emitters = require(root.Modules.Emitters)
 local SummonVfx = require(root.Modules.SummonVfx)
 local Locomotion = require(root.Modules.Locomotion)
 local Clips = require(root.Modules.Clips)
+local Moves = require(root.Modules.Moves)
+local TimeStop = require(root.Modules.TimeStop)
 local Remotes = root.Remotes
 
 local player = Players.LocalPlayer
@@ -61,9 +63,16 @@ task.spawn(function()
 end)
 
 -- every body in the game runs the code posed idle and walk on this client so the stand user always moves the same
+-- and a body frozen by someone's time stop holds its pose here too
 local function watch(other)
 	local function onCharacter(character)
 		task.spawn(Locomotion.start, character)
+		character:GetAttributeChangedSignal("Frozen"):Connect(function()
+			Moves.frozen(character, character:GetAttribute("Frozen") == true)
+		end)
+		if character:GetAttribute("Frozen") then
+			task.delay(0.5, Moves.frozen, character, true)
+		end
 	end
 	if other.Character then
 		onCharacter(other.Character)
@@ -82,12 +91,31 @@ local function request()
 	Remotes.SummonRequest:FireServer()
 end
 
+local function standOut()
+	local character = player.Character
+	return character and character:GetAttribute("StandOut") == true
+end
+
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
 	if gameProcessed then
 		return
 	end
-	if input.KeyCode == Config.Key then
+	if input.UserInputType == Enum.UserInputType.MouseButton1 and standOut() then
+		Remotes.MoveRequest:FireServer("M1", true)
+		return
+	end
+	if input.KeyCode == Config.Keys.Summon then
 		request()
+	elseif input.KeyCode == Config.Keys.Barrage and standOut() then
+		Remotes.MoveRequest:FireServer("Barrage", true)
+	elseif input.KeyCode == Config.Keys.TimeStop and standOut() then
+		Remotes.MoveRequest:FireServer("TimeStop", true)
+	end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+	if input.KeyCode == Config.Keys.Barrage then
+		Remotes.MoveRequest:FireServer("Barrage", false)
 	end
 end)
 
@@ -116,11 +144,49 @@ Remotes.Summon.OnClientEvent:Connect(function(caster, on)
 	end
 end)
 
--- a studio test hook so the summon can be fired from the command bar without any input
+Remotes.Move.OnClientEvent:Connect(function(caster, name, on)
+	local character = caster.Character
+	if not character then
+		return
+	end
+	local isLocal = caster == player
+	local ok, err
+	if name == "Barrage" then
+		ok, err = pcall(Moves.barrage, character, isLocal, on)
+	elseif name == "M1" then
+		ok, err = pcall(Moves.m1, character, isLocal, on)
+	elseif name == "TimeStop" then
+		if on then
+			ok, err = pcall(TimeStop.start, character, isLocal)
+		else
+			ok, err = pcall(TimeStop.stop, character, isLocal)
+		end
+	end
+	if ok == false then
+		warn(name .. " failed", err)
+	end
+end)
+
+Remotes.Hit.OnClientEvent:Connect(function(target, kind, pos)
+	local ok, err = pcall(Moves.hit, target, kind, pos)
+	if not ok then
+		warn("hit failed", err)
+	end
+end)
+
+-- studio test hooks so every move can be fired from the command bar without any input
 player:GetAttributeChangedSignal("CastStand"):Connect(function()
 	if player:GetAttribute("CastStand") then
 		player:SetAttribute("CastStand", nil)
 		request()
+	end
+end)
+player:GetAttributeChangedSignal("CastMove"):Connect(function()
+	local v = player:GetAttribute("CastMove")
+	if v and v ~= "" then
+		player:SetAttribute("CastMove", nil)
+		local name, flag = tostring(v):match("^(%w+):?(%w*)$")
+		Remotes.MoveRequest:FireServer(name, flag ~= "off")
 	end
 end)
 
@@ -136,6 +202,19 @@ player:GetAttributeChangedSignal("PoseHold"):Connect(function()
 	if not v or v == "" then
 		ctrl.frozen = false
 		Locomotion.release(character, 0.2)
+		local rig = SummonVfx.rigOf(character)
+		if rig and standOut() then
+			rig:play(Clips.WorldFloat, {fadeIn = 0.2})
+		end
+		return
+	end
+	-- "Stand:WorldBarrage:0.3" holds a stand clip frame on the live stand rig
+	local standName, standArg = tostring(v):match("^Stand:(%w+):?([%d%.]*)$")
+	if standName and Clips[standName] then
+		local rig = SummonVfx.rigOf(character)
+		if rig then
+			rig:play(Clips[standName], {fadeIn = 0, speed = 0, startAt = tonumber(standArg) or 0})
+		end
 		return
 	end
 	local name, arg = tostring(v):match("^(%w+):?([%d%.]*)$")
