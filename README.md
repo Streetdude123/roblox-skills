@@ -28,6 +28,36 @@ User/project data (the curated registry and the learnings store) lives
 **outside** the skill package by design; the package ships only contracts and
 templates for it.
 
+### `roblox-r6-animation`
+
+Authors, verifies and hands off R6 character animation in code: idle, walk and
+run cycles, attacks and summons, weapon or stand overlays. Every amplitude and
+timing in it was measured from real clips (a professional idle, run and
+landing set, four community walk cycles, a professional sword kit, the Roblox
+defaults) rather than guessed, and the skill keeps a feedback log so it grows
+with each review.
+
+Package layout:
+
+- `SKILL.md` - the decision framework, the workflow, the "model for everything"
+  rules taken from a professional idle (one engine, lagged secondary motion,
+  translation builds the pose, amplitude follows energy, nothing is still), the
+  measured numbers for idle, walk, run, landing and attacks, and R6 posing
+  rules.
+- `references/` - the decoded clips frame by frame (idle-run-land,
+  walk-cycles, attack-timing), the pose space and runtime pipeline, and the
+  Moon Animator round trip.
+- `scripts/` - `Poser.lua` (key and procedural clips written to
+  `Motor6D.Transform` in PreSimulation, plus a KeyframeSequence baker),
+  `Locomotion.lua` (a per character idle, walk, run, jump and land controller
+  that replaces the Roblox Animate script), `Clips.lua` (worked examples),
+  `ReadClips.lua` and `serve.js` (decode any KeyframeSequence to text),
+  `Strip.lua` (a motion strip so one capture shows a whole cycle) and
+  `Bake.lua`.
+
+The Lua scripts run inside Roblox Studio through an execute-Luau bridge; they
+are not covered by the Python test suite.
+
 ## Validator scripts
 
 All four validators require Python 3.8+ and PyYAML

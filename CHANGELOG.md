@@ -5,6 +5,17 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-22 — Added the roblox-r6-animation skill (user-authorized)
+
+- New package `roblox-r6-animation`: SKILL.md, five references (idle-run-land,
+  walk-cycles, attack-timing, pipeline, moon-animator) and seven scripts (Poser,
+  Locomotion, Clips, ReadClips, Strip, Bake, serve.js).
+- Numbers come from decoded KeyframeSequences: a professional idle, run and
+  landing set, four community R6 walks, a professional sword kit and the Roblox
+  default walk and idle.
+- README gained a section for the new package. No changes to
+  `roblox-resource-acquisition` or the test suite.
+
 ## 2026-08-12 — Review, polish, and repository cleanup (user-authorized)
 
 - `validate_skill.py`: fixed the observable-verb heuristic used by pass-condition
