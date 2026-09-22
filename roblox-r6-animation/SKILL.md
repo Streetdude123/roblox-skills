@@ -1,123 +1,116 @@
 ---
 name: roblox-r6-animation
-description: Create, refine, inspect, and export Roblox R6 character animation in code. Use for R6 idle, walk, run, jump, landing, attacks, combos, emotes, weapon motion, and stand animation; fixing stiff poses, floaty timing, sliding feet, and broken transitions; studying reference clips; and KeyframeSequence or Moon Animator handoff. Follow a reference-led blocking, breakdown, polish, and verification workflow using the existing Poser pipeline or the project's Animator pipeline.
+description: Create, refine, inspect, and export Roblox R6 character animation in code at a professional hand-keyed standard. Use for R6 idle, walk, run, jump, landing, attacks, combos, emotes, weapon motion, and stand animation; fixing stiff, still, snap-then-freeze or floaty motion, sliding or sinking feet, joints that stop together, and broken transitions; studying reference clips; and KeyframeSequence or Moon Animator handoff. Uses the Poser pipeline with spline curves, joint lag, follow-through springs, a life layer and planted-foot solving, measured with Poser.check and the foot check against professional clips.
 ---
 
 # Roblox R6 animation
 
-Make the action read through posing, weight, timing, and contact. Treat professional quality as a result to inspect, not a preset or a promise. Keep the requested action and style intact. Do not add VFX, camera motion, combat mechanics, sprint controls, or a replacement locomotion system unless the task requires them.
+The target is motion that a viewer cannot tell from a professional animator's hand-keyed work. Poses alone do not get there. Professional motion never stops everywhere at once: parts start, arrive and settle at different times, holds keep drifting, strikes carry speed through the contact, and feet stay where they stand. Keep the requested action and style. Do not add VFX, camera work, combat mechanics or a new locomotion system unless the task asks for them.
+
+## What made earlier AI clips look dead (measured 2026-09-22)
+
+Lepy: "the animations that AI creates have too much still frames and aren't dynamic enough". The clips were measured against his professional references with `scripts/motion_check.js` (the numbers are in [motion-metrics.md](references/motion-metrics.md)):
+
+| Measure | Pro clips (stand set, sword kit) | Earlier Claude clips over 1 s |
+| --- | --- | --- |
+| Time an active joint spends under a tenth of its peak speed (rest%) | 16 to 50% | 56 to 90% |
+| Peak body speed over median body speed (contrast) | 2 to 10.6 | 9 to 104 |
+| Body fully still (nothing over 12 deg/s) in a one-shot | 0% | up to 61%, runs up to 1.3 s |
+
+The causes, each fixed below:
+
+1. **Every key was a stop.** A Poser key eased with `quad`, `cubic`, `sine` or `back` arrives at zero speed, so each breakdown and each "creep" key was a full stop. Pros spline through breakdowns and stop only where a part turns around.
+2. **Joints shared key times,** so three or more stopped on the same frame (unison stops). Pros offset keys one or two frames per link down the chain.
+3. **Holds crept 1 to 2 degrees,** which reads as a freeze. A moving hold keeps travelling in the direction of the move.
+4. **Snap then a long slow settle** (contrast 10 to 100). Pros keep the recovery moving: they hold the over-extended pose briefly, then pop back with the parts trailing.
+5. **Feet slid and sank and hips opened** when the torso turned, because R6 legs hang from the torso.
 
 ## Start with the actual task
 
-1. Read project instructions and inspect the animation setup. Discover available Studio tools; `execute_luau` and `screen_capture` are examples, not guaranteed capabilities.
-2. Extract the action, intent, reference, duration, loop or one-shot, target rig, camera, props, movement permission, and delivery format. Ask about missing details that would change the animation. Do not ask again for information already supplied or visible in the project.
-3. Inspect parts, sizes, `Motor6D.Part0`, `Part1`, `C0`, `C1`, root, weapon grip, start pose, and existing controller. Confirm R6. Do not assume standard joints or a `ReplicatedStorage.Stand` folder.
-4. Read [principles.md](references/principles.md), then the relevant motion reference below. Read [pipeline.md](references/pipeline.md) before running bundled scripts. Use [project-style.md](references/project-style.md) only for the recorded Lepy or DIO setup.
-5. Use [clip-plan.md](templates/clip-plan.md) for task notes. Fill only the decisions needed for this clip. Keep a simple edit brief.
+1. Read the project instructions and inspect the animation setup. Discover the Studio tools that exist; do not assume them.
+2. Extract the action, intent, reference, duration, loop or one-shot, rig, player camera, props, movement permission, impact and cancel times, and delivery format. Ask only about missing details that change the result.
+3. Inspect parts, sizes, `Motor6D.Part0`, `Part1`, `C0`, `C1`, root, grips and the existing controller. Confirm R6.
+4. Read [principles.md](references/principles.md) (posing, timing, overlap, holds, recoveries, idles) before the first key. Read [pipeline.md](references/pipeline.md) before running bundled scripts. Read [project-style.md](references/project-style.md) for Lepy or DIO work.
+5. Keep notes in [clip-plan.md](templates/clip-plan.md).
 
-Separate engine facts, source observations, and authoring choices. Label chosen timing as a choice. A measured number describes its source clip; it does not make other motion wrong. The measurement tables preserve earlier work; their original assets and captures are not all bundled.
+## The method
+
+### 1. Plan in frames
+
+Count at 60 fps and write the beat table: anticipation, strike or action, contact event, follow-through, recovery, exit pose. Record which feet are planted and which part leads each beat. Use the timing ranges in principles.md as a start and the gameplay contract for event times. A chained move ends on the next move's first pose.
+
+### 2. Block the poses
+
+Few poses, each one readable from the player's camera: line of action, shoulders against hips (torso roll against the leg split), no twinned limbs, gaps between the limbs and the body, weight over the support, pushed 10 to 20% past natural. Review the blocking as a strip before any motion work. Do not smooth a weak pose.
+
+### 3. The motion pass (this is where clips come alive)
+
+Author with `curve = "spline"` and give every clip these layers. Field reference: pipeline.md; worked example: `scripts/ExampleClips.lua`.
+
+- **Spline through breakdowns.** Keys default to `auto`: speed flows through a breakdown and stops only where the channel turns around. Put `e = "flat"` only on a real stop. Keep a named ease (`quart`, `back`, ...) only for a shape the spline cannot give, such as a hard snap into a pose.
+- **Offset the chain.** `lag = {Head = 0.4}` delays a joint's whole curve (the example guard's head answers the breath 0.4 s late). Trail loose, carried parts 1 to 4 frames behind what drives them. Do not lag a part that acts on purpose: the striking limb, the torso, a head that holds the eyes on a target (it counters the torso twist on the torso's frames) and a hand pulled back to guard (a lagged lead arm in the example cross was carried 1.95 studs out by the torso's turn). Also stagger key times by hand so no three joints share every key.
+- **Follow-through.** Key the overshoot of every part that must hit a frame (the striking fist, the torso of a strike): a key past the contact, then a drifting hold. Put springs on the other parts: `springs = {["Left Arm"] = "follow"}`. On a snap `lead` overshoots about 6% and settles in 7 frames, `follow` 8%, `drag` 12%, `heavy` has no bounce; on a steady move they trail 0.5, 1.2, 1.7 and 3.1 frames, which is why a spring never goes on a part that must be on its key.
+- **Paths.** Poser interpolates Euler channels, so a limb that crosses the body can swing around the outside on the way. Check the hand path in root space (forward kinematics, pipeline.md) and add a breakdown that keeps it where it belongs.
+- **Life.** `life = 0.6` to `1.5` degrees of slow drift on the upper body so no hold ever freezes; idles also get a breath.
+- **Planted feet.** `post = Feet.post({r = {x, z, yaw}, l = {x, z, yaw}})` solves both legs after the torso, springs included, so the soles stay on their floor targets while the torso turns, leans and lunges. A foot target may be a function of time for steps and heel pivots. Lean the torso from the waist (`waist` in ExampleClips) so a forward lean does not swing the hips back.
+- **Moving holds.** A hold keeps travelling 5 to 15% further in the direction of the move over its frames, with `auto` keys so it glides in and out. Never key a hold as two equal poses.
+- **Recoveries.** For a move the player can chain or cancel, stay in the over-extended follow-through pose 6 to 12 frames while it drifts, then pop back in 8 to 15 frames with the striking limb first and the torso and head 1 to 3 frames behind. A long return (the sword kit takes 30 frames after a hit) suits a finisher; keep it one continuous deceleration with the parts offset, never a creep of a degree or two.
+
+### 4. Measure before you look
+
+In Edit mode (`scripts/LoadTest.lua` loads the modules fresh, `scripts/EditStrip.lua` adds the helpers):
+
+- `Poser.check(clip).text` for a one-shot of 0.3 to 1.5 s must show: frozen 0%, still 5% or less with no still run over 0.1 s (an intended hitstop excepted), rest 45% or less, contrast 2 to 10, stops 3 or fewer per second, unison 5 or fewer per second. A loop or a long held pose must show frozen 0%.
+- `_G.feet(clip)` must show every planted lowest corner within 0.03 of the floor, slide 0.05 or less and hip gap 0.12 or less (aim for 0).
+- A number outside its range names the fault: rest or contrast high means stops and dead holds; unison high means keys on shared frames; slide or gap means the torso outruns the legs. Fix the cause, then measure again.
+
+### 5. Look, then iterate
+
+1. `_G.editStrip(clip, times, {facing = "side"})` then `screen_capture` with the returned camera: one ghost per beat. Check the silhouettes, the line of action and the arcs of the hand and the foot. Repeat from `rear34` (the player's view) and `front`.
+2. Play the clip on the character in Play mode and capture from the player's camera at the contact and the recovery. Read each capture; state what it shows.
+3. Change the smallest pose, timing, lag or spring that fixes what you saw; measure and capture again. Two rounds minimum. Stop when the checks pass and the captures read, not after a fixed count.
+
+## Verify and hand off
+
+1. Check joint names, increasing key times, clip bounds, start and end poses, event times and joint ownership.
+2. Report `Poser.check` and `_G.feet` numbers next to the pro ranges, and the captures you read (times and views).
+3. Exercise the loop, the transition, the cancel, the speed change, the respawn or the second client that applies. Check the Studio output.
+4. Inspect the exported `KeyframeSequence` and replay it. `Poser.bake` includes lag, life, springs and the post pass. Check duration, end pose, hierarchy, priority, loop flag, keyed joints and markers (pipeline.md).
+5. Report the instance path, key decisions, checks and remaining limits. Distinguish **authored**, **measured**, **visually reviewed**, **runtime tested** and **user accepted**. One does not imply the others.
+
+Keep the editable key source. Never claim a clip looks good; report what the numbers and the captures show.
 
 ## Choose the pipeline
 
 | Situation | Action |
 | --- | --- |
-| Existing Poser project | Preserve that runtime. Author keyed or procedural clips, inspect them in Studio, then bake if requested. |
-| Existing Animator project | Preserve Animator and its state controller. Deliver an editable sequence or animation asset using the existing priorities and events. |
-| Matching supplied animation | Inspect it before reauthoring. Use native playback when the custom importer cannot preserve its features. |
-| New place or unknown setup | Inspect tools and ask which handoff is needed before installing a controller or changing default character animation. |
-| No Studio connection | Improve source, plans, and offline checks. Leave visual, playback, and replication checks explicitly unverified. Never fabricate captures. |
+| Existing Poser project | Keep the runtime. Author spline clips with the motion layers, measure, capture, bake if asked. Legacy clips play unchanged. To lift an old clip, set `curve = "spline"`, drop its eases, then rework its holds and recoveries; the engine alone closes only part of the gap (motion-metrics.md). |
+| Existing Animator project | Keep the Animator and its controller. Author in Poser, measure, then deliver a baked sequence with the project's priorities and events. |
+| Supplied professional animation | Inspect and measure it first (`ReadClips.lua` then `motion_check.js`); play it raw through `Poser.fromSequence` instead of reauthoring. |
+| New place or unknown setup | Ask which handoff is needed before installing a controller or replacing the default character animation. |
+| No Studio connection | Author and reason about the source; leave measurement, visual and runtime checks marked unverified. Never fabricate captures or numbers. |
 
-Authoring in code does not require banning AnimationTracks or the Animation Editor. They are playback and editing tools, not causes of stiff animation. Avoid TweenService as a competing writer on animated joints. Give each joint one owner or an explicit blend in the final pose evaluation.
+Give each joint one writer. Avoid TweenService on animated joints.
 
-## Pass 1 - study reference and plan the action
+## R6 rules that bite
 
-Use the supplied reference first. For unfamiliar mechanics, find a reference that clearly shows the support and action. Record its URL or asset path, useful timestamps, source frame rate when known, and what was actually inspected. If only text or a transcript is available, do not claim to have watched the motion.
-
-Identify intent, preparation, weight transfer, action, contact or release, follow-through, and recovery. Some actions omit phases or inherit them from the previous action. Separate camera movement from body movement. Translate the reference to R6's rigid limbs; do not invent elbows, knees, or wrists.
-
-Build a beat table:
-
-| Frame and seconds | Beat and silhouette | Support or contact | Leading action | Secondary response | Event or constraint |
-| --- | --- | --- | --- | --- | --- |
-| From reference or brief | What the pose communicates | Planted feet or grips | What initiates motion | What follows or stays stable | Impact, release, cancel, or loop boundary |
-
-Choose and record authoring FPS. Convert with `seconds = frame / fps`; playback remains time-based. Do not interpret every reference as 60 fps. Obtain required impact and cancel times from the gameplay contract before retiming them.
-
-## Pass 2 - block readable poses
-
-Create the few poses that explain the action with stepped timing. In Poser, `snap` on the destination key holds the previous pose until that key. Keep synchronized body keys while blocking when that makes poses easier to judge.
-
-- State the intent and direction of force. Arrange the torso, head, and limbs into a readable gesture.
-- Place support before adding a lean or reach. Transfer weight before releasing a foot.
-- Check silhouette from the actual player camera and a second useful angle. Keep hands and props readable without changing the requested action just to expose a limb.
-- Use asymmetry for weight or character. Preserve deliberate symmetry in a two-handed action, ritual, or designed stance.
-- Use the least limb translation needed for the R6 pose. A limb key's translation IS the joint gap: the hip pivots at the leg's top corner, so a leg slid 0.45 forward for a stance or pulled 0.3 down to plant a foot leaves daylight between the torso and the leg. Keep leg translations under 0.12 and put the stance into the hip angles instead (a 13 degree swing moves the foot 0.45); plant a foot by dropping the torso onto the legs, never by pulling the leg out of the hip; a leg shoved UP into the torso is hidden and allowed. Arms may carry up to 0.25 where the part overlaps the torso. Measure the gap in torso space before a capture (`references/r6-mechanics.md`). "it can be a TINY little bit off the body but not like that" (2026-09-22, a circled hip gap).
-
-Do not smooth a weak pose. Review blocking before adding breathing, overshoot, or decorative movement.
-
-## Pass 3 - add breakdowns and spacing
-
-Place breakdowns where the path changes: torso clearance, foot lift, weapon crossing, reversal, or contact. Track hand, foot, head, and weapon tip in world space. A good joint-angle curve can still produce a bad endpoint path.
-
-| Desired spacing | Poser choice to consider | Check |
-| --- | --- | --- |
-| Accelerate toward a strike | `quad` or `cubic` **in** | Speed increases toward the target. |
-| Snap away then brake | `quad`, `cubic`, or `quart` **out** | The largest step occurs early; arrival decelerates. |
-| Gentle reversal or breath | `sine` **inout** | Pause and arc match the intent. |
-| Uniform spacing between sampled poses | `linear` | The reference is actually sampled densely enough. |
-| Deliberate stepped hold | `snap` | The jump occurs at the intended frame. |
-| Loose overshoot and settle | Explicit overshoot keys, or `back` on an unconstrained channel | The motion preserves plants, grips, and collisions. |
-
-Poser stores easing on the **destination** key. `back` extrapolates past a target; it is not impact or recoil by itself. Its parameter is not an overshoot percentage. Use explicit keys when contact, direction, or exact overshoot timing matters.
-
-Add overlap by cause: head may lead a look, torso may lead a throw, hands may lead a reach, and arms may absorb a landing. Offset releases and settles where useful. Keep required contacts synchronized. Do not shift every joint by a fixed lag ladder.
-
-Keep purposeful holds. Breathing belongs where a living character should breathe; a planted foot, locked grip, statue, or time-stop can be still. Vary preparation, action, and settle instead of making every clip use the same snap-and-bounce pattern.
-
-## Pass 4 - solve contacts and transitions
-
-Read [r6-mechanics.md](references/r6-mechanics.md) for pose space, forward kinematics, endpoint checks, and contact correction.
-
-- Record each plant's world-space target and contact interval. Check horizontal drift and floor penetration throughout it. A Y-only correction does not prevent sliding.
-- Preserve grips in prop space. Check both hands on two-handed weapons. Revise the pose when R6's rigid limbs cannot satisfy the constraints.
-- Separate visual torso offset from `HumanoidRootPart` world travel. A RootJoint pose does not implement gameplay displacement or server hitboxes.
-- Match locomotion phase to traveled distance, then verify plants. Test relevant starts, stops, turns, speed changes, and landings.
-- Match pose and motion direction at loops and handoffs. Check the final interval into the first. Do not return every attack to idle when the next attack is its recovery.
-- Explicitly compose overlays with locomotion. The bundled `Locomotion.override` replaces its active clip; omitted legs do not automatically continue walking.
-
-## Pass 5 - polish at playback speed
-
-Review full playback, then scrub problem intervals. Check weight, rhythm, endpoint arcs, contact, silhouette, and recovery in that order. Add restrained secondary movement after the action works.
-
-Identify the frame, affected part, and cause before editing. Change the smallest relevant pose, timing, or path, then recheck that interval and its transitions. Do not change a correct number merely to meet an iteration quota.
-
-Use [quality-review.md](references/quality-review.md) for diagnosis and evidence. A motion strip shows poses; it cannot prove timing, impact, or a clean playback transition.
-
-## Pass 6 - verify and hand off
-
-1. Check joint names, increasing times, clip bounds, start and end poses, event times, and joint ownership.
-2. Inspect blocking and final playback from the player camera. Use another view to resolve occlusion or penetration. Tie captures to the source revision and clip times.
-3. Exercise relevant integration paths: loop, transition, cancel, interruption, speed change, respawn, or remote observer. Check Studio output.
-4. Inspect the exported `KeyframeSequence` instance tree and replay it. Check duration, endpoint, hierarchy, priority, loop flag, keyed joints, and markers. Read [pipeline.md](references/pipeline.md) for baker and importer limitations.
-5. Report the artifact or instance path, key decisions, checks performed, and remaining limits. Distinguish **authored**, **structurally checked**, **visually reviewed**, **runtime tested**, and **user accepted**. One does not imply the others.
-
-Keep editable source keys. Bake a separate delivery copy at a rate that preserves the action; include exact event and final times. Do not present a dense bake as an editable Moon Animator project. A script passing or a successful upload does not prove professional quality.
+- **Hip rule.** A leg key's translation is the gap at the hip: the hip pivots at the leg's outer top corner. Put a stance into hip angles or `Feet.post`, never into leg slides; a leg pushed up into the torso is hidden and allowed. Keep any downward gap under 0.12. "it can be a TINY little bit off the body but not like that" (2026-09-22).
+- **Waist rule.** The torso turns about its centre, so a lean swings the hips. Add the waist offset so the body bends at the hips.
+- **Rigid legs.** Turning the torso turns the hips around the feet. A 56 degree turn from a guard to a punch kept both feet planted only with the torso dropped 0.36 (a search in the example); plan the drop with the turn, and use `Feet.gap` to see what a pose needs.
+- **No elbows or knees.** Suggest a bend with a short translation up into the torso or a piston along the limb (the stand fists slide 0.3 to 0.6 studs on the strike frames).
 
 ## Read only what the task needs
 
 | Resource | Use |
 | --- | --- |
-| [principles.md](references/principles.md) | Posing, weight, spacing, overlap, acting, and motion-specific decisions. |
-| [r6-mechanics.md](references/r6-mechanics.md) | R6 transforms, contacts, and reach limits. |
-| [quality-review.md](references/quality-review.md) | Diagnose visible faults and record evidence. |
-| [pipeline.md](references/pipeline.md) | Module contracts, installation, playback, and export limits. |
-| [moon-animator.md](references/moon-animator.md) | Inspect an editor round trip without assuming plugin internals. |
-| [sources.md](references/sources.md) | Linked primary references and what each supports. |
-| [project-style.md](references/project-style.md) | Existing review history scoped to Lepy or DIO tasks. |
-| [idle-run-land.md](references/idle-run-land.md) | Recorded idle, run, and landing measurements. |
-| [walk-cycles.md](references/walk-cycles.md) | Recorded walk poses and controller phase convention. |
-| [attack-timing.md](references/attack-timing.md) | Recorded sword timing; compare the action, not just the numbers. |
-| [the-world-clips.md](references/the-world-clips.md) | Bundled stand decodes and their recorded interpretation. |
-| [clip-plan.md](templates/clip-plan.md) | Reusable brief, beat table, contact plan, and review record. |
+| [principles.md](references/principles.md) | Posing checklist, timing in frames, overlap, moving holds, springs, recoveries, idles, walks, attacks. |
+| [motion-metrics.md](references/motion-metrics.md) | The measured pro and Claude numbers, metric definitions, targets, the engine experiment. |
+| [r6-mechanics.md](references/r6-mechanics.md) | R6 transforms, joint gaps, contacts and reach. |
+| [quality-review.md](references/quality-review.md) | Symptom to cause table and evidence. |
+| [pipeline.md](references/pipeline.md) | Poser fields, Feet, EditStrip, LoadTest, bake and import limits. |
+| [sources.md](references/sources.md) | The research behind each rule. |
+| [project-style.md](references/project-style.md) | Lepy and DIO feedback history. |
+| [idle-run-land.md](references/idle-run-land.md), [walk-cycles.md](references/walk-cycles.md), [attack-timing.md](references/attack-timing.md), [the-world-clips.md](references/the-world-clips.md) | Decoded reference clips and what they show. |
+| [clip-plan.md](templates/clip-plan.md) | Brief, beat table, motion layers, measurements, review record. |
 
-Use `scripts/Clips.lua` as a project-specific example, not a standalone installation. Use `ClipsLocomotion.lua` only when that locomotion setup is requested. Inspect inputs before running `Strip.lua`, `StandStrip.lua`, `ReadClips.lua`, or `Bake.lua`. Use `scripts/check_decode.py` for decoded local endpoint seams and sampling limits; it does not judge quality or world-space contacts.
+Scripts: `Poser.lua` (runtime, check, dump, bake), `Feet.lua` (planted legs), `ExampleClips.lua` (a guard and a cross on the method, passing every check), `EditStrip.lua` (Edit-mode strips and the foot check), `LoadTest.lua` (fresh module copies from `serve.js`), `motion_check.js` (the same metrics on decode text), `ReadClips.lua` (decode a KeyframeSequence), `Clips.lua` and `ClipsLocomotion.lua` (the DIO project, legacy eases), `Strip.lua` and `StandStrip.lua` (Play-mode strips), `Bake.lua`, `check_decode.py`, `AnalyzeClips.js`.

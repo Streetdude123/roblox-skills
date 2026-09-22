@@ -5,6 +5,19 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-22 (late) — Motion-first animation: spline curves, overlap, springs, planted feet, measured (user-authorized)
+
+- `roblox-r6-animation`: rewritten around the measured cause of "too much still frames": Poser's legacy eases
+  arrive at zero speed, so every key was a stop (authored moves over 1 s parked 56 to 90% of the time against
+  16 to 50% in the professional references). `Poser.lua` gains `curve = "spline"` (auto, flat, smooth, step
+  keys with tension), `lag`, `springs` (second order dynamics presets), `life`, a `post` pass, the inertial
+  blend, `check`, `dump`, `posesAt` and `each`; legacy clips sample identically. New `Feet.lua` (R6 legs
+  planted on floor targets after the torso), `EditStrip.lua` (Edit-mode pose strips and the foot check),
+  `LoadTest.lua`, `ExampleClips.lua` (a guard and a right cross built on the method) and `motion_check.js`.
+  New `references/motion-metrics.md`; `principles.md` rewritten with the research (posing checklist, timing in
+  frames, overlap, moving holds, springs, game feel, recipes); SKILL.md, pipeline, review, sources, template and
+  feedback log updated. `tests/test_motion_check.py` covers the Node checker.
+
 ## 2026-09-22 (night, last) — Walk2 walk, bladed idle, rigid-leg feet (user-authorized)
 
 - `roblox-r6-animation`: DIO's walk rebuilt on Walk2 (emm1gar) from the user's BestWalkAnimR6 pack after a

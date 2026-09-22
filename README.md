@@ -30,25 +30,36 @@ templates for it.
 
 ### `roblox-r6-animation`
 
-Authors and refines R6 animation through reference study, blocking, breakdowns,
-contact checks, playback review, and verified export. Supports the existing
-Poser workflow and Animator projects without replacing their runtime by default.
+Authors, measures and refines R6 animation in code at a professional hand-keyed
+standard, and hands it off as a verified KeyframeSequence. The method is
+motion-first: poses are blocked and checked, then a motion pass gives every clip
+spline curves that keep their speed through breakdowns, offset joints, keyed
+follow-through, springs on carried parts, a life layer so holds never freeze,
+and planted feet solved after the torso. Clips are measured against decoded
+professional references before anyone looks at them.
 
 Package layout:
 
-- `SKILL.md` - the workflow and task-specific decisions for poses, spacing,
-  contacts, transitions, and delivery.
-- `references/` - animation principles, R6 transform and contact math, runtime
-  contracts, visual diagnosis, editor handoff, linked primary sources, preserved
-  clip measurements, and project-specific review history.
-- `templates/clip-plan.md` - a reusable brief, beat table, contact plan, and
-  evidence record.
-- `scripts/` - existing Poser and locomotion examples, capture and bake helpers,
-  plus `check_decode.py` for rotation-aware local seam and sample measurements.
+- `SKILL.md` - what made earlier AI clips look dead (measured), the method,
+  the checks with their target ranges, verification and handoff, R6 rules.
+- `references/` - the craft (posing checklist, timing in frames, overlap,
+  moving holds, springs, game feel, recipes), the motion metrics with the
+  professional and earlier Claude numbers, R6 transform and contact math, the
+  Poser runtime contract, diagnosis, sources, decoded reference clips, and
+  project review history.
+- `templates/clip-plan.md` - brief, beat table, motion layers, measurements,
+  review record.
+- `scripts/` - `Poser.lua` (runtime with `curve = "spline"`, `lag`,
+  `springs`, `life`, `post`, the inertial blend, `check`, `dump`, `bake`),
+  `Feet.lua` (planted R6 legs), `ExampleClips.lua` (a guard and a right cross
+  built on the method), `EditStrip.lua` (Edit-mode pose strips and the foot
+  check), `LoadTest.lua` (fresh module copies from `serve.js`),
+  `motion_check.js` (the metrics on decode text), the DIO project clips,
+  capture, decode and bake helpers, and `check_decode.py`.
 
-The Python decode checker is covered by the repository tests. Roblox runtime,
-visual quality, and replication still require Studio verification. The skill
-explicitly documents the bundled importer and baker's limits.
+Legacy Poser clips play exactly as before. The Python decode checker and the
+Node motion checker are covered by the repository tests; Roblox runtime,
+visual quality and replication still require Studio verification.
 
 ### `roblox-vfx-craft`
 

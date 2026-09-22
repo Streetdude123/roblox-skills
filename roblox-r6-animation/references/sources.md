@@ -27,6 +27,26 @@ Reviewed 2026-09-22. Use these primary references for the claims identified belo
 | [Joseph White / Animation Mentor - Pushing and pulling](https://www.animationmentor.com/blog/tutorial-animating-pushing-and-pulling-motions/) | Plan effort and object interaction through reference and blocking. |
 | [Denis Dvoryankin / Animation Mentor - Lifting a heavy object](https://www.animationmentor.com/blog/how-to-animate-weight-and-force-lifting-heavy-object/) | Make preparation and support communicate weight. |
 
+## Motion research (2026-09-22, for the motion-first rewrite)
+
+Read as text through web fetches and summaries; no video was watched frame by frame. Numbers taken from these pages are marked as starting ranges in principles.md; the measured numbers come from the decoded clips.
+
+| Source | Supports |
+| --- | --- |
+| [Autodesk Maya: Graph Editor tangents](https://help.autodesk.com/cloudhelp/2019/ENU/Maya-Animation/files/GUID-43A4FE2C-4863-4EA6-B6AE-6D2B6757F6C7.htm) | Auto tangents: flat at extremes, smooth on transitional keys, clamped between close keys. The `auto` curve in Poser. |
+| [Kochanek-Bartels spline](https://en.wikipedia.org/wiki/Kochanek%E2%80%93Bartels_spline) and [Kochanek and Bartels, SIGGRAPH 1984](https://dl.acm.org/doi/10.1145/964965.808575) | Hermite keys with tension; Catmull-Rom as the zero-tension case. `smooth` and `tn`. |
+| [t3ssel8r, Giving Personality to Procedural Animations using Math](https://www.youtube.com/watch?v=KPoeNZZ6H4s) with the [code transcript](https://github.com/SalvatoreScalia/Giving-Personality-to-Procedural-Animations-using-Math) | Second order dynamics (f, z, r, the k2 stability clamp). The springs; the presets were measured here. |
+| [Daniel Holden, Spring-It-On](https://theorangeduck.com/page/spring-roll-call) | Critically damped springs, halflife damping, inertialization as a decaying offset. The inertial blend. |
+| [David Rosen, An Indie Approach to Procedural Animation (GDC 2014)](https://www.gdcvault.com/play/1020583/Animation-Bootcamp-An-Indie-Approach) | Fluid, responsive characters from very few key poses plus interpolation and procedural layers (Overgrowth: four poses per walk and run cycle). |
+| [Little Polygon, Procedural locomotion](https://blog.littlepolygon.com/posts/loco1/) | Lean from acceleration, bob at half the cadence for roll, springs with a duration-based omega. |
+| [Jonathan Cooper, The 12 principles in video games](https://www.gamedeveloper.com/production/the-12-principles-of-animation-in-video-games) and [the five fundamentals](https://www.linkedin.com/pulse/five-fundamentals-video-game-animation-jonathan-cooper) | Anticipation against response, control returned before the follow-through ends, fast-in slow-out swings, holds after a swing, feel, fluidity and settling. |
+| [Rivals Workshop: anticipation, action, recovery](https://www.rivalslib.com/workshop_guide/art/anticipation_action_recovery.html) | Readable anticipation silhouettes, over-extended recoveries that pop back, long slow motion reads weak. |
+| [Sunstrike Studios, Timing in animation](https://sunstrikestudios.com/en/blog/timing_in_animation/) | Arrive, overshoot, settle halving each stage; one or two bounces; hit pauses of 2 to 6 frames; even spacing syndrome. |
+| [AnimSchool, Moving holds](https://blog.animschool.edu/2024/11/27/create-moving-holds-animating-nothing/) and [idles](https://blog.animschool.edu/2024/06/14/breathing-life-into-idle-animations/) | Drift in the direction of the last momentum, breathing, head support; hips drive and overlap travels up the spine; macro variation over three to six loops; never still. |
+| [Overlap and successive breaking of joints](https://rbossert27.wixsite.com/mysite-2/post/creating-overlap) (after Richard Williams) and [Animation Mentor pendulum overlap](https://www.animationmentor.com/blog/tutorial-overlap-pendulum-motion-animation/) | The tip trails the base; one or two frame offsets per link; things do not stop all at once. |
+| [AnimSeeds, posing principles](https://www.animseeds.com/post/21-posing-principles-for-animation-and-figure-drawing-for-animators) | Line of action, contrapposto, twinning, negative space, push the pose, head and hand gesture. The posing checklist. |
+| [MoCap Online, idle design](https://mocaponline.com/blogs/mocap-news/idle-animation-game-dev-guide) | Additive breathing layers and idle variations. |
+
 ## Evidence boundaries
 
 - The rotation, contact-solve, and loop-measurement procedures are derived for this skill's Poser convention. They are not quoted tutorial recipes.

@@ -24,6 +24,7 @@ In an existing Poser place, use its module locations. For an explicitly requeste
 | Modules Folder | Anim | Runtime modules |
 | Tw ModuleScript | Modules | `scripts/Tw.lua` |
 | Poser ModuleScript | Modules | `scripts/Poser.lua` |
+| Feet ModuleScript | Modules | `scripts/Feet.lua`, for clips with planted feet |
 | Clips ModuleScript | Modules | `scripts/ClipsLocomotion.lua` |
 | Locomotion ModuleScript | Modules | `scripts/Locomotion.lua` |
 | Client entry | StarterPlayerScripts | Adapt to the requested controls and existing controller. |
@@ -32,13 +33,26 @@ In an existing Poser place, use its module locations. For an explicitly requeste
 
 ## Poser clip contract
 
-A clip is `{name, length, loop, joints}`. Times and length are seconds. Each joint key is `{t, r, p, e, d, s}`: r is `{lift, twist, side}` in degrees, p is a parent-axis Vector3 offset, and e/d/s select easing, direction, and the back-ease parameter.
+A clip is `{name, length, loop, joints}` plus the optional motion fields below. Times and length are seconds. Each joint key is `{t, r, p, e, d, s, tn}`: r is `{lift, twist, side}` in degrees, p is a parent-axis Vector3 offset, e names the curve into the key, d and s are the direction and parameter of a named ease, tn is the key's tension.
+
+| Field | Meaning |
+| --- | --- |
+| `curve = "spline"` | Keys without e are `auto`: a cubic Hermite curve per channel (lift, twist, side, x, y, z) whose tangent keeps the speed through a breakdown, is flat where the channel turns around, and is clamped (Fritsch-Carlson) so nothing overshoots between keys. Without this field a key without e is the legacy `quad out`, so old clips play exactly as before (checked: eleven DIO clips sampled identically at 60 fps). |
+| `e` | `auto`, `flat` (zero speed at this key), `smooth` (unclamped Catmull-Rom), `linear`, `step` (hold the previous key until this one), or a legacy ease name (`quad`, `cubic`, `quart`, `sine`, `expo`, `back`, `elastic`, `snap`) that shapes the segment into this key. `auto`, `flat`, `smooth` and `step` also work inside a legacy clip. |
+| `tn` | 0 normal, 1 flat, below 0 looser. |
+| `lag = {[joint] = seconds}` | Samples that joint's curve later. A one-shot is done at `length` plus the largest lag; a loop wraps. |
+| `springs = {[joint] = preset or {f, z, r}}` | Second order dynamics on the sampled channels (presets `lead`, `follow`, `drag`, `heavy`, principles.md). State resets on `play`; `hold` and speed 0 freeze it; `play` with `startAt` runs it from 0 so a paused pose matches. |
+| `life` and `lifeRate` | Slow two-octave noise on the rotation channels: a number spreads its degrees over the torso (1), head (1.4) and arms (1.2), a table gives degrees by joint; legs get none. Default rate 0.35 Hz. |
+| `post(poses, t, ctx)` | Runs after curves, lag, life and springs on the pose-space CFrames of every joint (the torso pose is in root space). `Feet.post` plants the legs here. It may only replace poses of joints listed in `joints`. |
+| `events` | Plain data such as `{hit = 0.29}` for the caller to schedule from the clip clock. |
 
 Keys must be nonempty, finite, ordered by unique time, and inside the declared duration. `compile` sorts and caches CFrames, but does not validate that contract. After changing keys, rebuild the clip or clear its compiled state before resampling. A procedural joint receives `(t, ctx)` and returns a pose table or a pose-space CFrame. It must receive the context fields it actually uses.
 
 The easing belongs to the destination key in Poser. Roblox PoseBase documents easing toward the next pose, so do not copy native easing fields onto destination keys without converting their semantics. The current importer instead uses linear interpolation throughout.
 
-`attach` gathers Motor6Ds by Part1.Name. `play` has one active clip per attached rig and options `fadeIn`, `speed`, `startAt`, `onDone`. `sample` returns an authored pose-space CFrame, not a world frame. `hold` pauses the clip time temporarily; `setSpeed(0)` holds sampling time, but procedural joints that read a changing ctx can still move. Freeze the relevant context as well when a true hold is required.
+`attach` gathers Motor6Ds by Part1.Name. `play` has one active clip per attached rig and options `fadeIn`, `speed`, `startAt`, `onDone`, `blend`. `blend = "inertial"` (the default for spline clips) keeps the new clip moving from its first frame under an offset from the old pose that dies away on a smoothstep over `fadeIn`; `"cross"` (the legacy default) fades from the frozen old pose. Neither carries the old clip's velocity. `sample` returns an authored pose-space CFrame, not a world frame. `hold` pauses the clip time temporarily; `setSpeed(0)` holds sampling time, but procedural joints that read a changing ctx can still move. Freeze the relevant context as well when a true hold is required.
+
+`Poser.check(clip, opts)` returns the motion metrics (motion-metrics.md) with a `text` line; `Poser.dump(clip, fps, name)` returns decode text for `motion_check.js`; `Poser.posesAt(clip, t)` returns every joint's final pose (springs run from 0, post applied); `Poser.each(clip, fps, visit)` visits the clip as play would show it. All four accept `opts.ctx` or `clip.ctxAt` for procedural joints.
 
 Transforms are written in PreSimulation. Do not add another writer to the same joint unless composition and write order are explicit. Changing C0 each frame is not the ordinary authoring path. The fade blends from captured live transforms; this smooths pose differences but does not prove a clean path or matching velocity.
 
@@ -75,13 +89,12 @@ Roll scaling decomposes orientation into Euler angles and is not general retarge
 
 ## Baking and export
 
-`Poser.bake` creates real KeyframeSequence, Keyframe, and nested Pose instances. It refuses a length over 60 s: a held clip such as `DioPoint` carries `length = 100000` so it never ends in play, and a bake of it with no explicit length looped for millions of frames, flooded memory and crashed Studio behind a "Save File Failure" dialog on 2026-09-22 (the unsaved place was lost). Pass a bake length for every held clip and bake at most five clips per `execute_luau` call. It samples procedural clips using `ctxAt(t)` when provided. `Bake.lua` is an Edit-mode project helper with configurable root, rig, and clip list; inspect and adapt those inputs first.
+`Poser.bake` creates real KeyframeSequence, Keyframe, and nested Pose instances from the same simulation as play (lag, life, springs and the post pass included, stepped at 60 fps and kept on the bake grid plus the exact end, so bake at 60 fps or at a rate that divides it). It refuses a length over 60 s: a held clip such as `DioPoint` carries `length = 100000` so it never ends in play, and a bake of it with no explicit length looped for millions of frames, flooded memory and crashed Studio behind a "Save File Failure" dialog on 2026-09-22 (the unsaved place was lost). Pass a bake length for every held clip and bake at most five clips per `execute_luau` call. It samples procedural clips using `ctxAt(t)` when provided. `Bake.lua` is an Edit-mode project helper with configurable root, rig, and clip list; inspect and adapt those inputs first.
 
 Account for the current baker's behavior before delivering its output:
 
 | Behavior in bundled source | Required delivery check or repair |
 | --- | --- |
-| Uses `floor(length * fps + 0.5)` | A non-grid duration can miss its exact endpoint. Include the exact duration sample when adapting the export, then compare final pose and duration. |
 | Sets Action priority for every clip | Set the appropriate project priority on the actual sequence, including Idle or Movement when intended. |
 | Creates ancestor poses with weight 1 | Inspect ancestor channels on partial-body exports. Do not unintentionally key the torso or suppress underlying motion. Use the target editor/runtime's supported masking behavior and verify it. |
 | Emits Linear samples | Inspect fast strikes, stepped holds, and curved paths between samples. Increase sampling or preserve authored keys where needed. |
@@ -99,7 +112,14 @@ For replication, the Animator must originate on the server. Player-character tra
 
 Connect `GetMarkerReachedSignal` for native animation markers when the project uses them. Keep cosmetic events and authoritative gameplay decisions in their existing roles. Test the entry, exit, and interruption paths relevant to the action.
 
+## Planted feet
+
+`scripts/Feet.lua` works on a stock R6 rig. `Feet.stand(torsoPose, side, x, z, yaw, lift)` returns the leg pose that puts the sole centre on a floor point in root space (x right, z forward negative, the floor 3 under the root) with the toe at yaw degrees, and the hip gap it needed. The leg only slides along the torso's up axis (up is hidden inside the torso, down is a gap), the rotation carries the sole across, and four passes raise the aim until the lowest corner is on the floor. A pivot turns the leg about the hip-to-sole line, so the sole centre stays put. `Feet.post(targets)` returns a post function and a stats table; a target is `{x, z, yaw}` or a function of time returning `{x, z, yaw, lift}`. `Feet.gap` says how far a torso pose leaves a leg short. Plan the torso drop with the turn: a rigid leg cannot bend.
+
 ## Source transfer and review tools
+
+`LoadTest.lua` (Edit, with `serve.js` serving the scripts folder on port 8767) creates a fresh `ServerStorage.PoserTest` with new ModuleScripts each run, checking syntax first, so a changed module is really required again. Delete the folder at the end of the task. `EditStrip.lua` (Edit) adds `_G.editStrip` (anchored ghosts posed by forward kinematics, a floor and two lights, painted as a mannequin unless `plain = false`; it returns the `screen_capture` camera and look-at points), `_G.feet` (lowest corner, planted slide of the sole centre and hip gap per leg) and `_G.clearStrip`. A night sky hides the poses: raise `Lighting.ClockTime` for the capture and restore it right after.
+
 
 Use the available Studio source-edit API or project sync. If the existing workflow needs the local source server, `node scripts/serve.js <outDir> <luaDir> 8766` serves `/stand/<Name>.lua` and accepts decoded text at `/put?name=...`. It is an optional transport, not an animation dependency. Restore temporarily changed Studio settings after the task.
 

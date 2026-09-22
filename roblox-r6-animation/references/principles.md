@@ -1,123 +1,174 @@
-# Animation decisions for R6
+# Animation craft for R6
 
-Use these decisions during blocking and polish. Sources are linked in [sources.md](sources.md). The R6 applications and diagnostic procedures here are authoring guidance, not numeric rules taken from a tutorial.
+The rules a professional animator applies, translated to R6 and to Poser fields. Sources are in [sources.md](sources.md); numbers marked "measured" come from [motion-metrics.md](motion-metrics.md) or the decoded clips. Frames are at 60 fps.
 
 ## Contents
 
-- Intent and staging
+- Poses first: the posing checklist
+- Motion is the curve, not the keys
+- Timing and spacing in frames
+- Overlap: successive breaking of joints
+- Moving holds and settles
+- Follow-through and springs
+- Game feel: anticipation, contact, hitstop, recovery, cancel
 - Weight and support
-- Timing and spacing
-- Arcs and breakdowns
-- Overlap and holds
-- Motion recipes
-- A worked timing decision
+- Arcs and paths
+- Motion recipes: idle, walk, run, jump and landing, attack and combo, emote, stand and weapon
+- A worked example
 
-## Intent and staging
+## Poses first: the posing checklist
 
-Write one sentence about what the character is doing and why: a cautious reach, a committed strike, a tired recovery. Make posture communicate that intent before adding motion.
+Motion cannot rescue a weak pose. Check every key pose from the player's camera and from the side:
 
-Check the silhouette at the actual gameplay distance. Separate a hand from the torso when that improves readability, but preserve the action's target and direction. Evaluate the prop tip as well as the body. A pose that looks impressive from the front may hide its action behind the torso in play.
+1. **Intent.** One sentence: what the character does and why (a committed strike, a wary guard, a tired recovery).
+2. **Line of action.** One C or S curve runs through the body. In R6 build it from the torso lean and roll, the head, the leg split and the arm line; a straight vertical body reads stiff.
+3. **Contrapposto.** Shoulders and hips are not parallel. The torso roll and twist set the shoulders; the leg split and the weight foot set the hips.
+4. **No twinning.** Arms and legs are not mirror images and do not reach the same angle on the same frame, unless the action is deliberately symmetric (a two-handed swing, a ritual, the ZA WARUDO V).
+5. **Negative space.** Leave gaps between the arms and the torso and between the legs so the silhouette reads as a shadow.
+6. **Weight.** In a held pose the mass sits over the support foot or between the feet. In motion it may leave the support when a step, a fall or a force explains it.
+7. **Push it.** Push the lean, the twist and the reach 10 to 20% past natural, then pull back only what breaks the read. Game poses are hyper-real.
+8. **Head and hands.** The head is tilted and turned with a purpose (it often leads a look or counters the torso to keep the eyes on a target); a hand is either doing something or hanging relaxed, never stiff.
+9. **Clarity of overlap.** When limbs cross the body, the front one must still read.
 
-Use a clear gesture through the whole body. R6 has one rigid torso, so imply a chest/hip relationship through root orientation, leg placement, shoulders, and head. Do not write keys for a nonexistent waist joint. Mirror a pose only when the action calls for symmetry; asymmetry is a choice, not a quality score.
+Block these poses with the curve stepped or as a strip (`EditStrip`), judge them, and only then do the motion pass.
+
+## Motion is the curve, not the keys
+
+A key is a pose; the curve between keys is the animation. Professional graph editors use spline tangents: a key in the middle of a move (a breakdown) keeps the speed flowing through it, and only an extreme (where a channel turns around) or a deliberate stop has a flat tangent. Maya's auto tangent does exactly this: flat at extremes, smooth on transitional keys, clamped so nothing overshoots between keys.
+
+Poser's legacy eases do the opposite: `quad`, `cubic`, `quart`, `sine`, `expo` and `back` all arrive at zero speed, so every key is a stop, and a key that departs with an `out` ease jumps from zero to full speed in one frame (a jolt). That is the measured cause of the dead look.
+
+- Write `curve = "spline"` on every new clip. Keys default to `auto` (the Maya behaviour). Use `flat` on a planted stop, the true apex of an anticipation that should read as a stop, or a hitstop pose. Use `smooth` (no clamp) when the curve may pass beyond a key between keys. `tn` from 0 to 1 tightens a key toward flat; below 0 loosens it.
+- A breakdown key exists to shape the path or the timing (an arm going out and around the body, a torso squaring on the way through). It must not be a pose that the body stops in.
+- Keep a named ease only for a shape the spline cannot make: a hard snap into a pose (`quart` or `expo` out), a stepped hold (`step`).
+- Loops: close the last key on the first pose; the spline wraps its tangents so the seam keeps its speed.
+
+## Timing and spacing in frames
+
+Timing is when poses happen; spacing is how far the part travels each frame. Speed equals distance over time; slower reads heavier, faster reads lighter. Avoid even spacing (every frame the same distance): acceleration and deceleration carry the weight.
+
+Starting ranges (60 fps; adapt to the gameplay contract and the reference):
+
+| Beat | Frames | Notes |
+| --- | --- | --- |
+| Anticipation for a player's move | 4 to 8 | Responsiveness beats weight. The pose must still read (a clear wind-up silhouette). |
+| Anticipation for a telegraphed or NPC attack | 12 to 30 | Longer means more warning; tie it to the damage. |
+| Anticipation hold | 4 to 8 | Keeps winding 5 to 15% further (measured on the stand's heavy punch: 10 degrees over 6 frames). |
+| Strike, apex to contact | 3 to 6 | Fastest frame in the middle (measured torso steps 10, 30, 45, 29, 9 degrees). |
+| Hitstop on contact | 4 to 12 (0.07 to 0.2 s) | `Rig:hold`; springs freeze too. Pair with a camera kick and a flash. |
+| Follow-through past contact | 4 to 8 | Overshoot 5 to 10% of the strike (measured: 4 degrees torso and 9 degrees arm after a 124 degree whip). |
+| Over-extended recovery hold | 6 to 12 | Drifts, then pops back. |
+| Return to guard | 8 to 15 | Striking limb first, torso and head 1 to 3 frames behind. |
+| Combo link | 20 to 30 per hit | End pose of hit N is the first pose of hit N + 1 (measured on the stand set). |
+| Weighty stop | arrive, overshoot, settle | Each stage about half the amplitude and a couple of frames shorter; one or two bounces at most. |
+| Head turn | 20 to 28 | A quick look or dart 8 to 12 with a one or two frame hold. |
+
+For a strike decide where the fastest spacing is: before, at or through the contact. A committed hit accelerates into the contact and keeps going (the spline does this when the contact key is a breakdown between the apex and the follow-through). A soft contact brakes early (a `flat` contact key).
+
+## Overlap: successive breaking of joints
+
+Things do not stop all at once: the part that drives moves first and the parts it carries follow. Along a chain each link trails the one before it; the tip lags most. At a reversal the base turns first while the tip is still travelling (the blade of grass, the pendulum).
+
+- Decide the driver per beat: the hips and torso drive a punch or a throw, the head drives a look, the hand drives a reach, the feet drive a step.
+- Offset the carried parts 1 to 2 frames per link (increasing: 1, 2, 3). In Poser use `lag` for a whole-curve offset, or move individual keys by hand when only one beat should trail.
+- Keep hard contacts synchronised: the striking fist and the torso land on the contact frame; a two-handed grip never separates because of a lag.
+- Break the three times apart: when a part starts, when it arrives and when it settles. They do not need the same offset.
+- Measured overlap in the stand set: the arms trail the torso 5 to 8 frames in the barrage and the heavy punch; the head trails 2 to 6 frames in the idles.
+- A part that acts on purpose does not trail either: a hand pulled back to guard during a punch was carried 1.95 studs out to the side by the torso's turn when it wore a 2 frame lag.
+- A head that holds the eyes on a target leads, it does not trail: it counters the torso twist on the torso's own frames (measured: head -49 against torso +48 on the same five frames of the stand's right punch). A head that lagged four frames in the example cross pointed 40 degrees off the target at the contact.
+
+## Moving holds and settles
+
+A perfectly static pose looks lifeless within a few frames. A moving hold keeps the pose alive:
+
+- It drifts in the direction of the last momentum, then settles: a key at the start of the hold and a second key 5 to 15% further along, with `auto` tangents so the part glides in and out.
+- Breathing: the chest and shoulders rise and fall; it can build momentum into the next action.
+- The head follows the same momentum as the body; an unmotivated head move breaks the weight.
+- Different parts settle at different times: the hips settle first, then the arms, the head last.
+- `life` adds slow noise to the upper body so a long hold is never frozen; it does not replace a drift that has a direction.
+
+## Follow-through and springs
+
+Follow-through is what the body does after the main action stops: loose parts keep going and come back. `springs` simulate it on the sampled curve (second order dynamics: f is the speed of response, z the damping, r the initial response; r above 1 overshoots at the start, below 0 anticipates):
+
+| Preset | f, z, r | On a 100 degree snap in 0.08 s | Trail on a steady move | Use on |
+| --- | --- | --- | --- | --- |
+| lead | 8, 0.6, 1.25 | overshoots 6, settles in 7 frames | 0.5 frame | a carried part that should stay close (a weapon, a guard hand) |
+| follow | 6, 0.5, 0.5 | overshoots 8, settles in 10 | 1.2 frames | the head in an idle or a reaction, a carried arm |
+| drag | 5, 0.45, 0 | overshoots 12, settles in 12 | 1.7 frames | the free arm, loose parts |
+| heavy | 4, 0.65, 0 | no bounce | 3.1 frames | a heavy weapon arm, a big body |
+
+A custom table `{f = , z = , r = }` works too. Springs react to every key, so a creep hold also settles softly. They run in clip time: a hitstop freezes them and a slow-motion time scale slows them.
+
+Do not put a spring on a part that must be on its key at a contact. Measured on the example's torso (a 76 degree turn into the contact at 850 deg/s): `lead` arrived 7 degrees short, `follow` 20, `drag` 34, `heavy` 47. The only spring that arrived on time (r = 2) overshot a stop by 16%, which reads as rubber. Key the leading part's overshoot instead: one key past the contact 4 to 8 frames later, then a drifting hold.
+
+## Game feel: anticipation, contact, hitstop, recovery, cancel
+
+- **Response first.** Too little anticipation and a move has no weight; too much and it feels unresponsive. Keep a player's anticipation short and readable; put the weight into the contact, the hitstop and the follow-through instead.
+- **Separate the felt timing from the system timing.** The hit event can come early while the animated follow-through stays long; give the player control back before the clip ends (a cancel frame) and let the rest blend out.
+- **Contact.** The hit event sits on the contact key. Hitstop 0.07 to 0.2 s with `Rig:hold`. Push the victim or the weapon further than reality to sell the force.
+- **Recovery.** The recovery pose shows the momentum: over-extended, off-balance. For a cancellable move stay in it a little longer than feels natural, then pop back quickly. Never scale the recovery linearly back to idle; a slow even return blurs when the character can act again. A finisher may return slowly (the measured sword hits spend 30 of 50 frames returning) if the return is one continuous deceleration with the parts offset.
+- **Chains.** A combo is one motion: each hit starts where the last ended, and the recovery of one hit is the load of the next.
+- **Power.** Stronger moves use fewer, faster transition frames and a bigger wind-up silhouette; long slow movement reads as weak.
 
 ## Weight and support
 
-Choose the supporting foot or other contact at each beat. In a settled pose, keep the apparent mass supported. During a dynamic action, let it move beyond the support when a step, jump, fall, or opposing force explains what happens next. Static balance is not a universal constraint on action poses.
+Choose the support at each beat and keep the mass over it in held poses. Show the sequence of effort: prepare support, apply force, accelerate, absorb or release, regain support. A heavy action can strike fast after a demanding preparation; slowing the whole clip does not make it heavy.
 
-Show a sequence of effort: prepare support, apply force, accelerate, absorb or release, regain support. A heavy action can strike quickly after a demanding preparation. Slowing the whole clip does not automatically make it heavy.
+In R6, compression is a torso drop with the legs re-aimed at their floor targets (`Feet.post`), never a leg pulled out of its hip. Lean from the waist (the `waist` offset), or the hips swing back and the feet slide. Turning the torso turns the hips around the feet; plan the drop with the turn (`Feet.gap` gives the need).
 
-For R6 compression, lower and orient the torso while arranging the rigid legs to maintain plausible contact. Translation can suggest a tuck or reach; it does not create a bending knee or elbow. Inspect gaps and limb intersections before increasing offsets.
+## Arcs and paths
 
-Do not solve every movement by bobbing the root. A planted point may have nearly no body motion. A hard landing needs a distinct compression and recovery. A floating stand can have a different support model from its user.
-
-## Timing and spacing
-
-Treat timing as when poses happen and spacing as how far the endpoint travels between samples. Both matter. Compare equal time samples of the hand or weapon tip, not just Euler values.
-
-For a strike, decide whether the fastest spacing occurs before, at, or through the contact. A soft contact brakes early; a committed hit may accelerate into contact and continue into follow-through. These need different curves.
-
-Use stepped blocking to decide pose durations, then add breakdowns and interpolation. Keep a deliberate held pose if it serves the action. Use reference rhythm before stylizing it; retime the preparation, strike, and recovery separately.
-
-In Poser, ease names describe the interpolation weight. `cubic out` moves quickly near the start and slows near the destination. Using it for every strike can make the hand brake before impact. `back out` extrapolates beyond the destination; it cannot replace a planned contact response.
-
-Do not prescribe a recovery percentage, uniform combo duration, or fixed number of strike frames. Respect gameplay timing and choose a visual recovery that makes the next state clear. A held extension followed by a quick return is one style; a continuous return can also work.
-
-## Arcs and breakdowns
-
-Track the endpoint that carries the action. Use a local point at the hand, sole, or blade tip and calculate its world position through the full joint chain.
-
-Add a breakdown to control a path, not to increase key count. A hand crossing the chest may need an out-and-around key. A weapon may need clearance above the head. A foot needs a swing path that clears the floor.
-
-Use near-straight paths for actions that require them. A jab need not draw a large arc. Inspect reversals for an unplanned hook or pause. Do not hide a broken path with effects.
-
-CFrame interpolation follows a short rotational path. For intentional turns greater than 180 degrees, insert intermediate orientations that preserve the chosen direction. A start and end angle cannot encode a full revolution by themselves.
-
-## Overlap and holds
-
-Choose a lead based on the action. Head-led attention, hand-led reach, torso-led throw, and foot-led step are different patterns. Secondary movement should respond to that choice.
-
-Separate three decisions: when a part starts, when it arrives, and when it settles. They do not need equal offsets. A striking hand and target contact may share a frame while the free arm settles later. A two-handed grip must not separate because of a timing ladder.
-
-Add follow-through where momentum or soft attachment explains it. Keep hard contacts fixed until their release. Author recoil as a visible response to force; an easing function named `back` does not describe which direction the body recoils.
-
-Use moving holds selectively. Keep breathing small enough that it does not weaken a pose. Stillness can communicate confidence, attention, tension, or a supernatural freeze. Avoid unrelated sine waves on every joint.
+Track the part that carries the action (the fist, the sole, the blade tip) in world space; a good joint curve can still draw a bad path. Natural motion travels on arcs; a jab may be near straight. Add a breakdown to control a path (a hand going out and around the chest, a blade clearing the head), not to add keys. Poser interpolates Euler channels: a turn over 180 degrees needs an intermediate key in the chosen direction.
 
 ## Motion recipes
 
 ### Idle or held stance
 
-Block an expressive rest pose first. Identify the loaded foot, gaze, and hand purpose. Add one restrained breathing or weight-shift pattern only if appropriate. Inspect the still silhouette and repeat several cycles. Use a separate unwrapped clock for nonperiodic behavior; a baked loop must close its own motion.
+1. Block an expressive rest pose: the loaded foot, the gaze, the hands' purpose, contrapposto.
+2. One engine: a breath of 2.5 to 3.5 s on the torso (lean 2 to 4 degrees, a 0.03 to 0.04 stud sink). The head and arms answer it about a fifth of a cycle later at half the size (measured on the idle Lepy named the model); in Poser use `lag`.
+3. Add `life` of 1 to 1.5 degrees. Frozen must read 0%.
+4. For long idles add macro variation every three to six loops (a weight shift to the other leg, a look around, a fidget) and blend it in so the body is never still.
+5. A floating stand moves as one mass: all joints in phase, 2 to 3 times the limb amplitude, a 0.27 stud bob (measured on The World).
 
 ### Walk
 
-Start with contact, down, passing, and up landmarks for each step. Determine support transfer, stance travel, toe-off, swing clearance, and next contact. Record the phase convention; the bundled controller uses a different origin from a contact-at-zero example.
-
-For a moving root, the planted foot's motion relative to that root must oppose travel. Match cycle distance and playback speed, then measure world-space drift during stance. Distance-driven phase alone is insufficient when the foot trajectory or stride length is wrong.
-
-Add torso response and arm swing after support works. Test acceleration, deceleration, turns, and a change of speed. Do not simply speed up a walk and call it a run.
+Contact, down, passing and up landmarks per step; support transfer; toe-off; swing clearance. Match cycle distance to speed and measure the stance foot's slide. The torso bobs by geometry (lowest at contact, highest after passing), leans 4 to 7 degrees, twists 3 to 5 against the hips with the head countering; arms swing opposite the legs 30 to 40 degrees with a wrist twist that follows the swing, trailing the legs by a frame or two. Measured community walks: rest under 8%, contrast under 2. Test starts, stops, turns and speed changes.
 
 ### Run
 
-Identify contact, compression, push-off, flight, and the next contact in reference. Decide whether the intended style actually has flight. R6 lacks knee flexion, so use whole-leg swing and restrained translation to suggest the tuck, with a readable torso lean and arm rhythm.
-
-Check the silhouette and ground clearance at contact and flight. Preserve support timing when blending from walk. Retune cycle distance and speed together.
+Contact, compression, push-off, flight, next contact. R6 has no knee: suggest the tuck with whole-leg swing (-78 to +54 measured) and a lifted leg translation up into the torso; lean 26 to 28, hips twisting 25 with the head countering. Retune cycle distance and speed together; never a sped-up walk.
 
 ### Jump and landing
 
-Separate takeoff pose, airborne pose, and landing response. Use the character's actual motion state for an interactive jump; a fixed clip clock cannot know when every jump will land. Do not add a long anticipation that delays an already responsive jump input without a gameplay requirement.
-
-At landing, place contact before the body absorbs the fall. Scale the response from observed impact conditions when the controller supports it. Settle into the next state, which may be a run instead of idle. The current bundled controller does not implement fall-speed weighting automatically.
+Separate takeoff, air and landing. Use the character's real motion state; a fixed clock cannot know when a jump lands. Landing: contact first, then the absorb (the measured landing drops 1.1 studs by 0.10 s while the torso pitch arrives at 0.23 s, separate arrivals), then settle into the next state, which may be a run.
 
 ### Attack or combo
 
-Record startup, active interval, recovery, and any cancel window from the game. These are gameplay intervals, not mandatory pose counts. A combo may inherit its next load from the previous hit.
-
-Block target-directed preparation, contact, follow-through, and exit. Put the hit event at the intended contact time. Keep the hand or blade trajectory consistent with the hit direction. Choose whether the feet plant, pivot, or step; do not let a visual lunge imply unimplemented world displacement.
-
-Check the previous clip's exit and next clip's entry in motion. Match or intentionally blend pose and velocity. Do not copy a 30-frame recovery or a 4-frame return solely because another game used it.
+Record startup, active interval, recovery and cancel window from the game. Block a target-directed anticipation, contact, follow-through and exit. Put the event on the contact. Choose whether the feet plant, pivot or step; a back heel may pivot on the ball (a foot target whose yaw changes). Check the previous clip's exit and the next clip's entry in motion. Stand punches are pistons: the arm angle holds through the strike and the arm slides 0.3 to 0.6 studs while the torso whip does the reach (measured).
 
 ### Emote or acting
 
-Use intention, attention, and a change of thought. Let head and body timing communicate the turn in attention. Keep a quiet action quiet. Check whether the pose reads without facial animation; R6 body language carries much of the performance.
+Intention, attention and a change of thought. The head and the body timing show the turn of attention; a quiet action stays quiet. R6 body language carries the performance without a face.
 
 ### Stand or weapon interaction
 
-Treat a floating stand and a grounded user as different bodies. Use a supplied canon reference to decide whether the user leads, copies, commands, or remains still. Do not impose the recorded DIO solution on every stand.
+A floating stand and a grounded user are different bodies. Use the canon reference to decide whether the user leads, copies, commands or holds still. A two-handed weapon is a contact problem: solve both grips in prop space and rework the stance if R6 opens a joint.
 
-Inspect grip transforms and the prop's pivot before posing. A two-handed weapon is a contact problem, not just matching shoulder angles. Rework the stance if maintaining both contacts creates visible R6 joint separation.
+## A worked example
 
-## A worked timing decision
+`scripts/ExampleClips.lua` is a right cross from an orthodox guard (0.72 s, contact at 0.29):
 
-Suppose the supplied gameplay contract specifies a 0.6-second planted right-hand hit with contact at 0.2 seconds. At an explicitly chosen 60 fps these are frames 36 and 12. The following is a planning example, not a measured clip or a universal recipe:
-
-| Frame | Pose purpose | Contact and timing decision |
+| Frame | Beat | What moves |
 | --- | --- | --- |
-| 0 | Existing guard | Match incoming pose; establish foot targets. |
-| 7 | Loaded silhouette | Turn away enough to communicate direction; preserve gaze. |
-| 10 | Strike breakdown | Place the hand on its intended path; begin larger spacing. |
-| 12 | Contact | Meet the target and event time; keep support. |
-| 15 | Follow-through | Continue or recoil according to the impact; preserve any active grip. |
-| 24 | Readable recovery | Regain support while honoring the cancel contract. |
-| 36 | Exit | Match the chosen next state. |
+| 0 | Guard | Left side to the target, hands up, weight low, breathing. |
+| 7 | Load | Sink onto the back leg, shoulders turn away, rear fist draws back. |
+| 7 to 12 | Moving hold | The load keeps winding 6 degrees; nothing freezes. |
+| 15 | Breakdown | Hips and shoulders square, fist half way, speed flowing. |
+| 17 | Contact | Shoulder through, body sits down 0.36, fist pistoned 0.35, lead hand to the chin, back heel pivots out 30 degrees. |
+| 21 | Follow | The body keeps going past the contact; springs overshoot and settle. |
+| 21 to 27 | Extended hold | Drifts 2 degrees further. |
+| 33 | Pop back | The fist returns first; torso and head trail. |
+| 43 | Guard | The chain pose for the next move. |
 
-If the hand slows too early, inspect spacing from frames 10 to 12 and revise that interval. If the foot slides, fix contact rather than offsetting its key times. If the silhouette is weak, change the pose before increasing overshoot. Keep successful constraints fixed while repairing the visible failure.
+Layers: `curve = "spline"`, `lag` (lead arm 2 frames), `springs` (lead arm `drag`), keyed overshoot on the torso and the fist, head keys that counter the torso on its frames, `life = 0.6`, `post = Feet.post` with the heel pivot as a function of time. The measurements are in motion-metrics.md.

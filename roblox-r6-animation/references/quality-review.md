@@ -17,6 +17,11 @@ Use stepped poses for the first check and real-time playback for timing. Use slo
 
 | Symptom | Inspect | First repair to consider |
 | --- | --- | --- |
+| Still frames, dead holds | `Poser.check`: rest% over 45, still runs, contrast over 10 | `curve = "spline"` so breakdowns keep their speed; holds that drift 5 to 15% further; recoveries that hold then pop back instead of a slow ease to idle. |
+| Robotic, everything stops together | unison over 4/s, spread under 1 frame, keys on the same times for every joint | Offset carried parts with `lag` or by moving their keys 1 to 3 frames; springs on carried parts. |
+| Snap then freeze | contrast over 10, a jolt (a part leaving a full stop at half its peak speed) | Remove the legacy ease that stops at the key before the snap; a moving anticipation hold; keyed follow-through. |
+| Head off the target at a contact | Torso twist plus head twist at the contact frame | Head keys that counter the torso on the torso's frames; no lag or spring on that head. |
+| Feet slide or sink when the torso turns | `_G.feet`: slide, lowest corner, hip gap | `post = Feet.post`; lean from the waist; drop the torso with the turn (`Feet.gap` gives the need). |
 | Stiff | Repeated pose shapes, equal timing, parts moving as one without intent | Improve the main pose and contrast of timing; then add motivated overlap. |
 | Floaty | Support changes, slow braking before impact, unearned root rise | Restore contact and weight transfer; reshape spacing around the impact. |
 | Weak strike | Target path, fastest interval, incoming pose, contact silhouette | Correct direction and acceleration; preserve the required impact time. |
@@ -32,6 +37,9 @@ Use stepped poses for the first check and real-time playback for timing. Use slo
 | First-use hitch | Profiler trace, asset loads, first use versus repeated playback | Fix the measured cause; do not assume every hitch is mesh warm-up. |
 
 ## Measure only what answers a question
+
+- Motion quality: `Poser.check(clip).text` in Studio or `node scripts/motion_check.js clip.txt` on a decode. Ranges and definitions: [motion-metrics.md](motion-metrics.md). Compare with a professional clip of the same kind, not only with the targets.
+- Planted feet: `_G.feet(clip)` from `scripts/EditStrip.lua` (lowest sole corner, slide of the sole centre while planted, hip gap).
 
 - Plant drift: maximum horizontal distance from the chosen world contact target during its contact interval.
 - Floor error: signed height of the selected support point and the lowest sole corner relative to the actual floor.
@@ -52,7 +60,7 @@ python3 scripts/check_decode.py references/decodes/TW_idle.txt
 python3 scripts/check_decode.py references/decodes/*.txt --json
 ```
 
-The tool reads the format written by `ReadClips.lua`. It reports local pose endpoint differences, sampled rotation steps, sample gaps, non-linear easing, markers, and local translation velocity mismatch. It reconstructs rotations before comparing them, so a 179-to-minus-179 Euler wrap is not mistaken for a 358-degree turn.
+It needs Python 3, which Lepy's machine does not have on its path; `motion_check.js` runs on Node. The tool reads the format written by `ReadClips.lua`. It reports local pose endpoint differences, sampled rotation steps, sample gaps, non-linear easing, markers, and local translation velocity mismatch. It reconstructs rotations before comparing them, so a 179-to-minus-179 Euler wrap is not mistaken for a 358-degree turn.
 
 Use those measurements to choose what to inspect. Large steps can be intentional. A small local seam does not prove world-space foot contact. Rounded decodes cannot prove sub-frame or sub-centimeter precision; they also omit some source information, including pose weights. The tool checks input structure, not whether an animation is good.
 
@@ -60,6 +68,6 @@ Use those measurements to choose what to inspect. Large steps can be intentional
 
 For each actual correction, record the source revision, clip time, view, visible issue, reason for the edit, and the recheck. Compare from the same view and scale. If a capture tool caches images, confirm freshness through its supported controls; a tiny camera nudge is a workaround only when observed for that tool.
 
-Finish when the relevant checks pass. Do not require two arbitrary edits, mandatory overshoot, or a forced change to a correct clip. If playback cannot be inspected, report that specific limit and provide the source work that was completed.
+Lepy's standard of done (CLAUDE.md): a clip is done when a capture from the player's camera was taken, read and iterated on at least twice, the console is clean, and the report shows the captures and the numbers. Each iteration fixes something the capture or a number showed; do not change a correct pose just to count a round. If playback cannot be inspected, report that specific limit and provide the source work that was completed.
 
 When performance is in scope, profile on the target configuration and compare against a baseline there. Record hardware or device, quality settings, visible character count, sample duration, and first-use versus steady-state behavior. Do not equate one foreground Studio frame-time reading with a device budget.
