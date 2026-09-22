@@ -31,6 +31,10 @@ One controller per character on every client. It disables the Roblox `Animate` s
 - Motion strip (`scripts/Strip.lua`): clone the character (set `Archivable = true` first) six to eight times along a line, anchor each root, hold each at a different time or phase with a zero speed play, light them, and capture once from the side. Ghosts must face the camera: with the camera at local -z use facing 0 for a front view or `-pi/2` for a side view.
 - Numbers: read limb direction vectors back in root space (`-part.CFrame.UpVector` is the hand direction) when a pose looks wrong in a capture.
 - Studio play must run at QualityLevel 21 for glow; captures without camera arguments use the game camera.
+- Two captures with identical camera arguments return the same cached image; move the camera a tenth of a stud between captures of a changed scene.
+- Frame time reads are valid only while the Studio window is in front: an occluded Studio runs at 15 fps or freezes for seconds, so measure a 2 s idle first and trust a run only when idle frames are 16 to 18 ms.
+- Two Poser rigs on one model coexist when their clips drive different joints (a stand rig and a body rig on the same clone); two rigs on the same joints fight in hash order, so rebuild the clone instead of stacking a test clip on it.
+- A first summon hitches on the first draw of new meshes, materials and sprites, not on Lua: draw every piece once at join at 98 percent transparency for two frames (`SummonVfx.warm`) and the 57 ms frame becomes 26 ms.
 
 ## Reading other people's clips
 

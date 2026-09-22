@@ -61,6 +61,8 @@ Lepy set the idle in `references/idle-run-land.md` as the guide for all animatio
 - Overlap: head and free arm land two to three frames after the torso. Never move every joint on the same frame.
 - Arcs: an arm that crosses the body needs a middle key (up and over, or forward and out); a two key lerp cuts through the torso.
 - Holds must breathe: add small keys through a hold instead of leaving it flat.
+- The hand direction in parent axes is `(cosL sinS, -cosL cosS, sinL)` for `r = {L, twist, S}`. Once lift passes 90 the cosine flips, so a positive side swings a RAISED right hand inward. A raised right claw is `{140, -20, -41}` (out 0.5, up 0.58, forward 0.64) and its left mirror is `{128, 15, 47}`; a V flare with the arms low is `{22, 0, 128}`. Check a pose by this formula before a capture.
+- A stand or pet must read from behind: the player camera sits behind the user, so limbs that point forward vanish into the body. Raise them up and out, and verify with a capture from the rear three quarter view, not the front.
 
 ## Feedback log
 
@@ -68,6 +70,7 @@ Lepy set the idle in `references/idle-run-land.md` as the guide for all animatio
 - 2026-09-21: "these are horrid" on a sine walk at 27 degrees and 1.78 Hz plus a drifting idle - calibrate against real clips, never a symmetric sine.
 - 2026-09-22: he supplied the community walks and the sword kit to learn from and asked for this skill; Moon Animator is his tool of choice for hand polish.
 - 2026-09-22: "analyze the idle animation ... use how it works as a way for all animation guidance for everything" - the one engine, lag, translation and energy rules above come from that idle and its run and landing.
+- 2026-09-21: "remake the entire animation for the world's stand" after a guard pose stand appear he did not like - the remake is one root arc out of the back, a V flare at the apex, a swoop into raised claws and a 2.6 s hover with lagged arms (`Clips.WorldAppear`). "do not make it so laggy when you summon him" - the hitch was the first draw of the stand meshes, the Neon ghost and the kit sprites, fixed by drawing them once at join at 98 percent transparency (`SummonVfx.warm`). "lower down the tone, simple small vfx" - no impact frames, no flash, one small ring and a few stars.
 
 ## Reference index
 
@@ -81,5 +84,5 @@ Lepy set the idle in `references/idle-run-land.md` as the guide for all animatio
 
 - `scripts/Poser.lua`, `scripts/Locomotion.lua`, `scripts/Clips.lua` - the runtime modules and the DIO clips as worked examples.
 - `scripts/ReadClips.lua` + `scripts/serve.js` - decode KeyframeSequences to text files.
-- `scripts/Strip.lua` - the motion strip for one capture verification.
+- `scripts/Strip.lua` - the motion strip for one capture verification; `scripts/StandStrip.lua` - the same for a stand inside the character (two rigs on one clone, stand parts shown from their `Tr` attributes).
 - `scripts/Bake.lua` - bake every clip into a rig's AnimSaves.

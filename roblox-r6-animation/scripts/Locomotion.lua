@@ -58,7 +58,7 @@ local function update(ctrl, dt)
 		ctx.land = 0
 	end
 	ctx.run = approach(ctx.run, math.clamp((ctx.speed - 18) / 8, 0, 1) * (1 - ctx.air), 6, dt)
-	ctx.stand = ctrl.character:FindFirstChild("Stand") ~= nil
+	ctx.stand = ctrl.character:GetAttribute("StandOut") == true
 end
 
 -- the roblox animate script only runs on the owner so stopping it there stops the replicated tracks too
