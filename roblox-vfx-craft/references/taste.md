@@ -1,0 +1,104 @@
+# Lepy's VFX taste
+
+Everything here is a sentence he said and what it turned out to mean in practice. He judges from a
+recording or from play, by feel, and he does not explain. The rule is the meaning we found.
+
+## Dense but readable
+
+"The explosion at the end needs to be WAY more dramatic and longer ... too much empty space, not
+enough particles." A clean first cut read as thin. He judges a frame by how full it is.
+
+- Fill every phase: ambient sparkle fields across the whole arena, not only at the focus point.
+- A climax is three waves (burst, sky star and cracked sphere, then a 240 stud dome with a 340 stud
+  ripple and a smoke mushroom), debris rain and lingering smoke after. Bursts in the hundreds.
+- Then the same night: "the speed marks kinda ruin it ... camera needs to zoom out more since its a big
+  vfx ... you are doing a little too much so it feels kinda messy now." The fix that landed: forty
+  percent fewer particles, two pillar sleeves and one beam removed, speed lines only as 0.4 s pulses
+  on hits, every wide shot about 1.6x farther out.
+- Layer count matters more than particle count for mess: one clean sleeve beats three overlapping.
+
+## The Megumin vocabulary (for the ultimate only)
+
+He sent a Megumin Explosion still from KonoSuba: "recreate all those colorful sparkles". Rainbow
+four-point stars (cyan, green, yellow, magenta, pink, lavender, white) with tiny rings, dots and rays.
+Keep the crimson core and wrap it in that field. It was the single biggest look win of the piece.
+
+But: on the stand summon he said "star vfx doesn't really suit the world, try coming up with more
+creative VFX that fits the world more and stands." So the sparkle field is not a default. It belongs
+to the sword ultimate's look. Every character or stand gets a vocabulary from its own identity.
+
+## The identity rule for stands and characters
+
+Before any particle, write three words for what the character IS, then pick pieces that say those
+words. Generic sparkles say nothing about a stand.
+
+- The World (DIO): time, clockwork, menace. Candidate language: a clock face or ring that ticks and
+  stops, gold and lavender energy with a dark core, a ripple of stopped time (a grey-out sphere edge),
+  cracked glass shards, afterimage silhouettes in gold, the menacing "ゴゴゴ" aura as a slow heavy
+  distortion rather than twinkles, a single hard pulse on the summon instead of a burst of stars.
+- A fire stand would be embers and heat shimmer, an ice stand shards and frost rings, and so on.
+- The kit is large enough for this: `Auras` (rune ring with chain beams, gold beam fan, green floor
+  rays), `Anime` (charge, shiny, lightning flipbooks, shield break rings, crack, shockwave, punch hits,
+  wind, smoke, portal), `Big`, `Beams`, `vfx pack` (purple explosion kit), `VFX` (rings, spirals,
+  spheres, spikes, EyeRing). Pick by meaning, then tint to the palette.
+
+## No Highlight on the rig
+
+"Don't highlight the character." A `Highlight` aura looked like a UI outline, not an effect.
+Silhouettes inside impact frames are fine because they are the frame, not an outline on the body.
+
+## Camera
+
+"Camera needs to be even smoother, also don't pan back to the character at the end, when the vfx is
+about to end, fade the screen black and bring it back."
+
+- Sine in-out shots, an exponential follow lerp, low-frequency noise shake, always drifting.
+- Far enough back that a 160 stud pillar and a 300 stud ring fit the frame.
+- Impact frames want a dead still camera: freeze the rig for the frame length, no kick, no shot, and
+  never combine a FOV punch with a dolly the other way (a dolly zoom reads as a wrong pan).
+- End on a fade to black; wake the default camera behind the rig while black; fade in. No pan.
+- He liked the cut list of the final ultimate as it was (raise push, blade close up, low front hero
+  on the hold, angle whip on the slash, hard cut wide on the hit stop, long lens on the pillar, low
+  base shot on the mid frame, tight on the frozen body, wide on the collapse). Keep that grammar.
+- He wanted the opening slower: raise with wind only, then a QUIET two second hold at the top with a
+  hero low shot and the pose breathing, then the charge, the peak, the slam. Quiet before loud.
+
+## No text
+
+An anime attack name card (Bangers font whip on the freeze) was built and removed the same night:
+"text ruins it". Do not add text cards, subtitles or labels to his VFX.
+
+## Too geometric
+
+"Too geometric" on the pillar. He reads clean Neon solids (perfect cylinders, tori, outline rings,
+flash balls, box slabs) as cheap. Build glow from Beams, soft particles, hand-stroke and ripple
+meshes; keep any mesh solid at 0.35+ transparency with a glow particle behind it; rocks are real rock
+meshes at random turns, not slabs.
+
+## The kit rule
+
+"Use the VFX kit I have given you, store the vfx you don't need in the server storage to be used for
+later. I checked for backdoors already its fine." And later: "I'll always add vfx packs you can use."
+
+- Every place will have his packs. Catalogue them first, build from them, archive the rest.
+- Still run the script scan on every pack. A free pack shipped a `require(assetId)` backdoor once and a
+  free crate carried a Command Bar social-engineering payload in a byte array; his check is a start,
+  not a guarantee. See kit-workflow.md.
+
+## The summon rung
+
+"Animations kind of suck, its a simple summon so no cutscenes." Then: "don't make it so laggy when
+you summon him, no change in quality though. Also don't make the VFX so crazy like impact frames for
+summoning please, just lower down the tone its simple small vfx for summoning a stand."
+
+- A summon is a gameplay toggle: no camera takeover, no letterbox, no vignette, no impact frames, no
+  exposure flash, no world dimming, no body scaling, 1.0 to 1.5 s total, the humanoid free again under
+  a second.
+- "No change in quality" means the look stays; the lag fix is a join-time draw warm-up, not fewer pieces.
+- It still needs a beat structure: gather, pop, rise, settle. Small is not flat.
+
+## Related feedback on animation
+
+His animation feedback lives in the `roblox-r6-animation` skill. The one that crosses over: the
+clip and the effects must key off the same schedule, and gameplay moves never lock the body for
+more than a second.

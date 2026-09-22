@@ -58,6 +58,33 @@ Package layout:
 The Lua scripts run inside Roblox Studio through an execute-Luau bridge; they
 are not covered by the Python test suite.
 
+### `roblox-vfx-craft`
+
+Builds ability VFX from the VFX packs that ship with each place: small stand
+summons, moves, and full cinematic ultimates with a scripted camera, anime
+impact frames, screen effects and a two-group sound mix. It carries the tone
+ladder (summon, move, cinematic), the taste log of every review sentence, the
+pack intake routine (script scan, archive, mesh gallery, dead sounds, template
+folder, join-time warm-up), the module APIs, the sword ultimate's schedule and
+cut list, the mix numbers measured from a recording, and the Studio
+verification routine (quality level, capture cache, phase polling, first-cast
+frame profiling).
+
+Package layout:
+
+- `SKILL.md` - the tone ladder, the workflow, the rules he taught, the
+  measured numbers and the feedback log.
+- `references/` - `taste.md`, `kit-workflow.md`, `modules.md`, `cinematic.md`,
+  `sound.md`, `verification.md`.
+- `scripts/` - `Tw.lua`, `Emitters.lua`, `Kit.lua`, `CameraRig.lua`,
+  `ScreenFx.lua`, `ImpactFrames.lua`, `SpeedLines.lua`, the two worked
+  examples `SummonVfx.lua` and `UltimateVfx.lua` with their client, server and
+  config files, and the intake tools `ScanPack.lua`, `MeshGallery.lua` and
+  `BlankDeadSounds.lua`.
+
+The Lua scripts run inside Roblox Studio through an execute-Luau bridge; they
+are not covered by the Python test suite.
+
 ## Validator scripts
 
 All four validators require Python 3.8+ and PyYAML
