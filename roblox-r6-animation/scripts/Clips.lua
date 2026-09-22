@@ -15,83 +15,162 @@ end
 
 local Clips = {}
 
--- the idle copies the structure of a professional r6 idle: one 3 s chest breath is the engine, the head and
--- the arms follow it a fifth of a cycle later at half the size, the legs shift weight in phase, and the
--- stance itself is built with part offsets (staggered feet, back foot turned out) not with rotation
+-- a smooth cyclic curve through {u, value} keys on a 0..1 cycle (hermite with finite difference tangents), so a
+-- walk can be keyed like a hand made cycle instead of a sine
+local function cyclic(keys, u)
+	local n = #keys
+	u = u % 1
+	local i = n
+	for k = 1, n do
+		if keys[k][1] <= u then
+			i = k
+		end
+	end
+	local function at(k)
+		local off = 0
+		while k < 1 do
+			k += n
+			off -= 1
+		end
+		while k > n do
+			k -= n
+			off += 1
+		end
+		return keys[k][1] + off, keys[k][2]
+	end
+	local u0, v0 = at(i - 1)
+	local u1, v1 = at(i)
+	local u2, v2 = at(i + 1)
+	local u3, v3 = at(i + 2)
+	if u < u1 then
+		u += 1
+	end
+	local h = u2 - u1
+	local t = (u - u1) / h
+	local m1 = (v2 - v0) / (u2 - u0) * h
+	local m2 = (v3 - v1) / (u3 - u1) * h
+	local t2, t3 = t * t, t * t * t
+	return (2 * t3 - 3 * t2 + 1) * v1 + (t3 - 2 * t2 + t) * m1 + (-2 * t3 + 3 * t2) * v2 + (t3 - t2) * m2
+end
+
+-- how far below the hip the lowest corner of a rigid leg sits once swung by lift and side (the block's corner, not
+-- its centre: a 30 degree swing lifts the centre 0.27 but the heel corner only 0.02)
+local function legDepth(lift, side, up)
+	local c = math.clamp(cos(math.rad(lift)) * cos(math.rad(side)), -1, 1)
+	local a = math.acos(c)
+	return 2 * cos(a) + 0.5 * sin(a) - (up or 0)
+end
+
+-- the idle is a stance with intent, weight on the right leg under the body, the left leg forward and out and
+-- relaxed, chest out and chin up; one 3.4 s breath is the engine (chest pitch and a sink), the head and arms answer
+-- it 0.7 s later at half the size, and a 9 s weight shift moves the hips over the standing leg. The stance is built
+-- in the hip angles, never by sliding a leg out of its hip, and the torso height is solved from the lowest foot
+-- corner so both feet stand on the floor
+local IDLE = {
+	rLeg = {-6, 2, 4},
+	lLeg = {10, 22, -6},
+}
 local function idleKey(name, t, ctx)
-	local w = t * TAU / 3
+	local w = t * TAU / 3.4
 	local breath = sin(w)
-	local lag = sin(w - 1.36)
-	local open = ctx.stand and 4 or 0
+	local lag = sin(w - 1.3)
+	local shift = sin(t * TAU / 9)
+	local open = ctx.stand and 1 or 0
 	if name == "Torso" then
-		return {p = V3(0, -0.09 - 0.02 * breath, -0.05 - 0.02 * breath), r = {-4.2 - 1.9 * breath, -6 + 0.3 * lag, 0}}
+		-- bladed: the chest turned 16 to the right so the left hip and foot lead; the legs hang from the torso, so its
+		-- lean swings them too and enters the foot depth
+		local tl = 3 - 1.2 * breath
+		local depth = math.max(legDepth(IDLE.rLeg[1] - 1.5 * breath + tl, IDLE.rLeg[3]), legDepth(IDLE.lLeg[1] + 1.5 * breath + tl, IDLE.lLeg[3]))
+		return {p = V3(0.05 + 0.02 * shift, depth - 2 + 0.035 - 0.012 * breath, -0.02 * breath), r = {tl, -16 + 1.2 * shift, 1.2 + 0.4 * shift}}
 	elseif name == "Head" then
-		return {r = {5 - 1.0 * lag, 6, 0}}
+		return {r = {7 + 0.8 * lag, 14 - 1.0 * shift, -3}}
 	elseif name == "Right Arm" then
-		return {p = V3(0, -0.06 - 0.01 * breath, 0), r = {14 + open + 2.3 * lag, -7.5, 4 + open * 0.5}}
+		return {p = V3(0, -0.05, 0), r = {-8 + 2 * open + 1.6 * lag, -12, 8 + 3 * open}}
 	elseif name == "Left Arm" then
-		return {p = V3(0, -0.05, 0), r = {-2 + 2.2 * lag, 13, -3 - open * 0.5}}
+		return {p = V3(0, -0.04, 0), r = {8 + 1.4 * lag, 16, -6 - 2 * open}}
 	elseif name == "Right Leg" then
-		return {p = V3(0.07, 0.11, -0.33), r = {-7.8 + 3.4 * breath, -12, 3}}
+		return {r = {IDLE.rLeg[1] - 1.5 * breath, IDLE.rLeg[2], IDLE.rLeg[3]}}
 	elseif name == "Left Leg" then
-		return {p = V3(-0.01, 0.15, -0.47), r = {0.3 + 3.3 * breath, 3.5, -4.9}}
+		return {r = {IDLE.lLeg[1] + 1.5 * breath, IDLE.lLeg[2], IDLE.lLeg[3]}}
 	end
 	return {}
 end
 
--- the walk follows what four community r6 cycles do: legs swing further back than forward, the back leg
--- pushes down so the foot stays planted, the knee lifts on the forward pass, the torso leans and bobs
--- twice a cycle, the arms swing with a wrist twist from dropped shoulders and the head counters the twist
-local function legKey(s, c, a, mirror)
-	local lift = s > 0 and 32 * a * s or 48 * a * s
-	local knee = 0.24 * a * math.max(0, c)
-	local plant = 0.9 * (1 - cos(math.rad(lift))) * (s < 0 and 1 or 0.25)
-	return {p = V3(0, knee - plant, 0), r = {lift, 0, mirror and -6 or 6}}
+-- the walk is emm1gar's hand keyed Walk2 from Lepy's BestWalkAnimR6 pack (8 keys a 0.917 s cycle), re-keyed on u so
+-- the controller's settle phases (u 0 and 0.5) land where the legs cross: stance from contact at u 0.18 (+28) through
+-- 0.31 (+5) and 0.44 (+4) to toe off at 0.80 (-54), then the back leg kicks up behind and the knee drives through the
+-- passing at 0.05. Two changes keep DIO connected: the planted back leg is never pushed DOWN out of the hip (the
+-- body height is solved from the stance foot's lowest corner instead) and the arms drop at most 0.15
+local W2 = {
+	u = {0.0545, 0.182, 0.309, 0.436, 0.564, 0.673, 0.800, 0.927},
+	rl = {-4, 28, 5, 4, -24, -45, -54, -23},
+	rly = {0.22, 0, 0.03, 0, 0, 0, 0, 0.03},
+	rls = {2, 2, 2, 2, -1, -5, -7, -5},
+	tw = {-5, -3, -1, 0, 5, 3, 1, 0},
+	hw = {4, 1, -3, 1, -3, -4, -2, 1},
+	ra = {{-23, -6, 5}, {-30, -19, -3}, {-22, -14, 0}, {-6, -4, 5}, {17, 6, 8}, {37, 29, -7}, {14, 9, 4}, {-13, -2, 6}},
+	la = {{29, 1, -4}, {40, -8, 0}, {35, 1, -5}, {6, 6, -8}, {-24, 11, -12}, {-33, 12, -3}, {-17, 5, -5}, {15, -2, -9}},
+}
+local function w2keys(values, pick)
+	local keys = {}
+	for i, u in ipairs(W2.u) do
+		local v = values[i]
+		keys[i] = {u, pick and v[pick] or v}
+	end
+	return keys
 end
+local WK = {
+	rl = w2keys(W2.rl), rly = w2keys(W2.rly), rls = w2keys(W2.rls), tw = w2keys(W2.tw), hw = w2keys(W2.hw),
+	ral = w2keys(W2.ra, 1), rat = w2keys(W2.ra, 2), ras = w2keys(W2.ra, 3),
+	lal = w2keys(W2.la, 1), lat = w2keys(W2.la, 2), las = w2keys(W2.la, 3),
+}
 
 local function walkKey(name, ctx)
-	local ph = ctx.phase
-	local a = math.clamp(ctx.speed / 16, 0.55, 1.15)
-	local s, c, c2 = sin(ph), cos(ph), cos(2 * ph)
+	local u = ctx.phase / TAU
+	local a = math.clamp(ctx.speed / 16, 0.5, 1.15)
+	local rl, ry, rs = a * cyclic(WK.rl, u), math.max(0, a * cyclic(WK.rly, u)), cyclic(WK.rls, u)
+	local ll, ly, ls = a * cyclic(WK.rl, u + 0.5), math.max(0, a * cyclic(WK.rly, u + 0.5)), -cyclic(WK.rls, u + 0.5)
 	if name == "Torso" then
-		return {p = V3(0.03 * s * a, 0.055 * (c2 + 1) * a - 0.07, -0.04), r = {-6 - 1.5 * c2, 4 * s * a, 1.5 * s * a}}
+		local tl = -5
+		local depth = math.max(legDepth(rl + tl, rs, ry), legDepth(ll + tl, ls, ly))
+		return {p = V3(0, depth - 2 + 0.05, -0.03), r = {tl, a * cyclic(WK.tw, u), 0}}
 	elseif name == "Head" then
-		return {r = {3 + 1 * c2, -2 * s * a, -1 * s * a}}
+		return {r = {2, a * cyclic(WK.hw, u), 0}}
 	elseif name == "Right Arm" then
-		local lift = 8 - 36 * a * s
-		return {p = V3(0, -0.2, 0), r = {lift, 0.6 * lift - 4, 9 + 3 * s}}
+		return {p = V3(0, -0.15, 0), r = {a * cyclic(WK.ral, u), cyclic(WK.rat, u), cyclic(WK.ras, u)}}
 	elseif name == "Left Arm" then
-		local lift = 8 + 36 * a * s
-		return {p = V3(0, -0.2, 0), r = {lift, -0.6 * lift + 4, -9 + 3 * s}}
+		return {p = V3(0, -0.15, 0), r = {a * cyclic(WK.lal, u), cyclic(WK.lat, u), cyclic(WK.las, u)}}
 	elseif name == "Right Leg" then
-		return legKey(s, c, a, false)
+		return {p = V3(0, ry, 0), r = {rl, 0, rs}}
 	elseif name == "Left Leg" then
-		return legKey(-s, -c, a, true)
+		return {p = V3(0, ly, 0), r = {ll, 0, ls}}
 	end
 	return {}
 end
 
--- in the air one knee comes up and the arms open so a jump reads as a jump not a frozen walk
+-- in the air the takeoff tucks one knee up into the hip and throws the arms out, the fall lets the legs hang long
+-- and reach for the floor
 local function airKey(name, ctx)
 	local up = ctx.jump or 0
 	if name == "Torso" then
 		return {p = V3(0, 0.02, 0), r = {-6 + 4 * up, 0, 0}}
 	elseif name == "Head" then
-		return {r = {8, 0, 0}}
+		return {r = {8 - 4 * up, 0, 0}}
 	elseif name == "Right Arm" then
-		return {r = {-22 - 20 * up, 0, 32}}
+		return {r = {-18 - 22 * up, 0, 30 + 8 * up}}
 	elseif name == "Left Arm" then
-		return {r = {-22 - 20 * up, 0, -32}}
+		return {r = {-10 - 18 * up, 0, -34 - 8 * up}}
 	elseif name == "Right Leg" then
-		return {r = {20 + 10 * up, 0, 10}}
+		return {p = V3(0, 0.45 * up, 0), r = {22 + 16 * up, 0, 8}}
 	elseif name == "Left Leg" then
-		return {r = {-10, 0, -10}}
+		return {p = V3(0, 0.1 * up, 0), r = {-12 + 4 * up, 0, -8}}
 	end
 	return {}
 end
 
--- a landing folds the body the way the professional landing does: the torso drops most of a stud and folds
--- forward, the legs fold up into the body, the arms fly forward for balance, the head comes up first
+-- a landing folds the body the way the professional landing does: the torso drops most of a stud and folds forward,
+-- the legs fold up INTO the hips (hidden) and swing forward with the angle so the feet stay under the body, the arms
+-- fly forward for balance, the head comes up first
 local function landOffset(name, land)
 	if land <= 0 then
 		return CFrame.new()
@@ -101,26 +180,26 @@ local function landOffset(name, land)
 	elseif name == "Head" then
 		return pose({r = {-22 * land, 0, 0}})
 	elseif name == "Right Arm" then
-		return pose({p = V3(0, -0.3 * land, 0), r = {48 * land, 30 * land, 12 * land}})
+		return pose({p = V3(0, -0.12 * land, 0), r = {48 * land, 30 * land, 12 * land}})
 	elseif name == "Left Arm" then
-		return pose({p = V3(0, -0.3 * land, 0), r = {34 * land, -30 * land, -12 * land}})
+		return pose({p = V3(0, -0.12 * land, 0), r = {34 * land, -30 * land, -12 * land}})
 	elseif name == "Right Leg" then
-		return pose({p = V3(0, 1.0 * land, -0.7 * land), r = {10 * land, 0, 4 * land}})
+		return pose({p = V3(0, 1.0 * land, 0), r = {30 * land, 0, 4 * land}})
 	elseif name == "Left Leg" then
-		return pose({p = V3(0, 0.95 * land, -0.6 * land), r = {32 * land, 0, -6 * land}})
+		return pose({p = V3(0, 0.95 * land, 0), r = {49 * land, 0, -6 * land}})
 	end
 	return CFrame.new()
 end
 
--- the run copies a professional r6 sprint: a 27 degree lean, hips twisting 25 each way with the head
--- countering one to one, two bobs a cycle, legs that swing 54 forward and 78 back while the leg parts drive
--- a stud up and forward at the knee, and arms that pump 60 forward and 84 back
+-- the run copies a professional r6 sprint: a 27 degree lean, hips twisting 25 each way with the head countering one to
+-- one, two bobs a cycle, legs that swing 54 forward and 78 back; the knee drive is a leg pushed up into the hip and
+-- swung further forward (the pro clip slides the leg 1.4 studs forward, which opens the hip), and arms that pump 60
+-- forward and 84 back from shoulders dropped at most 0.2
 local function runLeg(s, phi, a, mirror)
 	local lift = s > 0 and 54 * s or 78 * s
 	local knee = math.max(0, sin(phi + 0.35))
 	local thigh = math.max(0, sin(phi + 0.6))
-	local back = math.max(0, -s)
-	return {p = V3(0, 0.95 * a * knee * knee - 0.45 * back, -1.4 * a * thigh * thigh + 0.3 * back), r = {lift, 0, mirror and -4 or 4}}
+	return {p = V3(0, 0.95 * a * knee * knee, 0), r = {lift + 30 * a * thigh * thigh, 0, mirror and -4 or 4}}
 end
 
 local function runKey(name, ctx)
@@ -133,10 +212,10 @@ local function runKey(name, ctx)
 		return {r = {3.7 + 5.8 * c * c, 24 * c, 2.3 * c}}
 	elseif name == "Right Arm" then
 		local lift = 24 - 60 * s
-		return {p = V3(0, -0.15 - 0.35 * math.max(0, lift / 84), 0), r = {lift, 0.5 * lift, 10 + 8 * math.abs(s)}}
+		return {p = V3(0, -0.08 - 0.12 * math.max(0, lift / 84), 0), r = {lift, 0.5 * lift, 10 + 8 * math.abs(s)}}
 	elseif name == "Left Arm" then
 		local lift = 24 + 60 * s
-		return {p = V3(0, -0.15 - 0.35 * math.max(0, lift / 84), 0), r = {lift, -0.5 * lift, -10 - 8 * math.abs(s)}}
+		return {p = V3(0, -0.08 - 0.12 * math.max(0, lift / 84), 0), r = {lift, -0.5 * lift, -10 - 8 * math.abs(s)}}
 	elseif name == "Right Leg" then
 		return runLeg(s, ph, a, false)
 	elseif name == "Left Leg" then
@@ -162,7 +241,9 @@ local function moveJoint(name)
 		end
 		local land = ctx.land or 0
 		if land > 0.001 then
-			cf = cf * landOffset(name, land)
+			-- the fold's translation is in the parent's axes (a leg folds straight up into its hip), its rotation on top
+			local lo = landOffset(name, land)
+			cf = CFrame.new(lo.Position) * cf * lo.Rotation
 		end
 		return cf
 	end
@@ -183,7 +264,7 @@ Clips.DioMove = {
 	},
 }
 
--- the same pose functions as a bakeable idle and walk so the animation editor can publish them
+-- the same pose functions as a bakeable idle and walk (the walk cycle is 0.81 s at speed 16, Locomotion STRIDE 13) so the animation editor can publish them
 Clips.DioIdleBake = {
 	name = "DioIdle",
 	length = 10,
@@ -196,11 +277,11 @@ Clips.DioIdleBake = {
 
 Clips.DioWalkBake = {
 	name = "DioWalk",
-	length = 13 / 16,
+	length = 0.81,
 	loop = true,
 	joints = Clips.DioMove.joints,
 	ctxAt = function(t)
-		return {phase = t * TAU * 16 / 13, speed = 16, walk = 1, air = 0, land = 0, t = t}
+		return {phase = t * TAU / 0.81, speed = 16, walk = 1, air = 0, land = 0, t = t}
 	end,
 }
 
@@ -817,73 +898,164 @@ for pose, joint in pairs(MAP) do
 	DIOWRAPS[pose] = WRAPS[joint]
 end
 local PSCALE = {Torso = 1, Head = 1, ["Right Arm"] = 0.4, ["Left Arm"] = 0.4}
--- leg silhouettes per hit: guard, right step, left step, rise, knee up for the kick, the lunge, the stance
-local LEGS = {
-	{r = {8, 0, 8}, rp = V3(0.05, 0, -0.25), l = {-8, 8, -8}, lp = V3(-0.05, 0, 0.25)},
-	{r = {16, 0, 8}, rp = V3(0.05, 0, -0.38), l = {-16, 8, -8}, lp = V3(-0.05, 0, 0.32)},
-	{r = {-4, 0, 8}, rp = V3(0.05, 0, 0.1), l = {12, 6, -8}, lp = V3(-0.05, 0, -0.18)},
-	{r = {6, 0, 8}, rp = V3(0.05, 0, -0.15), l = {-8, 6, -8}, lp = V3(-0.05, 0, 0.2)},
-	{r = {50, 0, 10}, rp = V3(0.05, 0.3, -0.4), l = {-18, 10, -10}, lp = V3(-0.06, 0, 0.38)},
-	{r = {28, 0, 8}, rp = V3(0.06, 0, -0.55), l = {-32, 10, -10}, lp = V3(-0.06, 0, 0.5)},
-	{r = STANCE.rLeg, rp = V3(0.04, 0, -0.15), l = STANCE.lLeg, lp = V3(-0.04, 0, 0.15)},
+-- the feet per hit as floor targets in root space (x right, z forward negative): guard, right step, left step, rise,
+-- the kick (the right leg leaves the floor), the lunge, the stance. The legs are rigid, so each one is rotated from
+-- its hip to point at its target and never slid out of the hip; a target out of reach drops the torso (a crouch or
+-- a lunge), a target too close pushes the foot out along the floor
+local FEET = {
+	{r = {0.55, -0.55}, l = {-0.55, 0.5}},
+	{r = {0.55, -0.95}, l = {-0.55, 0.85}},
+	{r = {0.5, 0.3}, l = {-0.55, -0.65}},
+	{r = {0.55, -0.4}, l = {-0.5, 0.5}},
+	{r = {0.55, -0.4}, l = {-0.62, 0.8}, kick = true},
+	{r = {0.55, -1.2}, l = {-0.62, 1.15}},
+	{r = {0.5, -0.45}, l = {-0.5, 0.35}},
 }
--- the foot bottom sits at hip + leg pose + (-0.5 sideSign, -2, 0) in the torso's axes and the torso pose sits in
--- root axes, so the leg offset that puts it on the floor (three studs under the root) is one linear solve
-local function solveFootY(tp, r, p, sideSign)
-	local hip = CFrame.new(sideSign, -1, 0)
-	local legPose = Poser.poseCF({p = V3(p.X, 0, p.Z), r = r})
-	local foot0 = (tp * hip * legPose * CFrame.new(-0.5 * sideSign, -2, 0)).Position.Y
-	local upY = math.max(0.5, tp.Rotation.UpVector.Y)
-	return (-3 - foot0) / upY
-end
+local KICK = Poser.poseCF({p = V3(0, 0.35, 0), r = {62, 0, 8}})
+local LEGV = {[1] = V3(-0.5, -2, 0), [-1] = V3(0.5, -2, 0)}
+local LEGLEN = LEGV[1].Magnitude
 local M1LEN = {0.417, 0.417, 0.417, 0.333, 0.333}
 local M1STRIKE = {0.25, 0.25, 0.25, 0.12, 0.12}
 
--- the stand's torso rides 0.09 above its root through the set so the feet are solved against that
-local function legTrack(i, side)
-	local from, to = LEGS[i], LEGS[i + 1]
+-- where each foot is at time t of hit i: the step leaves 0.10 s before the strike lands and arrives 0.07 after it on
+-- a quart ease, the moving foot lifts 0.3 in an arc, and the fifth hit settles back to the stance
+local function feetAt(i, t)
+	local from, to = FEET[i], FEET[i + 1]
 	local arrive = M1STRIKE[i] + 0.07
-	local len = M1LEN[i]
-	return function(t)
-		local e = backOut((t - (arrive - 0.10)) / 0.10, 1.3)
-		local rest = i == 5 and quartOut((t - 0.22) / 0.11) or 0
-		local a = side == "r" and from.r or from.l
-		local b = side == "r" and to.r or to.l
-		local pa = side == "r" and from.rp or from.lp
-		local pb = side == "r" and to.rp or to.lp
-		-- a planted foot is solved onto the floor, a lifted one (the kick) keeps its authored height, and the
-		-- two heights blend through the step so no seam opens between hits
-		local r = mix(a, b, e)
-		local p = pa:Lerp(pb, e)
-		local lifted = pa.Y + (pb.Y - pa.Y) * e
+	local u = math.clamp((t - (arrive - 0.12)) / 0.12, 0, 1)
+	local e = quartOut(u)
+	local rest = i == 5 and quartOut((t - 0.22) / 0.11) or 0
+	local out = {}
+	for _, side in ipairs({"r", "l"}) do
+		local a, b = from[side], to[side]
+		local x, z = a[1] + (b[1] - a[1]) * e, a[2] + (b[2] - a[2]) * e
+		local moving = math.abs(b[2] - a[2]) + math.abs(b[1] - a[1]) > 0.05
+		local arc = moving and 0.3 * sin(math.pi * u) or 0
 		if rest > 0 then
-			local sr = side == "r" and LEGS[7].r or LEGS[7].l
-			local sp = side == "r" and LEGS[7].rp or LEGS[7].lp
-			r = mix(r, sr, rest)
-			p = p:Lerp(sp, rest)
-			lifted = lifted * (1 - rest)
+			local s = FEET[7][side]
+			x, z = x + (s[1] - x) * rest, z + (s[2] - z) * rest
 		end
-		-- the copied torso leans up to 33 and rolls up to 30, so a planted foot is solved onto the floor from
-		-- the sampled torso pose and the r6 hip geometry; a lifted foot (the kick) keeps its authored height
-		local tp = Poser.sample(Clips.DioM1[i], "Torso", t)
-		local y = solveFootY(tp, r, p, side == "r" and 1 or -1) + lifted
-		return {p = V3(p.X, y, p.Z), r = r}
+		out[side] = {x, z, arc}
 	end
+	-- the kick weight: up through the fourth hit's step, down through the fifth
+	local kick = 0
+	if i == 4 then
+		kick = e
+	elseif i == 5 then
+		kick = 1 - quartOut((t - 0.02) / 0.14)
+	end
+	out.kick = kick
+	return out
+end
+
+-- a rigid leg pointed from its hip at a floor target: the rotation that takes the rest leg (hip corner to the foot
+-- bottom centre) onto the hip-to-target line, then a twist that turns the foot out
+-- the feet pivot with the hips: a target is turned by the torso's heading, so a 124 degree whip turns the stance
+local function heading(tp)
+	local lv = tp.LookVector
+	return CFrame.Angles(0, math.atan2(-lv.X, -lv.Z), 0)
+end
+
+local function legAim(tp, s, fx, fz, lift, twist)
+	local J = (tp * CFrame.new(s, -1, 0)).Position
+	local hx, hz = fx - J.X, fz - J.Z
+	local hd = math.sqrt(hx * hx + hz * hz)
+	local dy = J.Y + 3 - lift
+	if dy >= LEGLEN then
+		hx, hz = 0, 0
+	else
+		local want = math.sqrt(LEGLEN * LEGLEN - dy * dy)
+		if hd < 1e-3 then
+			hx, hz, hd = s * 1e-3, 0, 1e-3
+		end
+		hx, hz = hx / hd * want, hz / hd * want
+	end
+	local d = tp.Rotation:VectorToObjectSpace(V3(hx, -math.min(dy, LEGLEN), hz)).Unit
+	local v = LEGV[s].Unit
+	local axis = v:Cross(d)
+	local sinA, cosA = axis.Magnitude, v:Dot(d)
+	local R = sinA < 1e-6 and CFrame.new() or CFrame.fromAxisAngle(axis / sinA, math.atan2(sinA, cosA))
+	return R * CFrame.Angles(0, math.rad(twist), 0)
+end
+
+-- the lowest of the four sole corners in root space for a leg pose
+local function soleLow(tp, s, legCF)
+	local centre = tp * CFrame.new(s, -1, 0) * legCF * CFrame.new(-0.5 * s, -1, 0)
+	local lowest = math.huge
+	for _, x in ipairs({-0.5, 0.5}) do
+		for _, z in ipairs({-0.5, 0.5}) do
+			lowest = math.min(lowest, (centre * CFrame.new(x, -1, z)).Y)
+		end
+	end
+	return lowest
+end
+
+-- two passes: aim the sole centre, measure the real lowest corner (twist and torso roll change which corner it is),
+-- aim again with that error removed so the corner lands on the floor (or on the step arc)
+local function legIK(tp, s, fx, fz, lift, twist)
+	local f = heading(tp) * V3(fx, 0, fz)
+	fx, fz = f.X, f.Z
+	local aim = lift
+	local cf = legAim(tp, s, fx, fz, aim, twist)
+	for _ = 1, 2 do
+		local err = soleLow(tp, s, cf) - (-3 + lift)
+		aim -= err
+		cf = legAim(tp, s, fx, fz, aim, twist)
+	end
+	return cf
+end
+
+-- how far the torso must come down so both legs reach their targets
+local function dropFor(tp, feet)
+	local drop = 0
+	local yaw = heading(tp)
+	for s, side in pairs({[1] = "r", [-1] = "l"}) do
+		if not (side == "r" and feet.kick > 0.5) then
+			local f = yaw * V3(feet[side][1], 0, feet[side][2])
+			local J = (tp * CFrame.new(s, -1, 0)).Position
+			local hx, hz = f.X - J.X, f.Z - J.Z
+			local hd2 = hx * hx + hz * hz
+			local reach = math.sqrt(math.max(0, LEGLEN * LEGLEN - hd2)) + 0.5 * math.min(1, math.sqrt(hd2) / LEGLEN)
+			drop = math.max(drop, J.Y + 3 - reach)
+		end
+	end
+	return drop
 end
 
 Clips.DioM1 = {}
 for i, name in ipairs({"LeftPunch", "RightPunch", "LeftUpperCut", "RightKick", "LeftStab"}) do
-	Clips.DioM1[i] = Poser.fromSequence(Anims[name], DIOWRAPS, {
+	local clip = Poser.fromSequence(Anims[name], DIOWRAPS, {
 		name = "DioM1_" .. i,
 		only = UPPER,
 		pScale = PSCALE,
 		rollScale = {Torso = 0.45},
 		loop = false,
-		extra = {
-			["Right Leg"] = legTrack(i, "r"),
-			["Left Leg"] = legTrack(i, "l"),
-		},
 	})
+	-- the copied torso is kept as a probe so the solved crouch can sit on top of it
+	local probe = {joints = {Torso = clip.joints.Torso}, compiled = true}
+	local function torsoAt(t)
+		local tp = Poser.sample(probe, "Torso", t)
+		local feet = feetAt(i, t)
+		return CFrame.new(0, -dropFor(tp, feet), 0) * tp, feet
+	end
+	clip.joints.Torso = function(t)
+		return (torsoAt(t))
+	end
+	clip.joints["Right Leg"] = function(t)
+		local tp, feet = torsoAt(t)
+		local f = feet.r
+		local cf = legIK(tp, 1, f[1], f[2], f[3], -4)
+		if feet.kick > 0 then
+			cf = cf:Lerp(KICK, feet.kick)
+		end
+		return cf
+	end
+	clip.joints["Left Leg"] = function(t)
+		local tp, feet = torsoAt(t)
+		local f = feet.l
+		return legIK(tp, -1, f[1], f[2], f[3], 10)
+	end
+	Clips.DioM1[i] = clip
 end
 
 -- the chain clips are reachable by name too so the pose hold hook can freeze any hit

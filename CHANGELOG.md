@@ -5,6 +5,14 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-22 (night, last) — Walk2 walk, bladed idle, rigid-leg feet (user-authorized)
+
+- `roblox-r6-animation`: DIO's walk rebuilt on Walk2 (emm1gar) from the user's BestWalkAnimR6 pack after a
+  side-strip audition of all four references; `cyclic` hermite key curves, `legDepth` sole-corner body height,
+  `legIK` / `dropFor` rigid-leg foot targets for the copied chain, a bladed idle, a landing fold that folds
+  legs straight up into the hips. New sections "Planted feet on rigid legs" (r6-mechanics.md) and "Walk2 as
+  DIO's walk" (walk-cycles.md); the feedback and the measurements in project-style.md.
+
 ## 2026-09-22 (night, later) — The knife throw, the hip rule (user-authorized)
 
 - `roblox-r6-animation`: the hip rule — a limb key's translation is the joint gap; `attachLegs` in

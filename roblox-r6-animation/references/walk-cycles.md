@@ -97,6 +97,10 @@ Columns: t | torso lift twist side | x y z | head lift twist side | right arm li
 0.867 |   -7   -4   -0 |  0.00 -0.16 -0.09 |   -3    3    2 |  -15  -18    9 |   15  -21   -5 |   27   -2  0.05 |  -19    1 -0.03
 ```
 
+## Walk2 as DIO's walk (2026-09-22)
+
+DIO's locomotion plays Walk2's keys re-keyed on u = ((t - 0.30) / 0.917) mod 1, so u 0 and 0.5 are where the legs cross (the controller settles there on a stop). Right leg lift / abduction by u: 0.055 -4 / 2 (knee up 0.22), 0.182 +28 / 2 (contact), 0.309 +5, 0.436 +4, 0.564 -24 / -1, 0.673 -45 / -5, 0.800 -54 / -7 (toe off), 0.927 -23 / -5 (knee 0.03); the left leg is the same curve half a cycle later with the abduction mirrored. Arms, torso twist and head twist are Walk2's columns at the same u. Changes from the source: leg y below zero clamped to 0 (the torso height comes from the sole corner instead), arms dropped 0.15 instead of 0.18 to 0.36, curves hermite through the keys instead of linear.
+
 ## Patterns recorded in these examples
 
 1. Cycle length 0.76 s (run) to 0.92 s (walk) at speed 16; a slow walk is 1.5 s. The Roblox default is 0.67 s.

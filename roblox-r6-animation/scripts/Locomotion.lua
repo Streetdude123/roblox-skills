@@ -6,7 +6,8 @@ local Clips = require(script.Parent.Clips)
 
 local Locomotion = {}
 
--- studs of ground covered by one full walk cycle so the feet plant at any speed
+-- studs of ground covered by one full walk cycle at speed 16 (a 0.81 s cycle, Walk2 played 13 percent faster than its
+-- 0.917 s); a slower walk takes shorter steps at a quicker relative cadence so it is not the fast walk in slow motion
 local STRIDE = 13
 local controllers = {}
 
@@ -35,7 +36,8 @@ local function update(ctrl, dt)
 	local walkTarget = math.clamp((ctx.speed - 0.6) / 3.5, 0, 1) * (1 - ctx.air)
 	ctx.walk = approach(ctx.walk, walkTarget, 7, dt)
 	if ctx.walk > 0.01 then
-		ctx.phase = (ctx.phase + math.pi * 2 * ctx.speed / STRIDE * dt) % (math.pi * 2)
+		local a = math.clamp(ctx.speed / 16, 0.5, 1.15)
+		ctx.phase = (ctx.phase + math.pi * 2 * ctx.speed / (STRIDE * (0.55 + 0.45 * a)) * dt) % (math.pi * 2)
 	else
 		-- a stopped walk settles the phase to the nearest passing pose so the legs come together
 		local rest = ctx.phase < math.pi and 0 or math.pi * 2
