@@ -1,93 +1,114 @@
-# The code posing pipeline
+# Runtime and export contracts
 
-Everything here lives in `ReplicatedStorage.Stand.Modules` in Lepy's places and as copies in this skill's `scripts/`.
+Read this before using the bundled scripts. These contracts describe the current source, not an idealized animation engine. Preserve the existing project runtime unless changing it is part of the task. Engine references are linked in [sources.md](sources.md).
 
-## Pose space
+## Contents
 
-A key pose is written in the PARENT part's axes at the joint pivot, so the same numbers work on any R6 rig:
+- Inspect and install only what is needed
+- Poser clip contract
+- Locomotion and overlays
+- Importing sequences
+- Baking and export
+- Native Animator playback
+- Source transfer and review tools
 
-- `r = {lift, twist, side}` in degrees. `lift` rotates about X: a limb swings forward for positive, the head looks up for positive, the torso leans BACK for positive. `twist` rotates about the limb's own Y. `side` rotates about Z toward +X, so the right arm goes out for positive and the left arm goes out for negative.
-- `p` is a Vector3 offset in studs in the same axes. Legs use `p.Y` for knee lift and foot planting, arms use `p.Y` for dropped shoulders, the torso uses all three for crouch, bob, sway and lunge.
-- The pose CFrame is `CFrame.new(p) * Angles(0,0,side) * Angles(lift,0,0) * Angles(0,twist,0)`.
-- `Motor6D.Transform = C0.Rotation:Inverse() * pose * C0.Rotation`. The reverse decode is `P = C0.Rotation * Transform * C0.Rotation:Inverse()`, then `lift = asin(r21)`, `twist = atan2(-r20, r22)`, `side = atan2(-r01, r11)` from `P:GetComponents()`.
-- Standard R6 C0 rotations: shoulders and hips are `Angles(0, +-pi/2, 0)` (right positive), Neck and RootJoint are `CFrame.new(0,0,0, -1,0,0, 0,0,1, 0,1,0)`.
+## Inspect and install only what is needed
 
-## Poser.lua
+Find the current controller, animation instances, rig, module dependencies, and input entry point. Confirm whether a Studio bridge can inspect instances, write source, run Edit/Client/Server code, and capture the viewport. Do not invent missing capabilities.
 
-- `Poser.attach(model, ctx)` collects every Motor6D keyed by `Part1.Name`, so a stand inside a character never collides with the body's own "Right Shoulder". `ctx` is a shared table a controller fills every frame.
-- A clip is `{name, length, loop, joints = {[partName] = keys or function}}`. Keys are `K(t, r, p, ease, dir, overshoot)`; the ease on a key is the ease INTO that key. Eases: linear quad cubic quart sine expo back elastic snap, dirs in out inout.
-- A joint may instead be `function(t, ctx)` returning a key table or a CFrame. That is how idle, walk, air and land blend inside one clip (`Clips.DioMove`) and how the stand's float reads the walk phase.
-- `rig:play(clip, {fadeIn, speed, startAt, onDone})` blends from the live transforms. `speed = 0` holds a frame (pose sheets). `rig:hold(dur)` is a hit stop. `rig:stop(fade)` eases back to rest.
-- Transforms are written in `RunService.PreSimulation` every frame. A one shot write from a normal thread is overwritten by the Animator, so a held pose must be a zero speed play.
-- `Poser.bake(clip, rig, fps, name, length)` samples a clip into a KeyframeSequence with Linear poses nested by Part0. Procedural clips give `ctxAt(t)` so phase and speed exist per frame.
+In an existing Poser place, use its module locations. For an explicitly requested fresh Poser locomotion setup, create real instances with these relationships:
 
-## Locomotion.lua
+| Instance | Parent | Source |
+| --- | --- | --- |
+| Anim Folder | ReplicatedStorage | Module container |
+| Modules Folder | Anim | Runtime modules |
+| Tw ModuleScript | Modules | `scripts/Tw.lua` |
+| Poser ModuleScript | Modules | `scripts/Poser.lua` |
+| Clips ModuleScript | Modules | `scripts/ClipsLocomotion.lua` |
+| Locomotion ModuleScript | Modules | `scripts/Locomotion.lua` |
+| Client entry | StarterPlayerScripts | Adapt to the requested controls and existing controller. |
 
-One controller per character on every client. It disables the Roblox `Animate` script on the owner (which also stops the replicated tracks), plays `Clips.DioMove`, and each Heartbeat fills `ctx`: `speed` (smoothed ground speed), `walk` (0..1 from speed 0.6 to 4.1), `phase` (advances by `2pi * speed / STRIDE`, STRIDE 13 studs per cycle gives a 0.81 s cycle at speed 16), `air` from Freefall/Jumping, `jump` for the first part of a jump, `land` set to 1 on Landed and decaying at 3.2 per second, `stand` when a Stand model is present. A stopped walk settles the phase to the nearest passing pose. `Locomotion.override(character, clip, opts)` plays a move and hands back to DioMove; `Locomotion.release` returns early.
+`Clips.lua` is the larger DIO example and depends on project Config and assets. It is not standalone. `LocomotionClient.lua` includes sprint and PoseHold behavior; do not install those controls for an unrelated animation request. Create a separate inspected R6 rig for export when needed.
 
-## Verification without watching
+## Poser clip contract
 
-- Pose sheet: `player:SetAttribute("PoseHold", "walk:0.25" | "idle" | "DioSummon:0.36")` freezes the live body; nil releases.
-- Motion strip (`scripts/Strip.lua`): clone the character (set `Archivable = true` first) six to eight times along a line, anchor each root, hold each at a different time or phase with a zero speed play, light them, and capture once from the side. Ghosts must face the camera: with the camera at local -z use facing 0 for a front view or `-pi/2` for a side view.
-- Numbers: read limb direction vectors back in root space (`-part.CFrame.UpVector` is the hand direction) when a pose looks wrong in a capture.
-- Studio play must run at QualityLevel 21 for glow; captures without camera arguments use the game camera.
-- Two captures with identical camera arguments return the same cached image; move the camera a tenth of a stud between captures of a changed scene.
-- Frame time reads are valid only while the Studio window is in front: an occluded Studio runs at 15 fps or freezes for seconds, so measure a 2 s idle first and trust a run only when idle frames are 16 to 18 ms.
-- Two Poser rigs on one model coexist when their clips drive different joints (a stand rig and a body rig on the same clone); two rigs on the same joints fight in hash order, so rebuild the clone instead of stacking a test clip on it.
-- A first summon hitches on the first draw of new meshes, materials and sprites, not on Lua: draw every piece once at join at 98 percent transparency for two frames (`SummonVfx.warm`) and the 57 ms frame becomes 26 ms.
+A clip is `{name, length, loop, joints}`. Times and length are seconds. Each joint key is `{t, r, p, e, d, s}`: r is `{lift, twist, side}` in degrees, p is a parent-axis Vector3 offset, and e/d/s select easing, direction, and the back-ease parameter.
 
-## Reading other people's clips
+Keys must be nonempty, finite, ordered by unique time, and inside the declared duration. `compile` sorts and caches CFrames, but does not validate that contract. After changing keys, rebuild the clip or clear its compiled state before resampling. A procedural joint receives `(t, ctx)` and returns a pose table or a pose-space CFrame. It must receive the context fields it actually uses.
 
-`scripts/ReadClips.lua` decodes every KeyframeSequence under a container into one text file per clip (`clip|joint|t|lift|twist|side|px|py|pz|ease|dir`) through a local node server (`scripts/serve.js`, POST `/put?name=`). Then awk over the files: ranges per joint, frame by frame tables, and a speed segmentation (hold under 4 deg per frame, move 4-15, fast 15-40, STRIKE over 40) that exposes the snap hold snap settle structure of an attack. `KeyframeSequenceProvider:GetKeyframeSequenceAsync("rbxassetid://id")` works in Edit mode for published clips, including the Roblox defaults.
+The easing belongs to the destination key in Poser. Roblox PoseBase documents easing toward the next pose, so do not copy native easing fields onto destination keys without converting their semantics. The current importer instead uses linear interpolation throughout.
 
-## Handing clips to an animator
+`attach` gathers Motor6Ds by Part1.Name. `play` has one active clip per attached rig and options `fadeIn`, `speed`, `startAt`, `onDone`. `sample` returns an authored pose-space CFrame, not a world frame. `hold` pauses the clip time temporarily; `setSpeed(0)` holds sampling time, but procedural joints that read a changing ctx can still move. Freeze the relevant context as well when a true hold is required.
 
-`scripts/Bake.lua` writes every clip into `ServerStorage.StandAnimRig.AnimSaves` (a rig with the stand attached). The Roblox Animation Editor loads a KeyframeSequence from a rig's AnimSaves and publishes it; Moon Animator imports a published id or reads exported KeyframeSequences (see moon-animator.md). To learn from a clip that comes back, run ReadClips on it and, if it should drive the game, convert its keys into a Clips entry with `e = "linear"` at the exported frame rate.
+Transforms are written in PreSimulation. Do not add another writer to the same joint unless composition and write order are explicit. Changing C0 each frame is not the ordinary authoring path. The fade blends from captured live transforms; this smooths pose differences but does not prove a clean path or matching velocity.
 
-## Playing a clip that came back, without an upload
+## Locomotion and overlays
 
-`Poser.fromSequence(kfs, wraps, opts)` makes a clip straight from a KeyframeSequence instance (a rig's AnimSaves, a free model's set, a Moon export). Every `Pose.CFrame` is already a `Motor6D.Transform`, so the loader wraps it into pose space with the rig's C0 rotation (`Poser.wrapsOf(template)`) and `toTransform` undoes the wrap at play time: the round trip is exact to the decimal (the float torso sampled back as -14.7, -8.1, -6.0 with y 0.456, the decode's own numbers). Options: `map` renames pose names to the rig's joint names (`Torso` to `Stand Torso`), `trimStart` drops a lead-in so a loop's seam is a normal beat, `extra` adds procedural joints (the float root that lives outside the sequence), `loop` overrides the sequence flag, `length` overrides the last key, `only` keeps a set of joints (the user copies a stand's torso, head and arms and gets authored legs), `pScale` (a number or a table by joint) scales the offsets so a floating stand's 2 stud limb travel fits a planted body, and `rollScale` (a table by joint) scales the side channel alone so a stand's 55 degree torso roll becomes 25 on a standing body while the lift and the twist stay exact. Keys carry `e = "linear"`; a 60 fps bake has 150 keys per joint and plays fine. Strip the Moon Animator metadata (`Ease` folders, IntValues, StringValues) before shipping a sequence to ReplicatedStorage; only Keyframes and Poses are needed.
+`Locomotion.start` controls idle/walk/run/air/land through `Clips.DioMove`. It stops the default tracks for the custom setup. Its Heartbeat update supplies speed, phase, walk, run, air, jump, land, and stand context.
 
-Blending in from an authored clip: `Rig:play` lerps from the live Transform, so an authored clip that hands to a sequence must end on the sequence's frame 0 pose. Read that pose from the decode and paste it as the authored clip's last key.
+The current controller uses a 13-stud cycle distance and a run blend over speeds 18 to 26. Those are project choices. Its landing envelope is time-based and is not scaled by measured fall speed. Changing documentation does not change that runtime behavior.
 
-`player:SetAttribute("PoseHold", "Stand:WorldBarrage:0.25")` holds a frame of a stand clip on the live stand rig (the body hook stays `"DioBarrage:0.8"`); an empty value releases both. Hold poses only when no move is running, because a move's own hand-off overrides a hold.
+`Locomotion.override` replaces the rig's one active clip. Omitted joints are not sampled from locomotion; with no other writer they retain their previous Transform. For a walking upper-body action, build an explicit composite clip: take selected upper-body joints from the action and evaluate remaining joints from the current locomotion context. Alternatively use the project's native masked playback. Never describe a sparse override as an automatic overlay.
 
-The Edit VM caches `require` per module across `execute_luau` calls: after a Source push, validate on a fresh clone of the whole folder (`Stand:Clone()` then require the clone's module), not on the live instance, or the old Poser answers.
+An interrupted play replaces the previous callback. The caller must manage cancellation and restoration of movement state; do not rely on the interrupted `onDone`. Restore captured movement settings at the intended state transition, not a hard-coded universal one-second limit.
 
-## Pushing a module (the source server)
+Poser has no marker dispatcher. Schedule project events from the same animation clock with clear pause, speed, and cancel behavior. For skipped frames, detect crossings of event times, not floating-point equality. Do not schedule a gameplay hit with an unrelated wall-clock delay and expect it to follow hit-stop automatically.
 
-Studio's `multi_edit` handles short files; a long module goes through `scripts/serve.js`:
+Motor6D.Transform is not replicated. A custom networked action needs the project's authoritative action identity and timing, then local playback for observers. Verify it with a second client. Keep hit validation in the existing server gameplay system; a locally posed fist is not a server hitbox.
 
-1. `node scripts/serve.js <outDir> <luaDir> 8766` (PowerShell `Start-Process node.exe` keeps it up; the Bash tool has no node).
-2. In the Edit VM: `HttpService.HttpEnabled = true`, `local src = HttpService:GetAsync("http://127.0.0.1:8766/stand/Clips.lua")`, `assert(loadstring(src))` for a syntax check, then `module.Source = src`.
-3. Validate on a fresh clone of the whole feature folder (`folder:Clone()` then `require` the clone's module): the Edit VM caches `require` per module, so the live instance answers with the old code.
-4. An open script editor tab reverts a push when it saves; close the tab or re-read `.Source` after.
-5. The Edit datamodel is unavailable while play runs: stop, push, start.
+## Importing sequences
 
-## Wiring a move
+`fromSequence(kfs, wraps, opts)` converts sampled Pose transforms into the Poser convention. `wrapsOf(model)` obtains C0 rotations. The current implementation:
 
-- `Locomotion.override(character, clip, {fadeIn, fadeOut, onDone})` plays the clip on the body rig and hands back to `Clips.DioMove` when it ends. `fadeIn` at most half the snap (0.04 to 0.06) or the cock smears; the default 0.12 is for idles.
-- An override writes only the joints the clip keys. Unkeyed legs freeze mid stride, so a walkable light hit keys its legs from `moveJoint` (the locomotion pose) or leaves them out on purpose for a planted heavy.
-- An interrupted clip drops its `onDone` silently. Combo state lives in the caller: the cancel window opens at the settle key, an early press is buffered to it, the next clip's frame 0 is the previous clip's settle key.
-- Humanoid lock: `WalkSpeed = 0`, `JumpPower = 0`, `AutoRotate = false` only on a heavy or a summon, restored at the settle key or 1.0 s, whichever is first; the recovery blends under the walk.
-- Hit stop: `rig:hold(0.05)` for a light hit, `0.09` for a heavy; the camera kick and the sound sit on the same frame.
-- Replication: Poser writes `Transform` locally on every client. A move reaches other clients by a remote rebroadcast; every client calls `Locomotion.override` on that character. The server never sees the pose (nothing goes through the Animator), so hitboxes are timed in clip seconds from the remote, not read from the rig.
-- Sword rigs: the Handle motor's C0 decides which arm twist lays the blade flat for a horizontal cut or edge on for an overhead; `inspect_instance` it before choosing strike twists.
-- A stand and its user: the stand rig is `Poser.attach(character, loco.ctx)` (joints keyed by `Part1.Name`, so `Stand Right Arm` never collides with `Right Arm`); the appear clip chains to the float with `onDone`; the body plays its own clip through `Locomotion.override` at the same time.
+- Loads positive-weight Poses and skips HumanoidRootPart; it does not preserve fractional pose weight behavior.
+- Builds linear tracks, discarding source easing and any curve semantics.
+- Does not carry KeyframeMarkers or native playback priority into a marker-aware runtime.
+- Applies `trimStart` by discarding earlier keys; it does not interpolate an exact boundary sample.
+- Supports name mapping, joint filtering, extra procedural tracks, translation scaling, and roll scaling.
+- Does not retarget proportions, rest-frame differences, reach, or contacts.
 
-## Sign facts and the phase convention
+Use it for inspected, densely sampled linear clips when the above losses are acceptable. Even then compare native and imported playback. Do not call the general round trip lossless. Preserve the native sequence for sparse eased clips, events, or weights that matter, or implement and test the required conversion first.
 
-- `+twist` on the torso turns the chest to the character's left (right shoulder forward). The head counters with minus the torso twist.
-- The hand direction formula's third component is forward in pose space, which is Roblox -Z.
-- Walk and run phase 0 and pi are the passing poses (legs together); right foot contact is at 1/8 of a walk cycle and 3/16 of a run cycle; leg `p.Z` negative puts the foot forward; torso side and head side move the same way in the run.
-- Every period inside a procedural joint must divide the loop length (a 5 s sway on a 2.5 s loop flips its velocity at the seam), or the joint reads `ctx.t` on a counter that never wraps.
+Map and filter by the target joint names expected by the loader. If using a pScale table, include numeric entries for every imported joint: the current Lua expression can select the table itself when an entry is absent. Do not enable this option with a partial table.
 
-## Where the tools run
+Roll scaling decomposes orientation into Euler angles and is not general retargeting near a singularity. For a grounded user copying a floating stand, solve contacts on the target rig and inspect the result instead of relying on scale factors alone.
 
-- `Strip.lua` and `StandStrip.lua` run in the Client datamodel under Play through `execute_luau`; the string they return goes straight into `screen_capture` as `camera_position` and `look_at_position`. Nudge the camera 0.1 stud between captures of a changed scene.
-- `Bake.lua` and `ReadClips.lua` run in the Edit datamodel.
-- Remotes cannot be fired from the Edit VM; fire them from the Client VM in play, or use the `CastStand` / `CastUlt` attribute hooks.
+## Baking and export
 
-`solveFootY(tp, r, p, sideSign)` in `Clips.lua` puts a planted foot on the floor under a copied torso that leans and rolls: the foot bottom is `torsoPose * hip(sideSign, -1, 0) * legPose * (-0.5 sideSign, -2, 0)` in root axes, so the leg offset is one linear solve to y -3. `legY(torsoY, lift, torsoLift)` is the cheap form for authored poses; the torso pitch swings the hips, so a 10 degree forward lean makes a 28 degree rear leg read 38 and float 0.19 without that term.
+`Poser.bake` creates real KeyframeSequence, Keyframe, and nested Pose instances. It samples procedural clips using `ctxAt(t)` when provided. `Bake.lua` is an Edit-mode project helper with configurable root, rig, and clip list; inspect and adapt those inputs first.
 
-A strip in play clones `player.Character`; the character's `Archivable` is false in play so `Clone()` returns nil until it is set true. `_G.strip2` (in `scripts/StandStrip.lua`) takes `{clipName or clip, t}` pairs, a spacing and a z offset, and reads the hand directions in root space: `root.CFrame:VectorToObjectSpace(-arm.CFrame.UpVector)` is (out, up, forward negative).
+Account for the current baker's behavior before delivering its output:
+
+| Behavior in bundled source | Required delivery check or repair |
+| --- | --- |
+| Uses `floor(length * fps + 0.5)` | A non-grid duration can miss its exact endpoint. Include the exact duration sample when adapting the export, then compare final pose and duration. |
+| Sets Action priority for every clip | Set the appropriate project priority on the actual sequence, including Idle or Movement when intended. |
+| Creates ancestor poses with weight 1 | Inspect ancestor channels on partial-body exports. Do not unintentionally key the torso or suppress underlying motion. Use the target editor/runtime's supported masking behavior and verify it. |
+| Emits Linear samples | Inspect fast strikes, stepped holds, and curved paths between samples. Increase sampling or preserve authored keys where needed. |
+| Does not write markers | Add required KeyframeMarker instances at the exact planned event times and verify playback. |
+
+Keep the source and exported copy separately. Check the hierarchy against the rig's Motor6D tree, not a guessed naming scheme. Root hierarchy poses must not introduce unintended motion. Preserve required markers when removing editor metadata; KeyframeMarker is animation data.
+
+A KeyframeSequence stored in AnimSaves is not automatically a published animation asset. Verify how the installed editor loads it. Do not claim successful publication or an animation ID until that operation returns one.
+
+## Native Animator playback
+
+Use the project's Animator and `Animator:LoadAnimation` for published animation assets. Verify asset access, priority, loop state, fades, and intended joint coverage. AnimationTrack priority is evaluated per joint; avoid unnecessary keys that take ownership of otherwise untouched body parts.
+
+For replication, the Animator must originate on the server. Player-character tracks started on that player's client can replicate through it; non-player rigs need server-started playback to replicate. A locally created Animator does not provide that replication. Check current official docs when modifying this integration.
+
+Connect `GetMarkerReachedSignal` for native animation markers when the project uses them. Keep cosmetic events and authoritative gameplay decisions in their existing roles. Test the entry, exit, and interruption paths relevant to the action.
+
+## Source transfer and review tools
+
+Use the available Studio source-edit API or project sync. If the existing workflow needs the local source server, `node scripts/serve.js <outDir> <luaDir> 8766` serves `/stand/<Name>.lua` and accepts decoded text at `/put?name=...`. It is an optional transport, not an animation dependency. Restore temporarily changed Studio settings after the task.
+
+After updating ModuleScript.Source, use fresh module instances or a fresh session when require caching would otherwise hide the update. Read back the source if an editor or sync tool can overwrite it. Validate only in the execution context supported by the bridge.
+
+`Strip.lua` and `StandStrip.lua` create actual ghost rig instances for Client-mode pose inspection. Adapt their paths, contexts, views, and sampled times; remove temporary ghosts when finished. `ReadClips.lua` reads Edit-mode sequences and writes rounded pose decodes through the server. Its stock C0 rotations must be replaced with inspected wraps for a custom rig.
+
+Before cloning a live character, check `Archivable`. If it is false, `Clone()` returns nil. Save the original value, enable it for the inspection clone, and restore it afterward. The bundled `StandStrip.lua` sets it true without restoring it; account for that when adapting the helper. Its exported function is `_G.standStrip(clipName, times, spacing, facing, zOff, dioClip, dioOffset)`, not `_G.strip2`.
+
+For an inspected stock arm, `root.CFrame:VectorToObjectSpace(-arm.CFrame.UpVector)` reports the arm direction in root axes (X sideways, Y up, negative Z forward). This normalized direction does not measure hand position, grip error, or a world-space contact; use the endpoint checks in [r6-mechanics.md](r6-mechanics.md) for those.
+
+`AnalyzeClips.js` gives legacy Euler range tables. Use `check_decode.py` for rotation-aware local seam and sample measurements. Neither tool sees world-space contacts or proves successful playback. Use live observations for those claims.

@@ -1,4 +1,14 @@
-# Attack timing from a professional R6 sword kit
+# Recorded R6 sword attack measurements
+
+These are preserved measurements and interpretations from earlier project work. Use the current SKILL.md and principles.md for authoring decisions. Do not treat the ranges, inferred timing patterns, or historical style choices as universal requirements. See sources.md for provenance limits.
+
+## Contents
+
+- Ranges per clip
+- hit1 frame by frame
+- Speed segments of every attack
+- The pattern
+- Adapting the kit to code
 
 Read on 2026-09-22 from `Workspace."this is SO 2006 roblox retro core...".Sword.AnimSaves` (block hit, block idle, block start, block end, charge, equip, finish, hit1, hit2, hit3, idle) and the folder `old animations (feb 2022)` (charged idle, charged swing, charging, equip, finish, idle, swing 1, swing 2). All exported at 60 fps with Linear poses. Decoding as in walk-cycles.md. The rig has an extra Handle motor (Right Arm to Handle) and a Sword motor.
 
@@ -188,7 +198,7 @@ hold@0.02 move@0.08 hold@0.30
 
 ## The pattern
 
-Every attack is snap, hold, snap, settle, then a long recovery:
+The recorded sword hits commonly use snap, hold, strike, follow-through, and a long recovery:
 
 1. Frames 1-4 (0.02-0.07 s): a FAST move into the wind up. The wind up itself is a snap, not a slow ease. The torso leans BACK 15-19 degrees and twists 20-28 away from the swing, the head looks down and counters the twist, the sword arm goes up and over (lift 66 to -18, side through 150 to -160, so the blade travels behind the head), the free arm comes up and out for balance.
 2. Frames 5-8 (0.08-0.15 s): a HOLD at the wind up, 2-4 frames, values drifting by 1-3 degrees. This is the anticipation the eye reads.
@@ -201,24 +211,14 @@ Other facts:
 - The head counter rotates the torso twist almost one to one (head twist about minus torso twist) so the face stays on the target through the swing. Head pitch dips 25-29 on the wind up and rises 10 on the strike.
 - Torso translation is tiny in attacks (y down 0.03) except taunt or finish poses (finish crouches 0.4).
 - Priority is Action for every weapon clip; the weapon idles only move Torso Head and Arms and leave the legs to the core idle or walk.
-- The sword idle is a static bladed pose: torso twist +20 with head -20, sword arm lift 65 side 47 twist -32, and only a half degree of drift over 4 s. The old idle is the same with twist 15. Breathing comes from the core layer under it, not from the overlay.
+- The sword idle is a static bladed pose: torso twist +20 with head -20, sword arm lift 65 side 47 twist -32, and only a half degree of drift over 4 s. The old idle is the same with twist 15. Check the native track weights and keyed joints before assuming breathing from a lower-priority layer remains visible.
 - Block start and end are 0.37-0.40 s with the same snap hold shape; block hit is a 0.4 s recoil.
 - Equip is 1.0 s: hold, a fast draw at 0.12-0.22 (STRIKE speed), settle by 0.33, then a 0.5 s hold.
 
-## Scaling the kit to a code posed move
+## Adapting the kit to code
 
-The tables above describe a hand keyed 60 fps clip on a rig whose root never moved. In Poser the same
-shape is written with fewer keys and bigger travel:
+Preserve the intended path and spacing when reducing sampled frames to source keys. Put explicit breakdowns at contact, path changes, and follow-through. Linear dense samples are not equivalent to a sparse back-eased arrival.
 
-- Snap: `cubic` or `quart` out over 4 to 7 frames into the wind up.
-- Hold: 0.10 to 0.20 s in code (not 2 to 4 frames), written as two `sine inout` keys that creep 2 to 4
-  degrees further in the wind up direction. The accepted holds are 0.08 to 0.14 s of anticipation and
-  0.15 to 0.25 s on a landed pose.
-- Strike: arrive on `"back", "out"` 1.2 to 1.5; the ease supplies the 15 percent follow through, so no
-  separate overshoot key. The kit's linear strike frames are the hand keyed version of the same thing.
-- Translation: the kit's torso barely moves (y down 0.03) because its animator did not translate the
-  root; a code posed move drops the root 0.3 to 0.5 into the coil and lunges 0.5 to 1.0 on the strike.
-- Amplitude for a summon or a cast: 1.5x the sword hit, hold 2x, and the pose must hold through the VFX
-  landing (0.3 to 0.4 s) with a breath key. When Lepy supplies a summon clip, decode it and replace this
-  paragraph with its beat table.
-- Legs land last: 3 to 4 frames after the torso, never on the torso's frames.
+Use the new action's brief to choose duration, amplitude, contact, and recovery. Do not multiply every summon by the same amplitude or delay the feet after every torso arrival. Use the easing decisions in principles.md and the contact checks in r6-mechanics.md.
+
+The earlier recipe claimed that a back parameter of 1.2 to 1.5 supplied 15 percent overshoot. That parameter is not a percentage, and it does not reproduce the measured curve automatically. Author an explicit overshoot pose when its amount and timing matter.

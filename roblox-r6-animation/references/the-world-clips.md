@@ -1,5 +1,16 @@
 # The World stand clips decoded
 
+These are preserved measurements and interpretations from earlier project work. Use the current SKILL.md and principles.md for authoring decisions. Do not treat the ranges, inferred timing patterns, or historical style choices as universal requirements. See sources.md for provenance limits.
+
+## Contents
+
+- Recorded interpretation of these clips
+- Timing (60 fps frames)
+- The stand idle (the float)
+- Barrage numbers
+- Key poses in parent-axis space
+- Historical DIO application
+
 Lepy dropped a free model of The World (a WIP mesh stand on a standard R6 rig, no scripts) into
 Place1 on 2026-09-21 and said its animations are "SUPER high quality" and to learn from them. Its
 `AnimSaves` held eight Moon Animator clips baked at 60 fps as Linear keys: `TW idle`, `TWLeftPunch`,
@@ -8,9 +19,9 @@ decoded with `scripts/ReadClips.lua` into parent-axis poses (lift, twist, side, 
 below is measured. The clips now play in the place through `Poser.fromSequence` (see pipeline.md);
 the raw sequences live in `ReplicatedStorage.Stand.Assets.Anims`.
 
-## Why these clips read as high quality
+## Recorded interpretation of these clips
 
-1. **One engine per clip, always the torso.** Every strike is a torso rotation (twist 110 to 124
+1. **A torso-led pattern in this set.** Every strike is a torso rotation (twist 110 to 124
    degrees, or roll 50 degrees) and the limbs ride it. The barrage is nothing but the torso swinging
    -47 to +62 and back every five frames.
 2. **The head counters the torso one to one** so the face never leaves the target: right punch
@@ -98,22 +109,22 @@ the raw sequences live in `ReplicatedStorage.Stand.Assets.Anims`.
 - Heavy punch hit (frame 20): Torso {-33, -41, -15}; Head {-37, -3, -17}; Right Arm {40, -97, 112}
   p(-0.05, -0.70, -0.28); Left Arm {62, 139, -144} p(0.06, 0.39, -0.77); Left Leg p(0.34, 1.13, -1.26).
 
-## What changed in the practice because of these clips
+## Historical DIO application
 
-- A stand's clips now come from its own animation set played raw through `Poser.fromSequence`;
+- A stand's clips now come from its own animation set sampled through `Poser.fromSequence` under the limitations in pipeline.md;
   Claude authors only the pieces the set lacks (appear, vanish, the time stop) and re-targets its
   own poses to the set's idle frame so nothing pops on the hand-off.
 - A rush loop is a torso engine at 6 beats a second with the head countering; fists ride.
 - The user's ZA WARUDO is the show's two frames and nothing else: arms crossed in an X in a forward
   crouch, then flung up and out into a wide V with the chest out and the head back, held with a
   tremble and one jolt on the freeze. A quiet one-hand version and an arms-flung-then-lunge version
-  were both rejected; the numbers that passed are in `SKILL.md` under ZA WARUDO.
-- On the road roller the stand plays its own `Barrage` sequence raw with a procedural root leaned
+  were both rejected; the recorded pose values and review history are in [project-style.md](project-style.md#recorded-za-warudo-and-road-roller-poses).
+- On the road roller the stand samples its own `Barrage` sequence, subject to the import limits in pipeline.md, with a procedural root leaned
   38 degrees down at the deck and a 12 Hz shiver (`WorldRollerBarrage`); the user holds the Jotaro
   point on top. The stand never gets an authored clip for it.
 - Combo clips must chain end pose to start pose; author the last key of one as the first key of the next.
 - Piston punches: freeze the arm angle on the strike frames, translate the part, let the torso reach.
-- Stand limbs may translate 1 to 2 studs; humanoid limbs stay under 0.5.
+- This project used larger stand offsets and smaller user offsets. Inspect the target rig and contacts rather than treating those old budgets as universal limits.
 - The user's body under the barrage holds still in the Jotaro point from his reference image (arm dead
   ahead at the enemy, the free forearm to the collar, chin down). Under the five hit chain he COPIES the
   stand's own clips (the show's stand user throws the punch and the stand's fist lands): the same

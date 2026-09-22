@@ -30,33 +30,25 @@ templates for it.
 
 ### `roblox-r6-animation`
 
-Authors, verifies and hands off R6 character animation in code: idle, walk and
-run cycles, attacks and summons, weapon or stand overlays. Every amplitude and
-timing in it was measured from real clips (a professional idle, run and
-landing set, four community walk cycles, a professional sword kit, the Roblox
-defaults) rather than guessed, and the skill keeps a feedback log so it grows
-with each review.
+Authors and refines R6 animation through reference study, blocking, breakdowns,
+contact checks, playback review, and verified export. Supports the existing
+Poser workflow and Animator projects without replacing their runtime by default.
 
 Package layout:
 
-- `SKILL.md` - the decision framework, the workflow, the "model for everything"
-  rules taken from a professional idle (one engine, lagged secondary motion,
-  translation builds the pose, amplitude follows energy, nothing is still), the
-  measured numbers for idle, walk, run, landing and attacks, and R6 posing
-  rules.
-- `references/` - the decoded clips frame by frame (idle-run-land,
-  walk-cycles, attack-timing), the pose space and runtime pipeline, and the
-  Moon Animator round trip.
-- `scripts/` - `Poser.lua` (key and procedural clips written to
-  `Motor6D.Transform` in PreSimulation, plus a KeyframeSequence baker),
-  `Locomotion.lua` (a per character idle, walk, run, jump and land controller
-  that replaces the Roblox Animate script), `Clips.lua` (worked examples),
-  `ReadClips.lua` and `serve.js` (decode any KeyframeSequence to text),
-  `Strip.lua` (a motion strip so one capture shows a whole cycle) and
-  `Bake.lua`.
+- `SKILL.md` - the workflow and task-specific decisions for poses, spacing,
+  contacts, transitions, and delivery.
+- `references/` - animation principles, R6 transform and contact math, runtime
+  contracts, visual diagnosis, editor handoff, linked primary sources, preserved
+  clip measurements, and project-specific review history.
+- `templates/clip-plan.md` - a reusable brief, beat table, contact plan, and
+  evidence record.
+- `scripts/` - existing Poser and locomotion examples, capture and bake helpers,
+  plus `check_decode.py` for rotation-aware local seam and sample measurements.
 
-The Lua scripts run inside Roblox Studio through an execute-Luau bridge; they
-are not covered by the Python test suite.
+The Python decode checker is covered by the repository tests. Roblox runtime,
+visual quality, and replication still require Studio verification. The skill
+explicitly documents the bundled importer and baker's limits.
 
 ### `roblox-vfx-craft`
 
@@ -87,31 +79,14 @@ are not covered by the Python test suite.
 
 ## Using these skills in a new chat
 
-A fresh session only reproduces the good results when it is briefed the same
-way every time:
-
-1. Open the chat from the same working folder (`C:\Users\vietb\Desktop\roblox`)
-   so the project memory and the project `CLAUDE.md` load; a chat opened
-   elsewhere starts with none of the traps or the taste log.
-2. Type the skill by name as the first thing in the message:
-   `/roblox-r6-animation` for any animation, `/roblox-vfx-craft` for any
-   effect. The generic `roblox-animation` skill has a near identical name and
-   teaches the Animation Editor and TweenService path, which is exactly the
-   stiff result; the project `CLAUDE.md` now forbids it for character motion.
-3. In the same message, say the standard: "follow the Session start and the
-   Definition of done; show me the rear three quarter strip capture before you
-   say it is done". The skill makes two capture rounds mandatory, but the
-   sentence keeps a short session honest.
-4. Keep Roblox Studio open, connected and in front, with the place that has the
-   modules (or ask for the fresh place install first). Captures and frame times
-   fail with Studio covered.
-5. Use the same model and effort as the sessions you liked (Opus, high effort).
-   Fast mode is fine; a smaller model is not.
-6. When a clip lands, say what you liked in a sentence and ask Claude to log it
-   in the skill and push; the feedback log is how the next session inherits
-   taste.
-7. Do not ask for subagents or review swarms; they cost usage and add nothing to
-   a clip. One session, one thread, captures as the judge.
+1. Make the relevant skill folder and project instructions available to the agent.
+2. Name the requested skill, such as `/roblox-r6-animation`, and provide the
+   action, rig or project, reference, constraints, and intended handoff.
+3. For animation, connect Studio when you need instance edits, playback,
+   captures, or runtime verification. The skill also supports source work when
+   Studio is unavailable and requires the result to state that limitation.
+4. Keep feedback specific to the clip and the visible issue. Preserve useful
+   project preferences without turning them into rules for every animation.
 
 ## Validator scripts
 

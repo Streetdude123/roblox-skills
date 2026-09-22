@@ -1,24 +1,23 @@
-# Moon Animator and the Roblox Animation Editor
+# Editor handoff
 
-## What is installed
+Use an editable source plus a verified KeyframeSequence or published asset according to the requested handoff. Keep source keys for later changes. A dense bake is a playback representation, not a native Moon Animator project.
 
-Moon Animator 2 (asset 4725618216) is installed for Lepy's account at
-`%LOCALAPPDATA%\Roblox\<userId>\InstalledPlugins\4725618216\` (two `Plugin.rbxm` versions of about 440 KB plus `settings.json`). Studio MCP cannot click a plugin's widgets, so Claude never operates Moon Animator directly. Claude works through the instances the plugin reads and writes.
+## Inspect the installed workflow
 
-## What the two tools read and write
+Confirm the editor and version available in the current Studio session. Discover whether the connected tool can interact with plugin UI; do not assume it can or cannot. Inspect an existing save or a small test export before relying on a folder name or container class.
 
-- The Roblox Animation Editor loads a `KeyframeSequence` placed under a rig's `AnimSaves` (an ObjectValue named AnimSaves under the rig, KeyframeSequences as its children) and publishes it to an asset id. Lepy's community rigs (`BestWalkAnimR6.R6.AnimSaves`, the sword rig) use exactly this layout, and `Bake.lua` writes into it.
-- Moon Animator saves its own files under `ServerStorage.MoonAnimator2Saves` when the user saves a project. The internal format has not been decoded yet; the first time Lepy saves a project, read that folder with `execute_luau` and record the layout here (folder per file, string values with encoded tracks is the expectation).
-- Moon Animator exports through its File menu into `ServerStorage.MoonAnimatorExport` (KeyframeSequences per rig, or a published id when he chooses publish). Those exports are plain KeyframeSequences, so `ReadClips.lua` decodes them and a Clips entry can be generated from them.
-- Moon Animator imports a published animation by asset id (its Import item), and the Animation Editor imports from AnimSaves, so the round trip is: Claude bakes to AnimSaves, Lepy publishes from the Animation Editor or loads it in Moon by id, polishes, exports, Claude reads the export back.
+Earlier project sessions recorded `AnimSaves` under rigs, `ServerStorage.MoonAnimator2Saves`, and `ServerStorage.MoonAnimatorExport`. Treat these as locations to investigate, not a documented universal Moon Animator file format. The old notes and `Bake.lua` disagree about the AnimSaves container class. Confirm what the current editor can load.
 
-## The loop to use
+The official Animation Editor supports animation editing and publication. Use its current documented workflow and actual UI. Verify asset ownership/access for the target experience when publishing. Do not invent an asset ID or report an upload from the presence of a local sequence alone.
 
-1. Claude authors a clip in code, verifies it with a motion strip, and bakes it to the rig's AnimSaves.
-2. Lepy opens the rig in Moon Animator or the Animation Editor, tweaks timing or poses, and exports a KeyframeSequence.
-3. Claude runs ReadClips on the export, compares the curves with the code version, and either converts the export into the game's Clips module (`e = "linear"` keys at the export rate) or updates the code numbers to match what he changed.
-4. Record what he changed in memory; it is the fastest way to learn his taste.
+## Round trip
 
-## To do when a Moon save exists
+1. Save the authored source and its timing/contact plan.
+2. Export a separate sequence with the inspected rig hierarchy. Apply the baker checks in [pipeline.md](pipeline.md).
+3. Load it using the installed editor's supported import workflow. If direct local import is unavailable, use a published asset only when that handoff is authorized.
+4. Compare source and imported motion at contact, extreme poses, loop boundaries, and transitions. Check duration, priority, easing, keyed body coverage, and events.
+5. After manual edits, preserve the editor's original project and inspect the actual export.
+6. Use native playback when sparse easing, weights, or markers must be preserved. The bundled Poser importer is not a lossless conversion.
+7. Recheck the final delivery in the intended runtime and record which checks were executed.
 
-Read `ServerStorage.MoonAnimator2Saves` with execute_luau, dump every descendant class and string value length, and try `HttpService:JSONDecode` on the strings. If the format is readable, write a `MoonToClip.lua` and a `ClipToMoon.lua` so Claude can hand him editable Moon files instead of baked keyframes.
+Do not overwrite an existing editor save with a guessed internal schema. Decode a real save only when the requested task needs that format and its structure can be established from actual files.

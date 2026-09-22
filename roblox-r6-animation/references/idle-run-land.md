@@ -1,6 +1,19 @@
-# Idle, run and landing from a professional R6 set
+# Recorded R6 idle run and landing measurements
 
-Read on 2026-09-22 from `Workspace."idle, run and landing animation r6".AnimSaves` (Idle 3.0 s loop at Idle priority, Run 0.533 s loop at Movement priority, Land Anim 0.467 s at Action priority), 30 fps, Linear baked poses. Lepy asked for this one to be the model for everything. Decoding as in walk-cycles.md; lift + on the torso is a lean back, so the negative values below are forward leans.
+These are preserved measurements and interpretations from earlier project work. Use the current SKILL.md and principles.md for authoring decisions. Do not treat the ranges, inferred timing patterns, or historical style choices as universal requirements. See sources.md for provenance limits.
+
+## Contents
+
+- Ranges
+- Idle every 0.3 s
+- Run, every frame of the 0.533 s cycle
+- Landing, every frame of 0.467 s
+- What this idle demonstrates
+- How the run works
+- How the landing works
+- Choices to consider when adapting this set
+
+Read on 2026-09-22 from `Workspace."idle, run and landing animation r6".AnimSaves` (Idle 3.0 s loop at Idle priority, Run 0.533 s loop at Movement priority, Land Anim 0.467 s at Action priority), Linear baked poses. The idle and run tables use roughly 30 fps sampling; the landing table contains more densely spaced keys. Use each recorded timestamp rather than assuming one rate for all three clips. Lepy previously used this set as a style reference. Decoding as in walk-cycles.md; lift + on the torso is a lean back, so the negative values below are forward leans.
 
 ## Ranges
 
@@ -100,12 +113,12 @@ Legs in the run columns are lift then y then z (twist and side are unreliable ne
  0.47 | torso -20.7 | -0.53 -0.23 | head  -4.0 | RA  30.9  60.8  -3.7 | LA  30.0 -46.0   1.7 | RL -18.6  0.50 -1.14 | LL  -1.6  0.65 -1.00
 ```
 
-## How the idle works, and why it is the model for everything
+## What this idle demonstrates
 
 1. One engine. The chest breath is a single 3 s wave: torso lean 2.3 to 6.0 degrees forward (peak lean at 0.85 s, upright at 2.25 s) with the root sinking 0.04 and moving forward 0.04 as it leans. There is no second or third frequency and no yaw or roll; the breath lives in the pitch plane.
 2. Everything else is secondary to it. The head nods 2 degrees and peaks at 1.5 s, 0.65 s after the torso (about a fifth of the cycle), at half the amplitude. Both arms swing 2 to 4 degrees and peak with the head. The legs shift weight in phase with the torso: the back leg swings 4 to 11 degrees, the front leg -3 to +4.
 3. The stance is built with translation, the motion with rotation. Feet are placed with 0.3 to 0.5 stud offsets on Z and 0.1 to 0.17 on Y, the back foot is turned out 12 degrees with twist, the arms hang 0.05 lower. Rotation alone cannot stagger the feet without lifting them.
-4. Nothing is still. Even the constant channels drift by 0.1 to 0.3 degrees over the loop, and frame 91 equals frame 0 so the loop never pops.
+4. Several low-amplitude channels drift by 0.1 to 0.3 degrees while others remain effectively constant in the rounded data. The final sample matches the first; inspect boundary velocity as well.
 5. The pose reads at frame 0: asymmetric arms, staggered feet, a small forward lean. The breath is decoration on a pose that already says something.
 
 ## How the run works
@@ -115,13 +128,13 @@ Legs in the run columns are lift then y then z (twist and side are unreliable ne
 
 ## How the landing works
 
-- Absorb in 5 frames: torso folds 0 to -42 and drops 1.1 studs, head goes from -17 to -38, legs translate UP 1.2 to 1.4 studs and forward 1.0 (the squat), arms fly up and forward to 64/44 with 100 degree twists for balance.
-- Hold the bottom for 5 frames, then recover on a decelerating curve; the head leads the recovery (up to -4 while the torso is still at -20) and the clip ends mid recovery so the blend back to idle finishes it.
+- The root reaches most of its drop around 0.10 s, while torso pitch reaches about -42 at 0.23 s. These are separate arrivals, not a whole-body fold completed in five frames. The table records upward leg translations of 1.2 to 1.4 studs and the arms moving forward for balance.
+- The torso stays near its deepest pitch from about 0.22 to 0.30 s while its height starts recovering earlier. The head leads the remaining pitch recovery, and the clip ends mid recovery. Inspect the blend to the next state to judge the complete landing.
 
-## Rules taken from this set
+## Choices to consider when adapting this set
 
-- Decide the engine joint (torso), animate it first, derive the rest with lag (a fifth of the cycle) and reduced amplitude (half).
+- This idle is torso-led with delayed head and arm motion. Reuse that relationship when the new action calls for it; do not impose its phase offsets on contacts or every other action.
 - Head counters torso twist one to one and torso lean partially; in a recovery the head leads.
 - Scale amplitude to energy: idle 2 to 6 degrees, walk 30 to 45, run 60 to 80 plus stud size translations, landing a 42 degree fold and a 1.1 stud drop.
-- Build every pose with part translations too: staggered feet, knee drive, squat, elbow reach. On R6 translation is the joint you do not have.
-- Loop seamlessly and keep every channel moving.
+- Use part translation where the rigid R6 pose needs it, then inspect contact and joint gaps. Translation suggests a tuck or reach but does not create another joint.
+- Inspect loop pose and velocity continuity. Keep channels still when their purpose or contact requires it.

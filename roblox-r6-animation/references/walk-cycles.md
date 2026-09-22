@@ -1,5 +1,15 @@
 # R6 walk cycles from four community animators
 
+These are preserved measurements and interpretations from earlier project work. Use the current SKILL.md and principles.md for authoring decisions. Do not treat the ranges, inferred timing patterns, or historical style choices as universal requirements. See sources.md for provenance limits.
+
+## Contents
+
+- Ranges per clip
+- Walk2 by emm1gar, every key (hand keyed, 8 keys per 0.917 s cycle)
+- Walk4 by roblox_boi8913, a run, every 4th frame of 0.76 s
+- Walk3 by Gusthavuo777, a light crouched walk, every 4th frame of 0.867 s
+- Patterns recorded in these examples
+
 Read on 2026-09-22 from `Workspace.BestWalkAnimR6.R6.AnimSaves` (Walk1 by haynob, Walk2 by emm1gar, Walk3 by Gusthavuo777, Walk4 by roblox_boi8913) plus the Roblox default R6 walk (rbxassetid 180426354). Every pose is decoded into the parent part axes: lift = swing forward (+) or back (-), twist = rotation about the limb, side = out to +X. Torso lift + is a lean back. Positions are studs in the parent axes. All four exports are baked at 30 or 60 fps with Linear poses, so the timing lives in the curves.
 
 ## Ranges per clip
@@ -87,11 +97,11 @@ Columns: t | torso lift twist side | x y z | head lift twist side | right arm li
 0.867 |   -7   -4   -0 |  0.00 -0.16 -0.09 |   -3    3    2 |  -15  -18    9 |   15  -21   -5 |   27   -2  0.05 |  -19    1 -0.03
 ```
 
-## What the four cycles agree on
+## Patterns recorded in these examples
 
 1. Cycle length 0.76 s (run) to 0.92 s (walk) at speed 16; a slow walk is 1.5 s. The Roblox default is 0.67 s.
-2. Legs swing further back than forward: about -45..+30 for a walk, -40..+50 for a run. Never a symmetric sine.
+2. Legs swing further back than forward: about -45..+30 for a walk, -40..+50 for a run. Choose the stance and swing timing from support; a symmetric sine alone does not establish a foot plant.
 3. Legs translate on Y. The back leg is pushed DOWN (-0.1 to -0.27) so the planted foot does not rise off the floor, and the leg is LIFTED (+0.22 to +0.37) as it passes forward, which reads as a knee. This is the single biggest difference from a naive R6 walk.
 4. Torso leans forward 5 to 7 degrees in a walk and 5 to 12 in a run, bobs up 0.1 twice per cycle at the passing poses, and a run sits 0.2 to 0.3 lower. Torso twist is only 3 to 5 degrees and the head counters it with 2 to 4.
 5. Arms swing 30 to 40 (60 in a run) with a wrist twist of 20 to 30 that follows the swing (twist about 0.6 x lift on the right arm, about -0.3 x lift on the left), elbows out 5 to 12, and the arm parts sit 0.1 to 0.3 lower than rest (relaxed shoulders, no clipping).
-6. Eight hand placed keys per cycle are enough (Walk2); the rest of the quality is in the translations and the asymmetry.
+6. Walk2 demonstrates a cycle with eight hand-placed keys plus its repeated endpoint. Add breakdowns where the new rig or path needs them; key count alone does not determine quality.

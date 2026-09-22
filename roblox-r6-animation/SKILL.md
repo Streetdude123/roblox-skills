@@ -1,220 +1,123 @@
 ---
 name: roblox-r6-animation
-description: Author, verify and hand off high quality R6 character animations IN CODE for Lepy's Roblox places - idle, walk and run cycles, attacks, summons, stand and weapon moves, time stops - with the Poser and Locomotion modules, numbers measured from professional clips, motion strip captures, KeyframeSequence baking and the Moon Animator round trip. This skill supersedes the generic roblox-animation skill for any character motion; never reach for the Animation Editor, TweenService on joints or AnimationTracks. Use whenever a Roblox animation must be created, judged, fixed, decoded or exported.
+description: Create, refine, inspect, and export Roblox R6 character animation in code. Use for R6 idle, walk, run, jump, landing, attacks, combos, emotes, weapon motion, and stand animation; fixing stiff poses, floaty timing, sliding feet, and broken transitions; studying reference clips; and KeyframeSequence or Moon Animator handoff. Follow a reference-led blocking, breakdown, polish, and verification workflow using the existing Poser pipeline or the project's Animator pipeline.
 ---
 
 # Roblox R6 animation
 
-This is Lepy's own animation practice. He cannot animate by hand, Claude cannot watch a clip play, and the first code posed clips were "horrid". The clips he loved were made with one process: design the beats as silhouettes, author with the move template below, push, capture a motion strip from the player's camera, read what the capture shows, change numbers, capture again, then bake. A session that skips the loop ships stiff clips. Every number here was measured from real clips or came from his feedback; do not guess amplitudes.
+Make the action read through posing, weight, timing, and contact. Treat professional quality as a result to inspect, not a preset or a promise. Keep the requested action and style intact. Do not add VFX, camera motion, combat mechanics, sprint controls, or a replacement locomotion system unless the task requires them.
 
-## What made the good clips good (read this before anything)
+## Start with the actual task
 
-Snap keys 0.06 to 0.12 s apart on `cubic` or `quart` out. Every arrival key on `"back", "out"` with overshoot 1.2 to 1.5, never a hand placed overshoot key. Holds 0.10 to 0.20 s that keep creeping 2 to 4 degrees. The lag ladder: engine at T, head T + 1 to 2 frames, arms T + 2 to 3, legs T + 3 to 4, no two joints on the same key time in a snap. Limbs 60 to 140 degrees and the root 0.5 to 1.5 studs on a move; translation builds every pose. A recovery of at least 40 percent of the clip in two or three `sine inout` keys (a cancellable hit holds that pose and pops back in 4 to 6 frames), the last equal to frame 0 or the next clip's first key. Beats named as silhouettes that read from behind and above, where the player's camera is. And nothing shipped without a strip capture.
+1. Read project instructions and inspect the animation setup. Discover available Studio tools; `execute_luau` and `screen_capture` are examples, not guaranteed capabilities.
+2. Extract the action, intent, reference, duration, loop or one-shot, target rig, camera, props, movement permission, and delivery format. Ask about missing details that would change the animation. Do not ask again for information already supplied or visible in the project.
+3. Inspect parts, sizes, `Motor6D.Part0`, `Part1`, `C0`, `C1`, root, weapon grip, start pose, and existing controller. Confirm R6. Do not assume standard joints or a `ReplicatedStorage.Stand` folder.
+4. Read [principles.md](references/principles.md), then the relevant motion reference below. Read [pipeline.md](references/pipeline.md) before running bundled scripts. Use [project-style.md](references/project-style.md) only for the recorded Lepy or DIO setup.
+5. Use [clip-plan.md](templates/clip-plan.md) for task notes. Fill only the decisions needed for this clip. Keep a simple edit brief.
 
-## Session start (mandatory, before any key is typed)
+Separate engine facts, source observations, and authoring choices. Label chosen timing as a choice. A measured number describes its source clip; it does not make other motion wrong. The measurement tables preserve earlier work; their original assets and captures are not all bundled.
 
-1. Load this skill by name (`/roblox-r6-animation`) and read the reference for the kind of clip (`references/`), then the worked example of that kind in `scripts/Clips.lua` end to end.
-2. Check the place: `get_studio_state`, then find `Poser`, `Locomotion`, `Clips` under `ReplicatedStorage.<Feature>.Modules` and the client that starts Locomotion. If they are missing, follow **Install into a fresh place** below first.
-3. Start the source server (`node scripts/serve.js <outDir> <luaDir> 8766`) so long modules push through `HttpService:GetAsync`; `multi_edit` is the fallback for short files.
-4. Set `settings().Rendering.QualityLevel = Enum.QualityLevel.Level21` in play and ask Lepy to keep Studio in front for captures and frame times.
-5. Write the beat table in frames (time, engine pose, silhouette name, ease) and compute the hand direction of every arm key with the formula in the sign table. Only then write keys.
-6. Plan the two captures now: rear three quarter first (the player's view), front second.
+## Choose the pipeline
 
-## Decision framework
+| Situation | Action |
+| --- | --- |
+| Existing Poser project | Preserve that runtime. Author keyed or procedural clips, inspect them in Studio, then bake if requested. |
+| Existing Animator project | Preserve Animator and its state controller. Deliver an editable sequence or animation asset using the existing priorities and events. |
+| Matching supplied animation | Inspect it before reauthoring. Use native playback when the custom importer cannot preserve its features. |
+| New place or unknown setup | Inspect tools and ask which handoff is needed before installing a controller or changing default character animation. |
+| No Studio connection | Improve source, plans, and offline checks. Leave visual, playback, and replication checks explicitly unverified. Never fabricate captures. |
 
-- **Locomotion (idle, walk, run)**: one procedural clip driven by a per character controller; speed drives the walk phase so feet plant. Jump takeoff and landing are BEATS inside it and get move timing: a per joint envelope with the lag ladder, not one scalar. See `references/walk-cycles.md`, `references/idle-run-land.md`.
-- **A move (attack, summon, cast, dodge)**: a keyed clip from the move template, played as an override, then handed back to locomotion. See `references/attack-timing.md`.
-- **A weapon or stand overlay (guard, stance, point)**: a clip that drives Torso, Head and Arms only and leaves the legs to locomotion. A stand move wants the user planted: whip into a bladed point, then a breath only.
-- **A stand rush, combo or finisher**: play the stand's own animation set raw through `Poser.fromSequence` (the model's clips beat anything authored by hand) with a procedural root for the float, and author only what the set lacks. The USER copies the stand's hit the way the show does it (the user throws the punch, the stand's fist lands): the same sequence on his torso, head and arms with `only`, `pScale` 0.4 on the arms and `rollScale` 0.45 on the torso, planted legs authored as `extra` tracks with the foot solved onto the floor, and the user started 3 frames ahead so he leads. He does not get his own gestures; that read as "sitting back while the stand does the work". See `references/the-world-clips.md`.
-- **A cutscene**: only for a reel piece (the ultimate) or a move he asks for as cinema (the time stop). A gameplay move never takes the camera. Its body lock (WalkSpeed 0, AutoRotate off) lasts at most 1.0 s or ends at the settle key, whichever is first; the recovery blends under the walk with `fadeOut` 0.3.
-- **Mocap or a commission**: when a clip needs full body acrobatics beyond what these numbers give.
+Authoring in code does not require banning AnimationTracks or the Animation Editor. They are playback and editing tools, not causes of stiff animation. Avoid TweenService as a competing writer on animated joints. Give each joint one owner or an explicit blend in the final pose evaluation.
 
-## The move template (copy it, then fill the poses)
+## Pass 1 - study reference and plan the action
 
-Frames are 60 fps (1 frame = 0.0167 s). Name every beat as a silhouette in a comment before the keys.
+Use the supplied reference first. For unfamiliar mechanics, find a reference that clearly shows the support and action. Record its URL or asset path, useful timestamps, source frame rate when known, and what was actually inspected. If only text or a transcript is available, do not claim to have watched the motion.
 
-```lua
--- beats: FOLD (anticipation) -> APEX (the flare, "V flare") -> LAND (the pose, "raised claws") -> settle
-Clips.Move = {
-	name = "Move", length = 1.0,
-	joints = {
-		-- the engine: one clean arc, authored first
-		["Torso"] = {
-			K(0.00, REST.torso, REST.torsoP),
-			K(0.08, COIL.torso, COIL.torsoP, "cubic", "out"),              -- snap in, 4 to 5 frames
-			K(0.20, COIL.torso + creep(2), COIL.torsoP, "sine", "inout"),  -- the hold keeps moving 2 to 4 deg
-			K(0.30, HIT.torso, HIT.torsoP, "back", "out", 1.25),           -- strike arrives with the overshoot in the ease
-			K(0.42, HIT.torso, HIT.torsoP + V3(0, 0.03, 0), "quad", "out"),-- settle 6 to 8 frames later
-			K(0.70, HIT.torso, HIT.torsoP, "sine", "inout"),               -- recovery keys every 0.25 to 0.3 s
-			K(1.00, REST.torso, REST.torsoP, "sine", "inout"),             -- last key = frame 0 (or the next clip's first key)
-		},
-		-- the lag ladder: the same shape shifted per joint; never the engine's times
-		["Head"]      = shifted 0.02 to 0.03 s, counters the torso twist one to one
-		["Right Arm"] = shifted 0.03 to 0.05 s, an arc gets a middle key (up and over), arrival "back" 1.2 (pose) to 1.5 (flare)
-		["Left Arm"]  = shifted 0.04 to 0.06 s
-		["Right Leg"] = shifted 0.05 to 0.07 s, knee lift through p.Y, arrival "back" 1.3
-		["Left Leg"]  = shifted 0.06 to 0.08 s
-	},
-}
-```
+Identify intent, preparation, weight transfer, action, contact or release, follow-through, and recovery. Some actions omit phases or inherit them from the previous action. Separate camera movement from body movement. Translate the reference to R6's rigid limbs; do not invent elbows, knees, or wrists.
 
-Ease table: snap = `cubic`/`quart` out over 4 to 7 frames; arrival = `back` out 1.2 (a landing pose), 1.25 (a root drop), 1.3 (legs), 1.5 (a flare); hold = two `sine inout` keys 0.10 to 0.20 s apart that creep in the wind up direction; settle = `quad` out 6 to 8 frames after the arrival; recovery = `sine inout`, two or three keys, at least 40 percent of the clip. The sword kit's strikes read linear because they were hand keyed at 60 fps; in Poser, `quart` out into the hold and `back` out into the strike pose reproduce that shape with fewer keys. Use explicit overshoot keys only when Lepy will edit the clip in Moon Animator.
+Build a beat table:
 
-## Principles from the tutorials (the short form; `references/principles.md` has the sources)
+| Frame and seconds | Beat and silhouette | Support or contact | Leading action | Secondary response | Event or constraint |
+| --- | --- | --- | --- | --- | --- |
+| From reference or brief | What the pose communicates | Planted feet or grips | What initiates motion | What follows or stays stable | Impact, release, cancel, or loop boundary |
 
-- Every hit is four key poses: idle, wind up (turned AWAY from the target with the head already on it), hit (the most exaggerated silhouette, where the VFX, sound and hitbox sit), recoil (the bounce back, our `back` overshoot). Fighting games call the spans startup, active, recovery.
-- Clarity beats smoothness: get into a pose in 4 to 7 frames and stay clearly in it; transition frames that belong to no pose read as weak. Fewer frames on the strike is more power. An anime hit may use the `snap` ease on the strike key with an afterimage; the camera never steps.
-- A cancellable gameplay hit recovers as a HELD over extended pose with follow through, then pops back to idle in 4 to 6 frames. Never ease linearly into the idle, or the player cannot tell when they may act. A summon or a cinematic keeps the smooth 30 frame recovery.
-- Anticipation shows direction and weight: the load may be 3 to 4x slower than the strike, with a still moment at the top; the stronger the hit, the bigger the wind up.
-- Squash and stretch on R6 is the root and the torso: squash = root drop 0.3 to 0.5, torso fold, knees up (before a jump, on a landing, at the bottom of a wind up); stretch = root rise, torso lean into the travel, limbs extended (an apex, a lunge, a launch). The striking limb may translate 0.3 to 0.5 further forward on the hit frame only.
-- No twins: the two arms and the two legs never mirror; every stance is asymmetric in angle and offset. No columns: no two joints keyed on the same frame in a snap.
-- Gesture line: each key pose is ONE curve through feet, hips, chest, head and lead arm; an idle is near vertical, a strike a sharp C or S, and the line must change between the wind up and the hit.
-- Smears are afterimages here: Neon clones of the limb or the body left at the previous key, fading over 0.2 to 0.3 s, plus a crescent or a Trail on a sweep.
-- Secondary action lives at the start and the end of a strike, never during the three strike frames. Arcs flatten with speed: a jab is straight, a haymaker needs a middle key.
-- Exaggerate first, tone down after the capture.
+Choose and record authoring FPS. Convert with `seconds = frame / fps`; playback remains time-based. Do not interpret every reference as 60 fps. Obtain required impact and cancel times from the gameplay contract before retiming them.
 
-The caller for a gameplay move:
+## Pass 2 - block readable poses
 
-```lua
-Locomotion.override(character, Clips.Move, {fadeIn = 0.06, fadeOut = 0.3})  -- fadeIn at most half the snap
-humanoid.WalkSpeed, humanoid.AutoRotate = 0, false                          -- heavy moves only
-task.delay(SETTLE_TIME, function() restore the humanoid end)                -- never through the recovery, never over 1 s
-```
-The VFX and the sound cue sit on the strike key, not the clip midpoint. An override writes only the joints it keys, so a walkable light hit overlays its legs on the locomotion pose. An interrupted clip drops its `onDone`; combo state lives in the caller, the cancel window opens at the settle key, early presses buffer to it. Hit stops: `rig:hold(0.05)` light, `0.09` heavy.
+Create the few poses that explain the action with stepped timing. In Poser, `snap` on the destination key holds the previous pose until that key. Keep synchronized body keys while blocking when that makes poses easier to judge.
 
-## Definition of done (every gate, every clip)
+- State the intent and direction of force. Arrange the torso, head, and limbs into a readable gesture.
+- Place support before adding a lean or reach. Transfer weight before releasing a foot.
+- Check silhouette from the actual player camera and a second useful angle. Keep hands and props readable without changing the requested action just to expose a limb.
+- Use asymmetry for weight or character. Preserve deliberate symmetry in a two-handed action, ritual, or designed stance.
+- Use the least limb translation needed for the R6 pose. Inspect shoulder and hip gaps. Reposition the torso or stance before extending limbs beyond their reach.
 
-1. Pushed through the source server: `HttpService.HttpEnabled = true`, `GetAsync("http://127.0.0.1:8766/stand/<Name>.lua")`, `loadstring` syntax check, write `.Source`, then require a fresh clone of the whole feature folder (the Edit VM caches `require`). An open editor tab reverts a push; re-read `.Source`.
-2. Strip round one from the rear three quarter (`scripts/Strip.lua`, `scripts/StandStrip.lua`), then one front capture. Move the camera 0.1 stud between captures. Describe what each ghost shows in words and compare with the beat table.
-3. Read at least three limb directions as numbers even when it looks right. Change at least one number from what the capture showed.
-4. Strip round two. A second round is mandatory; the second capture must show the change.
-5. Run the move live with the real input, then `get_console_output`.
-6. Profile: two seconds of idle frames with Studio in front (16 to 18 ms), then the first cast under 26 ms; warm meshes at join if not.
-7. Bake to AnimSaves: moves at 60 fps, loops at 30 (`scripts/Bake.lua`).
-8. Report with the beat table, the captures and the numbers read back. Never report after the first push. Never write "should look good" or "should read": either it was captured and read, or it is not done.
+Do not smooth a weak pose. Review blocking before adding breathing, overshoot, or decorative movement.
 
-## The model for everything: how a professional idle works
+## Pass 3 - add breakdowns and spacing
 
-Lepy set the idle in `references/idle-run-land.md` as the guide for all animation:
+Place breakdowns where the path changes: torso clearance, foot lift, weapon crossing, reversal, or contact. Track hand, foot, head, and weapon tip in world space. A good joint-angle curve can still produce a bad endpoint path.
 
-1. **One engine.** Pick the joint that drives the motion (the torso in an idle, a walk, a run, a landing, a swing) and animate it first as one clean wave or one clean arc.
-2. **Everything else is secondary.** Head and arms follow the engine about a fifth of a cycle later at about half the amplitude; legs shift weight in phase on an idle, and land last on a move. In a recovery the head leads.
-3. **Translation builds the pose, rotation carries the motion.** Feet placed with 0.3 to 0.5 stud offsets, the back foot turned out, arms hanging 0.05 to 0.3 lower, knees driving a stud forward in a run, legs folding a stud up in a landing. On R6 translation is the joint you do not have.
-4. **Amplitude follows energy.** Idle 2 to 6 degrees and 0.04 studs; walk 30 to 45; run 60 to 80 with stud size translations; landing a 42 degree fold and a 1.1 stud drop; strike 130 degrees in 3 frames.
-5. **Nothing is still and the loop never pops.** Every channel drifts (a constant twist or side moves 0.2 to 0.3 degrees on a slow sine), the last frame equals the first, the pose already reads at frame 0, and every period inside a procedural joint divides the loop length.
+| Desired spacing | Poser choice to consider | Check |
+| --- | --- | --- |
+| Accelerate toward a strike | `quad` or `cubic` **in** | Speed increases toward the target. |
+| Snap away then brake | `quad`, `cubic`, or `quart` **out** | The largest step occurs early; arrival decelerates. |
+| Gentle reversal or breath | `sine` **inout** | Pause and arc match the intent. |
+| Uniform spacing between sampled poses | `linear` | The reference is actually sampled densely enough. |
+| Deliberate stepped hold | `snap` | The jump occurs at the intended frame. |
+| Loose overshoot and settle | Explicit overshoot keys, or `back` on an unconstrained channel | The motion preserves plants, grips, and collisions. |
 
-## The numbers that matter
+Poser stores easing on the **destination** key. `back` extrapolates past a target; it is not impact or recoil by itself. Its parameter is not an overshoot percentage. Use explicit keys when contact, direction, or exact overshoot timing matters.
 
-**Authored move (what Lepy accepts, from the summon and The World remake)**
-- Root: 0.5 to 1.5 studs of travel (a 1.6 stud burst in 4 frames, an apex 1.0 to 1.3 above the rest point, an overshoot 0.05 to 0.2 past it, a crouch 0.3 to 0.5, a lunge 0.5 to 1.0). Humanoid LIMBS stay under 0.5 studs of offset; stand limbs may travel 1 to 2.
-- Limbs 60 to 140 degrees (a V flare `{22, 0, 128}`, a raised claw `{140, -20, -41}`, an arm sweep of 170 degrees of side).
-- Holds 0.10 to 0.20 s in code (the sword kit's "2 to 4 frames" is a hand keyed 60 fps clip; the accepted code holds are 0.08 to 0.14 s of anticipation and 0.15 to 0.25 s on the landed pose).
-- Follow through overshoot about 15 percent of the swing (`settle value = end value + 0.15 * swing`), supplied by the `back` ease.
-- Feet: `legY = -torsoY - 2 * (1 - cos(lift)) + 0.02` keeps a crouch or a lunge on the floor.
+Add overlap by cause: head may lead a look, torso may lead a throw, hands may lead a reach, and arms may absorb a landing. Offset releases and settles where useful. Keep required contacts synchronized. Do not shift every joint by a fixed lag ladder.
 
-**Idle, run and landing (from a professional R6 set)**
-- Idle: one 3 s breath, torso lean 2.3 to 6 forward with a 0.04 sink, head nods 2 a fifth of a cycle later, arms 2 to 4, legs shift 4 to 11 in phase, staggered feet built with 0.3 to 0.5 stud offsets and a 12 degree turned out back foot.
-- Run: 0.533 s cycle, torso lean 27 with hips twisting 25 each way and the head countering one to one, root 0.28 to 0.45 low with two bobs, legs -78 to +54 with the leg parts driving 1 stud up and 1.5 forward, arms -62 to +84 with forearm twists.
-- Landing: fold to -42 and drop 1.1 studs in 5 frames, legs fold up 1.4, arms fly forward 64, hold 5 frames with a breath, recover on a decelerating curve with the head first, torso next, legs last. Weight it by fall speed: `landPeak = clamp((-vY - 12) / 38, 0.3, 1)` so a step down is a dip.
-- Takeoff (target until a clip is decoded): driving knee 60 to 90 with 0.5 up and 0.6 forward, arms thrown 60 to 80 out, torso back 8 then forward 10, 3 frames of snap with a `back` 1.3 arrival, a 0.15 s apex hold with drift.
+Keep purposeful holds. Breathing belongs where a living character should breathe; a planted foot, locked grip, statue, or time-stop can be still. Vary preparation, action, and settle instead of making every clip use the same snap-and-bounce pattern.
 
-**Walk (from four community cycles and the Roblox default)**
-- Cycle 0.76 s (run) to 0.92 s (walk) at speed 16; STRIDE 13 studs per cycle in the controller.
-- Legs asymmetric: -45..+30 walk, -40..+50 run. Back leg pushed DOWN 0.1 to 0.27 studs so the planted foot stays on the floor; forward pass LIFTED 0.22 to 0.37 (the knee). Stance is 62 to 70 percent of the cycle with a plateau under the body; the swing is the other third with the knee driven up within two frames of toe off. A symmetric-time sine cannot make this; prefer an eight key cyclic table.
-- Torso lean forward 5 to 7 (run 5 to 12), bob 0.1 up twice per cycle at the passing poses, run crouch 0.2 to 0.3. Torso twist 3 to 5 peaking at foot contact with the head countering 2 to 4.
-- Arms 30 to 40 swing (60 run), wrist twist 20 to 30 following the swing, elbows out 5 to 12, arm parts dropped 0.1 to 0.3.
-- Phase convention: 0 and pi are the passing poses; right foot contact at 1/8 of a walk cycle and 3/16 of a run cycle; leg p.Z negative is the foot forward. Run blends in from speed 18, so a place needs a sprint (26 gives the 0.5 s cycle).
+## Pass 4 - solve contacts and transitions
 
-**Attack (from a professional sword kit at 60 fps)**
-- Snap into the wind up in 3 to 4 frames, hold, strike in 3 frames, follow through 4 frames with 15 percent overshoot, then 30 frames of smooth recovery. Over half the clip is recovery.
-- Wind up: torso leans back 15 to 19 and twists 20 to 28 away, head looks down and counters the twist, weapon arm goes up and over, free arm out for balance.
-- Strike: torso swings 32 degrees of pitch and 48 of yaw in 3 frames, arm sweeps about 130 degrees in 3 frames, head snaps the other way and keeps the face on the target through the whole swing. The kit's animator did not translate the torso; Lepy's clips should.
-- Weapon idles are static bladed poses (torso twist 15 to 20 with the head counter turned, sword arm lift 65 side 47) with half a degree of drift.
+Read [r6-mechanics.md](references/r6-mechanics.md) for pose space, forward kinematics, endpoint checks, and contact correction.
 
-**Stand clips (from The World's animation set, 60 fps)**
-- Punch: 10 frames of load decelerating into the hold, 5 frames of strike with the biggest step in the middle, 5 of follow through (arm +9, lean +4), 5 of settle. Torso twist 124 degrees on the strike; the head counters 117 the other way; the fist keeps its angle and translates 0.62 studs (a piston). The end pose IS the next clip's start pose.
-- Heavy: 12 load, 6 hold that keeps creeping 10 degrees, a 2 frame strike with the arm arcing over the head through one key, a leg thrown 1.1 up and 1.3 forward, 5 hold, 5 settle.
-- Kick and stab: no load (the previous clip is the load), 10 frames of decelerating snap (39, 19, 12, 6, 2), 10 of drift. Roll is the strike channel on the stab (-5 to -55) and the uppercut (+30 to -33).
-- Barrage: a 40 frame loop of 4 swings; each half beat is 5 frames from one extreme to the other (torso -47 to +62, head +44 to -65), snap then settle, instant reversal, 6 punches a second, root dead still.
-- Float idle: 2.5 s, torso pitch -14.7 at the top to -19.5 at the bottom (1.5 s in, 1.0 s out, a sine in-out fits to 0.01 stud) with the torso part dropping 0.29 studs; head, arms and legs in phase. A stand idle is 2 to 3x a humanoid idle in the limbs and 6x on the bob. Never re-author a clip the set already has; if a procedural extra fights the loop, fix the extra.
+- Record each plant's world-space target and contact interval. Check horizontal drift and floor penetration throughout it. A Y-only correction does not prevent sliding.
+- Preserve grips in prop space. Check both hands on two-handed weapons. Revise the pose when R6's rigid limbs cannot satisfy the constraints.
+- Separate visual torso offset from `HumanoidRootPart` world travel. A RootJoint pose does not implement gameplay displacement or server hitboxes.
+- Match locomotion phase to traveled distance, then verify plants. Test relevant starts, stops, turns, speed changes, and landings.
+- Match pose and motion direction at loops and handoffs. Check the final interval into the first. Do not return every attack to idle when the next attack is its recovery.
+- Explicitly compose overlays with locomotion. The bundled `Locomotion.override` replaces its active clip; omitted legs do not automatically continue walking.
 
-**Idle (what Lepy accepts)**
-- A clear stance with intent: bladed, chin up, lead hand forward, feet apart with one ahead. Breathing at 0.3 Hz on the chest with arms and head a beat behind, plus a slow weight shift.
-- The user under a stand move: the Jotaro point from his reference image, held still. The pointing arm dead straight at the enemy at shoulder height, 10 degrees down (`aim(10, 0.05)` with the torso turned 10 so the pointing shoulder leads; `aim(tw, down)` in `Clips.lua` solves `{lift, 0, side}` so the hand reads dead ahead in root space whatever the torso twist), the fist pushed 0.3 forward, the free arm a bent forearm rising from the left ribs to the collar (`{150, 0, -10}` with `p (0.45, -0.75, -0.25)`: the block dropped and swung up reads as an elbow; the live hand lands at root (-0.98, 0.84, -1.0)), chin down 14 with the eyes up from under the brow, lead foot forward 0.3 and rear foot back 0.35 turned out 12, root dropped 0.12 with the legs solved by `legY`. A 4 frame quart whip from a wound stance 0.32 behind, the arms 3 frames later through an out-and-forward arc on a `back` 1.4, then a 3.4 s breath with the head and arms a fifth behind and a 9 s weight shift. "It needs to stay still and point ... the pointing pose should look like that" (the image).
+## Pass 5 - polish at playback speed
 
-**ZA WARUDO (the canon two frames, what Lepy accepted on 2026-09-22)**
-- Two silhouettes from the show, nothing else: CROSS then V. CROSS at 0.14 s: a forward crouch (torso `{-20, 0, 0}` dropped 0.32, head down 12) with both straight arms laid across the chest in an X, `{155, 0, 78}` p `(-0.4, 0.3, -0.55)` and `{155, 0, -78}` p `(0.4, 0.2, -0.35)` (the right arm in front): the hands read across 0.89 and forward 0.46 at chest height. A looser cross (`{126, 0, 72}`, hands 0.57 across and 0.81 forward) read as two arms held out, not an X. The arms arrive through an out-and-forward mid key `{80, 0, +-60}` so they do not cut the torso.
-- The FLING at 0.31 to 0.46: departure `quart`, a wide mid key `{125, 0, -+70}` at 0.37, the V arrives on `back` 1.5 at 0.44 and 0.46. V: torso `{14, 0, 0}` chest out, head up 20, arms `{166, 0, -40}` and `{164, 0, 44}` with p.y 0.2: hands out 0.63 and up 0.77 (39 degrees off vertical). At `{170, 0, -26}` (26 degrees) the V read as arms straight up.
-- The hold breathes: keys every 0.15 s creeping 1.5 degrees, tension rising to `{169, 0, -44}` by 2.10 s, then the JOLT of the freeze at 2.50 on `back` 1.25: torso forward to 8, arms drop to `{152, 0, -40}` with p.y 0.12 (hands 0.57 out, 0.74 up, 0.37 forward), head forward, settle 0.08 s later, then the V held to 3.9 s. Legs planted wide 14 degrees each way, feet from `legY`.
+Review full playback, then scrub problem intervals. Check weight, rhythm, endpoint arcs, contact, silhouette, and recovery in that order. Add restrained secondary movement after the action works.
 
-**Road roller (a cutscene clip, `DioRollerUp` 3.6 s and `DioRollerOff` 1.2 s)**
-- Beats keyed to `Config.RoadRoller.Beats`: LOAD (a crouch, torso forward 18, head down 25, both arms swept back: hands 0.85 back and 0.42 down), SPRING at the leap (arms thrown straight up, hands 0.92 up), REACH in the air (the right arm up for the roller, 0.93 up; the left forward), RIDE on the deck (the right fist up and forward 0.79 up 0.47 forward, the left hand down on the deck 0.76 down), BRACE on the land (torso forward 30, head down 50, both hands pressed down and forward 0.85 down 0.52 forward), then the Jotaro point through the rush. `DioRollerOff`: a crouch at 0.08, FLY at 0.18 on `back` 1.3 with the arms spread `{30, 0, +-100}` (hands 0.82 out, 0.36 up), LAND at 0.74, STANCE at 1.2 equal to the walk's first key.
-- The root is procedural (`rootAt` in `RoadRoller.lua`): the leap to an apex 36 up over 1.3 s on a `quad` out, a ride at roller top plus 3, an arc off 14 behind. The clip never moves the root.
+Identify the frame, affected part, and cause before editing. Change the smallest relevant pose, timing, or path, then recheck that interval and its transitions. Do not change a correct number merely to meet an iteration quota.
 
-## Pose space and the sign table
+Use [quality-review.md](references/quality-review.md) for diagnosis and evidence. A motion strip shows poses; it cannot prove timing, impact, or a clean playback transition.
 
-Keys are `r = {lift, twist, side}` in degrees in the PARENT part's axes plus `p` in studs. Pose = `CFrame.new(p) * Angles(0, 0, side) * Angles(lift, 0, 0) * Angles(0, twist, 0)`; `Transform = C0.Rotation:Inverse() * pose * C0.Rotation`.
+## Pass 6 - verify and hand off
 
-- `+lift`: a limb swings forward, the head looks up, the torso leans BACK.
-- `+twist` on the torso turns the chest to the character's LEFT (right shoulder forward): a right hand move winds at negative twist and strikes at positive. The head's counter is minus the torso twist because the head lives in torso axes.
-- `+side` on the torso leans the top to the left; on the right arm it is OUT and on the left arm IN, and past lift 90 the sign flips.
-- `p.Z` negative is forward; `p.Y` positive is up.
-- Hand direction in parent axes: `(cos L * sin S, -cos L * cos S, sin L)`; its third component is forward (Roblox -Z). A raised right claw `{140, -20, -41}` gives out 0.50, up 0.58, forward 0.64; its left mirror is `{128, 15, 47}`; a low V flare is `{22, 0, 128}`. Run this for every arm key with lift over 60 before any capture; never adjust a twist by guess. Past lift 90 the Euler read back lies (100 reads as 80 with twist 180); trust the formula.
+1. Check joint names, increasing times, clip bounds, start and end poses, event times, and joint ownership.
+2. Inspect blocking and final playback from the player camera. Use another view to resolve occlusion or penetration. Tie captures to the source revision and clip times.
+3. Exercise relevant integration paths: loop, transition, cancel, interruption, speed change, respawn, or remote observer. Check Studio output.
+4. Inspect the exported `KeyframeSequence` instance tree and replay it. Check duration, endpoint, hierarchy, priority, loop flag, keyed joints, and markers. Read [pipeline.md](references/pipeline.md) for baker and importer limitations.
+5. Report the artifact or instance path, key decisions, checks performed, and remaining limits. Distinguish **authored**, **structurally checked**, **visually reviewed**, **runtime tested**, and **user accepted**. One does not imply the others.
 
-## R6 posing rules
+Keep editable source keys. Bake a separate delivery copy at a rate that preserves the action; include exact event and final times. Do not present a dense bake as an editable Moon Animator project. A script passing or a successful upload does not prove professional quality.
 
-- Feet float when the root rises; drop the root 0.1 to 0.2 on wide stances, lift the chest and chin to say "up".
-- Arm twist over 20 degrees on an idle reads as a broken block; use it in walks (wrist follow) and strikes only.
-- Lag ladder: engine at T, head T + 1 to 2 frames, arms T + 2 to 3 (the weapon arm may share the strike frame but its cock and settle lag), legs T + 3 to 4. A clip whose joints share key times is wrong before it is captured. `lagged(keys, dt)` in `scripts/Clips.lua` shifts a key list.
-- Arrival keys: every key a joint lands on after a snap is `"back", "out", 1.2..1.5`; the departure key is `cubic` or `quart` out 0.06 to 0.12 s earlier; the settle is `sine inout`.
-- Arcs: an arm that crosses the body or goes over the head needs a middle key (up and over, or forward and out); a two key lerp cuts through the torso.
-- Holds must breathe: two keys that creep, never a flat hold. Recoveries have two or three keys, never one.
-- A cancellable hit ends on a held recovery pose and a 4 to 6 frame pop back to idle (see Principles); no twins, one gesture line per pose.
-- Every clip must read from the player's camera: behind and above at a three quarter angle. A limb pointing straight forward vanishes into the body; put the strike arm up, out or across the front (hand vector up or out above 0.5). Name each beat as a silhouette and check the stand's or the arm's height on screen against the user's head in the rear capture; raise the apex until it clears by a head.
-- Piston punches: on the strike frames freeze the arm angle, translate the arm part forward, and let the torso twist make the reach. Move the arm angle only in the follow through.
-- Combo clips chain: author the last key of one hit as the first key of the next and skip the return to idle; the recovery is the next load.
-- A hand-off between an authored clip and a raw sequence must land on the sequence's frame 0 pose (read it from the decode) or the blend pops.
-- A frozen body (someone's time stop) is both rigs at speed 0 and the emitters at TimeScale 0; a stopped Poser clip keeps its last pose in the engine.
+## Read only what the task needs
 
-## Install into a fresh place
+| Resource | Use |
+| --- | --- |
+| [principles.md](references/principles.md) | Posing, weight, spacing, overlap, acting, and motion-specific decisions. |
+| [r6-mechanics.md](references/r6-mechanics.md) | R6 transforms, contacts, and reach limits. |
+| [quality-review.md](references/quality-review.md) | Diagnose visible faults and record evidence. |
+| [pipeline.md](references/pipeline.md) | Module contracts, installation, playback, and export limits. |
+| [moon-animator.md](references/moon-animator.md) | Inspect an editor round trip without assuming plugin internals. |
+| [sources.md](references/sources.md) | Linked primary references and what each supports. |
+| [project-style.md](references/project-style.md) | Existing review history scoped to Lepy or DIO tasks. |
+| [idle-run-land.md](references/idle-run-land.md) | Recorded idle, run, and landing measurements. |
+| [walk-cycles.md](references/walk-cycles.md) | Recorded walk poses and controller phase convention. |
+| [attack-timing.md](references/attack-timing.md) | Recorded sword timing; compare the action, not just the numbers. |
+| [the-world-clips.md](references/the-world-clips.md) | Bundled stand decodes and their recorded interpretation. |
+| [clip-plan.md](templates/clip-plan.md) | Reusable brief, beat table, contact plan, and review record. |
 
-1. `get_studio_state`; confirm R6 (a `Torso`, six Motor6Ds, shoulder and hip C0 `Angles(0, +-pi/2, 0)`).
-2. Make a bake rig in Edit: `Players:CreateHumanoidModelFromDescription(Instance.new("HumanoidDescription"), Enum.HumanoidRigType.R6)` into `ServerStorage.AnimRig`.
-3. Create `ReplicatedStorage.Anim` with `Modules.{Tw, Poser, Clips, Locomotion}` (`multi_edit` creates ModuleScripts; `execute_luau` cannot) from `scripts/Tw.lua`, `scripts/Poser.lua`, `scripts/ClipsLocomotion.lua` (idle, walk, run, air, land and the bake clips, no Config or Assets), `scripts/Locomotion.lua`; and `StarterPlayerScripts.LocomotionClient` from `scripts/LocomotionClient.lua` (starts Locomotion for every character, Shift sprint to 26, the `PoseHold` hook).
-4. Push long Sources through `serve.js`; validate on a fresh clone.
-5. First playable in twenty minutes: idle and walk only, one strip, then run and jump/land.
-6. `Strip.lua` and `Bake.lua` resolve `ReplicatedStorage.Anim` or `ReplicatedStorage.Stand`; pass the clip list and fps to Bake.
-
-## Feedback log (newest last)
-
-- 2026-09-21 morning: "animations kind of suck, its a simple summon so no cutscenes" - no camera takeover on gameplay moves; add idle and walk cycles.
-- 2026-09-21: "these are horrid" on a sine walk at 27 degrees and 1.78 Hz plus a drifting idle - calibrate against real clips, never a symmetric sine.
-- 2026-09-21: he supplied the community walks and the sword kit and asked for this skill; Moon Animator is his tool for hand polish.
-- 2026-09-21: "analyze the idle animation ... use how it works as a way for all animation guidance for everything" - the one engine, lag, translation and energy rules come from that idle and its run and landing.
-- 2026-09-21 evening: "remake the entire animation for the world's stand" after a guard pose appear - the remake he liked is one root arc out of the back, a V flare at the apex, a swoop into raised claws with `back` arrivals, and a hover with lagged arms (`Clips.WorldAppear`). "do not make it so laggy" - the first draw hitch, fixed by a join time warm up. "lower down the tone, simple small vfx".
-- 2026-09-21 night: he dropped a free model of The World with eight Moon Animator clips, "SUPER high quality ... take reference". Decoded in `references/the-world-clips.md`; the stand plays that set raw through `Poser.fromSequence`.
-- 2026-09-21 night: "it needs to stay still and point ... a bladed point like in boxing" - the user under a stand move is planted; a pumping body read as "moving around weirdly".
-- 2026-09-22: "Claude isn't getting it ... doesn't make it cool like yours and snappy" when a fresh chat loads this skill. A cold start test showed why: fresh sessions copied the sword kit's numbers verbatim (0.06 s holds, 5 percent overshoot on hand placed keys, 0.26 stud lunges, legs on the torso's frames, `quart` arrivals) and reported after one push. The move template, the lag ladder, the `back` arrivals, the stud size root travel, the silhouette rule for the player's camera and the definition of done above are the fix; they were only in `Clips.lua` before.
-- 2026-09-21 night (later): "wire m1s, make your own animations, posing for the actual character sucks, follow the skill, make everything more dramatic except the summon, the pointing pose should look like that" with a Jotaro point image. The first pass had pumped the body, then a bladed boxing point he did not want; the set that passed the strips is `DioPoint` (the image), `DioHeavy`, `DioM1_1..5` (command gestures chained end to start under the stand's five hits: jab point, left chop, fist straight up, lean back and sweep out, lunge point 0.55 forward), `DioTimeStop` (dip, ZA WARUDO with the fist bent overhead and the left arm flung out, tremble through the pause, coil, a 0.6 stud lunge into the point on the last syllable), all on the template: `cubic` departures, `back` arrivals, creeping holds, the lag ladder, `legY` feet. Two strip rounds and the live run are in the DIO memory. He also said "why the subagents, you can do this yourself": author clips in the main loop, no panels.
-- 2026-09-22: "the character isn't leading or copying the stand, it's sitting back while the stand is doing the work ... the animations are doing too much and they don't really follow the canon animations that jojos would use". The authored command gestures under the M1 chain were cut; DIO now copies the stand's own five clips (`only` the torso, head and arms, `pScale` 0.4 on the arms, `rollScale` 0.45 on the torso so a 55 degree stand roll becomes 25 on a standing body, planted legs from `solveFootY`) three frames ahead. The time stop went canon and quiet: hand raised open beside the face on the call, a tremble, the hand opening outward on the command, one halt push forward on the last syllable; the arms-flung ZA WARUDO and the lunge point were cut. "For the cutscene i want some sort of sphere to extend out to the point where it looks like it's super big": the bubble is the kit's striped `Sphere` mesh in neon lavender over a glass ball, growing to 80 studs under a far camera at 58 studs, then blasting to 520 with the grey sweeping in as it passes the lens. Also a real bug: E pressed inside the 1.3 s summon or spammed fired nothing or an early finisher; moves now wait 1.4 s after a summon (`StandOutAt`), a tap runs the rush for a 1.0 s minimum and the cooldown counts from the end.
-- 2026-09-22: "observe a bunch of animating tutorials online ... take reference to update your own animation skill" - read a Moon Animator punch tutorial, the M1 combo lesson, two DevForum guides, the Rivals Workshop animation library, Capcom's frame data seminar and the Guilty Gear Xrd GDC talk; the rules that survived translation to R6 are the Principles section and `references/principles.md`. The biggest change: a cancellable hit holds its recovery pose and pops back, it never eases into the idle.
-- 2026-09-22 (later): "i don't like the animation for za warudo so can you please fix it? Like literally remake it ... search up reference media". The quiet one-hand version was cut. Reference frames from the show (found with the built-in browser, image search "dio za warudo pose"): the arms crossed in an X in a forward crouch, then both arms flung up and out in a wide V with open hands, chest out, head back. The remake is the two silhouettes above on the template and passed two strip rounds: round one read the cross at 0.57 across (not an X) and the V at 26 degrees (arms straight up); round two after the numbers moved read 0.89 across and 39 degrees. "Add the truck roller too, make sure thats a cutscene": `DioRollerUp` and `DioRollerOff` above, a 12 s cutscene keyed to the `RoadRollerDA` voice line. Also: `player.Character:Clone()` returned nil for the strip in play (`Archivable` was false); set it true before the clone.
-
-## Reference index
-
-- [idle-run-land.md](references/idle-run-land.md) - the professional idle, run and landing decoded, and why the idle is the model for every clip.
-- [walk-cycles.md](references/walk-cycles.md) - the four community walks decoded, the Roblox default, and the derived walk recipe.
-- [attack-timing.md](references/attack-timing.md) - the sword kit decoded frame by frame, the snap hold snap settle pattern, and how it scales to code.
-- [the-world-clips.md](references/the-world-clips.md) - The World's eight stand clips decoded: the piston punch, the torso engine barrage, combo chaining, the float idle, the bladed point.
-- [pipeline.md](references/pipeline.md) - pose space, Poser, Locomotion, the push recipe, wiring a move, verification, reading clips, baking.
-- [principles.md](references/principles.md) - the tutorial and fighting game principles (core poses, clarity over smoothness, held recovery then pop, squash and stretch on R6, twins, gesture line, smears) with their sources.
-- [moon-animator.md](references/moon-animator.md) - what Moon Animator and the Animation Editor read and write, and the round trip.
-
-## Scripts
-
-- `scripts/Tw.lua`, `scripts/Poser.lua`, `scripts/Locomotion.lua`, `scripts/Clips.lua` - the runtime modules and the DIO and The World clips as worked examples (`WorldAppear` is the move template filled in; `DioSummon` predates the lag ladder). `Poser.fromSequence(kfs, wraps, opts)` plays a KeyframeSequence raw; `Poser.wrapsOf(model)`; `Poser.sample(clip, joint, t)`.
-- `scripts/ClipsLocomotion.lua`, `scripts/LocomotionClient.lua` - the Config free locomotion module and the client entry for a fresh place.
-- `scripts/ReadClips.lua` + `scripts/serve.js` - decode KeyframeSequences to text files; the same server pushes module sources.
-- `scripts/Strip.lua`, `scripts/StandStrip.lua` - the motion strip for one capture verification (walk phases or keyed clip times; rear three quarter and front presets).
-- `scripts/Bake.lua` - bake a list of clips into a rig's AnimSaves at a given fps.
-- `scripts/AnalyzeClips.js` - ranges, frame tables and speed segmentation over decoded clips.
+Use `scripts/Clips.lua` as a project-specific example, not a standalone installation. Use `ClipsLocomotion.lua` only when that locomotion setup is requested. Inspect inputs before running `Strip.lua`, `StandStrip.lua`, `ReadClips.lua`, or `Bake.lua`. Use `scripts/check_decode.py` for decoded local endpoint seams and sampling limits; it does not judge quality or world-space contacts.
