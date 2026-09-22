@@ -102,10 +102,14 @@ function CameraRig.shot(params, dur, style, dir, delayTime)
 	end
 end
 
--- a cut snaps every value and the follow lerp so the next frame is already the new shot
-function CameraRig.cutTo(params)
+-- a cut snaps every value and the follow lerp so the next frame is already the new shot; newOrigin moves the point the
+-- shot orbits (a cutscene can re-centre on the character at a cut)
+function CameraRig.cutTo(params, newOrigin)
 	if not vals then
 		return
+	end
+	if newOrigin then
+		origin = newOrigin
 	end
 	for k, v in pairs(params) do
 		if running[k] then

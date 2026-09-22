@@ -125,15 +125,18 @@ Config.Knives = {
 -- the road roller is a twelve second cutscene keyed to the "road roller voice" track: the call at 0.7 to 1.7, a
 -- silent fall to 3.0, the scream 3.1 to 8.5, a gap at 8.6 for the blast, the laugh to 11.8
 Config.RoadRoller = {
+	-- leap: the feet leave the floor; catch: the cut to dio on the roller; land: the roller hits; point: he gets up
+	-- for the scream; jump: the crouch to jump off; boom: the blast and the takeoff; touch: the feet on the ground;
+	-- free: the laugh is over and the walk has the body
 	Beats = {
-		leap = 0.30,
-		reach = 1.30,
+		leap = 0.40,
 		catch = 1.80,
 		land = 3.00,
-		brace = 3.10,
 		point = 3.50,
+		jump = 8.26,
 		boom = 8.50,
-		off = 8.55,
+		touch = 9.20,
+		free = 10.9,
 		fade = 11.2,
 		done = 12.0,
 	},
@@ -146,8 +149,8 @@ Config.RoadRoller = {
 	BoomRadius = 18,
 	Fling = 55,
 	-- the stand root over the roller's front housing, 2.45 above and 1.1 behind the fists' landing point so the
-	-- barrage's 2.7 stud reach drives into the metal; dio stands on the rear hood 8.5 behind that point
-	StandOffset = Vector3.new(0.3, 1.65, -7.4),
+	-- barrage's 2.7 stud reach drives into the metal; dio rides the rear hood 9.8 behind that point
+	StandOffset = Vector3.new(0.3, 1.65, -8.7),
 	Voice = {
 		track = "RoadRollerDA",
 		bed = "RoadRollerStart",

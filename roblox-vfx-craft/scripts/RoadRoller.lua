@@ -27,13 +27,20 @@ local RoadRoller = {}
 local active = {}
 
 -- the roller mesh is 16 long and 8.6 tall and lies along dio's line, front away from him; rays over the mesh gave
--- the rear hood top 1.2 above the centre (z 2 to 6) and the front housing top a flat 3.4 at z -5, so dio rides the
--- hood with his root 3 above it and the world dives at the housing with its fists on the metal
+-- the rear hood top a flat 1.16 above the centre (z 3 to 6) and the front housing top a flat 3.4 at z -5, so dio rides
+-- the hood 4.8 behind the centre (both feet on the flat part in every pose) with his root 3 above it, and the
+-- world dives at the housing with its fists on the metal
 local ROLLER_H = 8.6
 local ROOT_H = 3
-local REAR = 3.5
-local HOOD_H = 1.2
+local REAR = 4.8
+local HOOD_H = 1.16
 local DECK = V3(0, 3.4, -5)
+local SEAT = CFrame.new(0, HOOD_H + ROOT_H, REAR)
+-- real scale gravity (9.81 m/s2 at 0.28 m a stud): the leap is one parabola from the takeoff to the roller's landing,
+-- so he rises fast, slows through the top and falls faster and faster with no hang; the jump off uses it too
+local G = 35
+-- the jump off lands 13.5 behind the impact, on the ground measured there at the cast
+local BACK = V3(0, 0, 13.5)
 
 local function newModel(name)
 	local m = Instance.new("Model")
@@ -46,27 +53,24 @@ local function quadOut(u)
 	u = math.clamp(u, 0, 1)
 	return 1 - (1 - u) * (1 - u)
 end
-local function quadIn(u)
-	u = math.clamp(u, 0, 1)
-	return u * u
-end
-local function sineInOut(u)
-	u = math.clamp(u, 0, 1)
-	return 0.5 - 0.5 * math.cos(u * math.pi)
+
+-- dio's root in the impact frame from the takeoff to the landing: x and z at a constant speed, y a parabola that
+-- leaves the start at the leap beat and meets the landed roller's seat at the land beat
+local function flight(state, t)
+	local s = state.startLocal
+	local tau = T.land - T.leap
+	local seat = V3(0, ROLLER_H / 2 + HOOD_H + ROOT_H, REAR)
+	local u = math.clamp(t - T.leap, 0, tau)
+	local vy = (seat.Y - s.Y + G / 2 * tau * tau) / tau
+	local k = u / tau
+	return V3(s.X + (seat.X - s.X) * k, s.Y + vy * u - G / 2 * u * u, s.Z + (seat.Z - s.Z) * k)
 end
 
--- the roller's centre height above the impact ground through the cutscene: it drops in from the sky to just
--- under dio's feet at the apex, falls with him to the ground, squashes on the land, then sinks under the rush
+-- the roller's centre height above the impact ground once it is down: it squashes on the land, then sinks under
+-- the rush
 local function rollerY(t)
-	local apexCentre = RR.Apex - ROOT_H - HOOD_H
 	local landed = ROLLER_H / 2
-	if t < T.reach then
-		return nil
-	elseif t < T.catch then
-		return 75 + (apexCentre - 75) * quadIn((t - T.reach) / (T.catch - T.reach))
-	elseif t < T.land then
-		return apexCentre + (landed - apexCentre) * quadIn((t - T.catch) / (T.land - T.catch))
-	elseif t < T.land + 0.12 then
+	if t < T.land + 0.12 then
 		return landed - 0.35 * quadOut((t - T.land) / 0.12)
 	elseif t < T.land + 0.4 then
 		return landed - 0.35 + 0.2 * quadOut((t - T.land - 0.12) / 0.28)
@@ -75,48 +79,38 @@ local function rollerY(t)
 	end
 end
 
--- dio's root through the cutscene in the impact frame: a leap to the apex, a settle as he grabs, the fall on
--- the roller, the ride, then an arc back to the ground behind the wreck
-local function rootAt(state, t)
-	local impact = state.impact
-	local start = state.startLocal
-	local apex = V3(0, RR.Apex, REAR)
-	local p
-	if t < T.leap then
-		p = start
-	elseif t < T.leap + 1.0 then
-		local u = (t - T.leap) / 1.0
-		p = V3(start.X + (apex.X - start.X) * sineInOut(u), start.Y + (apex.Y - start.Y) * quadOut(u), start.Z + (apex.Z - start.Z) * sineInOut(u))
-	elseif t < T.catch then
-		local u = (t - T.leap - 1.0) / (T.catch - T.leap - 1.0)
-		p = apex - V3(0, 0.4 * sineInOut(u), 0)
-	elseif t < T.off then
-		local ry = rollerY(t) or (ROLLER_H / 2)
-		p = V3(0, ry + HOOD_H + ROOT_H, REAR)
-	elseif t < T.off + 0.65 then
-		local u = (t - T.off) / 0.65
-		local from = V3(0, (rollerY(T.off - 0.01) or 3) + HOOD_H + ROOT_H, REAR)
-		local to = V3(0, ROOT_H, 14)
-		p = from:Lerp(to, sineInOut(u)) + V3(0, 6 * 4 * u * (1 - u), 0)
-	else
-		p = V3(0, ROOT_H, 14)
-	end
-	return impact * CFrame.new(p)
-end
-
+-- the roller from the cut on: under dio's feet on his parabola until the land, then on the ground with the rush's
+-- shake; nil before the cut
 local function rollerCF(state, t)
-	local y = rollerY(t)
-	if not y then
+	if t < T.catch then
 		return nil
-	end
-	local tilt = 0
-	if t < T.land then
-		tilt = -0.14 * quadIn((t - T.reach) / (T.land - T.reach))
-	elseif t < T.land + 0.3 then
-		tilt = -0.14 + 0.14 * quadOut((t - T.land) / 0.3)
+	elseif t < T.land then
+		return state.impact * CFrame.new(flight(state, t)) * SEAT:Inverse()
 	end
 	local j = (t > T.land + 0.4 and t < T.boom) and 0.06 * math.sin(t * math.pi * 2 * 12) or 0
-	return state.impact * CFrame.new(j, y, 0) * CFrame.Angles(tilt, 0, 0)
+	return state.impact * CFrame.new(j, rollerY(t), 0)
+end
+
+-- dio's root through the cutscene in the impact frame: still through the crouch, the parabola, the seat on the
+-- roller, then the jump off with the blast: a second parabola from the seat to the ground behind the wreck
+local function rootAt(state, t)
+	local impact = state.impact
+	if t < T.leap then
+		return impact * CFrame.new(state.startLocal)
+	elseif t < T.catch then
+		return impact * CFrame.new(flight(state, t))
+	elseif t < T.boom then
+		return rollerCF(state, t) * SEAT
+	elseif t < T.touch then
+		local air = T.touch - T.boom
+		local from = V3(0, rollerY(T.boom) + HOOD_H + ROOT_H, REAR)
+		local u = t - T.boom
+		local back = state.back
+		local vy = (back.Y - from.Y + G / 2 * air * air) / air
+		local k = u / air
+		return impact * CFrame.new(from.X + (back.X - from.X) * k, from.Y + vy * u - G / 2 * u * u, from.Z + (back.Z - from.Z) * k)
+	end
+	return impact * CFrame.new(state.back)
 end
 
 local function light(parent, color, brightness, range)
@@ -215,7 +209,8 @@ local function run(state)
 		hrp.Anchored = true
 		-- walk speed and jump power are the server's (zeroed at the cast, restored at done); a client restore raced its zero
 		state.humanoid.AutoRotate = false
-		CameraRig.take(impact, {angle = 150, dist = 16, height = 3, lookY = 3, fov = 60})
+		-- the opening orbits dio where he stands (the impact point is ten studs ahead of him)
+		CameraRig.take(impact * CFrame.new(state.startLocal.X, state.startLocal.Y - ROOT_H, state.startLocal.Z), {angle = 150, dist = 13, height = 3.2, lookY = 3, fov = 60})
 		ScreenFx.bars(true, 0.3)
 		ScreenFx.vignette(0.3, 0.4)
 	end
@@ -226,7 +221,7 @@ local function run(state)
 			return
 		end
 		local t = (os.clock() - t0) / Tw.S()
-		if isLocal and t < T.off + 0.7 then
+		if isLocal and t < T.touch + 0.1 then
 			hrp.CFrame = rootAt(state, t)
 		end
 		if state.trail then
@@ -236,7 +231,7 @@ local function run(state)
 		if rc and roller.PrimaryPart and t < T.boom then
 			roller:PivotTo(rc)
 			state.rollerCF = rc
-			if roller.PrimaryPart.Transparency > 0 and t >= T.reach then
+			if roller.PrimaryPart.Transparency > 0 and t >= T.catch then
 				for _, p in ipairs(roller:GetDescendants()) do
 					if p:IsA("BasePart") then
 						p.Transparency = 0
@@ -275,7 +270,9 @@ local function run(state)
 		return
 	end
 	sfx(RR.Voice.jump, hrp, 0.8, 1)
-	Kit.burst("Shock", impact * CFrame.new(0, 0.4, 0) * CFrame.Angles(math.pi / 2, 0, 0), state.fx, 1, {color = P.gold, scale = 1.4, glow = 1, life = 0.8})
+	local feet = impact * CFrame.new(state.startLocal - V3(0, ROOT_H, 0))
+	Kit.burst("Shock", feet * CFrame.new(0, 0.4, 0) * CFrame.Angles(math.pi / 2, 0, 0), state.fx, 1, {color = P.gold, scale = 1.4, glow = 1, life = 0.8})
+	Kit.burst("Smoke", feet * CFrame.new(0, 0.5, 0), state.fx, {Smoke1 = 14}, {color = Color3.fromRGB(165, 150, 125), scale = 1.4, life = 1.6})
 	local trail = Kit.spawn("Wind", hrp.CFrame * CFrame.new(0, -2.5, 0) * CFrame.Angles(math.pi, 0, 0), state.fx)
 	if trail then
 		Kit.tint(trail, P.gold, P.pale)
@@ -293,12 +290,17 @@ local function run(state)
 		CameraRig.shot({lookY = RR.Apex - 2, height = 18, dist = 21, angle = 140}, 1.0, Sine, Out)
 		SpeedLines.pulse(0.6, 0.4)
 	end
-	-- the catch: the roller drops onto his hands and the shot goes to the sky looking down
+	-- the cut: the roller is under his feet (fetched in stopped time, a gold ring where it arrived) and the shot looks
+	-- down from the sky
 	Tw.wait(T.catch - T.leap)
 	if not state.alive then
 		return
 	end
 	sfx("Impact", hrp, 0.5, 1.2)
+	local arrive = rollerCF(state, T.catch)
+	if arrive then
+		Kit.burst("RingShock", arrive, state.fx, 1, {color = P.gold, color2 = P.pale, scale = 2.6, glow = 1, life = 0.7})
+	end
 	if isLocal then
 		CameraRig.cutTo({angle = 200, dist = 30, height = 44, lookY = RR.Apex - 6, fov = 60, roll = 0})
 		CameraRig.shot({lookY = 6, height = 12, dist = 26}, T.land - T.catch, Quad, In)
@@ -311,17 +313,19 @@ local function run(state)
 	landFx(state)
 	task.delay(0.2 * Tw.S(), function()
 		if state.alive and isLocal then
-			CameraRig.cutTo({angle = 40, dist = 23, height = 9, lookY = 7, fov = 62, roll = 0})
-			CameraRig.shot({angle = 112, dist = 21, height = 8}, T.boom - T.land - 0.2, Sine, InOut)
+			-- the rush orbits dio on the hood: front right for the scream, drifting to his side for the punches, the world
+			-- pounding the housing on the right of the frame
+			CameraRig.cutTo({angle = 132, dist = 17, height = 9.5, lookY = 9, fov = 60, roll = 0}, impact * CFrame.new(0, 0, REAR))
+			CameraRig.shot({angle = 96, dist = 15, height = 9}, T.boom - T.land - 0.2, Sine, InOut)
 			CameraRig.floor(0.2)
 		end
 	end)
-	-- the rush on the roller: dio in the point, the world hammering the deck, echoes and streaks
+	-- the rush on the roller: dio stands up on it and screams, then rides it low with the world hammering the deck
 	Tw.wait(T.point - T.land)
 	if not state.alive then
 		return
 	end
-	state.rigDio:play(Clips.DioPoint, {fadeIn = 0.15})
+	state.rigDio:play(Clips.DioRollerRide, {fadeIn = 0.05})
 	state.rigStand:play(Clips.WorldRollerBarrage, {fadeIn = 0.22})
 	local flash = Emitters.carrier(state.fx, hrp.CFrame, V3(2.4, 1.2, 2.4))
 	state.flash = flash
@@ -359,8 +363,13 @@ local function run(state)
 			Tw.wait(0.45)
 		end
 	end)
-	-- the blast
-	Tw.wait(T.boom - T.point)
+	-- the crouch for the jump off, then the blast as his feet leave the roller
+	Tw.wait(T.jump - T.point)
+	if not state.alive then
+		return
+	end
+	state.rigDio:play(Clips.DioRollerOff, {fadeIn = 0.05})
+	Tw.wait(T.boom - T.jump)
 	if not state.alive then
 		return
 	end
@@ -371,17 +380,33 @@ local function run(state)
 	end
 	boomFx(state)
 	state.rigStand:play(Clips.WorldFloat, {fadeIn = 0.4})
-	state.rigDio:play(Clips.DioRollerOff, {fadeIn = 0.06})
 	if isLocal then
-		CameraRig.cutTo({angle = 70, dist = 44, height = 14, lookY = 6, fov = 66, roll = 0})
+		CameraRig.cutTo({angle = 70, dist = 44, height = 14, lookY = 6, fov = 66, roll = 0}, impact)
 		task.delay(0.5 * Tw.S(), function()
 			if state.alive then
 				CameraRig.shot({dist = 36, angle = 55, height = 11}, T.fade - T.boom - 0.5, Sine, Out)
 			end
 		end)
 	end
-	-- back on the ground: the walk gets the body, the laugh runs on the voice track
-	Tw.wait(T.off + 0.75 - T.boom)
+	-- the touch down behind the wreck: a puff of dust under the feet, then the laugh on the ground
+	Tw.wait(T.touch - T.boom)
+	if not state.alive then
+		return
+	end
+	Kit.burst("Smoke", impact * CFrame.new(state.back - V3(0, ROOT_H - 0.5, 0)), state.fx, {Smoke1 = 12}, {color = Color3.fromRGB(165, 150, 125), scale = 1.2, life = 1.4})
+	sfx("GroundSlamSFX", hrp, 0.35, 1.3)
+	-- the laugh gets its own shot: front three quarters from his left (the world floats at his right) on dio where he
+	-- landed, pushing in slowly until the fade
+	if isLocal then
+		task.delay(0.3 * Tw.S(), function()
+			if state.alive then
+				CameraRig.cutTo({angle = 212, dist = 12, height = 3.5, lookY = 4.3, fov = 55, roll = 0}, impact * CFrame.new(state.back.X, state.back.Y - ROOT_H, state.back.Z))
+				CameraRig.shot({angle = 200, dist = 9.5, height = 3}, T.fade - T.touch - 0.3, Sine, Out)
+			end
+		end)
+	end
+	-- the laugh ends in the stance and the walk gets the body back
+	Tw.wait(T.free - T.touch)
 	if not state.alive then
 		return
 	end
@@ -389,13 +414,9 @@ local function run(state)
 		hrp.Anchored = false
 		ctrl.frozen = false
 	end
-	task.delay(0.5 * Tw.S(), function()
-		if state.alive then
-			state.rigDio:play(Clips.DioMove, {fadeIn = 0.3})
-		end
-	end)
+	state.rigDio:play(Clips.DioMove, {fadeIn = 0.3})
 	-- the fade out, the hand back in the dark, the fade in
-	Tw.wait(T.fade - T.off - 0.75)
+	Tw.wait(T.fade - T.free)
 	if not state.alive then
 		return
 	end
@@ -459,6 +480,11 @@ function RoadRoller.start(character, isLocal, info)
 	state.impact = info.impact
 	-- the start point is kept in the impact frame so the leap lands on the deck whatever the ground did
 	state.startLocal = info.impact:PointToObjectSpace(hrp.Position)
+	local params = RaycastParams.new()
+	params.FilterType = Enum.RaycastFilterType.Exclude
+	params.FilterDescendantsInstances = {character}
+	local hit = workspace:Raycast((info.impact * CFrame.new(BACK.X, 8, BACK.Z)).Position, V3(0, -30, 0), params)
+	state.back = V3(BACK.X, (hit and info.impact:PointToObjectSpace(hit.Position).Y or 0) + ROOT_H, BACK.Z)
 	state.speed0 = {AutoRotate = humanoid.AutoRotate}
 	active[character] = state
 	local ok, err = pcall(run, state)

@@ -785,106 +785,288 @@ Clips.DioHeavy = {
 	},
 }
 
--- the knife throw from the show's three frames: silhouettes STANCE -> LOAD (a low crouch wound to the left, the
--- right hand with its fan of knives crossed high to the left collar, the left hand with the second fan drawn low
--- behind the hip, chin down) -> creep -> the THROW (both arms flung wide and forward in one whip, the torso
--- unwinding to the right and opening, the chest out, the head thrown back with the shout, the front foot driving)
--- -> FOLLOW (the arms held wide and open, the "MUDA" frame) -> recovery to the stance. The fans appear at Draw and
--- the hands open at Release, both from Config.Knives.
-local KN = Config.Knives
-local KLOAD = {
-	torso = {-14, 26, 3}, torsoP = V3(0, -0.35, -0.1),
-	head = {-10, -20, 0},
-	rArm = {145, 0, 52}, rArmP = V3(-0.35, 0.25, -0.3),
-	lArm = {-32, 0, -18}, lArmP = V3(-0.05, -0.05, 0.1),
-	rLeg = {-22, 12, 6}, rLegP = V3(0.08, legY(-0.35, -22, -14) - 0.08, 0.45),
-	lLeg = {14, 0, -6}, lLegP = V3(-0.06, legY(-0.35, 14, -14), -0.35),
-}
-local KTHROW = {
-	-- the torso dips instead of rising so both legs stay in their hips: a leg key's translation is the hip gap
-	torso = {8, -16, -4}, torsoP = V3(0, -0.12, -0.15),
-	head = {16, 12, 0},
-	rArm = {40, 0, 100}, rArmP = V3(0.15, 0.1, -0.1),
-	lArm = {25, 0, -110}, lArmP = V3(-0.15, 0.1, -0.1),
-	rLeg = {-10, 10, 8}, rLegP = V3(0.1, legY(-0.12, -10, 8), 0.4),
-	lLeg = {14, 0, -8}, lLegP = V3(-0.08, legY(-0.12, 14, 8), -0.4),
-}
-Clips.DioKnifeThrow = {
-	name = "DioKnifeThrow",
-	length = 1.05,
-	joints = {
-		["Torso"] = {
-			K(0.00, STANCE.torso, STANCE.torsoP),
-			K(0.10, KLOAD.torso, KLOAD.torsoP, "quart", "out"),
-			K(0.18, {-15, 29, 3}, V3(0, -0.36, -0.1), "sine", "inout"),
-			K(0.26, {-16, 32, 4}, V3(0, -0.37, -0.11), "sine", "inout"),
-			K(0.30, KTHROW.torso, KTHROW.torsoP, "back", "out", 1.3),
-			K(0.38, {9, -17, -4}, V3(0, -0.1, -0.15), "quad", "out"),
-			K(0.50, {10, -18, -4}, V3(0, -0.11, -0.14), "sine", "inout"),
-			K(0.62, {9, -17, -4}, V3(0, -0.12, -0.13), "sine", "inout"),
-			K(0.85, {2, -4, -1}, V3(0.01, -0.03, -0.06), "sine", "inout"),
-			K(1.05, STANCE.torso, STANCE.torsoP, "sine", "inout"),
-		},
-		["Head"] = {
-			K(0.00, STANCE.head),
-			K(0.11, KLOAD.head, nil, "quart", "out"),
-			K(0.19, {-11, -22, 0}, nil, "sine", "inout"),
-			K(0.27, {-12, -24, 0}, nil, "sine", "inout"),
-			K(0.31, KTHROW.head, nil, "back", "out", 1.25),
-			K(0.39, {17, 13, 0}, nil, "quad", "out"),
-			K(0.50, {18, 14, 0}, nil, "sine", "inout"),
-			K(0.62, {16, 13, 0}, nil, "sine", "inout"),
-			K(0.85, {6, 3, 0}, nil, "sine", "inout"),
-			K(1.05, STANCE.head, nil, "sine", "inout"),
-		},
-		["Right Arm"] = {
-			K(0.00, STANCE.rArm, STANCE.rArmP),
-			K(0.06, {70, 0, 20}, V3(-0.1, 0.1, -0.25), "cubic", "out"),
-			K(0.12, KLOAD.rArm, KLOAD.rArmP, "back", "out", 1.25),
-			K(0.20, {147, 0, 54}, V3(-0.37, 0.26, -0.3), "sine", "inout"),
-			K(0.27, {149, 0, 56}, V3(-0.38, 0.27, -0.31), "sine", "inout"),
-			K(0.29, {80, 0, 30}, V3(0, 0.1, -0.35), "quart", "out"),
-			K(0.32, KTHROW.rArm, KTHROW.rArmP, "back", "out", 1.4),
-			K(0.40, {40, 0, 103}, V3(0.16, 0.1, -0.1), "quad", "out"),
-			K(0.52, {38, 0, 105}, V3(0.16, 0.09, -0.09), "sine", "inout"),
-			K(0.64, {39, 0, 104}, V3(0.16, 0.1, -0.1), "sine", "inout"),
-			K(0.86, {30, 0, 50}, V3(0.06, 0.02, -0.05), "sine", "inout"),
-			K(1.05, STANCE.rArm, STANCE.rArmP, "sine", "inout"),
-		},
-		["Left Arm"] = {
-			K(0.00, STANCE.lArm, STANCE.lArmP),
-			K(0.07, {-20, 0, -16}, V3(-0.03, -0.05, 0.05), "cubic", "out"),
-			K(0.13, KLOAD.lArm, KLOAD.lArmP, "back", "out", 1.25),
-			K(0.21, {-34, 0, -19}, V3(-0.05, -0.05, 0.11), "sine", "inout"),
-			K(0.28, {-36, 0, -20}, V3(-0.05, -0.06, 0.12), "sine", "inout"),
-			K(0.30, {30, 0, -50}, V3(-0.08, 0.05, -0.2), "quart", "out"),
-			K(0.33, KTHROW.lArm, KTHROW.lArmP, "back", "out", 1.4),
-			K(0.41, {25, 0, -113}, V3(-0.16, 0.1, -0.1), "quad", "out"),
-			K(0.53, {23, 0, -115}, V3(-0.16, 0.09, -0.09), "sine", "inout"),
-			K(0.65, {24, 0, -114}, V3(-0.16, 0.1, -0.1), "sine", "inout"),
-			K(0.87, {10, 0, -50}, V3(-0.06, 0.02, -0.05), "sine", "inout"),
-			K(1.05, STANCE.lArm, STANCE.lArmP, "sine", "inout"),
-		},
-		["Right Leg"] = {
-			K(0.00, STANCE.rLeg, STANCE.rLegP),
-			K(0.13, KLOAD.rLeg, KLOAD.rLegP, "back", "out", 1.3),
-			K(0.27, {-23, 12, 6}, V3(0.08, legY(-0.37, -23, -16) - 0.08, 0.46), "sine", "inout"),
-			K(0.34, KTHROW.rLeg, KTHROW.rLegP, "back", "out", 1.3),
-			K(0.62, {-10, 10, 8}, V3(0.1, legY(-0.12, -10, 9), 0.4), "sine", "inout"),
-			K(0.86, {0, 4, 7}, V3(0.06, legY(-0.03, 0, 2), 0.1), "sine", "inout"),
-			K(1.05, STANCE.rLeg, STANCE.rLegP, "sine", "inout"),
-		},
-		["Left Leg"] = {
-			K(0.00, STANCE.lLeg, STANCE.lLegP),
-			K(0.14, KLOAD.lLeg, KLOAD.lLegP, "back", "out", 1.3),
-			K(0.27, {15, 0, -6}, V3(-0.06, legY(-0.37, 15, -16) - 0.12, -0.36), "sine", "inout"),
-			K(0.35, KTHROW.lLeg, KTHROW.lLegP, "back", "out", 1.3),
-			K(0.62, {14, 0, -8}, V3(-0.08, legY(-0.12, 14, 9), -0.4), "sine", "inout"),
-			K(0.86, {4, 2, -8}, V3(-0.05, legY(-0.03, 4, 2), -0.05), "sine", "inout"),
-			K(1.05, STANCE.lLeg, STANCE.lLegP, "sine", "inout"),
-		},
-	},
-}
+-- the motion-first helpers the authored dio moves share (the r6 animation skill's method): a torso that bends at the
+-- waist, a torso height seated on the floor targets of the feet, an arm aimed at a point, whole-body poses, key tracks
+-- with per-beat staggers, planted feet as a post pass that blends where the feet leave or land, and a tremble layer
+local Method = {}
+do
+	local Feet = require(script.Parent.Feet)
+	Method.Feet = Feet
+
+	-- r6 has no waist: the torso turns about its centre, so waist(r, p) adds the offset that keeps the hip centre
+	-- where p puts it and the body bends at the hips
+	function Method.waist(r, p)
+		local l, s = math.rad(r[1]), math.rad(r[3])
+		return p + V3(-math.sin(s) * math.cos(l), -1 + math.cos(s) * math.cos(l), math.sin(l))
+	end
+
+	-- the torso offset for a lean with the hip centre at (tx, tz) that leaves both legs just reaching their floor
+	-- targets (bisection on Feet.gap), then crouch lower: the legs slide up into the hips, the bent-knee read
+	function Method.seat(r, tx, tz, crouch, feet)
+		local lo, hi = -2.5, 0.8
+		for _ = 1, 22 do
+			local mid = (lo + hi) / 2
+			local tp = pose({p = Method.waist(r, V3(tx, mid, tz)), r = r})
+			local g = math.max(Feet.gap(tp, 1, feet.r[1], feet.r[2], feet.r[4]), Feet.gap(tp, -1, feet.l[1], feet.l[2], feet.l[4]))
+			if g > 0.002 then
+				hi = mid
+			else
+				lo = mid
+			end
+		end
+		return Method.waist(r, V3(tx, lo - (crouch or 0), tz))
+	end
+
+	-- an arm aimed so its hand (the bottom of the part: 0.5 out from the shoulder pivot and 1.5 down) lies on the line
+	-- from the pivot to a point in root space, sliding at most 0.25 along it when the point is past the hand. Two lift
+	-- and side pairs reach the same point; the smaller side is a forward raise, the other a sideways sweep across the
+	-- chest (a hand to the face swung 168 degrees of side at 1721 deg/s), so the smaller side wins
+	local HANDLEN = math.sqrt(0.25 + 2.25)
+	function Method.reach(tp, s, target)
+		local shoulder = (tp * CFrame.new(s, 0.5, 0)).Position
+		local v = target - shoulder
+		local u = tp.Rotation:VectorToObjectSpace(v.Unit)
+		local l1 = math.asin(math.clamp(-u.Z * HANDLEN / 1.5, -1, 1))
+		local best
+		for _, lift in ipairs({l1, math.pi - l1}) do
+			local side = math.atan2(u.Y, u.X) - math.atan2(-1.5 * math.cos(lift), 0.5 * s)
+			side = (side + math.pi) % (2 * math.pi) - math.pi
+			if not best or math.abs(side) < math.abs(best[2]) then
+				best = {lift, side}
+			end
+		end
+		return {math.deg(best[1]), 0, math.deg(best[2])}, u * math.clamp(v.Magnitude - HANDLEN, 0, 0.25)
+	end
+
+	-- a whole-body pose: the torso lean with the hip centre at (tx, tz), seated on feet with a crouch when the body
+	-- stands (the leg keys are then only what the legs blend from when the feet leave), or at height py in the air with
+	-- keyed legs {right angles, left angles, right up, left up}; arms as angles or as a hand target (a Vector3 in root
+	-- space) with an optional p
+	function Method.body(def)
+		local p
+		if def.feet then
+			p = Method.seat(def.torso, def.tx or 0, def.tz or 0, def.crouch, def.feet)
+		else
+			p = Method.waist(def.torso, V3(def.tx or 0, def.py or 0, def.tz or 0))
+		end
+		local tp = pose({p = p, r = def.torso})
+		local legs = def.legs or {{0, 0, 3}, {0, 0, -3}}
+		local out = {
+			floor = def.feet ~= nil,
+			torso = def.torso, torsoP = p, head = def.head,
+			rLeg = legs[1], rLegP = V3(0, legs[3] or 0, 0),
+			lLeg = legs[2], lLegP = V3(0, legs[4] or 0, 0),
+		}
+		for _, a in ipairs({{"rArm", 1}, {"lArm", -1}}) do
+			local v = def[a[1]]
+			if typeof(v) == "Vector3" then
+				out[a[1]], out[a[1] .. "P"] = Method.reach(tp, a[2], v)
+			else
+				out[a[1]], out[a[1] .. "P"] = v, def[a[1] .. "P"] or V3(0, -0.04, 0)
+			end
+		end
+		return out
+	end
+
+	-- keys for all six joints from beats {t, pose, e, lag}: no ease means the spline carries the speed through; the
+	-- lag table moves one joint's key of that beat so the parts start and arrive at different frames
+	local JOINTS = {
+		{"Torso", "torso", "torsoP"}, {"Head", "head"}, {"Right Arm", "rArm", "rArmP"}, {"Left Arm", "lArm", "lArmP"},
+		{"Right Leg", "rLeg", "rLegP"}, {"Left Leg", "lLeg", "lLegP"},
+	}
+	function Method.track(beats)
+		local joints = {}
+		for _, j in ipairs(JOINTS) do
+			local keys, used = {}, {}
+			for _, b in ipairs(beats) do
+				local t = math.max(0, b.t + (b.lag and b.lag[j[1]] or 0))
+				t = math.floor(t * 1000 + 0.5) / 1000
+				while used[t] do
+					t += 0.001
+				end
+				used[t] = true
+				local p = b.pose
+				table.insert(keys, {t = t, r = p[j[2]], p = j[3] and p[j[3]] or nil, e = b.e})
+			end
+			table.sort(keys, function(x, y)
+				return x.t < y.t
+			end)
+			joints[j[1]] = keys
+		end
+		return joints
+	end
+
+	-- planted feet as a post pass: inside a window both soles stand on the window's targets (Feet.stand after the
+	-- curves, lag, life and springs; feet may be a function of t returning {r = {x, z, yaw, lift}, l = ...} for a
+	-- step), and across fadeIn before it and fadeOut after it the legs blend with their keys so a takeoff or a touch
+	-- down never pops; stats.gap keeps the worst hip gap of a fully planted frame
+	function Method.plant(windows)
+		local stats = {gap = 0}
+		local function weight(w, t)
+			if t >= w[1] and t <= w[2] then
+				return 1
+			elseif t < w[1] and (w.fadeIn or 0) > 0 and t > w[1] - w.fadeIn then
+				local u = 1 - (w[1] - t) / w.fadeIn
+				return u * u * (3 - 2 * u)
+			elseif t > w[2] and (w.fadeOut or 0) > 0 and t < w[2] + w.fadeOut then
+				local u = 1 - (t - w[2]) / w.fadeOut
+				return u * u * (3 - 2 * u)
+			end
+			return 0
+		end
+		local fn = function(poses, t)
+			local tp = poses.Torso
+			if not tp then
+				return
+			end
+			for _, w in ipairs(windows) do
+				local k = weight(w, t)
+				if k > 0 then
+					local feet = type(w.feet) == "function" and w.feet(t) or w.feet
+					for s, key in pairs({[1] = "r", [-1] = "l"}) do
+						local f = feet[key]
+						local name = s == 1 and "Right Leg" or "Left Leg"
+						local cf, gap = Feet.stand(tp, s, f[1], f[2], f[3], f[4])
+						poses[name] = k >= 1 and cf or poses[name]:Lerp(cf, k)
+						if k >= 1 and (f[4] or 0) == 0 then
+							stats.gap = math.max(stats.gap, gap)
+						end
+					end
+					return
+				end
+			end
+		end
+		return fn, stats
+	end
+
+	-- a tremble for the post pass: two octaves of noise at rate hz on the rotation of the named joints (degrees), faded
+	-- in and out over each window's edges and turned in the parent axes about the joint pivot; a scream shakes the head,
+	-- the arms and the chest, the wind buffets a rider, a laugh shakes the shoulders. A held scream keyed as a pose with
+	-- only a slow drift measured 17.8% still with a 0.55 s still run
+	function Method.shake(windows)
+		return function(poses, t)
+			for _, w in ipairs(windows) do
+				local k = 0
+				if t > w[1] and t < w[2] then
+					local u = math.min(1, (t - w[1]) / w.fade, (w[2] - t) / w.fade)
+					k = u * u * (3 - 2 * u)
+				end
+				if k > 0 then
+					local u = t * w.rate
+					for name, amp in pairs(w.amp) do
+						local cf = poses[name]
+						if cf then
+							local seed = #name * 3.1 + w[1]
+							local a = {}
+							for c = 1, 3 do
+								a[c] = math.rad(amp * k * 1.4 * (math.noise(u, seed + c * 1.7) + 0.5 * math.noise(u * 2.1, seed + c * 2.9)))
+							end
+							poses[name] = CFrame.new(cf.Position) * CFrame.Angles(a[1], a[2], a[3]) * cf.Rotation
+						end
+					end
+				end
+			end
+		end
+	end
+
+	-- a post pass made of two: the tremble first (it moves the torso), then the feet planted under the final torso
+	function Method.chain(first, second)
+		return function(poses, t, ctx)
+			first(poses, t, ctx)
+			second(poses, t, ctx)
+		end
+	end
+
+	-- a 0..1 smoothstep between a and b
+	function Method.ramp(t, a, b)
+		local u = math.clamp((t - a) / (b - a), 0, 1)
+		return u * u * (3 - 2 * u)
+	end
+end
+
+-- the knife throw from the show's three frames (the crouch with the fan crossed to the opposite collar, the wide fling
+-- with both hands open, the "MUDA" frame with both arms flung wide), on the motion-first method. At 60 fps: STANCE ->
+-- LOAD at 0.10 (six frames: a low coil to the left, the right fan crossed high to the left collar, the left fan drawn
+-- low behind the hip, chin down with the eyes on the target, the lead foot stepping forward) -> the coil keeps winding
+-- to 0.22 (a moving hold, never a freeze) -> the breakdown at 0.27 (hips square, both arms passing in front) -> THROW at
+-- the release (0.32, Config.Knives.Release: both arms flung wide and forward, the torso unwound to the right with the
+-- chest open, the head thrown back with the shout, the weight on the front foot); the release key is a breakdown so the
+-- speed carries through it -> FOLLOW past it at 0.38 -> the flung-wide hold drifting further to 0.50 -> the pop back at
+-- 0.64 with the arms first and the torso and head a few frames behind -> the stance at 0.86 with the lead foot stepping
+-- back. The fans appear at Config.Knives.Draw (0.12). The legacy clip spent 66% of each joint's time parked (rest) with a
+-- contrast of 10.3: creep keys and eased arrivals that stopped every part on every key
+do
+	local KN = Config.Knives
+	local body, track, plant, ramp = Method.body, Method.track, Method.plant, Method.ramp
+	-- the soles: the idle's bladed stance, then the lead (left) foot steps 0.5 forward over 0.03 to 0.13 with a lift arc
+	-- and back over 0.62 to 0.80, while the rear foot stays and its toe pivots out with the hips
+	local START = {r = {0.55, 0.2, -6}, l = {-0.55, -0.35, 8}}
+	local THROWN = {r = {0.55, 0.2, -26}, l = {-0.5, -0.85, 12}}
+	local function feetAt(t)
+		local k = ramp(t, 0.03, 0.13) * (1 - ramp(t, 0.62, 0.80))
+		local stepping = (t > 0.03 and t < 0.13) or (t > 0.62 and t < 0.80)
+		local lift = 0
+		if t > 0.03 and t < 0.13 then
+			lift = 0.28 * math.sin(math.pi * (t - 0.03) / 0.1)
+		elseif t > 0.62 and t < 0.80 then
+			lift = 0.22 * math.sin(math.pi * (t - 0.62) / 0.18)
+		end
+		local function mix(a, b)
+			return a + (b - a) * k
+		end
+		return {
+			r = {mix(START.r[1], THROWN.r[1]), mix(START.r[2], THROWN.r[2]), mix(START.r[3], THROWN.r[3] * (1 - ramp(t, 0.6, 0.75)) + START.r[3] * ramp(t, 0.6, 0.75))},
+			l = {mix(START.l[1], THROWN.l[1]), mix(START.l[2], THROWN.l[2]), mix(START.l[3], THROWN.l[3]), stepping and lift or 0},
+		}
+	end
+
+	local KSTANCE = body({feet = START, torso = STANCE.torso, tx = STANCE.torsoP.X, tz = STANCE.torsoP.Z, crouch = 0.05,
+		head = STANCE.head, rArm = STANCE.rArm, lArm = STANCE.lArm})
+	-- the right arm reaches the collar out and around the front so it never cuts the torso
+	local KREACH = {rArm = {80, 0, 20}, rArmP = V3(-0.1, 0.1, -0.2)}
+	local KLOAD = body({feet = THROWN, torso = {-14, 28, 3}, tz = 0.02, crouch = 0.38, head = {-10, -22, 0},
+		rArm = {145, 0, 52}, rArmP = V3(-0.35, 0.25, -0.3), lArm = {-32, 0, -18}, lArmP = V3(-0.05, -0.05, 0.1)})
+	local KWIND = body({feet = THROWN, torso = {-18, 37, 5}, tz = 0.05, crouch = 0.5, head = {-13, -30, 0},
+		rArm = {151, 0, 60}, rArmP = V3(-0.39, 0.28, -0.32), lArm = {-42, 0, -21}, lArmP = V3(-0.05, -0.06, 0.13)})
+	local KBREAK = body({feet = THROWN, torso = {-6, 6, 0}, tz = -0.06, crouch = 0.3, head = {2, -4, 0},
+		rArm = {85, 0, 35}, rArmP = V3(0, 0.1, -0.35), lArm = {28, 0, -52}, lArmP = V3(-0.08, 0.05, -0.2)})
+	local KTHROW = body({feet = THROWN, torso = {8, -16, -4}, tz = -0.16, crouch = 0.14, head = {16, 12, 0},
+		rArm = {40, 0, 100}, rArmP = V3(0.15, 0.1, -0.1), lArm = {25, 0, -110}, lArmP = V3(-0.15, 0.1, -0.1)})
+	local KFOLLOW = body({feet = THROWN, torso = {10, -22, -5}, tz = -0.19, crouch = 0.16, head = {19, 16, 0},
+		rArm = {42, 0, 108}, rArmP = V3(0.16, 0.1, -0.1), lArm = {27, 0, -117}, lArmP = V3(-0.16, 0.1, -0.1)})
+	local KHELD = body({feet = THROWN, torso = {13, -28, -6}, tz = -0.22, crouch = 0.2, head = {22, 20, 0},
+		rArm = {46, 0, 114}, rArmP = V3(0.16, 0.1, -0.1), lArm = {29, 0, -123}, lArmP = V3(-0.16, 0.1, -0.1)})
+	local KPOP = body({feet = THROWN, torso = {4, -10, -2}, tz = -0.1, crouch = 0.1, head = {8, 8, 0},
+		rArm = {36, 0, 38}, lArm = {8, 0, -34}})
+
+	local knifePost, knifeStats = plant({{0, 0.86, feet = feetAt}})
+	Clips.DioKnifeThrow = {
+		name = "DioKnifeThrow",
+		length = 0.86,
+		curve = "spline",
+		events = {draw = KN.Draw, release = KN.Release},
+		life = 0.6,
+		post = knifePost,
+		feetStats = knifeStats,
+		joints = track({
+			{t = 0.00, pose = KSTANCE},
+			{t = 0.05, pose = {torso = KSTANCE.torso, torsoP = KSTANCE.torsoP, head = KSTANCE.head, rArm = KREACH.rArm, rArmP = KREACH.rArmP,
+				lArm = {-20, 0, -16}, lArmP = V3(-0.03, -0.05, 0.05), rLeg = KSTANCE.rLeg, rLegP = KSTANCE.rLegP, lLeg = KSTANCE.lLeg, lLegP = KSTANCE.lLegP},
+				lag = {Torso = 0.03, Head = 0.03, ["Left Arm"] = 0.01}},
+			-- the coil lands on the hips first, the arms a frame later, the head holds the target
+			{t = 0.10, pose = KLOAD, lag = {["Right Arm"] = 0.017, ["Left Arm"] = 0.033}},
+			{t = 0.22, pose = KWIND, lag = {Head = 0.017, ["Left Arm"] = 0.02}},
+			-- the unwind starts in the hips; the arms are carried through and the right arm leads the throw
+			{t = 0.27, pose = KBREAK, lag = {Torso = -0.01, ["Left Arm"] = 0.01}},
+			{t = KN.Release, pose = KTHROW, lag = {["Left Arm"] = 0.017}},
+			{t = 0.38, pose = KFOLLOW, lag = {["Left Arm"] = 0.017, Head = 0.017}},
+			{t = 0.50, pose = KHELD, lag = {Head = 0.03, ["Left Arm"] = 0.02}},
+			{t = 0.64, pose = KPOP, lag = {Torso = 0.03, Head = 0.05, ["Left Arm"] = 0.017}},
+			{t = 0.86, pose = KSTANCE, lag = {Head = -0.02}},
+		}),
+	}
+end
+
 
 -- dio copies the stand's five hits the way a stand user throws the punch in the show: the torso, head and
 -- arms are the model's own tracks (the 124 degree torso whip, the countering head, the piston fists) with
@@ -1227,216 +1409,269 @@ Clips.DioTimeStop = {
 	},
 }
 
--- the road roller on dio, four chained beats under a scripted root: LOAD (a deep crouch) -> SPRING (arms flung
--- up, knees tucked) -> REACH (both hands straight up to the roller) -> RIDE (a crouched grip on the falling
--- roller with the right fist thrown high) -> BRACE (the impact fold) -> the point during the barrage -> LEAP OFF
--- (a spring back with the arms spread) -> LAND (the fold) -> the stance
+do
+-- the road roller on dio, on the motion-first method: spline keys that carry speed through breakdowns and stop only
+-- where a part turns around, key times staggered per joint where the action motivates it, springs on the carried parts,
+-- a life drift, moving holds, a torso that bends at the waist and planted feet solved after everything (Feet); the
+-- root is ballistic in RoadRoller.lua. Beats and voice times are in Config.RoadRoller.Beats and the comments below.
 local RR = Config.RoadRoller.Beats
-local LOAD = {
-	torso = {-16, 0, 0}, torsoP = V3(0, -0.35, 0.05),
-	head = {-6, 0, 0},
-	rArm = {-40, 0, 25}, rArmP = V3(0, -0.04, 0.05),
-	lArm = {-40, 0, -25}, lArmP = V3(0, -0.04, 0.05),
-	rLeg = {8, 0, 10}, rLegP = V3(0.05, legY(-0.35, 8, -16), -0.15),
-	lLeg = {-8, 4, -10}, lLegP = V3(-0.05, legY(-0.35, -8, -16), 0.15),
-}
-local SPRING = {
-	torso = {12, 0, 0}, torsoP = V3(0, 0.15, -0.05),
-	head = {26, 0, 0},
-	rArm = {150, 0, -25}, rArmP = V3(0.1, 0.15, 0),
-	lArm = {150, 0, 25}, lArmP = V3(-0.1, 0.15, 0),
-	rLeg = {60, 0, 10}, rLegP = V3(0.05, 0.6, -0.5),
-	lLeg = {50, 0, -10}, lLegP = V3(-0.05, 0.5, -0.4),
-}
-local REACH = {
-	torso = {6, 0, 0}, torsoP = V3(0, 0.05, 0),
-	head = {30, 0, 0},
-	rArm = {175, 0, -8}, rArmP = V3(0.05, 0.2, 0),
-	lArm = {175, 0, 8}, lArmP = V3(-0.05, 0.2, 0),
-	rLeg = {30, 0, 8}, rLegP = V3(0.05, 0.3, -0.3),
-	lLeg = {20, 0, -8}, lLegP = V3(-0.05, 0.2, -0.2),
-}
-local RIDE = {
-	torso = {-14, 10, 0}, torsoP = V3(0, -0.3, -0.1),
-	head = {-6, -10, 0},
-	rArm = {170, 0, -25}, rArmP = V3(0.1, 0.2, 0),
-	lArm = {50, 0, -20}, lArmP = V3(0, -0.3, -0.2),
-	rLeg = {10, 0, 16}, rLegP = V3(0.06, legY(-0.3, 10, -14), -0.2),
-	lLeg = {-10, 4, -16}, lLegP = V3(-0.06, legY(-0.3, -10, -14), 0.2),
-}
-local BRACE = {
-	torso = {-30, 6, 0}, torsoP = V3(0, -0.6, -0.15),
-	head = {-20, -6, 0},
-	rArm = {60, 0, 20}, rArmP = V3(0, -0.1, -0.2),
-	lArm = {60, 0, -20}, lArmP = V3(0, -0.1, -0.2),
-	rLeg = {12, 0, 18}, rLegP = V3(0.06, legY(-0.6, 12, -30), -0.25),
-	lLeg = {-12, 4, -18}, lLegP = V3(-0.06, legY(-0.6, -12, -30), 0.25),
-}
-local FLY = {
-	torso = {20, 0, 0}, torsoP = V3(0, 0.1, 0.1),
-	head = {14, 0, 0},
-	rArm = {30, 0, 100}, rArmP = V3(0.05, 0.05, 0),
-	lArm = {30, 0, -100}, lArmP = V3(-0.05, 0.05, 0),
-	rLeg = {40, 0, 10}, rLegP = V3(0.05, 0.4, -0.3),
-	lLeg = {40, 0, -10}, lLegP = V3(-0.05, 0.4, -0.3),
-}
-local LAND = {
-	torso = {-28, 0, 0}, torsoP = V3(0, -0.7, -0.1),
-	head = {-16, 0, 0},
-	rArm = {50, 0, 15}, rArmP = V3(0, -0.1, -0.15),
-	lArm = {50, 0, -15}, lArmP = V3(0, -0.1, -0.15),
-	rLeg = {10, 0, 16}, rLegP = V3(0.06, legY(-0.7, 10, -28), -0.2),
-	lLeg = {-10, 4, -16}, lLegP = V3(-0.06, legY(-0.7, -10, -28), 0.2),
-}
+local body, track, plant, shake, chain = Method.body, Method.track, Method.plant, Method.shake, Method.chain
 
--- one chained clip runs from the cast to the brace; the point takes over on the roller
+-- the soles (x right, z forward negative, yaw turning the toe to the left) for the three places dio stands: the jump
+-- stance on the ground, a wide stance on the flat rear hood (4.8 behind the roller centre, flat from 3 to 6) and the
+-- landing behind the wreck
+local GROUND = {r = {0.6, 0.05, -8}, l = {-0.6, -0.05, 8}}
+local ROLLER = {r = {1.0, 0.3, -18}, l = {-1.0, -0.25, 16}}
+local LANDED = {r = {0.75, -0.3, -12}, l = {-0.7, 0.35, 14}}
+
+-- the approach, 0.40 s from the cast to the feet leaving: STANCE -> DIP -> LOAD (the countermovement bottom at 0.24:
+-- hips back and down, trunk 34 forward, arms swung behind, eyes up) -> DRIVE (the arms swing through first, the legs
+-- extend) -> TAKEOFF at the leap beat (the body straight over the toes, the arms still rising: they reach overhead in the
+-- air). An arm swing from behind the hips to overhead in 0.13 s peaked at 2146 deg/s; started earlier and finished
+-- after the takeoff it is a real jump's swing
+local STANCE0 = body({feet = GROUND, torso = {-2, 6, 1}, tz = -0.02, crouch = 0.05, head = {3, -4, 0},
+	rArm = {26, 0, 12}, lArm = {-6, 0, -14}})
+local DIP = body({feet = GROUND, torso = {-16, 3, 0}, tz = 0.1, crouch = 0.3, head = {22, -3, 0},
+	rArm = {-30, 0, 12}, lArm = {-28, 0, -12}})
+local LOAD = body({feet = GROUND, torso = {-34, 4, 0}, tz = 0.22, crouch = 0.75, head = {40, -4, 0},
+	rArm = {-64, 0, 14}, rArmP = V3(0, -0.05, 0.06), lArm = {-60, 0, -14}, lArmP = V3(0, -0.05, 0.06)})
+local DRIVE = body({feet = GROUND, torso = {-18, 2, 0}, tz = 0.1, crouch = 0.3, head = {24, 0, 0},
+	rArm = {34, 0, 10}, lArm = {38, 0, -10}})
+local TAKEOFF = body({feet = GROUND, torso = {6, 0, 0}, crouch = 0.06, head = {16, 0, 0},
+	rArm = {112, 0, -14}, lArm = {118, 0, 14}, legs = {{-4, 0, 3}, {-1, 0, -3}}})
+-- the flight: RISE (still stretched, the arms opening to a V, the legs trailing) -> TUCK (knees driven up into the
+-- chest, arms forward for balance as the climb dies) -> CALL on "road roller" (face and right hand raised to the sky,
+-- the left arm down behind, the legs splitting) -> DA (a crunch and the fist pulled down on the last syllable) -> REACH
+-- (legs straight down, arms out, eyes down); the roller is fetched in stopped time and is under his feet at the cut
+local RISE = body({py = 0.05, torso = {10, 0, 0}, head = {18, 0, 0},
+	rArm = {150, 0, -40}, lArm = {148, 0, 40}, legs = {{-12, 0, 4}, {4, 0, -4}, 0.1, 0.25}})
+local TUCK = body({py = 0, torso = {-12, -6, 0}, head = {10, 6, 0},
+	rArm = {70, 0, 55}, lArm = {60, 0, -60}, legs = {{62, -4, 8}, {48, 4, -8}, 0.75, 0.6}})
+local CALL = body({py = 0, torso = {4, 8, 0}, head = {38, -8, 0},
+	rArm = {135, 0, -8}, lArm = {-35, 0, -28}, legs = {{24, 0, 6}, {-22, 0, -6}, 0.2, 0.05}})
+local DA = body({py = 0, torso = {-14, 10, 0}, head = {28, -10, 0},
+	rArm = {95, 0, 5}, lArm = {-45, 0, -30}, legs = {{16, 0, 6}, {-12, 0, -6}, 0.1, 0}})
+local REACHDOWN = body({py = 0, torso = {-6, 4, 0}, head = {-4, -4, 0},
+	rArm = {30, 0, 60}, lArm = {30, 0, -60}, legs = {{10, -10, 16}, {-4, 10, -15}}})
+-- the deck: CONTACT (planted) -> RIDE (a low wide surfer crouch, chest over the knees and turned a little left, the left
+-- arm out ahead and the right arm out behind for balance, eyes on the ground coming up) rocked by the wind -> IMPACT
+-- (the roller stops and the body does not: a deeper fold, the arms flung down, the head whipping down a frame later) ->
+-- RISE_MID (coming up out of the crouch). A rigid arm cannot reach the hood from a crouch on the feet (the shoulders
+-- stay 2.1 to 2.35 above it and the arm reaches 1.83), so the hands stay off the metal
+local CONTACT = body({feet = ROLLER, torso = {-6, 4, 0}, crouch = 0.1, head = {-4, -4, 0},
+	rArm = {30, 0, 60}, lArm = {30, 0, -60}})
+local RIDE = body({feet = ROLLER, torso = {-34, 10, 4}, tz = 0.18, crouch = 0.7, head = {30, -10, -4},
+	rArm = {-22, 0, 58}, lArm = {42, 0, -52}})
+local RIDE2 = body({feet = ROLLER, torso = {-38, 7, 7}, tz = 0.2, crouch = 0.8, head = {34, -7, -7},
+	rArm = {-12, 0, 66}, lArm = {50, 0, -42}})
+local IMPACT = body({feet = ROLLER, torso = {-50, 8, 0}, tz = 0.28, crouch = 1.1, head = {16, -8, 0},
+	rArm = {24, 0, 36}, lArm = {54, 0, -28}})
+local IMPACT2 = body({feet = ROLLER, torso = {-40, 9, 2}, tz = 0.22, crouch = 0.85, head = {28, -9, -2},
+	rArm = {-6, 0, 50}, lArm = {46, 0, -40}})
+local RISE_MID = body({feet = ROLLER, torso = {-20, 4, 0}, tz = 0.1, crouch = 0.4, head = {22, -2, 0},
+	rArm = {10, 0, 40}, lArm = {24, 0, -36}})
+
+-- one clip from the cast to the point beat; the arms carry a follow spring (the swing through the jump overshoots and
+-- settles), the head stays on its keys because it leads every look
+local upPost, upStats = plant({
+	{0, RR.leap, feet = GROUND, fadeOut = 0.08},
+	{RR.catch, RR.point, feet = ROLLER, fadeIn = 0.09},
+})
 Clips.DioRollerUp = {
 	name = "DioRollerUp",
-	length = RR.brace + 0.5,
-	joints = {
-		["Torso"] = {
-			K(0.00, STANCE.torso, STANCE.torsoP),
-			K(0.10, LOAD.torso, LOAD.torsoP, "cubic", "out"),
-			K(0.22, {-18, 0, 0}, V3(0, -0.38, 0.06), "sine", "inout"),
-			K(RR.leap, {-10, 0, 0}, V3(0, -0.2, 0), "quart", "out"),
-			K(RR.leap + 0.12, SPRING.torso, SPRING.torsoP, "back", "out", 1.3),
-			K(RR.leap + 0.45, {10, 0, 0}, V3(0, 0.12, -0.04), "sine", "inout"),
-			K(RR.reach, REACH.torso, REACH.torsoP, "back", "out", 1.2),
-			K(RR.catch, {4, 0, 0}, REACH.torsoP, "sine", "inout"),
-			K(RR.catch + 0.14, RIDE.torso, RIDE.torsoP, "back", "out", 1.25),
-			K(RR.catch + 0.5, {-16, 12, 1}, V3(0, -0.32, -0.1), "sine", "inout"),
-			K(RR.catch + 0.85, {-13, 9, -1}, V3(0, -0.29, -0.1), "sine", "inout"),
-			K(RR.land, RIDE.torso, RIDE.torsoP, "sine", "inout"),
-			K(RR.land + 0.08, BRACE.torso, BRACE.torsoP, "back", "out", 1.25),
-			K(RR.land + 0.16, BRACE.torso, BRACE.torsoP + V3(0, 0.03, 0), "quad", "out"),
-			K(RR.brace + 0.5, {-6, 4, 0}, V3(0, -0.15, -0.05), "sine", "inout"),
-		},
-		["Head"] = {
-			K(0.00, STANCE.head),
-			K(0.12, LOAD.head, nil, "cubic", "out"),
-			K(0.23, {-8, 0, 0}, nil, "sine", "inout"),
-			K(RR.leap + 0.02, {0, 0, 0}, nil, "quart", "out"),
-			K(RR.leap + 0.14, SPRING.head, nil, "back", "out", 1.2),
-			K(RR.reach + 0.02, REACH.head, nil, "back", "out", 1.2),
-			K(RR.catch + 0.16, RIDE.head, nil, "back", "out", 1.2),
-			K(RR.catch + 0.55, {-8, -12, 0}, nil, "sine", "inout"),
-			K(RR.land, RIDE.head, nil, "sine", "inout"),
-			K(RR.land + 0.10, BRACE.head, nil, "back", "out", 1.2),
-			K(RR.brace + 0.5, {2, -4, 0}, nil, "sine", "inout"),
-		},
-		["Right Arm"] = {
-			K(0.00, STANCE.rArm, STANCE.rArmP),
-			K(0.13, LOAD.rArm, LOAD.rArmP, "cubic", "out"),
-			K(0.24, {-44, 0, 27}, LOAD.rArmP, "sine", "inout"),
-			K(RR.leap + 0.03, {40, 0, 60}, V3(0.05, 0.05, -0.1), "quad", "out"),
-			K(RR.leap + 0.15, SPRING.rArm, SPRING.rArmP, "back", "out", 1.5),
-			K(RR.reach + 0.03, REACH.rArm, REACH.rArmP, "back", "out", 1.2),
-			K(RR.catch + 0.18, RIDE.rArm, RIDE.rArmP, "back", "out", 1.3),
-			K(RR.catch + 0.55, {172, 0, -27}, V3(0.1, 0.22, 0), "sine", "inout"),
-			K(RR.land, RIDE.rArm, RIDE.rArmP, "sine", "inout"),
-			K(RR.land + 0.11, BRACE.rArm, BRACE.rArmP, "back", "out", 1.2),
-			K(RR.brace + 0.5, {30, 0, 14}, V3(0, -0.05, -0.05), "sine", "inout"),
-		},
-		["Left Arm"] = {
-			K(0.00, STANCE.lArm, STANCE.lArmP),
-			K(0.14, LOAD.lArm, LOAD.lArmP, "cubic", "out"),
-			K(0.25, {-44, 0, -27}, LOAD.lArmP, "sine", "inout"),
-			K(RR.leap + 0.04, {40, 0, -60}, V3(-0.05, 0.05, -0.1), "quad", "out"),
-			K(RR.leap + 0.16, SPRING.lArm, SPRING.lArmP, "back", "out", 1.5),
-			K(RR.reach + 0.04, REACH.lArm, REACH.lArmP, "back", "out", 1.2),
-			K(RR.catch + 0.19, RIDE.lArm, RIDE.lArmP, "back", "out", 1.3),
-			K(RR.catch + 0.55, {52, 0, -22}, V3(0, -0.32, -0.2), "sine", "inout"),
-			K(RR.land, RIDE.lArm, RIDE.lArmP, "sine", "inout"),
-			K(RR.land + 0.12, BRACE.lArm, BRACE.lArmP, "back", "out", 1.2),
-			K(RR.brace + 0.5, {24, -4, -16}, V3(0, -0.05, -0.05), "sine", "inout"),
-		},
-		["Right Leg"] = {
-			K(0.00, STANCE.rLeg, STANCE.rLegP),
-			K(0.15, LOAD.rLeg, LOAD.rLegP, "cubic", "out"),
-			K(RR.leap + 0.05, {20, 0, 10}, V3(0.05, 0.1, -0.2), "quad", "out"),
-			K(RR.leap + 0.18, SPRING.rLeg, SPRING.rLegP, "back", "out", 1.3),
-			K(RR.reach + 0.05, REACH.rLeg, REACH.rLegP, "back", "out", 1.3),
-			K(RR.catch + 0.2, RIDE.rLeg, RIDE.rLegP, "back", "out", 1.3),
-			K(RR.land, RIDE.rLeg, RIDE.rLegP, "sine", "inout"),
-			K(RR.land + 0.13, BRACE.rLeg, BRACE.rLegP, "back", "out", 1.3),
-			K(RR.brace + 0.5, {8, 0, 8}, V3(0.05, legY(-0.15, 8, -6), -0.2), "sine", "inout"),
-		},
-		["Left Leg"] = {
-			K(0.00, STANCE.lLeg, STANCE.lLegP),
-			K(0.15, LOAD.lLeg, LOAD.lLegP, "cubic", "out"),
-			K(RR.leap + 0.05, {10, 0, -10}, V3(-0.05, 0.1, -0.1), "quad", "out"),
-			K(RR.leap + 0.19, SPRING.lLeg, SPRING.lLegP, "back", "out", 1.3),
-			K(RR.reach + 0.06, REACH.lLeg, REACH.lLegP, "back", "out", 1.3),
-			K(RR.catch + 0.21, RIDE.lLeg, RIDE.lLegP, "back", "out", 1.3),
-			K(RR.land, RIDE.lLeg, RIDE.lLegP, "sine", "inout"),
-			K(RR.land + 0.14, BRACE.lLeg, BRACE.lLegP, "back", "out", 1.3),
-			K(RR.brace + 0.5, {-8, 4, -8}, V3(-0.05, legY(-0.15, -8, -6), 0.2), "sine", "inout"),
-		},
-	},
+	length = RR.point,
+	curve = "spline",
+	springs = {["Right Arm"] = "follow", ["Left Arm"] = "follow"},
+	life = 0.6,
+	-- the wind: a light buffet in the free flight, a harder one on the falling roller
+	post = chain(shake({
+		{0.42, 1.72, fade = 0.15, rate = 3.5, amp = {Head = 1.5, ["Right Arm"] = 2.5, ["Left Arm"] = 2.5, Torso = 0.8}},
+		{RR.catch + 0.06, RR.land, fade = 0.1, rate = 4.5, amp = {Head = 2, ["Right Arm"] = 4.5, ["Left Arm"] = 4.5, Torso = 1.2}},
+	}), upPost),
+	feetStats = upStats,
+	joints = track({
+		{t = 0.00, pose = STANCE0},
+		-- the sink starts in the hips, the arms start back a frame early and the eyes go to the sky early
+		{t = 0.12, pose = DIP, lag = {["Right Arm"] = -0.03, ["Left Arm"] = -0.027, Head = -0.02}},
+		{t = 0.24, pose = LOAD, lag = {["Right Arm"] = -0.04, ["Left Arm"] = -0.037}},
+		-- the drive: the arms lead it through, the legs finish it
+		{t = 0.33, pose = DRIVE, lag = {["Right Arm"] = -0.03, ["Left Arm"] = -0.027, Head = -0.01}},
+		{t = RR.leap, pose = TAKEOFF, lag = {Head = 0.017}},
+		{t = 0.55, pose = RISE, lag = {["Right Leg"] = 0.05, ["Left Leg"] = 0.067, Head = 0.03}},
+		{t = 0.95, pose = TUCK, lag = {Head = -0.04, ["Right Leg"] = -0.05, ["Left Leg"] = -0.033, ["Left Arm"] = 0.017}},
+		{t = 1.20, pose = CALL, lag = {Head = -0.05, Torso = -0.017, ["Left Arm"] = 0.033, ["Left Leg"] = 0.017}},
+		{t = 1.55, pose = DA, lag = {Head = 0.017, ["Left Arm"] = 0.033, ["Left Leg"] = 0.02}},
+		{t = RR.catch - 0.07, pose = REACHDOWN, lag = {Head = -0.03, ["Left Arm"] = 0.017}},
+		{t = RR.catch, pose = CONTACT},
+		-- the crouch settles with the arms opening after the legs, then the wind rocks him
+		{t = RR.catch + 0.18, pose = RIDE, lag = {["Right Arm"] = 0.04, ["Left Arm"] = 0.06, Head = 0.03}},
+		{t = 2.3, pose = RIDE2, lag = {["Right Arm"] = 0.04, ["Left Arm"] = 0.05, Head = 0.02}},
+		{t = 2.62, pose = RIDE, lag = {["Right Arm"] = 0.04, ["Left Arm"] = 0.05, Head = 0.03}},
+		{t = RR.land - 0.1, pose = RIDE2, lag = {["Right Arm"] = 0.03, ["Left Arm"] = 0.04}},
+		{t = RR.land, pose = RIDE},
+		-- the stop: the body keeps going for 0.08 s, the head whips a frame later, then the rebound
+		{t = RR.land + 0.1, pose = IMPACT, lag = {Head = 0.02, ["Right Arm"] = 0.017, ["Left Arm"] = 0.033}},
+		{t = RR.land + 0.26, pose = IMPACT2, lag = {Head = 0.03, ["Right Arm"] = 0.03, ["Left Arm"] = 0.05}},
+		-- up out of the crouch as the scream builds; the head leads the rise
+		{t = RR.point, pose = RISE_MID, lag = {Head = -0.05, ["Right Arm"] = 0.02, ["Left Arm"] = 0.03}},
+	}),
 }
 
+-- the ride through the rush, keyed to the voice track (measured with PlaybackLoudness at 60 samples a second): a held
+-- scream from 2.97 s with a breath at 4.68 and a fade to silence at 6.28, fast "muda" syllables peaking at 6.45, 6.60,
+-- 6.72 and 6.87, a breath from 6.96, a final yell from 7.28 to 8.43. RISE_MID -> TALL (standing tall on the hood, chest
+-- out, arms open: the canon frame) -> WRY (arched back, head thrown back, hands high and open) that keeps arching
+-- through the scream (a moving hold) -> BREATH at the break -> WRY again, further -> EASE in the silence -> CHAMBER (a
+-- wide crouch, fists up) -> a punch down at the roller on each syllable, right and left, the chest turning into each ->
+-- RAISE in the breath (both fists over the head, chest arched) -> SLAM on the yell (both fists driven down at the
+-- hood, the body folded over them, pressing further) -> PRE (lifting for the jump off)
+local TALL = body({feet = ROLLER, torso = {8, -4, 0}, tz = -0.02, crouch = 0.02, head = {16, 4, 0},
+	rArm = {24, 0, 42}, lArm = {22, 0, -44}})
+-- the scream arms go above the shoulders in a wide V (at 62 to 71 degrees of side they read as arms held out)
+local WRY = body({feet = ROLLER, torso = {18, -4, 0}, tz = -0.04, crouch = 0.04, head = {30, 4, 0},
+	rArm = {30, 0, 100}, lArm = {28, 0, -102}})
+local WRY_MORE = body({feet = ROLLER, torso = {21, -6, 2}, tz = -0.05, crouch = 0.05, head = {35, -3, 3},
+	rArm = {34, 0, 106}, lArm = {32, 0, -108}})
+local BREATH = body({feet = ROLLER, torso = {9, -4, 0}, tz = -0.02, crouch = 0.1, head = {18, 4, 0},
+	rArm = {26, 0, 84}, lArm = {24, 0, -86}})
+local WRY_PEAK = body({feet = ROLLER, torso = {25, -2, -2}, tz = -0.06, crouch = 0.06, head = {40, 7, -3},
+	rArm = {38, 0, 112}, lArm = {36, 0, -114}})
+local EASE = body({feet = ROLLER, torso = {5, -4, 0}, crouch = 0.1, head = {10, 0, 0},
+	rArm = {16, 0, 34}, lArm = {14, 0, -34}})
+-- the punches aim at the hood 1.7 ahead of the feet (root space; the hood is 3 under the root): a rigid arm stops short
+-- of it, the world's fists land on the housing ahead
+local CHAMBER = body({feet = ROLLER, torso = {-30, 0, 0}, tz = 0.14, crouch = 0.55, head = {30, 0, 0},
+	rArm = {10, 0, 30}, lArm = {10, 0, -30}})
+local PUNCH_R = body({feet = ROLLER, torso = {-36, 14, 3}, tz = 0.18, crouch = 0.7, head = {34, -14, -3},
+	rArm = V3(0.35, -2.7, -1.7), lArm = {-24, 0, -22}})
+local PUNCH_L = body({feet = ROLLER, torso = {-36, -14, -3}, tz = 0.18, crouch = 0.7, head = {34, 14, 3},
+	rArm = {-24, 0, 22}, lArm = V3(-0.35, -2.7, -1.7)})
+local RAISE = body({feet = ROLLER, torso = {10, 0, 0}, tz = -0.02, crouch = 0.15, head = {26, 0, 0},
+	rArm = {150, 0, -12}, lArm = {150, 0, 12}})
+local SLAM = body({feet = ROLLER, torso = {-46, 0, 0}, tz = 0.24, crouch = 0.82, head = {38, 0, 0},
+	rArm = V3(0.3, -2.4, -1.6), lArm = V3(-0.3, -2.4, -1.6)})
+local SLAM_OVER = body({feet = ROLLER, torso = {-52, 2, 1}, tz = 0.27, crouch = 0.95, head = {42, -1, -1},
+	rArm = V3(0.3, -2.6, -1.45), lArm = V3(-0.3, -2.6, -1.45)})
+local SLAM_MORE = body({feet = ROLLER, torso = {-55, 3, 2}, tz = 0.28, crouch = 1.0, head = {45, -3, -2},
+	rArm = V3(0.28, -2.6, -1.4), lArm = V3(-0.32, -2.6, -1.4)})
+local PRE = body({feet = ROLLER, torso = {-16, 8, 0}, tz = 0.06, crouch = 0.3, head = {14, -8, 0},
+	rArm = {30, 0, 20}, lArm = {-10, 0, -24}})
+
+-- clip times are the voice times minus the point beat (3.5)
+local rideBeats = {
+	{t = 0.00, pose = RISE_MID},
+	{t = 0.24, pose = TALL, lag = {Head = -0.03, ["Right Arm"] = 0.03, ["Left Arm"] = 0.05}},
+	{t = 0.48, pose = WRY, lag = {Head = -0.02, ["Right Arm"] = 0.03, ["Left Arm"] = 0.04}},
+	{t = 1.12, pose = WRY_MORE, lag = {Head = 0.05, ["Left Arm"] = 0.03}},
+	{t = 1.22, pose = BREATH, lag = {Head = 0.03, ["Right Arm"] = 0.02, ["Left Arm"] = 0.04}},
+	{t = 1.38, pose = WRY, lag = {Head = -0.02, ["Right Arm"] = 0.02, ["Left Arm"] = 0.03}},
+	{t = 2.52, pose = WRY_PEAK, lag = {Head = 0.06, ["Left Arm"] = 0.04}},
+	{t = 2.80, pose = EASE, lag = {Head = 0.04, ["Right Arm"] = 0.03, ["Left Arm"] = 0.05}},
+	-- the muda: a drop into the crouch on the first syllable, then a punch landing on each peak
+	{t = 2.90, pose = CHAMBER, lag = {Head = -0.02, ["Left Arm"] = 0.017}},
+	{t = 2.97, pose = PUNCH_R, lag = {Head = 0.017, ["Left Arm"] = 0.017}},
+	{t = 3.10, pose = PUNCH_L, lag = {Head = 0.017, ["Right Arm"] = 0.017}},
+	{t = 3.22, pose = PUNCH_R, lag = {Head = 0.017, ["Left Arm"] = 0.017}},
+	{t = 3.37, pose = PUNCH_L, lag = {Head = 0.017, ["Right Arm"] = 0.017}},
+	{t = 3.47, pose = CHAMBER, lag = {Head = 0.02, ["Right Arm"] = 0.02}},
+	-- the breath lifts both fists over the head, the yell brings them down and keeps pressing
+	{t = 3.70, pose = RAISE, lag = {Head = -0.03, ["Right Arm"] = -0.02, ["Left Arm"] = -0.017}},
+	{t = 3.86, pose = SLAM, lag = {Head = 0.02, ["Left Arm"] = 0.017}},
+	{t = 3.96, pose = SLAM_OVER, lag = {Head = 0.03, ["Right Arm"] = 0.017, ["Left Arm"] = 0.033}},
+	{t = 4.50, pose = SLAM_MORE, lag = {Head = 0.05, ["Right Arm"] = 0.03, ["Left Arm"] = 0.05}},
+	{t = RR.jump - RR.point, pose = PRE, lag = {Head = -0.04}},
+}
+
+local ridePost, rideStats = plant({{0, RR.jump - RR.point, feet = ROLLER}})
+Clips.DioRollerRide = {
+	name = "DioRollerRide",
+	length = RR.jump - RR.point,
+	curve = "spline",
+	springs = {["Right Arm"] = "lead", ["Left Arm"] = "lead", Head = "follow"},
+	life = 1,
+	-- the scream shakes (a dip on the breath at 1.18 to 1.3), the slam strains
+	post = chain(shake({
+		{0.3, 1.18, fade = 0.12, rate = 6.5, amp = {Head = 4, ["Right Arm"] = 4, ["Left Arm"] = 4, Torso = 1.2}},
+		{1.3, 2.66, fade = 0.15, rate = 6.5, amp = {Head = 4.5, ["Right Arm"] = 4.5, ["Left Arm"] = 4.5, Torso = 1.4}},
+		{3.86, 4.64, fade = 0.08, rate = 7, amp = {Head = 2, ["Right Arm"] = 2.5, ["Left Arm"] = 2.5, Torso = 1}},
+	}), ridePost),
+	feetStats = rideStats,
+	joints = track(rideBeats),
+}
+
+-- the jump off (clip time from the jump beat): CROUCH (arms swung forward and down, hips down, eyes on the roller) ->
+-- BACK at the boom beat when the root leaves with the blast (the drive back: arms up overhead, trunk leaning back, legs
+-- straight) -> FLY (arched back, head back on the first laugh, arms spread, knees tucked) -> FALL (legs reaching down,
+-- arms forward) -> TOUCH at the touch beat -> LAND (a deep absorbing squat with the trunk forward against the backward
+-- momentum, arms forward) -> a breath -> RISE -> LAUGH (the right hand over the face, the chest thrown back, the left
+-- arm hanging open) with a bounce on each laugh -> the stance at the free beat
+local J0, TD = RR.boom - RR.jump, RR.touch - RR.jump
+local CROUCH_B = body({feet = ROLLER, torso = {-26, 0, 0}, tz = 0.05, crouch = 0.6, head = {12, 0, 0},
+	rArm = {50, 0, 12}, lArm = {48, 0, -12}})
+local BACK_B = body({feet = ROLLER, torso = {18, 0, 0}, tz = -0.05, crouch = 0.12, head = {6, 0, 0},
+	rArm = {168, 0, -20}, lArm = {168, 0, 20}, legs = {{-18, 0, 4}, {-14, 0, -4}}})
+local FLY_B = body({py = 0, torso = {26, 0, 0}, head = {14, 0, 0},
+	rArm = {-5, 0, 88}, lArm = {-5, 0, -88}, legs = {{24, -4, 8}, {12, 4, -8}, 0.55, 0.45}})
+local FALL_B = body({py = 0, torso = {10, 0, 0}, head = {4, 0, 0},
+	rArm = {40, 0, 60}, lArm = {40, 0, -60}, legs = {{4, 0, 8}, {-6, 0, -8}, 0.05, 0}})
+local TOUCH_B = body({feet = LANDED, torso = {8, 0, 0}, crouch = 0.05, head = {4, 0, 0},
+	rArm = {42, 0, 58}, lArm = {42, 0, -58}})
+local LAND_DROP = body({feet = LANDED, torso = {-16, 0, 0}, tz = 0.1, crouch = 0.95, head = {12, 0, 0},
+	rArm = {58, 0, 28}, lArm = {56, 0, -28}})
+local LAND_B = body({feet = LANDED, torso = {-34, 0, 0}, tz = 0.2, crouch = 0.88, head = {16, 0, 0},
+	rArm = {62, 0, 22}, lArm = {60, 0, -22}})
+local LAND_B2 = body({feet = LANDED, torso = {-29, 2, 0}, tz = 0.18, crouch = 0.82, head = {19, -2, 0},
+	rArm = {48, 0, 20}, lArm = {44, 0, -20}})
+local RISE_B = body({feet = LANDED, torso = {-6, 2, 0}, crouch = 0.12, head = {10, 0, 0},
+	rArm = {20, 0, 18}, lArm = {10, 0, -16}})
+-- the laugh with the right hand over the face and the chest thrown back, the left arm hanging open; each laugh throws
+-- the chest back a little further
+local LAUGH = body({feet = LANDED, torso = {12, 6, 0}, crouch = 0.05, head = {24, -6, 0},
+	rArm = V3(0.2, 1.3, -0.8), lArm = {-6, 0, -20}})
+local LAUGH_HA = body({feet = LANDED, torso = {16, 7, 1}, crouch = 0.1, head = {29, -7, 1},
+	rArm = V3(0.2, 1.35, -0.8), lArm = {-3, 0, -23}})
+local LAUGH_BIG = body({feet = LANDED, torso = {20, 8, -1}, crouch = 0.08, head = {34, -8, -1},
+	rArm = V3(0.22, 1.4, -0.78), lArm = {0, 0, -26}})
+local STANCE_B = body({feet = LANDED, torso = STANCE.torso, tx = STANCE.torsoP.X, tz = STANCE.torsoP.Z, crouch = 0.05,
+	head = STANCE.head, rArm = STANCE.rArm, lArm = STANCE.lArm})
+
+local offBeats = {
+	{t = 0.00, pose = PRE},
+	{t = J0 - 0.12, pose = CROUCH_B, lag = {["Right Arm"] = -0.02, ["Left Arm"] = -0.017}},
+	{t = J0, pose = BACK_B, lag = {["Right Arm"] = -0.02, ["Left Arm"] = -0.017, Head = 0.017}},
+	{t = J0 + 0.22, pose = FLY_B, lag = {["Right Leg"] = 0.033, ["Left Leg"] = 0.05, Head = 0.02}},
+	{t = TD - 0.24, pose = FALL_B, lag = {Head = -0.03, ["Left Leg"] = 0.017}},
+	{t = TD, pose = TOUCH_B},
+	{t = TD + 0.10, pose = LAND_DROP, lag = {Head = 0.02, ["Right Arm"] = 0.02, ["Left Arm"] = 0.033}},
+	{t = TD + 0.23, pose = LAND_B, lag = {Head = 0.03, ["Right Arm"] = 0.02, ["Left Arm"] = 0.033}},
+	{t = TD + 0.40, pose = LAND_B2, lag = {Head = 0.03, ["Left Arm"] = 0.03}},
+	{t = TD + 0.62, pose = RISE_B, lag = {Head = -0.04, ["Right Arm"] = 0.03}},
+	{t = TD + 0.80, pose = LAUGH, lag = {Head = -0.02, ["Left Arm"] = 0.03}},
+	{t = TD + 0.93, pose = LAUGH_HA, lag = {Head = 0.017}},
+	{t = TD + 1.06, pose = LAUGH, lag = {Head = 0.017}},
+	{t = TD + 1.19, pose = LAUGH_HA, lag = {Head = 0.017}},
+	{t = TD + 1.34, pose = LAUGH_BIG, lag = {Head = 0.02, ["Left Arm"] = 0.03}},
+	{t = RR.free - RR.jump, pose = STANCE_B, lag = {Head = -0.04}},
+}
+
+local offPost, offStats = plant({
+	{0, J0, feet = ROLLER, fadeOut = 0.07},
+	{TD, RR.free - RR.jump, feet = LANDED, fadeIn = 0.04},
+})
 Clips.DioRollerOff = {
 	name = "DioRollerOff",
-	length = 1.2,
-	joints = {
-		["Torso"] = {
-			K(0.00, POINT.torso, POINT.torsoP),
-			K(0.08, {-14, 0, 0}, V3(0, -0.3, 0.05), "cubic", "out"),
-			K(0.18, FLY.torso, FLY.torsoP, "back", "out", 1.3),
-			K(0.45, {22, 0, 0}, V3(0, 0.12, 0.12), "sine", "inout"),
-			K(0.66, {10, 0, 0}, V3(0, 0, 0.05), "quart", "out"),
-			K(0.74, LAND.torso, LAND.torsoP, "back", "out", 1.25),
-			K(0.82, LAND.torso, LAND.torsoP + V3(0, 0.03, 0), "quad", "out"),
-			K(1.00, {-12, 0, 0}, V3(0, -0.3, -0.05), "sine", "inout"),
-			K(1.20, STANCE.torso, STANCE.torsoP, "sine", "inout"),
-		},
-		["Head"] = {
-			K(0.00, POINT.head),
-			K(0.10, {-8, 0, 0}, nil, "cubic", "out"),
-			K(0.20, FLY.head, nil, "back", "out", 1.2),
-			K(0.45, {16, 0, 0}, nil, "sine", "inout"),
-			K(0.76, LAND.head, nil, "back", "out", 1.2),
-			K(0.98, {-4, 0, 0}, nil, "sine", "inout"),
-			K(1.20, STANCE.head, nil, "sine", "inout"),
-		},
-		["Right Arm"] = {
-			K(0.00, POINT.rArm, POINT.rArmP),
-			K(0.11, {-30, 0, 25}, V3(0, -0.04, 0.05), "cubic", "out"),
-			K(0.16, {20, 0, 70}, V3(0.05, 0.05, 0), "quad", "out"),
-			K(0.21, FLY.rArm, FLY.rArmP, "back", "out", 1.5),
-			K(0.45, {34, 0, 102}, FLY.rArmP, "sine", "inout"),
-			K(0.77, LAND.rArm, LAND.rArmP, "back", "out", 1.2),
-			K(1.00, {36, 0, 14}, V3(0, -0.06, -0.06), "sine", "inout"),
-			K(1.20, STANCE.rArm, STANCE.rArmP, "sine", "inout"),
-		},
-		["Left Arm"] = {
-			K(0.00, POINT.lArm, POINT.lArmP),
-			K(0.12, {-30, 0, -25}, V3(0, -0.04, 0.05), "cubic", "out"),
-			K(0.17, {20, 0, -70}, V3(-0.05, 0.05, 0), "quad", "out"),
-			K(0.22, FLY.lArm, FLY.lArmP, "back", "out", 1.5),
-			K(0.45, {34, 0, -102}, FLY.lArmP, "sine", "inout"),
-			K(0.78, LAND.lArm, LAND.lArmP, "back", "out", 1.2),
-			K(1.00, {2, 0, -14}, V3(0, -0.06, -0.02), "sine", "inout"),
-			K(1.20, STANCE.lArm, STANCE.lArmP, "sine", "inout"),
-		},
-		["Right Leg"] = {
-			K(0.00, POINT.rLeg, POINT.rLegP),
-			K(0.13, {12, 0, 12}, V3(0.05, legY(-0.3, 12, -14), -0.2), "cubic", "out"),
-			K(0.24, FLY.rLeg, FLY.rLegP, "back", "out", 1.3),
-			K(0.66, {20, 0, 10}, V3(0.05, 0.1, -0.2), "quart", "out"),
-			K(0.79, LAND.rLeg, LAND.rLegP, "back", "out", 1.3),
-			K(1.20, STANCE.rLeg, STANCE.rLegP, "sine", "inout"),
-		},
-		["Left Leg"] = {
-			K(0.00, POINT.lLeg, POINT.lLegP),
-			K(0.13, {-12, 4, -12}, V3(-0.05, legY(-0.3, -12, -14), 0.2), "cubic", "out"),
-			K(0.25, FLY.lLeg, FLY.lLegP, "back", "out", 1.3),
-			K(0.66, {10, 4, -10}, V3(-0.05, 0.1, -0.1), "quart", "out"),
-			K(0.80, LAND.lLeg, LAND.lLegP, "back", "out", 1.3),
-			K(1.20, STANCE.lLeg, STANCE.lLegP, "sine", "inout"),
-		},
-	},
+	length = RR.free - RR.jump,
+	curve = "spline",
+	springs = {["Right Arm"] = "drag", ["Left Arm"] = "drag", Head = "follow"},
+	life = 0.8,
+	-- the shoulders shake with the laugh
+	post = chain(shake({
+		{TD + 0.7, RR.free - RR.jump - 0.05, fade = 0.12, rate = 7, amp = {Head = 2.5, ["Right Arm"] = 1.5, ["Left Arm"] = 2, Torso = 1.2}},
+	}), offPost),
+	feetStats = offStats,
+	joints = track(offBeats),
 }
+end
 
 -- the world on the roller: the model's rush loop with the root pitched 65 down over the front housing so the fists
 -- (2.7 studs along the look at full extension) land on the metal 2.45 below and 1.1 ahead of the root
@@ -1593,7 +1828,7 @@ local function attachLegs(clip)
 		end
 	end
 end
-for _, name in ipairs({"DioSummon", "DioPoint", "DioHeavy", "DioTimeStop", "DioRollerUp", "DioRollerOff", "DioKnifeThrow"}) do
+for _, name in ipairs({"DioSummon", "DioPoint", "DioHeavy", "DioTimeStop"}) do
 	attachLegs(Clips[name])
 end
 
