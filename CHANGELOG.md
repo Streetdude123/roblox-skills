@@ -5,6 +5,16 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-22 (night, later) — The knife throw, the hip rule (user-authorized)
+
+- `roblox-r6-animation`: the hip rule — a limb key's translation is the joint gap; `attachLegs` in
+  `scripts/Clips.lua` moves every authored DIO leg placement into the hip angles and clamps a drop at 0.12
+  (SKILL.md pass 2, `references/r6-mechanics.md` "Joint gaps", the measurement and the feedback in
+  `references/project-style.md`). `DioKnifeThrow` recorded with its numbers and two strip rounds.
+- `roblox-vfx-craft`: the knife throw as a MOVE rung piece (`Moves.knives`, `startKnives` / `knifeStep`
+  in `MovesServer.lua`): server flown knives that hang while any time stop holds the world and fly at
+  the resume, the shimmer and light that keep them visible in the darkened stop, the sounds.
+
 ## 2026-09-22 (night) — Rebuild of the lost place, the road roller on the metal (user-authorized)
 
 - `roblox-vfx-craft`: `scripts/RebuildStandPlace.lua` and `scripts/rebuild/` rebuild the whole

@@ -314,6 +314,80 @@ function Moves.m1(character, isLocal, i)
 	end)
 end
 
+-- the knife throw: dio's clip on the body, the fans of knives welded into the hands at the draw, the hands opening
+-- on the release with a glint, the shout and the throw sound; the flying knives are the server's parts
+local KN = Config.Knives
+local knivesFx = {}
+
+local function handFan(arm, count, parent)
+	local blades = {}
+	for k = 1, count do
+		local blade = root.Assets.Knife:Clone()
+		blade.Anchored = false
+		blade.Massless = true
+		blade.CanCollide = false
+		local spread = (k - (count + 1) / 2) * math.rad(16)
+		-- the blade stands out of the fist and fans across the arm's forward axis
+		local weld = Instance.new("Weld")
+		weld.Part0 = arm
+		weld.Part1 = blade
+		weld.C0 = CFrame.new(0, -0.95, 0) * CFrame.Angles(0, 0, spread) * CFrame.Angles(-math.pi / 2, 0, 0) * CFrame.new(0, 0, -0.75)
+		weld.Parent = blade
+		blade.Parent = parent
+		table.insert(blades, blade)
+	end
+	return blades
+end
+
+function Moves.knives(character, isLocal, on)
+	local hrp = character:FindFirstChild("HumanoidRootPart")
+	local rArm = character:FindFirstChild("Right Arm")
+	local lArm = character:FindFirstChild("Left Arm")
+	if not hrp or not rArm or not lArm or not on then
+		return
+	end
+	local old = knivesFx[character]
+	if old then
+		old:Destroy()
+	end
+	local fx = newModel("KnivesFx")
+	knivesFx[character] = fx
+	Debris:AddItem(fx, 4 * Tw.S())
+	Locomotion.override(character, Clips.DioKnifeThrow, {fadeIn = 0.06, fadeOut = 0.3})
+	task.delay(KN.Draw * Tw.S(), function()
+		if not fx.Parent or not hrp.Parent then
+			return
+		end
+		local right = handFan(rArm, 4, fx)
+		local left = handFan(lArm, 3, fx)
+		sfx(KN.Voice.draw, hrp, 0.45, 1.1)
+		-- a glint on the drawn blades
+		for _, b in ipairs(right) do
+			Emitters.burst(fx, b.CFrame, V3(0.3, 0.3, 0.3), {texture = "star4", Speed = NumberRange.new(0, 0), Lifetime = NumberRange.new(0.12, 0.2), Size = Tw.seq({{0, 0.9}, {1, 0}}), Color = Tw.cseq({{0, P.white}, {1, P.pale}}), Transparency = Tw.seq({{0, 0.2}, {1, 1}}), Rotation = NumberRange.new(0, 360)}, 1, 0.6)
+		end
+		task.delay((KN.Release - KN.Draw) * Tw.S(), function()
+			if not fx.Parent then
+				return
+			end
+			for _, list in ipairs({right, left}) do
+				for _, b in ipairs(list) do
+					b:Destroy()
+				end
+			end
+			for _, arm in ipairs({rArm, lArm}) do
+				local at = arm.CFrame * CFrame.new(0, -1, 0)
+				Kit.burst("Slashes", at * CFrame.Angles(0, 0, arm == rArm and -0.5 or 0.5), fx, {Slashes1 = 1, Wind1 = 2}, {color = P.pale, color2 = P.white, scale = 0.7, glow = 1, life = 0.7})
+				Emitters.burst(fx, at, V3(0.6, 0.6, 0.6), {texture = "glow", Speed = NumberRange.new(0, 0), Lifetime = NumberRange.new(0.08, 0.14), Size = Tw.seq({{0, 1.6}, {1, 0}}), Color = Tw.cseq({{0, P.white}, {1, P.gold}}), Transparency = Tw.seq({{0, 0.1}, {1, 1}}), Rotation = NumberRange.new(0, 360)}, 1, 0.5)
+			end
+			sfx(KN.Voice.throw, hrp, 0.85, 1)
+			sfx(KN.Voice.shout, hrp, 0.9, 1)
+			if isLocal then
+				CameraRig.kick(0.18)
+			end
+		end)
+	end)
+end
+
 -- a hit on a target: a gold fist flash and a short punch sound, limited so a rush never stacks sixty sounds
 function Moves.hit(target, kind, pos)
 	local fx = newModel("HitFx")
@@ -335,6 +409,12 @@ function Moves.hit(target, kind, pos)
 		Kit.burst("Hit3", at, fx, 1, {color = P.gold, color2 = P.white, scale = 1.4, glow = 1, life = 1})
 		Kit.burst("ShieldBreak", at, fx, {Specs = 12, Shockwave = 1}, {color = P.gold, color2 = P.pale, scale = 1.3, glow = 1, life = 1})
 		sfx("HitStrong", fx, 0.9, 1)
+	elseif kind == "Knife" then
+		Kit.burst("Hit1", at, fx, 1, {color = P.pale, color2 = P.white, scale = 0.7, glow = 1, life = 0.6})
+		sfx(Config.Knives.Voice.hit, fx, 0.55, 1.0 + math.random() * 0.15)
+	elseif kind == "KnifeStick" then
+		Emitters.burst(fx, at, V3(0.4, 0.4, 0.4), {texture = "spark", Speed = NumberRange.new(6, 14), Drag = 3, SpreadAngle = Vector2.new(180, 180), Lifetime = NumberRange.new(0.15, 0.3), Size = Tw.seq({{0, 0.3}, {1, 0}}), Color = Tw.cseq({{0, P.white}, {1, P.gold}}), Transparency = Tw.seq({{0, 0}, {1, 1}})}, 6, 0.6)
+		sfx(Config.Knives.Voice.stick, fx, 0.3, 1.1 + math.random() * 0.2)
 	elseif kind == "Release" then
 		-- every hit that landed in stopped time arrives at once when it moves again
 		Kit.burst("Hit3", at, fx, 1, {color = P.lavender, color2 = P.white, scale = 2.0, glow = 1, life = 1.2})

@@ -247,6 +247,22 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   publish first. The full VFX kit in `ServerStorage.VfxKit` is 50,066 instances (36,661 of them
   `Wing Rigs`); a play test doubles the place in memory, so once the templates are extracted the kit
   folder should be saved to an .rbxm and removed from the place.
+- 2026-09-22 (night, later): "create the iconic knife throw dio does ... in timestop it should only move
+  after time begins again". A MOVE rung piece in `Moves.knives` + `startKnives` / `knifeStep` in
+  `MovesServer.lua`. The knife is the free model 210335386's Handle (mesh 202083123, 0.2 x 0.4 x 2,
+  tip at -Z, kept in `Assets.Knife`); the fans in the hands are client welds, the seven flying knives
+  are server parts flown 115 studs a second for 1.3 s with a cast ahead each frame (7 damage, a wall
+  stick for 5 s), fanned 34 degrees with `|u|^2.5` so the middle three meet a target at 22 studs, every
+  knife aimed from its hand at a point 30 studs out on the fan line so the fan converges. While any
+  time stop holds the world (`stop.frozenNow`) a knife flies 0.14 s then hangs where it is and flies
+  on at the resume; measured: seven knives at the same position from 4.85 to 6.87 s, the dummy
+  untouched, then 14 to 21 damage after the resume. Each knife carries a faint `core` shimmer (rate 7,
+  size 1.3, 0.3 transparency) and a gold PointLight 0.6 / 7 or it vanishes in the darkened stopped
+  world; a Trail (pale to gold, 0.12 s) draws only while it moves. Sounds: `KnifeShine` on the draw,
+  `KnifeThrown` + `ThrowVoiceline` on the release, `KnifeShing` on a body hit, `KnifeShing2` on a wall
+  stick; a 0.18 kick and a pale `Slashes` streak at each hand on the release. The time stop already
+  has its end voice: `TSEndSFX` (2.07 s) fires on the resume signal 1.6 s before time moves and
+  `TSEndVoice` (1.01 s) on the resume itself.
 
 ## Reference index
 

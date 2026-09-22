@@ -70,6 +70,10 @@ Compare rotations as CFrames or matrices. Euler angles are non-unique; a 100-deg
 
 A short-arc rotation difference between matrices R and S is `acos(clamp((trace(transpose(R) * S) - 1) / 2, -1, 1))`. The decode checker uses this measurement. It cannot recover a full spin lost between sparsely sampled keys.
 
+## Joint gaps
+
+A pose translation `p` on a limb moves the whole part away from its joint. The R6 hip C0 sits at the torso's bottom corner `(+-1, -1, 0)` and C1 at the leg's top corner `(+-0.5, 1, 0)`, so with `p = 0` those two points coincide whatever the rotation, and any `p` separates them by `|p|`. Daylight shows when the leg goes below or sideways: measure it in torso space as `c = torso.CFrame:PointToObjectSpace((leg.CFrame * CFrame.new(+-0.5, 1, 0)).Position)`, `below = max(0, -1 - c.Y)`, `slide = sqrt((c.X -+ 1)^2 + c.Z^2)`. Keep both under 0.12. A positive `p.Y` pushes the leg up inside the torso and is hidden. To move a foot without a gap, swing the hip: a forward offset `z` becomes `lift += deg(asin(-z / 2))`, a sideways offset `x` becomes `side += deg(asin(x / 2))`, and the foot rises `2 (1 - cos)` (0.05 at 13 degrees), which a torso drop of the same amount plants again. `Clips.lua` applies this as `attachLegs` to every authored DIO clip after the keys are written, so authors may still think in foot offsets. Measured on 2026-09-22 after a circled hip gap: the seven DIO clips went from 0.30 to 0.65 of daylight to 0.00 to 0.12.
+
 ## World-space contacts
 
 Choose an actual local support point. For the sole center of a rectangular leg use `(0, -Size.Y / 2, 0)` in that part's coordinates. Also test the four bottom corners for penetration. For a hand or weapon grip use its inspected attachment or local offset.

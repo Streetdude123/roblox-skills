@@ -118,6 +118,8 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
 		Remotes.MoveRequest:FireServer("TimeStop", true)
 	elseif input.KeyCode == Config.Keys.RoadRoller and standOut() then
 		Remotes.MoveRequest:FireServer("RoadRoller", true)
+	elseif input.KeyCode == Config.Keys.Knives and standOut() then
+		Remotes.MoveRequest:FireServer("Knives", true)
 	end
 end)
 
@@ -165,6 +167,8 @@ Remotes.Move.OnClientEvent:Connect(function(caster, name, on)
 		ok, err = pcall(Moves.m1, character, isLocal, on)
 	elseif name == "RoadRoller" then
 		ok, err = pcall(RoadRoller.start, character, isLocal, on)
+	elseif name == "Knives" then
+		ok, err = pcall(Moves.knives, character, isLocal, on)
 	elseif name == "TimeStop" then
 		if on then
 			ok, err = pcall(TimeStop.start, character, isLocal)
@@ -219,7 +223,16 @@ player:GetAttributeChangedSignal("PoseHold"):Connect(function()
 		return
 	end
 	-- "Stand:WorldBarrage:0.3" holds a stand clip frame on the live stand rig
-	local standName, standArg = tostring(v):match("^Stand:(%w+):?([%d%.]*)$")
+	local standName, standArg = tostring(v):match("^Stand:([%w_]+):?([%d%.]*)$")
+	-- "Stand:WorldCombo_3:0.2" reaches into the combo table
+	local comboIndex = standName and standName:match("^WorldCombo_(%d)$")
+	if comboIndex and Clips.WorldCombo[tonumber(comboIndex)] then
+		local rig = SummonVfx.rigOf(character)
+		if rig then
+			rig:play(Clips.WorldCombo[tonumber(comboIndex)], {fadeIn = 0, speed = 0, startAt = tonumber(standArg) or 0})
+		end
+		return
+	end
 	if standName and Clips[standName] then
 		local rig = SummonVfx.rigOf(character)
 		if rig then
@@ -227,11 +240,11 @@ player:GetAttributeChangedSignal("PoseHold"):Connect(function()
 		end
 		return
 	end
-	local name, arg = tostring(v):match("^(%w+):?([%d%.]*)$")
-	if name == "walk" then
+	local name, arg = tostring(v):match("^([%w_]+):?([%d%.]*)$")
+	if name == "walk" or name == "run" then
 		ctrl.frozen = true
 		ctrl.ctx.walk = 1
-		ctrl.ctx.speed = 16
+		ctrl.ctx.speed = name == "run" and 26 or 16
 		ctrl.ctx.air = 0
 		ctrl.ctx.phase = (tonumber(arg) or 0) * math.pi * 2
 		Locomotion.release(character, 0)
@@ -243,5 +256,9 @@ player:GetAttributeChangedSignal("PoseHold"):Connect(function()
 	elseif Clips[name] then
 		ctrl.frozen = true
 		ctrl.rig:play(Clips[name], {fadeIn = 0, speed = 0, startAt = tonumber(arg) or 0})
+	elseif name:match("^DioM1_%d$") and Clips.DioM1[tonumber(name:match("%d$"))] then
+		-- "DioM1_3:0.2" holds a frame of the third copied hit
+		ctrl.frozen = true
+		ctrl.rig:play(Clips.DioM1[tonumber(name:match("%d$"))], {fadeIn = 0, speed = 0, startAt = tonumber(arg) or 0})
 	end
 end)

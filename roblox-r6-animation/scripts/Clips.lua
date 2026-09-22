@@ -704,6 +704,107 @@ Clips.DioHeavy = {
 	},
 }
 
+-- the knife throw from the show's three frames: silhouettes STANCE -> LOAD (a low crouch wound to the left, the
+-- right hand with its fan of knives crossed high to the left collar, the left hand with the second fan drawn low
+-- behind the hip, chin down) -> creep -> the THROW (both arms flung wide and forward in one whip, the torso
+-- unwinding to the right and opening, the chest out, the head thrown back with the shout, the front foot driving)
+-- -> FOLLOW (the arms held wide and open, the "MUDA" frame) -> recovery to the stance. The fans appear at Draw and
+-- the hands open at Release, both from Config.Knives.
+local KN = Config.Knives
+local KLOAD = {
+	torso = {-14, 26, 3}, torsoP = V3(0, -0.35, -0.1),
+	head = {-10, -20, 0},
+	rArm = {145, 0, 52}, rArmP = V3(-0.35, 0.25, -0.3),
+	lArm = {-32, 0, -18}, lArmP = V3(-0.05, -0.05, 0.1),
+	rLeg = {-22, 12, 6}, rLegP = V3(0.08, legY(-0.35, -22, -14) - 0.08, 0.45),
+	lLeg = {14, 0, -6}, lLegP = V3(-0.06, legY(-0.35, 14, -14), -0.35),
+}
+local KTHROW = {
+	-- the torso dips instead of rising so both legs stay in their hips: a leg key's translation is the hip gap
+	torso = {8, -16, -4}, torsoP = V3(0, -0.12, -0.15),
+	head = {16, 12, 0},
+	rArm = {40, 0, 100}, rArmP = V3(0.15, 0.1, -0.1),
+	lArm = {25, 0, -110}, lArmP = V3(-0.15, 0.1, -0.1),
+	rLeg = {-10, 10, 8}, rLegP = V3(0.1, legY(-0.12, -10, 8), 0.4),
+	lLeg = {14, 0, -8}, lLegP = V3(-0.08, legY(-0.12, 14, 8), -0.4),
+}
+Clips.DioKnifeThrow = {
+	name = "DioKnifeThrow",
+	length = 1.05,
+	joints = {
+		["Torso"] = {
+			K(0.00, STANCE.torso, STANCE.torsoP),
+			K(0.10, KLOAD.torso, KLOAD.torsoP, "quart", "out"),
+			K(0.18, {-15, 29, 3}, V3(0, -0.36, -0.1), "sine", "inout"),
+			K(0.26, {-16, 32, 4}, V3(0, -0.37, -0.11), "sine", "inout"),
+			K(0.30, KTHROW.torso, KTHROW.torsoP, "back", "out", 1.3),
+			K(0.38, {9, -17, -4}, V3(0, -0.1, -0.15), "quad", "out"),
+			K(0.50, {10, -18, -4}, V3(0, -0.11, -0.14), "sine", "inout"),
+			K(0.62, {9, -17, -4}, V3(0, -0.12, -0.13), "sine", "inout"),
+			K(0.85, {2, -4, -1}, V3(0.01, -0.03, -0.06), "sine", "inout"),
+			K(1.05, STANCE.torso, STANCE.torsoP, "sine", "inout"),
+		},
+		["Head"] = {
+			K(0.00, STANCE.head),
+			K(0.11, KLOAD.head, nil, "quart", "out"),
+			K(0.19, {-11, -22, 0}, nil, "sine", "inout"),
+			K(0.27, {-12, -24, 0}, nil, "sine", "inout"),
+			K(0.31, KTHROW.head, nil, "back", "out", 1.25),
+			K(0.39, {17, 13, 0}, nil, "quad", "out"),
+			K(0.50, {18, 14, 0}, nil, "sine", "inout"),
+			K(0.62, {16, 13, 0}, nil, "sine", "inout"),
+			K(0.85, {6, 3, 0}, nil, "sine", "inout"),
+			K(1.05, STANCE.head, nil, "sine", "inout"),
+		},
+		["Right Arm"] = {
+			K(0.00, STANCE.rArm, STANCE.rArmP),
+			K(0.06, {70, 0, 20}, V3(-0.1, 0.1, -0.25), "cubic", "out"),
+			K(0.12, KLOAD.rArm, KLOAD.rArmP, "back", "out", 1.25),
+			K(0.20, {147, 0, 54}, V3(-0.37, 0.26, -0.3), "sine", "inout"),
+			K(0.27, {149, 0, 56}, V3(-0.38, 0.27, -0.31), "sine", "inout"),
+			K(0.29, {80, 0, 30}, V3(0, 0.1, -0.35), "quart", "out"),
+			K(0.32, KTHROW.rArm, KTHROW.rArmP, "back", "out", 1.4),
+			K(0.40, {40, 0, 103}, V3(0.16, 0.1, -0.1), "quad", "out"),
+			K(0.52, {38, 0, 105}, V3(0.16, 0.09, -0.09), "sine", "inout"),
+			K(0.64, {39, 0, 104}, V3(0.16, 0.1, -0.1), "sine", "inout"),
+			K(0.86, {30, 0, 50}, V3(0.06, 0.02, -0.05), "sine", "inout"),
+			K(1.05, STANCE.rArm, STANCE.rArmP, "sine", "inout"),
+		},
+		["Left Arm"] = {
+			K(0.00, STANCE.lArm, STANCE.lArmP),
+			K(0.07, {-20, 0, -16}, V3(-0.03, -0.05, 0.05), "cubic", "out"),
+			K(0.13, KLOAD.lArm, KLOAD.lArmP, "back", "out", 1.25),
+			K(0.21, {-34, 0, -19}, V3(-0.05, -0.05, 0.11), "sine", "inout"),
+			K(0.28, {-36, 0, -20}, V3(-0.05, -0.06, 0.12), "sine", "inout"),
+			K(0.30, {30, 0, -50}, V3(-0.08, 0.05, -0.2), "quart", "out"),
+			K(0.33, KTHROW.lArm, KTHROW.lArmP, "back", "out", 1.4),
+			K(0.41, {25, 0, -113}, V3(-0.16, 0.1, -0.1), "quad", "out"),
+			K(0.53, {23, 0, -115}, V3(-0.16, 0.09, -0.09), "sine", "inout"),
+			K(0.65, {24, 0, -114}, V3(-0.16, 0.1, -0.1), "sine", "inout"),
+			K(0.87, {10, 0, -50}, V3(-0.06, 0.02, -0.05), "sine", "inout"),
+			K(1.05, STANCE.lArm, STANCE.lArmP, "sine", "inout"),
+		},
+		["Right Leg"] = {
+			K(0.00, STANCE.rLeg, STANCE.rLegP),
+			K(0.13, KLOAD.rLeg, KLOAD.rLegP, "back", "out", 1.3),
+			K(0.27, {-23, 12, 6}, V3(0.08, legY(-0.37, -23, -16) - 0.08, 0.46), "sine", "inout"),
+			K(0.34, KTHROW.rLeg, KTHROW.rLegP, "back", "out", 1.3),
+			K(0.62, {-10, 10, 8}, V3(0.1, legY(-0.12, -10, 9), 0.4), "sine", "inout"),
+			K(0.86, {0, 4, 7}, V3(0.06, legY(-0.03, 0, 2), 0.1), "sine", "inout"),
+			K(1.05, STANCE.rLeg, STANCE.rLegP, "sine", "inout"),
+		},
+		["Left Leg"] = {
+			K(0.00, STANCE.lLeg, STANCE.lLegP),
+			K(0.14, KLOAD.lLeg, KLOAD.lLegP, "back", "out", 1.3),
+			K(0.27, {15, 0, -6}, V3(-0.06, legY(-0.37, 15, -16) - 0.12, -0.36), "sine", "inout"),
+			K(0.35, KTHROW.lLeg, KTHROW.lLegP, "back", "out", 1.3),
+			K(0.62, {14, 0, -8}, V3(-0.08, legY(-0.12, 14, 9), -0.4), "sine", "inout"),
+			K(0.86, {4, 2, -8}, V3(-0.05, legY(-0.03, 4, 2), -0.05), "sine", "inout"),
+			K(1.05, STANCE.lLeg, STANCE.lLegP, "sine", "inout"),
+		},
+	},
+}
+
 -- dio copies the stand's five hits the way a stand user throws the punch in the show: the torso, head and
 -- arms are the model's own tracks (the 124 degree torso whip, the countering head, the piston fists) with
 -- the arm offsets scaled to a planted body, and only the legs are authored: a step that lands four frames
@@ -1287,5 +1388,41 @@ Clips.WorldStopped = {
 		end,
 	},
 }
+
+-- a leg key's translation is a gap at the hip (the hip pivots at the leg's top corner, so a slid leg leaves the
+-- torso), so every authored dio clip moves its foot placements into the hip angles instead: p.z becomes a forward
+-- swing, p.x a side swing, and the leg is never pulled more than HIP_GAP below the torso; the foot lands where it
+-- did and may float a few hundredths. "it can be a tiny little bit off the body but not like that" (2026-09-22)
+local HIP_GAP = 0.12
+local function attachLegs(clip)
+	for _, j in ipairs({"Right Leg", "Left Leg"}) do
+		local keys = clip.joints[j]
+		local function fix(p, r)
+			local dl = math.deg(math.asin(math.clamp(-p.Z / 2, -1, 1)))
+			local ds = math.deg(math.asin(math.clamp(p.X / 2, -1, 1)))
+			return {r[1] + dl, r[2], r[3] + ds}, V3(0, math.max(p.Y, -HIP_GAP), 0)
+		end
+		if type(keys) == "table" then
+			for _, k in ipairs(keys) do
+				if k.p and k.r then
+					k.r, k.p = fix(k.p, k.r)
+				end
+			end
+		elseif type(keys) == "function" then
+			-- a procedural leg (the point's breath and weight shift) gets the same transfer on every sample
+			clip.joints[j] = function(t, ctx)
+				local s = keys(t, ctx)
+				if s and s.p and s.r then
+					local r, p = fix(s.p, s.r)
+					return {r = r, p = p}
+				end
+				return s
+			end
+		end
+	end
+end
+for _, name in ipairs({"DioSummon", "DioPoint", "DioHeavy", "DioTimeStop", "DioRollerUp", "DioRollerOff", "DioKnifeThrow"}) do
+	attachLegs(Clips[name])
+end
 
 return Clips

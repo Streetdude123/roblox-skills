@@ -51,7 +51,7 @@ Create the few poses that explain the action with stepped timing. In Poser, `sna
 - Place support before adding a lean or reach. Transfer weight before releasing a foot.
 - Check silhouette from the actual player camera and a second useful angle. Keep hands and props readable without changing the requested action just to expose a limb.
 - Use asymmetry for weight or character. Preserve deliberate symmetry in a two-handed action, ritual, or designed stance.
-- Use the least limb translation needed for the R6 pose. Inspect shoulder and hip gaps. Reposition the torso or stance before extending limbs beyond their reach.
+- Use the least limb translation needed for the R6 pose. A limb key's translation IS the joint gap: the hip pivots at the leg's top corner, so a leg slid 0.45 forward for a stance or pulled 0.3 down to plant a foot leaves daylight between the torso and the leg. Keep leg translations under 0.12 and put the stance into the hip angles instead (a 13 degree swing moves the foot 0.45); plant a foot by dropping the torso onto the legs, never by pulling the leg out of the hip; a leg shoved UP into the torso is hidden and allowed. Arms may carry up to 0.25 where the part overlaps the torso. Measure the gap in torso space before a capture (`references/r6-mechanics.md`). "it can be a TINY little bit off the body but not like that" (2026-09-22, a circled hip gap).
 
 Do not smooth a weak pose. Review blocking before adding breathing, overshoot, or decorative movement.
 

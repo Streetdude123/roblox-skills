@@ -371,6 +371,144 @@ local function startTimeStop(player)
 	end)
 end
 
+-- the knife throw: the fan leaves both hands on the release frame, every knife is an anchored part the server
+-- flies along its own line, cast ahead each frame for a body or a wall; while any time stop holds the world the
+-- knives hang where they are (the show's frozen knives) and fly on when it resumes
+local KN = Config.Knives
+local knives = {}
+local knifeConn = nil
+
+local function knifeStep(dt)
+	local held = stop ~= nil and stop.frozenNow
+	for i = #knives, 1, -1 do
+		local k = knives[i]
+		local part = k.part
+		if not part.Parent then
+			table.remove(knives, i)
+		elseif held and k.flown >= KN.FrozenFlight then
+			-- stopped time: the knife hangs where it is (a fresh throw still leaves the hand for FrozenFlight seconds)
+		else
+			k.flown += dt
+			local from = part.Position
+			local step = k.dir * KN.Speed * dt
+			local params = RaycastParams.new()
+			params.FilterType = Enum.RaycastFilterType.Exclude
+			params.FilterDescendantsInstances = k.ignore
+			local hit = workspace:Raycast(from, step, params)
+			if hit then
+				local model = hit.Instance:FindFirstAncestorOfClass("Model")
+				local humanoid = model and model:FindFirstChildOfClass("Humanoid")
+				if humanoid and humanoid.Health > 0 and model ~= k.character then
+					damage(k.player, {model = model, humanoid = humanoid, part = hit.Instance}, KN.Damage, "Knife")
+					part:Destroy()
+				else
+					-- a wall: the knife sticks with its tip in the surface for a while
+					part.CFrame = CFrame.lookAt(hit.Position + hit.Normal * 0.1 + k.dir * 0.9, hit.Position + hit.Normal * 0.1 + k.dir * 2)
+					Remotes.Hit:FireAllClients(nil, "KnifeStick", hit.Position)
+					local trail = part:FindFirstChildOfClass("Trail")
+					if trail then
+						trail.Enabled = false
+					end
+					game:GetService("Debris"):AddItem(part, KN.StickFor)
+				end
+				table.remove(knives, i)
+			elseif k.flown > KN.Life then
+				part:Destroy()
+				table.remove(knives, i)
+			else
+				part.CFrame = CFrame.lookAt(from + step, from + step + k.dir)
+			end
+		end
+	end
+	if #knives == 0 and knifeConn then
+		knifeConn:Disconnect()
+		knifeConn = nil
+	end
+end
+
+local function throwKnives(player, character, hrp)
+	local ignore = {character}
+	for _, other in ipairs(knives) do
+		table.insert(ignore, other.part)
+	end
+	local look = hrp.CFrame
+	local rArm = character:FindFirstChild("Right Arm")
+	local lArm = character:FindFirstChild("Left Arm")
+	for i = 1, KN.Count do
+		local u = (i - (KN.Count + 1) / 2) / ((KN.Count - 1) / 2)
+		-- the fan bunches in the middle so three knives meet a close target and the outer ones still spread wide
+		local yaw = math.rad(KN.Spread) * math.sign(u) * math.abs(u) ^ 2.5
+		local pitch = math.rad(-1 - 5 * math.abs(u))
+		-- every knife leaves its hand but converges on the fan line from the root, so the middle one meets a centred target
+		local aim = hrp.Position + Vector3.new(0, 0.6, 0) + (look * CFrame.Angles(0, -yaw, 0) * CFrame.Angles(pitch, 0, 0)).LookVector * 30
+		local hand = (u >= 0 and rArm or lArm) or hrp
+		local origin = hand.Position + look.LookVector * 1.2 + Vector3.new(0, 0.3, 0)
+		local dir = (aim - origin).Unit
+		local part = root.Assets.Knife:Clone()
+		part.Name = "ThrownKnife"
+		part.Anchored = true
+		part.CanCollide = false
+		part.CanQuery = false
+		part.CFrame = CFrame.lookAt(origin, origin + dir)
+		local a0 = Instance.new("Attachment")
+		a0.Position = Vector3.new(0, 0.12, 0.6)
+		a0.Parent = part
+		local a1 = Instance.new("Attachment")
+		a1.Position = Vector3.new(0, -0.12, 0.6)
+		a1.Parent = part
+		local trail = Instance.new("Trail")
+		trail.Attachment0 = a0
+		trail.Attachment1 = a1
+		trail.Lifetime = 0.12
+		trail.MinLength = 0.05
+		trail.LightEmission = 0.8
+		trail.Color = ColorSequence.new(Config.Palette.pale, Config.Palette.gold)
+		trail.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.35), NumberSequenceKeypoint.new(1, 1)})
+		trail.WidthScale = NumberSequence.new({NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(1, 0.2)})
+		trail.Parent = part
+		-- a faint shimmer on the blade so a knife hanging in stopped time still reads in the dark
+		local shimmer = Instance.new("ParticleEmitter")
+		shimmer.Texture = "rbxassetid://1075864321"
+		shimmer.Rate = 7
+		shimmer.Lifetime = NumberRange.new(0.3, 0.5)
+		shimmer.Speed = NumberRange.new(0, 0)
+		shimmer.Size = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.5), NumberSequenceKeypoint.new(0.4, 1.3), NumberSequenceKeypoint.new(1, 0)})
+		shimmer.Color = ColorSequence.new(Config.Palette.pale, Config.Palette.gold)
+		shimmer.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.3), NumberSequenceKeypoint.new(1, 1)})
+		shimmer.LightEmission = 0.9
+		shimmer.LightInfluence = 0
+		shimmer.Parent = part
+		local glint = Instance.new("PointLight")
+		glint.Color = Config.Palette.gold
+		glint.Brightness = 0.6
+		glint.Range = 7
+		glint.Shadows = false
+		glint.Parent = part
+		part.Parent = workspace
+		table.insert(ignore, part)
+		table.insert(knives, {part = part, dir = dir, flown = 0, player = player, character = character, ignore = ignore})
+	end
+	if not knifeConn then
+		knifeConn = game:GetService("RunService").Heartbeat:Connect(knifeStep)
+	end
+end
+
+local function startKnives(player)
+	local character, humanoid, hrp = alive(player)
+	if not character or frozen(character) or barrages[player] or rollers[player] then
+		return
+	end
+	if not ready(player, "Knives", KN.Cooldown) then
+		return
+	end
+	Remotes.Move:FireAllClients(player, "Knives", true)
+	task.delay(KN.Release, function()
+		if humanoid.Parent and humanoid.Health > 0 and hrp.Parent then
+			throwKnives(player, character, hrp)
+		end
+	end)
+end
+
 -- the road roller: the impact sits ten studs ahead on the ground, every client runs the same twelve second
 -- timeline from that frame, and the server lands the two blasts of damage on the beats
 local RR = Config.RoadRoller
@@ -472,6 +610,8 @@ Remotes.MoveRequest.OnServerEvent:Connect(function(player, name, on)
 		m1(player)
 	elseif name == "RoadRoller" and on then
 		startRoadRoller(player)
+	elseif name == "Knives" and on then
+		startKnives(player)
 	end
 end)
 
