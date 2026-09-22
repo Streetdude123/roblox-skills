@@ -85,6 +85,34 @@ Package layout:
 The Lua scripts run inside Roblox Studio through an execute-Luau bridge; they
 are not covered by the Python test suite.
 
+## Using these skills in a new chat
+
+A fresh session only reproduces the good results when it is briefed the same
+way every time:
+
+1. Open the chat from the same working folder (`C:\Users\vietb\Desktop\roblox`)
+   so the project memory and the project `CLAUDE.md` load; a chat opened
+   elsewhere starts with none of the traps or the taste log.
+2. Type the skill by name as the first thing in the message:
+   `/roblox-r6-animation` for any animation, `/roblox-vfx-craft` for any
+   effect. The generic `roblox-animation` skill has a near identical name and
+   teaches the Animation Editor and TweenService path, which is exactly the
+   stiff result; the project `CLAUDE.md` now forbids it for character motion.
+3. In the same message, say the standard: "follow the Session start and the
+   Definition of done; show me the rear three quarter strip capture before you
+   say it is done". The skill makes two capture rounds mandatory, but the
+   sentence keeps a short session honest.
+4. Keep Roblox Studio open, connected and in front, with the place that has the
+   modules (or ask for the fresh place install first). Captures and frame times
+   fail with Studio covered.
+5. Use the same model and effort as the sessions you liked (Opus, high effort).
+   Fast mode is fine; a smaller model is not.
+6. When a clip lands, say what you liked in a sentence and ask Claude to log it
+   in the skill and push; the feedback log is how the next session inherits
+   taste.
+7. Do not ask for subagents or review swarms; they cost usage and add nothing to
+   a clip. One session, one thread, captures as the judge.
+
 ## Validator scripts
 
 All four validators require Python 3.8+ and PyYAML

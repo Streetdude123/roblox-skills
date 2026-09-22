@@ -53,3 +53,37 @@ Blending in from an authored clip: `Rig:play` lerps from the live Transform, so 
 `player:SetAttribute("PoseHold", "Stand:WorldBarrage:0.25")` holds a frame of a stand clip on the live stand rig (the body hook stays `"DioBarrage:0.8"`); an empty value releases both. Hold poses only when no move is running, because a move's own hand-off overrides a hold.
 
 The Edit VM caches `require` per module across `execute_luau` calls: after a Source push, validate on a fresh clone of the whole folder (`Stand:Clone()` then require the clone's module), not on the live instance, or the old Poser answers.
+
+## Pushing a module (the source server)
+
+Studio's `multi_edit` handles short files; a long module goes through `scripts/serve.js`:
+
+1. `node scripts/serve.js <outDir> <luaDir> 8766` (PowerShell `Start-Process node.exe` keeps it up; the Bash tool has no node).
+2. In the Edit VM: `HttpService.HttpEnabled = true`, `local src = HttpService:GetAsync("http://127.0.0.1:8766/stand/Clips.lua")`, `assert(loadstring(src))` for a syntax check, then `module.Source = src`.
+3. Validate on a fresh clone of the whole feature folder (`folder:Clone()` then `require` the clone's module): the Edit VM caches `require` per module, so the live instance answers with the old code.
+4. An open script editor tab reverts a push when it saves; close the tab or re-read `.Source` after.
+5. The Edit datamodel is unavailable while play runs: stop, push, start.
+
+## Wiring a move
+
+- `Locomotion.override(character, clip, {fadeIn, fadeOut, onDone})` plays the clip on the body rig and hands back to `Clips.DioMove` when it ends. `fadeIn` at most half the snap (0.04 to 0.06) or the cock smears; the default 0.12 is for idles.
+- An override writes only the joints the clip keys. Unkeyed legs freeze mid stride, so a walkable light hit keys its legs from `moveJoint` (the locomotion pose) or leaves them out on purpose for a planted heavy.
+- An interrupted clip drops its `onDone` silently. Combo state lives in the caller: the cancel window opens at the settle key, an early press is buffered to it, the next clip's frame 0 is the previous clip's settle key.
+- Humanoid lock: `WalkSpeed = 0`, `JumpPower = 0`, `AutoRotate = false` only on a heavy or a summon, restored at the settle key or 1.0 s, whichever is first; the recovery blends under the walk.
+- Hit stop: `rig:hold(0.05)` for a light hit, `0.09` for a heavy; the camera kick and the sound sit on the same frame.
+- Replication: Poser writes `Transform` locally on every client. A move reaches other clients by a remote rebroadcast; every client calls `Locomotion.override` on that character. The server never sees the pose (nothing goes through the Animator), so hitboxes are timed in clip seconds from the remote, not read from the rig.
+- Sword rigs: the Handle motor's C0 decides which arm twist lays the blade flat for a horizontal cut or edge on for an overhead; `inspect_instance` it before choosing strike twists.
+- A stand and its user: the stand rig is `Poser.attach(character, loco.ctx)` (joints keyed by `Part1.Name`, so `Stand Right Arm` never collides with `Right Arm`); the appear clip chains to the float with `onDone`; the body plays its own clip through `Locomotion.override` at the same time.
+
+## Sign facts and the phase convention
+
+- `+twist` on the torso turns the chest to the character's left (right shoulder forward). The head counters with minus the torso twist.
+- The hand direction formula's third component is forward in pose space, which is Roblox -Z.
+- Walk and run phase 0 and pi are the passing poses (legs together); right foot contact is at 1/8 of a walk cycle and 3/16 of a run cycle; leg `p.Z` negative puts the foot forward; torso side and head side move the same way in the run.
+- Every period inside a procedural joint must divide the loop length (a 5 s sway on a 2.5 s loop flips its velocity at the seam), or the joint reads `ctx.t` on a counter that never wraps.
+
+## Where the tools run
+
+- `Strip.lua` and `StandStrip.lua` run in the Client datamodel under Play through `execute_luau`; the string they return goes straight into `screen_capture` as `camera_position` and `look_at_position`. Nudge the camera 0.1 stud between captures of a changed scene.
+- `Bake.lua` and `ReadClips.lua` run in the Edit datamodel.
+- Remotes cannot be fired from the Edit VM; fire them from the Client VM in play, or use the `CastStand` / `CastUlt` attribute hooks.

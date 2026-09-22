@@ -13,7 +13,17 @@ local function K(t, r, p, e, d, s)
 	return {t = t, r = r, p = p, e = e, d = d, s = s}
 end
 
+-- the lag ladder in one call: the same key list shifted later so a joint lands after the engine
+local function lagged(keys, dt)
+	local out = {}
+	for i, k in ipairs(keys) do
+		out[i] = {t = i == 1 and k.t or k.t + dt, r = k.r, p = k.p, e = k.e, d = k.d, s = k.s}
+	end
+	return out
+end
+
 local Clips = {}
+Clips.lagged = lagged
 
 -- the idle copies the structure of a professional r6 idle: one 3 s chest breath is the engine, the head and
 -- the arms follow it a fifth of a cycle later at half the size, the legs shift weight in phase, and the
@@ -408,7 +418,8 @@ local function floatRoot(t, ctx)
 	local walk = ctx.walk or 0
 	local ph = ctx.phase or 0
 	local w = t * TAU / 2.5
-	local sway = sin(w * 0.5)
+	-- the sway lags the breath a fifth of a cycle instead of running at half speed so the 2.5 s loop has no seam
+	local sway = sin(w - 1.26)
 	return {
 		p = V3(F.X + 0.05 * sway, F.Y + 0.04 * sin(w) + 0.06 * sin(2 * ph) * walk, F.Z + 0.35 * walk),
 		r = {1.2 * sin(w) - 9 * walk, 2 * sway - 3 * sin(ph) * walk, 1.2 * sway - 2 * sin(ph) * walk},

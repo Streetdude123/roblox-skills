@@ -58,6 +58,13 @@ the raw sequences live in `ReplicatedStorage.Stand.Assets.Anims`.
 
 - 2.5 s loop, one breath on the torso: pitch -14.7 to -19.1 (leans in), roll -6 to -9, and the torso
   part drops 0.27 studs (p.y 0.46 to 0.19). That drop is the float bob; the root never moves.
+- Re-measured from `decodes/TW_idle.txt` every 0.25 s: the bottom sits at 1.5 s (60 percent of the cycle),
+  torso {-19.5, -9.2, -9.3} p.y 0.17, head {-3.3, 13.5, -1.8}, right arm {-13.7, -92.5, 63.7}, left arm
+  {18.4, -92.3, 124.0}, right leg {-54.5, -2.2, 27.0}, left leg {-45.9, -0.3, -8.1}; the top is frame 0
+  (torso {-14.7, -8.1, -6.0} p.y 0.46). The breath is 1.5 s down and 1.0 s up, and a sine in-out from top
+  to bottom and back reproduces the decoded y to within 0.01 stud.
+- Never re-author a clip the set already has. If a procedural extra (the float root) fights the loop, fix
+  the extra: its periods must divide 2.5 s.
 - Head nods 6.6 degrees (+3.8 to -2.8) with a constant 13.5 twist that counters the torso's -8.
 - Right arm out at side 53 to 64, lift -6 to -14, twist -93, dropped back 0.36. Left arm raised
   across the chest: side 124, lift 26 to 18, twist -92, dropped 0.62.

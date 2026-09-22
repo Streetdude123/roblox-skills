@@ -204,3 +204,21 @@ Other facts:
 - The sword idle is a static bladed pose: torso twist +20 with head -20, sword arm lift 65 side 47 twist -32, and only a half degree of drift over 4 s. The old idle is the same with twist 15. Breathing comes from the core layer under it, not from the overlay.
 - Block start and end are 0.37-0.40 s with the same snap hold shape; block hit is a 0.4 s recoil.
 - Equip is 1.0 s: hold, a fast draw at 0.12-0.22 (STRIKE speed), settle by 0.33, then a 0.5 s hold.
+
+## Scaling the kit to a code posed move
+
+The tables above describe a hand keyed 60 fps clip on a rig whose root never moved. In Poser the same
+shape is written with fewer keys and bigger travel:
+
+- Snap: `cubic` or `quart` out over 4 to 7 frames into the wind up.
+- Hold: 0.10 to 0.20 s in code (not 2 to 4 frames), written as two `sine inout` keys that creep 2 to 4
+  degrees further in the wind up direction. The accepted holds are 0.08 to 0.14 s of anticipation and
+  0.15 to 0.25 s on a landed pose.
+- Strike: arrive on `"back", "out"` 1.2 to 1.5; the ease supplies the 15 percent follow through, so no
+  separate overshoot key. The kit's linear strike frames are the hand keyed version of the same thing.
+- Translation: the kit's torso barely moves (y down 0.03) because its animator did not translate the
+  root; a code posed move drops the root 0.3 to 0.5 into the coil and lunges 0.5 to 1.0 on the strike.
+- Amplitude for a summon or a cast: 1.5x the sword hit, hold 2x, and the pose must hold through the VFX
+  landing (0.3 to 0.4 s) with a breath key. When Lepy supplies a summon clip, decode it and replace this
+  paragraph with its beat table.
+- Legs land last: 3 to 4 frames after the torso, never on the torso's frames.
