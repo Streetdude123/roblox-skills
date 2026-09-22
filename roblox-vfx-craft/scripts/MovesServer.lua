@@ -38,6 +38,11 @@ local function alive(player)
 	if character:GetAttribute("StandOut") ~= true then
 		return nil
 	end
+	-- the appear clip owns the stand for 1.4 s after a summon
+	local at = character:GetAttribute("StandOutAt")
+	if at and now() - at < 1.4 then
+		return nil
+	end
 	return character, humanoid, hrp
 end
 
@@ -117,6 +122,8 @@ local function endBarrage(player, character, humanoid, hrp)
 	end
 	barrages[player] = nil
 	state.running = false
+	cool[player] = cool[player] or {}
+	cool[player].BarrageEnd = now()
 	Remotes.Move:FireAllClients(player, "Barrage", false)
 	-- the finisher hit lands on the heavy clip's strike frame
 	task.delay(0.32, function()
@@ -139,7 +146,8 @@ local function startBarrage(player)
 	if not character or barrages[player] or frozen(character) then
 		return
 	end
-	if not ready(player, "Barrage", B.Cooldown) then
+	local c = cool[player]
+	if c and c.BarrageEnd and now() - c.BarrageEnd < B.Cooldown then
 		return
 	end
 	local state = {running = true, speed0 = humanoid.WalkSpeed, t0 = now()}
@@ -368,8 +376,19 @@ Remotes.MoveRequest.OnServerEvent:Connect(function(player, name, on)
 			startBarrage(player)
 		else
 			local character, humanoid, hrp = alive(player)
-			if character and barrages[player] and now() - barrages[player].t0 > 0.35 then
-				endBarrage(player, character, humanoid, hrp)
+			local state = barrages[player]
+			if character and state then
+				local held = now() - state.t0
+				if held >= B.MinHold then
+					endBarrage(player, character, humanoid, hrp)
+				elseif not state.releaseAt then
+					state.releaseAt = true
+					task.delay(B.MinHold - held, function()
+						if barrages[player] == state then
+							endBarrage(player, character, humanoid, hrp)
+						end
+					end)
+				end
 			end
 		end
 	elseif name == "TimeStop" and on then

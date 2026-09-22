@@ -44,7 +44,8 @@ Config.BarrageOffset = Vector3.new(0.6, 0.9, -3.6)
 -- the barrage holds while e is down up to the swing clip length and the finisher lands on its last hit
 Config.Barrage = {
 	MaxHold = 3.6,
-	Cooldown = 7,
+	MinHold = 1.0,
+	Cooldown = 5,
 	TickRate = 0.1,
 	TickDamage = 3.0,
 	FinishDamage = 22,
@@ -78,7 +79,9 @@ Config.TimeStop = {
 		command = 1.35,
 		snap = 2.45,
 		frames = 2.5,
-		done = 3.1,
+		-- the sphere swallows the camera here and the colour drains with it
+		engulf = 3.35,
+		done = 3.9,
 	},
 	Duration = 6,
 	Cooldown = 28,

@@ -533,9 +533,10 @@ local function aim(tw, down)
 	return {L, 0, S}
 end
 
--- a leg offset that keeps the foot on the floor under a dropped torso and a swung leg
-local function legY(torsoY, lift)
-	return -torsoY - 2 * (1 - cos(math.rad(lift))) + 0.02
+-- a leg offset that keeps the foot on the floor under a dropped torso and a swung leg; the torso pitch
+-- swings the hips too (a forward lean reads as the legs trailing) so it adds to the leg's own lift
+local function legY(torsoY, lift, torsoLift)
+	return -torsoY - 2 * (1 - cos(math.rad(lift + (torsoLift or 0)))) + 0.02
 end
 
 local function mix(a, b, e)
@@ -564,8 +565,8 @@ local POINT = {
 	head = {-14, -10, 5},
 	rArm = aim(10, 0.05), rArmP = V3(0.04, 0.03, -0.3),
 	lArm = {150, 0, -10}, lArmP = V3(0.45, -0.75, -0.25),
-	rLeg = {10, 0, 8}, rLegP = V3(0.06, legY(-0.12, 10), -0.3),
-	lLeg = {-12, 12, -8}, lLegP = V3(-0.08, legY(-0.12, -12), 0.35),
+	rLeg = {10, 0, 8}, rLegP = V3(0.06, legY(-0.12, 10, -6), -0.3),
+	lLeg = {-12, 12, -8}, lLegP = V3(-0.08, legY(-0.12, -12, -6), 0.35),
 }
 local WIND = {
 	torso = {3, -12, -2}, torsoP = V3(-0.02, -0.06, 0.28),
@@ -690,352 +691,134 @@ Clips.DioHeavy = {
 			K(0.00, POINT.rLeg, POINT.rLegP),
 			K(0.11, {4, 0, 8}, V3(0.05, legY(-0.08, 4), -0.15), "cubic", "out"),
 			K(0.28, {2, 0, 8}, V3(0.05, legY(-0.06, 2), -0.12), "sine", "inout"),
-			K(0.36, {26, 0, 8}, V3(0.06, legY(-0.24, 26), -0.55), "back", "out", 1.3),
+			K(0.36, {26, 0, 8}, V3(0.06, legY(-0.24, 26, -16), -0.55), "back", "out", 1.3),
 			K(0.60, STANCE.rLeg, STANCE.rLegP, "sine", "inout"),
 		},
 		["Left Leg"] = {
 			K(0.00, POINT.lLeg, POINT.lLegP),
 			K(0.12, {-18, 12, -8}, V3(-0.08, legY(-0.08, -18), 0.45), "cubic", "out"),
 			K(0.28, {-20, 12, -8}, V3(-0.08, legY(-0.06, -20), 0.48), "sine", "inout"),
-			K(0.36, {-32, 12, -10}, V3(-0.08, legY(-0.24, -32), 0.5), "back", "out", 1.3),
+			K(0.36, {-32, 12, -10}, V3(-0.08, legY(-0.24, -32, -16), 0.5), "back", "out", 1.3),
 			K(0.60, STANCE.lLeg, STANCE.lLegP, "sine", "inout"),
 		},
 	},
 }
 
--- dio's command gestures under the stand's five hits, chained end pose to start pose like the stand's own
--- clips; silhouettes: A guard -> B jab point -> C left chop -> D rising fist -> E lean back and sweep -> lunge
--- point -> the stance; the torso is the engine on every hit and lands on a back ease, the head counters it
--- onto the target two frames later, the free arm three, the legs four; every step is a part offset
-local A = {
-	torso = {-4, 14, 2}, torsoP = V3(0.02, -0.1, -0.02),
-	head = {2, -12, 0},
-	rArm = {30, 0, 14}, rArmP = V3(0, -0.05, -0.05),
-	lArm = {24, -4, -16}, lArmP = V3(0, -0.05, -0.05),
-	rLeg = {8, 0, 8}, rLegP = V3(0.05, legY(-0.1, 8), -0.25),
-	lLeg = {-8, 8, -8}, lLegP = V3(-0.05, legY(-0.1, -8), 0.25),
+-- dio copies the stand's five hits the way a stand user throws the punch in the show: the torso, head and
+-- arms are the model's own tracks (the 124 degree torso whip, the countering head, the piston fists) with
+-- the arm offsets scaled to a planted body, and only the legs are authored: a step that lands four frames
+-- after the strike on a back ease, chained from hit to hit; the caller starts dio three frames ahead so he
+-- leads and the stand follows
+local UPPER = {Torso = true, Head = true, ["Right Arm"] = true, ["Left Arm"] = true}
+-- dio's rig is standard r6 like the stand's so the same c0 wraps serve under his own joint names
+local DIOWRAPS = {}
+for pose, joint in pairs(MAP) do
+	DIOWRAPS[pose] = WRAPS[joint]
+end
+local PSCALE = {Torso = 1, Head = 1, ["Right Arm"] = 0.4, ["Left Arm"] = 0.4}
+-- leg silhouettes per hit: guard, right step, left step, rise, knee up for the kick, the lunge, the stance
+local LEGS = {
+	{r = {8, 0, 8}, rp = V3(0.05, 0, -0.25), l = {-8, 8, -8}, lp = V3(-0.05, 0, 0.25)},
+	{r = {16, 0, 8}, rp = V3(0.05, 0, -0.38), l = {-16, 8, -8}, lp = V3(-0.05, 0, 0.32)},
+	{r = {-4, 0, 8}, rp = V3(0.05, 0, 0.1), l = {12, 6, -8}, lp = V3(-0.05, 0, -0.18)},
+	{r = {6, 0, 8}, rp = V3(0.05, 0, -0.15), l = {-8, 6, -8}, lp = V3(-0.05, 0, 0.2)},
+	{r = {50, 0, 10}, rp = V3(0.05, 0.3, -0.4), l = {-18, 10, -10}, lp = V3(-0.06, 0, 0.38)},
+	{r = {28, 0, 8}, rp = V3(0.06, 0, -0.55), l = {-32, 10, -10}, lp = V3(-0.06, 0, 0.5)},
+	{r = STANCE.rLeg, rp = V3(0.04, 0, -0.15), l = STANCE.lLeg, lp = V3(-0.04, 0, 0.15)},
 }
-local B = {
-	torso = {-10, 20, 3}, torsoP = V3(0.02, -0.14, -0.2),
-	head = {0, -20, 0},
-	rArm = aim(20, 0.0), rArmP = V3(0.03, 0.02, -0.2),
-	lArm = {-18, 0, -20}, lArmP = V3(0, -0.05, 0),
-	rLeg = {14, 0, 8}, rLegP = V3(0.05, legY(-0.14, 14), -0.35),
-	lLeg = {-14, 8, -8}, lLegP = V3(-0.05, legY(-0.14, -14), 0.3),
-}
-local C = {
-	torso = {-12, -12, -3}, torsoP = V3(-0.02, -0.14, -0.2),
-	head = {2, 12, 0},
-	rArm = {36, 0, 18}, rArmP = V3(0, -0.02, -0.1),
-	lArm = {78, 8, -10}, lArmP = V3(-0.03, 0.02, -0.2),
-	rLeg = {-4, 0, 8}, rLegP = V3(0.05, legY(-0.14, -4), 0.1),
-	lLeg = {10, 6, -8}, lLegP = V3(-0.05, legY(-0.14, 10), -0.15),
-}
-local D = {
-	torso = {6, 14, 3}, torsoP = V3(0, 0.02, 0.03),
-	head = {12, -12, 0},
-	rArm = {146, -10, -8}, rArmP = V3(0.05, 0.08, -0.1),
-	lArm = {-26, 0, -24}, lArmP = V3(0, -0.05, 0.02),
-	rLeg = {6, 0, 8}, rLegP = V3(0.05, legY(0.02, 6), -0.15),
-	lLeg = {-8, 6, -8}, lLegP = V3(-0.05, legY(0.02, -8), 0.2),
-}
-local E = {
-	torso = {14, -14, -5}, torsoP = V3(0, -0.06, 0.15),
-	head = {12, 10, -4},
-	rArm = {38, 0, 92}, rArmP = V3(0.05, 0, -0.05),
-	lArm = {28, 0, -16}, lArmP = V3(0, -0.04, -0.05),
-	rLeg = {16, 0, 8}, rLegP = V3(0.05, legY(-0.06, 16), -0.35),
-	lLeg = {-16, 10, -10}, lLegP = V3(-0.06, legY(-0.06, -16), 0.35),
-}
-local LUNGE = {
-	torso = {-16, 22, 5}, torsoP = V3(0.03, -0.24, -0.55),
-	head = {-4, -22, 2},
-	rArm = aim(22, -0.1), rArmP = V3(0.04, 0.02, -0.4),
-	lArm = {-36, 6, -28}, lArmP = V3(0, -0.05, 0.05),
-	rLeg = {28, 0, 8}, rLegP = V3(0.06, legY(-0.24, 28), -0.55),
-	lLeg = {-32, 10, -10}, lLegP = V3(-0.06, legY(-0.24, -32), 0.5),
-}
+-- the foot bottom sits at hip + leg pose + (-0.5 sideSign, -2, 0) in the torso's axes and the torso pose sits in
+-- root axes, so the leg offset that puts it on the floor (three studs under the root) is one linear solve
+local function solveFootY(tp, r, p, sideSign)
+	local hip = CFrame.new(sideSign, -1, 0)
+	local legPose = Poser.poseCF({p = V3(p.X, 0, p.Z), r = r})
+	local foot0 = (tp * hip * legPose * CFrame.new(-0.5 * sideSign, -2, 0)).Position.Y
+	local upY = math.max(0.5, tp.Rotation.UpVector.Y)
+	return (-3 - foot0) / upY
+end
+local M1LEN = {0.417, 0.417, 0.417, 0.333, 0.333}
+local M1STRIKE = {0.25, 0.25, 0.25, 0.12, 0.12}
 
-local function chainClip(name, length, keys)
-	return {name = name, length = length, joints = keys}
+-- the stand's torso rides 0.09 above its root through the set so the feet are solved against that
+local function legTrack(i, side)
+	local from, to = LEGS[i], LEGS[i + 1]
+	local arrive = M1STRIKE[i] + 0.07
+	local len = M1LEN[i]
+	return function(t)
+		local e = backOut((t - (arrive - 0.10)) / 0.10, 1.3)
+		local rest = i == 5 and quartOut((t - 0.22) / 0.11) or 0
+		local a = side == "r" and from.r or from.l
+		local b = side == "r" and to.r or to.l
+		local pa = side == "r" and from.rp or from.lp
+		local pb = side == "r" and to.rp or to.lp
+		-- a planted foot is solved onto the floor, a lifted one (the kick) keeps its authored height, and the
+		-- two heights blend through the step so no seam opens between hits
+		local r = mix(a, b, e)
+		local p = pa:Lerp(pb, e)
+		local lifted = pa.Y + (pb.Y - pa.Y) * e
+		if rest > 0 then
+			local sr = side == "r" and LEGS[7].r or LEGS[7].l
+			local sp = side == "r" and LEGS[7].rp or LEGS[7].lp
+			r = mix(r, sr, rest)
+			p = p:Lerp(sp, rest)
+			lifted = lifted * (1 - rest)
+		end
+		-- the copied torso leans up to 33 and rolls up to 30, so a planted foot is solved onto the floor from
+		-- the sampled torso pose and the r6 hip geometry; a lifted foot (the kick) keeps its authored height
+		local tp = Poser.sample(Clips.DioM1[i], "Torso", t)
+		local y = solveFootY(tp, r, p, side == "r" and 1 or -1) + lifted
+		return {p = V3(p.X, y, p.Z), r = r}
+	end
 end
 
-Clips.DioM1 = {
-	-- hit 1: the pointing shoulder coils back in five frames, creeps through the hold, the jab point lands at 0.25
-	chainClip("DioM1_1", 0.417, {
-		["Torso"] = {
-			K(0.00, A.torso, A.torsoP),
-			K(0.08, {-2, 2, 1}, V3(0, -0.1, 0.06), "cubic", "out"),
-			K(0.16, {-1, -2, 1}, V3(0, -0.1, 0.09), "sine", "inout"),
-			K(0.25, {-11, 22, 3}, V3(0.02, -0.15, -0.24), "back", "out", 1.25),
-			K(0.32, {-11, 22, 3}, V3(0.02, -0.15, -0.22), "quad", "out"),
-			K(0.417, B.torso, B.torsoP, "sine", "inout"),
+Clips.DioM1 = {}
+for i, name in ipairs({"LeftPunch", "RightPunch", "LeftUpperCut", "RightKick", "LeftStab"}) do
+	Clips.DioM1[i] = Poser.fromSequence(Anims[name], DIOWRAPS, {
+		name = "DioM1_" .. i,
+		only = UPPER,
+		pScale = PSCALE,
+		rollScale = {Torso = 0.45},
+		loop = false,
+		extra = {
+			["Right Leg"] = legTrack(i, "r"),
+			["Left Leg"] = legTrack(i, "l"),
 		},
-		["Head"] = {
-			K(0.00, A.head),
-			K(0.10, {2, 0, 0}, nil, "cubic", "out"),
-			K(0.17, {2, 3, 0}, nil, "sine", "inout"),
-			K(0.27, {0, -22, 0}, nil, "back", "out", 1.2),
-			K(0.34, {0, -22, 0}, nil, "quad", "out"),
-			K(0.417, B.head, nil, "sine", "inout"),
-		},
-		["Right Arm"] = {
-			K(0.00, A.rArm, A.rArmP),
-			K(0.11, {10, 0, 22}, V3(0, -0.06, 0.06), "cubic", "out"),
-			K(0.18, {6, 0, 24}, V3(0, -0.06, 0.08), "sine", "inout"),
-			K(0.21, {50, 0, 50}, V3(0.02, 0, -0.08), "quad", "out"),
-			K(0.25, aim(22, -0.02), V3(0.03, 0.02, -0.28), "back", "out", 1.3),
-			K(0.33, aim(22, -0.02), V3(0.03, 0.02, -0.26), "quad", "out"),
-			K(0.417, B.rArm, B.rArmP, "sine", "inout"),
-		},
-		["Left Arm"] = {
-			K(0.00, A.lArm, A.lArmP),
-			K(0.12, {30, -4, -18}, V3(0, -0.05, -0.08), "cubic", "out"),
-			K(0.19, {32, -4, -18}, V3(0, -0.05, -0.09), "sine", "inout"),
-			K(0.28, {-20, 0, -22}, V3(0, -0.05, 0.02), "back", "out", 1.2),
-			K(0.417, B.lArm, B.lArmP, "sine", "inout"),
-		},
-		["Right Leg"] = {
-			K(0.00, A.rLeg, A.rLegP),
-			K(0.13, {4, 0, 8}, V3(0.05, legY(-0.1, 4), -0.15), "cubic", "out"),
-			K(0.20, {3, 0, 8}, V3(0.05, legY(-0.1, 3), -0.13), "sine", "inout"),
-			K(0.30, {16, 0, 8}, V3(0.05, legY(-0.15, 16), -0.38), "back", "out", 1.3),
-			K(0.417, B.rLeg, B.rLegP, "sine", "inout"),
-		},
-		["Left Leg"] = {
-			K(0.00, A.lLeg, A.lLegP),
-			K(0.13, {-6, 8, -8}, V3(-0.05, legY(-0.1, -6), 0.2), "cubic", "out"),
-			K(0.20, {-5, 8, -8}, V3(-0.05, legY(-0.1, -5), 0.18), "sine", "inout"),
-			K(0.30, {-16, 8, -8}, V3(-0.05, legY(-0.15, -16), 0.32), "back", "out", 1.3),
-			K(0.417, B.lLeg, B.lLegP, "sine", "inout"),
-		},
-	}),
-	-- hit 2: the pointing hand pulls to a guard while the torso coils the other way, then the left hand chops
-	chainClip("DioM1_2", 0.417, {
-		["Torso"] = {
-			K(0.00, B.torso, B.torsoP),
-			K(0.08, {-6, 28, 4}, V3(0.03, -0.1, -0.06), "cubic", "out"),
-			K(0.16, {-5, 31, 4}, V3(0.03, -0.1, -0.03), "sine", "inout"),
-			K(0.25, {-13, -14, -3}, V3(-0.02, -0.15, -0.24), "back", "out", 1.25),
-			K(0.32, {-13, -14, -3}, V3(-0.02, -0.15, -0.22), "quad", "out"),
-			K(0.417, C.torso, C.torsoP, "sine", "inout"),
-		},
-		["Head"] = {
-			K(0.00, B.head),
-			K(0.10, {0, -26, 0}, nil, "cubic", "out"),
-			K(0.17, {0, -29, 0}, nil, "sine", "inout"),
-			K(0.27, {2, 14, 0}, nil, "back", "out", 1.2),
-			K(0.34, {2, 14, 0}, nil, "quad", "out"),
-			K(0.417, C.head, nil, "sine", "inout"),
-		},
-		["Right Arm"] = {
-			K(0.00, B.rArm, B.rArmP),
-			K(0.12, {44, 0, 22}, V3(0, -0.02, -0.12), "cubic", "out"),
-			K(0.19, {46, 0, 22}, V3(0, -0.02, -0.13), "sine", "inout"),
-			K(0.28, {36, 0, 18}, V3(0, -0.02, -0.1), "back", "out", 1.2),
-			K(0.417, C.rArm, C.rArmP, "sine", "inout"),
-		},
-		["Left Arm"] = {
-			K(0.00, B.lArm, B.lArmP),
-			K(0.11, {-30, 0, -26}, V3(0, -0.06, 0.06), "cubic", "out"),
-			K(0.18, {-34, 0, -28}, V3(0, -0.06, 0.08), "sine", "inout"),
-			K(0.21, {40, 0, -48}, V3(-0.02, 0, -0.08), "quad", "out"),
-			K(0.25, {80, 10, -8}, V3(-0.03, 0.02, -0.28), "back", "out", 1.3),
-			K(0.33, {80, 10, -8}, V3(-0.03, 0.02, -0.26), "quad", "out"),
-			K(0.417, C.lArm, C.lArmP, "sine", "inout"),
-		},
-		["Right Leg"] = {
-			K(0.00, B.rLeg, B.rLegP),
-			K(0.13, {12, 0, 8}, V3(0.05, legY(-0.1, 12), -0.3), "cubic", "out"),
-			K(0.20, {11, 0, 8}, V3(0.05, legY(-0.1, 11), -0.28), "sine", "inout"),
-			K(0.30, {-4, 0, 8}, V3(0.05, legY(-0.15, -4), 0.08), "back", "out", 1.3),
-			K(0.417, C.rLeg, C.rLegP, "sine", "inout"),
-		},
-		["Left Leg"] = {
-			K(0.00, B.lLeg, B.lLegP),
-			K(0.13, {-12, 8, -8}, V3(-0.05, legY(-0.1, -12), 0.26), "cubic", "out"),
-			K(0.20, {-11, 8, -8}, V3(-0.05, legY(-0.1, -11), 0.24), "sine", "inout"),
-			K(0.30, {12, 6, -8}, V3(-0.05, legY(-0.15, 12), -0.18), "back", "out", 1.3),
-			K(0.417, C.lLeg, C.lLegP, "sine", "inout"),
-		},
-	}),
-	-- hit 3: the body dips and the fist drops for the load, then the torso rises and leans back while the fist
-	-- swings forward and up through an arc to above the head
-	chainClip("DioM1_3", 0.417, {
-		["Torso"] = {
-			K(0.00, C.torso, C.torsoP),
-			K(0.08, {-18, -6, -2}, V3(-0.01, -0.24, -0.1), "cubic", "out"),
-			K(0.16, {-20, -4, -2}, V3(-0.01, -0.26, -0.08), "sine", "inout"),
-			K(0.25, {8, 16, 4}, V3(0, 0.02, 0.06), "back", "out", 1.25),
-			K(0.32, {8, 16, 4}, V3(0, 0.02, 0.05), "quad", "out"),
-			K(0.417, D.torso, D.torsoP, "sine", "inout"),
-		},
-		["Head"] = {
-			K(0.00, C.head),
-			K(0.10, {-6, 8, 0}, nil, "cubic", "out"),
-			K(0.17, {-8, 6, 0}, nil, "sine", "inout"),
-			K(0.27, {16, -14, 0}, nil, "back", "out", 1.2),
-			K(0.34, {16, -14, 0}, nil, "quad", "out"),
-			K(0.417, D.head, nil, "sine", "inout"),
-		},
-		["Right Arm"] = {
-			K(0.00, C.rArm, C.rArmP),
-			K(0.11, {8, 0, 26}, V3(0.02, -0.1, 0.06), "cubic", "out"),
-			K(0.18, {4, 0, 28}, V3(0.02, -0.1, 0.08), "sine", "inout"),
-			K(0.21, {108, 0, 14}, V3(0.04, 0.02, -0.16), "quad", "out"),
-			K(0.25, {150, -10, -8}, V3(0.05, 0.1, -0.1), "back", "out", 1.3),
-			K(0.33, {150, -10, -8}, V3(0.05, 0.1, -0.1), "quad", "out"),
-			K(0.417, D.rArm, D.rArmP, "sine", "inout"),
-		},
-		["Left Arm"] = {
-			K(0.00, C.lArm, C.lArmP),
-			K(0.12, {60, 6, -14}, V3(-0.02, 0, -0.14), "cubic", "out"),
-			K(0.19, {58, 6, -14}, V3(-0.02, 0, -0.13), "sine", "inout"),
-			K(0.28, {-30, 0, -26}, V3(0, -0.05, 0.02), "back", "out", 1.2),
-			K(0.417, D.lArm, D.lArmP, "sine", "inout"),
-		},
-		["Right Leg"] = {
-			K(0.00, C.rLeg, C.rLegP),
-			K(0.13, {-2, 0, 10}, V3(0.05, legY(-0.24, -2), 0.06), "cubic", "out"),
-			K(0.20, {-2, 0, 10}, V3(0.05, legY(-0.26, -2), 0.06), "sine", "inout"),
-			K(0.30, {6, 0, 8}, V3(0.05, legY(0.02, 6), -0.15), "back", "out", 1.3),
-			K(0.417, D.rLeg, D.rLegP, "sine", "inout"),
-		},
-		["Left Leg"] = {
-			K(0.00, C.lLeg, C.lLegP),
-			K(0.13, {8, 6, -10}, V3(-0.05, legY(-0.24, 8), -0.1), "cubic", "out"),
-			K(0.20, {8, 6, -10}, V3(-0.05, legY(-0.26, 8), -0.1), "sine", "inout"),
-			K(0.30, {-8, 6, -8}, V3(-0.05, legY(0.02, -8), 0.2), "back", "out", 1.3),
-			K(0.417, D.lLeg, D.lLegP, "sine", "inout"),
-		},
-	}),
-	-- hit 4: no load, the previous pose is the load; the torso leans back and turns while the raised fist
-	-- sweeps down and out to the side in six frames, then the pose drifts
-	chainClip("DioM1_4", 0.333, {
-		["Torso"] = {
-			K(0.00, D.torso, D.torsoP),
-			K(0.10, {16, -16, -6}, V3(0, -0.06, 0.15), "back", "out", 1.25),
-			K(0.17, {16, -16, -6}, V3(0, -0.06, 0.15), "quad", "out"),
-			K(0.25, {15, -15, -6}, V3(0, -0.06, 0.15), "sine", "inout"),
-			K(0.333, E.torso, E.torsoP, "sine", "inout"),
-		},
-		["Head"] = {
-			K(0.00, D.head),
-			K(0.12, {13, 12, -4}, nil, "back", "out", 1.2),
-			K(0.19, {13, 12, -4}, nil, "quad", "out"),
-			K(0.333, E.head, nil, "sine", "inout"),
-		},
-		["Right Arm"] = {
-			K(0.00, D.rArm, D.rArmP),
-			K(0.05, {110, 0, 60}, V3(0.05, 0.04, -0.08), "quad", "out"),
-			K(0.10, {38, 0, 94}, V3(0.05, 0, -0.05), "back", "out", 1.3),
-			K(0.18, {38, 0, 94}, V3(0.05, 0, -0.05), "quad", "out"),
-			K(0.25, {38, 0, 93}, V3(0.05, 0, -0.05), "sine", "inout"),
-			K(0.333, E.rArm, E.rArmP, "sine", "inout"),
-		},
-		["Left Arm"] = {
-			K(0.00, D.lArm, D.lArmP),
-			K(0.13, {32, 0, -18}, V3(0, -0.04, -0.06), "back", "out", 1.2),
-			K(0.20, {32, 0, -18}, V3(0, -0.04, -0.06), "quad", "out"),
-			K(0.333, E.lArm, E.lArmP, "sine", "inout"),
-		},
-		["Right Leg"] = {
-			K(0.00, D.rLeg, D.rLegP),
-			K(0.14, {18, 0, 8}, V3(0.05, legY(-0.06, 18), -0.38), "back", "out", 1.3),
-			K(0.21, {18, 0, 8}, V3(0.05, legY(-0.06, 18), -0.38), "quad", "out"),
-			K(0.333, E.rLeg, E.rLegP, "sine", "inout"),
-		},
-		["Left Leg"] = {
-			K(0.00, D.lLeg, D.lLegP),
-			K(0.14, {-18, 10, -10}, V3(-0.06, legY(-0.06, -18), 0.38), "back", "out", 1.3),
-			K(0.21, {-18, 10, -10}, V3(-0.06, legY(-0.06, -18), 0.38), "quad", "out"),
-			K(0.333, E.lLeg, E.lLegP, "sine", "inout"),
-		},
-	}),
-	-- hit 5: the lunge point on the stab in six frames with the fist first through the arc and the chin down on
-	-- the target, a breathing hold, then the recovery into the stance the walk takes over
-	chainClip("DioM1_5", 0.333, {
-		["Torso"] = {
-			K(0.00, E.torso, E.torsoP),
-			K(0.10, LUNGE.torso, LUNGE.torsoP, "back", "out", 1.25),
-			K(0.17, LUNGE.torso, LUNGE.torsoP + V3(0, 0.02, 0), "quad", "out"),
-			K(0.25, {-17, 23, 5}, V3(0.03, -0.23, -0.53), "sine", "inout"),
-			K(0.333, STANCE.torso, STANCE.torsoP, "sine", "inout"),
-		},
-		["Head"] = {
-			K(0.00, E.head),
-			K(0.12, LUNGE.head, nil, "back", "out", 1.2),
-			K(0.19, LUNGE.head, nil, "quad", "out"),
-			K(0.25, {-5, -23, 2}, nil, "sine", "inout"),
-			K(0.333, STANCE.head, nil, "sine", "inout"),
-		},
-		["Right Arm"] = {
-			K(0.00, E.rArm, E.rArmP),
-			K(0.05, {70, 0, 50}, V3(0.04, 0.02, -0.15), "quad", "out"),
-			K(0.10, LUNGE.rArm, LUNGE.rArmP, "back", "out", 1.3),
-			K(0.18, LUNGE.rArm, LUNGE.rArmP + V3(0, 0, 0.02), "quad", "out"),
-			K(0.25, aim(23, -0.12), V3(0.04, 0.02, -0.38), "sine", "inout"),
-			K(0.333, STANCE.rArm, STANCE.rArmP, "sine", "inout"),
-		},
-		["Left Arm"] = {
-			K(0.00, E.lArm, E.lArmP),
-			K(0.13, LUNGE.lArm, LUNGE.lArmP, "back", "out", 1.2),
-			K(0.20, LUNGE.lArm, LUNGE.lArmP, "quad", "out"),
-			K(0.25, {-38, 6, -28}, V3(0, -0.05, 0.05), "sine", "inout"),
-			K(0.333, STANCE.lArm, STANCE.lArmP, "sine", "inout"),
-		},
-		["Right Leg"] = {
-			K(0.00, E.rLeg, E.rLegP),
-			K(0.14, LUNGE.rLeg, LUNGE.rLegP, "back", "out", 1.3),
-			K(0.21, LUNGE.rLeg, LUNGE.rLegP, "quad", "out"),
-			K(0.25, {27, 0, 8}, V3(0.06, legY(-0.23, 27), -0.54), "sine", "inout"),
-			K(0.333, STANCE.rLeg, STANCE.rLegP, "sine", "inout"),
-		},
-		["Left Leg"] = {
-			K(0.00, E.lLeg, E.lLegP),
-			K(0.14, LUNGE.lLeg, LUNGE.lLegP, "back", "out", 1.3),
-			K(0.21, LUNGE.lLeg, LUNGE.lLegP, "quad", "out"),
-			K(0.25, {-31, 10, -10}, V3(-0.06, legY(-0.23, -31), 0.49), "sine", "inout"),
-			K(0.333, STANCE.lLeg, STANCE.lLegP, "sine", "inout"),
-		},
-	}),
-}
+	})
+end
 
 -- the chain clips are reachable by name too so the pose hold hook can freeze any hit
 for _, c in ipairs(Clips.DioM1) do
 	Clips[c.name] = c
 end
 
--- the time stop on dio, keyed to the voice line; silhouettes: STANCE -> a dip (anticipation) -> ZA WARUDO (the
--- right hand overhead through an up and out arc with the block dropped so it reads bent, the left arm flung
--- out and back, chest out, head thrown back, weight on the rear foot) held with the raised hand trembling
--- through the pause -> COIL inward on the command while the head comes down -> the fist whips down and forward
--- into the point with a 0.6 stud lunge on the last syllable, the head a frame behind, the free arm and the legs
--- after -> the point holds breathing to the end
+-- the time stop on dio the way the show does it, no more: silhouettes STANCE -> a dip -> HAND UP (the right
+-- hand raised open beside the face, palm to the enemy, chest out, chin up, the free arm low and back,
+-- weight on the rear foot) held with the raised hand trembling through the pause -> the hand opens outward
+-- and the lean deepens on the command -> a small coil on the last syllable -> HALT (the open hand pushed
+-- forward with a half stud lunge, the head a frame behind) -> the halt holds breathing to the end
 local TS = Config.TimeStop.Beats
-local ZA = {
-	torso = {16, -10, -4}, torsoP = V3(0, -0.08, 0.25),
-	head = {24, 8, -4},
-	rArm = {160, 0, 16}, rArmP = V3(-0.35, 0.15, -0.15),
-	lArm = {-20, 0, -110}, lArmP = V3(-0.1, 0.1, 0.05),
-	rLeg = {18, -4, 10}, rLegP = V3(0.05, legY(-0.08, 18), -0.35),
-	lLeg = {-20, 10, -10}, lLegP = V3(-0.06, legY(-0.08, -20), 0.4),
+local UP = {
+	torso = {8, -6, -2}, torsoP = V3(0, -0.08, 0.18),
+	head = {12, 4, -2},
+	rArm = {120, 0, -15}, rArmP = V3(-0.2, 0.2, 0.1),
+	lArm = {-12, 0, -14}, lArmP = V3(0, -0.05, 0.04),
+	rLeg = {12, -4, 10}, rLegP = V3(0.05, legY(-0.08, 12, 8), -0.3),
+	lLeg = {-16, 10, -10}, lLegP = V3(-0.06, legY(-0.08, -16, 8), 0.36),
 }
-local COIL = {
-	torso = {6, 14, 0}, torsoP = V3(0.01, -0.18, 0.12),
-	head = {6, -6, 0},
-	rArm = {150, -10, 30}, rArmP = V3(-0.3, 0.05, 0.1),
-	lArm = {30, 0, -50}, lArmP = V3(0, -0.2, -0.1),
-	rLeg = {12, -4, 10}, rLegP = V3(0.05, legY(-0.18, 12), -0.3),
-	lLeg = {-16, 10, -10}, lLegP = V3(-0.06, legY(-0.18, -16), 0.35),
+local OPEN = {
+	torso = {14, -8, -3}, torsoP = V3(0, -0.1, 0.22),
+	head = {16, 6, -3},
+	rArm = {116, 0, -36}, rArmP = V3(-0.1, 0.22, 0.12),
+	lArm = {-18, 0, -18}, lArmP = V3(0, -0.05, 0.06),
+	rLeg = {12, -4, 10}, rLegP = V3(0.05, legY(-0.1, 12, 14), -0.3),
+	lLeg = {-18, 10, -10}, lLegP = V3(-0.06, legY(-0.1, -18, 14), 0.38),
 }
-local SNAP = {
-	torso = {-14, -4, 4}, torsoP = V3(0.02, -0.24, -0.6),
-	head = {-12, 6, 3},
-	rArm = aim(-4, -0.05), rArmP = V3(0.05, 0.02, -0.4),
-	lArm = {-38, 8, -28}, lArmP = V3(0, -0.05, 0.05),
-	rLeg = {26, 0, 8}, rLegP = V3(0.06, legY(-0.24, 26), -0.5),
-	lLeg = {-30, 10, -10}, lLegP = V3(-0.06, legY(-0.24, -30), 0.5),
+local HALT = {
+	torso = {-10, 6, 2}, torsoP = V3(0.02, -0.2, -0.5),
+	head = {-6, -4, 1},
+	rArm = aim(6, -0.02), rArmP = V3(0.05, 0.05, -0.4),
+	lArm = {-30, 6, -22}, lArmP = V3(0, -0.05, 0.05),
+	rLeg = {24, 0, 8}, rLegP = V3(0.06, legY(-0.2, 24, -10), -0.48),
+	lLeg = {-28, 10, -10}, lLegP = V3(-0.06, legY(-0.2, -28, -10), 0.48),
 }
 Clips.DioTimeStop = {
 	name = "DioTimeStop",
@@ -1043,90 +826,88 @@ Clips.DioTimeStop = {
 	joints = {
 		["Torso"] = {
 			K(0.00, STANCE.torso, STANCE.torsoP),
-			K(0.06, {-4, 2, 0}, V3(0.01, -0.14, 0.02), "cubic", "out"),
-			K(0.18, ZA.torso, ZA.torsoP, "back", "out", 1.25),
-			K(0.60, {17.5, -10, -4}, V3(0, -0.09, 0.26), "sine", "inout"),
-			K(1.10, {15, -11, -4}, V3(0, -0.07, 0.24), "sine", "inout"),
-			K(1.35, {16, -10, -4}, ZA.torsoP, "sine", "inout"),
-			K(2.10, COIL.torso, COIL.torsoP, "sine", "inout"),
-			K(2.45, {4, 26, -2}, V3(0.02, -0.2, 0.16), "sine", "in"),
-			K(2.50, SNAP.torso, SNAP.torsoP, "back", "out", 1.25),
-			K(2.58, SNAP.torso, SNAP.torsoP + V3(0, 0.02, 0), "quad", "out"),
-			K(2.85, {-15, -4, 4}, V3(0.02, -0.25, -0.58), "sine", "inout"),
-			K(3.10, SNAP.torso, SNAP.torsoP, "sine", "inout"),
+			K(0.06, {-3, 0, 0}, V3(0.01, -0.13, 0.02), "cubic", "out"),
+			K(0.18, UP.torso, UP.torsoP, "back", "out", 1.25),
+			K(0.60, {9.5, -6, -2}, V3(0, -0.09, 0.19), "sine", "inout"),
+			K(1.10, {7, -7, -2}, V3(0, -0.07, 0.17), "sine", "inout"),
+			K(1.35, UP.torso, UP.torsoP, "sine", "inout"),
+			K(2.10, OPEN.torso, OPEN.torsoP, "sine", "inout"),
+			K(2.45, {16, -12, -3}, V3(0, -0.14, 0.26), "sine", "in"),
+			K(2.50, HALT.torso, HALT.torsoP, "back", "out", 1.25),
+			K(2.58, HALT.torso, HALT.torsoP + V3(0, 0.02, 0), "quad", "out"),
+			K(2.85, {-11, 6, 2}, V3(0.02, -0.21, -0.48), "sine", "inout"),
+			K(TS.done, HALT.torso, HALT.torsoP, "sine", "inout"),
 		},
 		["Head"] = {
 			K(0.00, STANCE.head),
-			K(0.08, {-4, 0, 0}, nil, "cubic", "out"),
-			K(0.21, ZA.head, nil, "back", "out", 1.2),
-			K(0.60, {26, 8, -4}, nil, "sine", "inout"),
-			K(1.10, {22, 9, -4}, nil, "sine", "inout"),
-			K(1.35, ZA.head, nil, "sine", "inout"),
-			K(2.10, COIL.head, nil, "sine", "inout"),
-			K(2.45, {2, -12, 0}, nil, "sine", "in"),
-			K(2.52, SNAP.head, nil, "back", "out", 1.2),
-			K(2.60, SNAP.head, nil, "quad", "out"),
-			K(2.85, {-13, 6, 3}, nil, "sine", "inout"),
-			K(3.10, SNAP.head, nil, "sine", "inout"),
+			K(0.08, {-2, 0, 0}, nil, "cubic", "out"),
+			K(0.21, UP.head, nil, "back", "out", 1.2),
+			K(0.60, {14, 4, -2}, nil, "sine", "inout"),
+			K(1.10, {10, 5, -2}, nil, "sine", "inout"),
+			K(1.35, UP.head, nil, "sine", "inout"),
+			K(2.10, OPEN.head, nil, "sine", "inout"),
+			K(2.45, {18, 8, -3}, nil, "sine", "in"),
+			K(2.52, HALT.head, nil, "back", "out", 1.2),
+			K(2.60, HALT.head, nil, "quad", "out"),
+			K(2.85, {-7, -4, 1}, nil, "sine", "inout"),
+			K(TS.done, HALT.head, nil, "sine", "inout"),
 		},
 		["Right Arm"] = {
 			K(0.00, STANCE.rArm, STANCE.rArmP),
-			K(0.09, {50, 0, 30}, V3(0, -0.02, -0.06), "cubic", "out"),
-			K(0.14, {100, 0, 60}, V3(-0.05, 0.05, -0.12), "quad", "out"),
-			K(0.22, ZA.rArm, ZA.rArmP, "back", "out", 1.4),
-			K(0.45, {158, 0, 17}, V3(-0.35, 0.14, -0.15), "sine", "inout"),
-			K(0.60, {161, 0, 15}, V3(-0.35, 0.16, -0.15), "sine", "inout"),
-			K(0.75, {159, 0, 17}, V3(-0.35, 0.14, -0.15), "sine", "inout"),
-			K(0.90, {162, 0, 15}, V3(-0.35, 0.16, -0.15), "sine", "inout"),
-			K(1.05, {159, 0, 16}, V3(-0.35, 0.15, -0.15), "sine", "inout"),
-			K(1.20, {161, 0, 16}, V3(-0.35, 0.16, -0.15), "sine", "inout"),
-			K(1.35, ZA.rArm, ZA.rArmP, "sine", "inout"),
-			K(2.10, COIL.rArm, COIL.rArmP, "sine", "inout"),
-			K(2.45, {156, -10, 36}, V3(-0.34, 0.02, 0.14), "sine", "in"),
-			K(2.47, {120, 0, -14}, V3(-0.05, 0.1, -0.2), "quad", "out"),
-			K(2.50, SNAP.rArm, SNAP.rArmP, "back", "out", 1.3),
-			K(2.58, SNAP.rArm, SNAP.rArmP + V3(0, 0, 0.02), "quad", "out"),
-			K(2.85, aim(-4, -0.06), V3(0.05, 0.02, -0.42), "sine", "inout"),
-			K(3.10, SNAP.rArm, SNAP.rArmP, "sine", "inout"),
+			K(0.09, {50, 0, 26}, V3(0, -0.02, -0.06), "cubic", "out"),
+			K(0.14, {95, 0, 30}, V3(-0.1, 0.1, -0.1), "quad", "out"),
+			K(0.22, UP.rArm, UP.rArmP, "back", "out", 1.4),
+			K(0.45, {118, 0, -16}, V3(-0.2, 0.19, 0.1), "sine", "inout"),
+			K(0.60, {121, 0, -14}, V3(-0.2, 0.21, 0.1), "sine", "inout"),
+			K(0.75, {119, 0, -16}, V3(-0.2, 0.19, 0.1), "sine", "inout"),
+			K(0.90, {122, 0, -14}, V3(-0.2, 0.21, 0.1), "sine", "inout"),
+			K(1.05, {119, 0, -15}, V3(-0.2, 0.2, 0.1), "sine", "inout"),
+			K(1.20, {121, 0, -15}, V3(-0.2, 0.21, 0.1), "sine", "inout"),
+			K(1.35, UP.rArm, UP.rArmP, "sine", "inout"),
+			K(2.10, OPEN.rArm, OPEN.rArmP, "sine", "inout"),
+			K(2.45, {112, 0, -42}, V3(-0.06, 0.22, 0.16), "sine", "in"),
+			K(2.50, HALT.rArm, HALT.rArmP, "back", "out", 1.3),
+			K(2.58, HALT.rArm, HALT.rArmP + V3(0, 0, 0.02), "quad", "out"),
+			K(2.85, aim(6, -0.04), V3(0.05, 0.05, -0.42), "sine", "inout"),
+			K(TS.done, HALT.rArm, HALT.rArmP, "sine", "inout"),
 		},
 		["Left Arm"] = {
 			K(0.00, STANCE.lArm, STANCE.lArmP),
-			K(0.10, {20, 0, -40}, V3(-0.02, 0, -0.05), "cubic", "out"),
-			K(0.16, {30, 0, -70}, V3(-0.05, 0.05, -0.05), "quad", "out"),
-			K(0.24, ZA.lArm, ZA.lArmP, "back", "out", 1.4),
-			K(0.60, {-22, 0, -112}, V3(-0.1, 0.11, 0.05), "sine", "inout"),
-			K(1.10, {-18, 0, -108}, V3(-0.1, 0.09, 0.05), "sine", "inout"),
-			K(1.35, ZA.lArm, ZA.lArmP, "sine", "inout"),
-			K(2.10, COIL.lArm, COIL.lArmP, "sine", "inout"),
-			K(2.45, {36, 0, -56}, V3(0, -0.22, -0.12), "sine", "in"),
-			K(2.53, SNAP.lArm, SNAP.lArmP, "back", "out", 1.2),
-			K(2.61, SNAP.lArm, SNAP.lArmP, "quad", "out"),
-			K(2.85, {-40, 8, -29}, V3(0, -0.05, 0.06), "sine", "inout"),
-			K(3.10, SNAP.lArm, SNAP.lArmP, "sine", "inout"),
+			K(0.10, {-4, 0, -16}, V3(0, -0.04, 0.02), "cubic", "out"),
+			K(0.24, UP.lArm, UP.lArmP, "back", "out", 1.2),
+			K(0.60, {-13, 0, -15}, V3(0, -0.05, 0.05), "sine", "inout"),
+			K(1.10, {-11, 0, -13}, V3(0, -0.05, 0.03), "sine", "inout"),
+			K(1.35, UP.lArm, UP.lArmP, "sine", "inout"),
+			K(2.10, OPEN.lArm, OPEN.lArmP, "sine", "inout"),
+			K(2.45, {-20, 0, -20}, V3(0, -0.05, 0.07), "sine", "in"),
+			K(2.53, HALT.lArm, HALT.lArmP, "back", "out", 1.2),
+			K(2.61, HALT.lArm, HALT.lArmP, "quad", "out"),
+			K(2.85, {-32, 6, -23}, V3(0, -0.05, 0.06), "sine", "inout"),
+			K(TS.done, HALT.lArm, HALT.lArmP, "sine", "inout"),
 		},
 		["Right Leg"] = {
 			K(0.00, STANCE.rLeg, STANCE.rLegP),
-			K(0.11, {4, 0, 8}, V3(0.04, legY(-0.14, 4), -0.12), "cubic", "out"),
-			K(0.25, ZA.rLeg, ZA.rLegP, "back", "out", 1.3),
-			K(1.35, {19, -4, 10}, V3(0.05, legY(-0.08, 19), -0.36), "sine", "inout"),
-			K(2.10, COIL.rLeg, COIL.rLegP, "sine", "inout"),
-			K(2.45, {8, -4, 10}, V3(0.05, legY(-0.2, 8), -0.22), "sine", "in"),
-			K(2.55, SNAP.rLeg, SNAP.rLegP, "back", "out", 1.3),
-			K(2.63, SNAP.rLeg, SNAP.rLegP, "quad", "out"),
-			K(2.85, {25, 0, 8}, V3(0.06, legY(-0.25, 25), -0.49), "sine", "inout"),
-			K(3.10, SNAP.rLeg, SNAP.rLegP, "sine", "inout"),
+			K(0.11, {4, 0, 8}, V3(0.04, legY(-0.13, 4), -0.12), "cubic", "out"),
+			K(0.25, UP.rLeg, UP.rLegP, "back", "out", 1.3),
+			K(1.35, {13, -4, 10}, V3(0.05, legY(-0.08, 13), -0.31), "sine", "inout"),
+			K(2.10, OPEN.rLeg, OPEN.rLegP, "sine", "inout"),
+			K(2.45, {10, -4, 10}, V3(0.05, legY(-0.14, 10), -0.26), "sine", "in"),
+			K(2.55, HALT.rLeg, HALT.rLegP, "back", "out", 1.3),
+			K(2.63, HALT.rLeg, HALT.rLegP, "quad", "out"),
+			K(2.85, {23, 0, 8}, V3(0.06, legY(-0.21, 23, -11), -0.47), "sine", "inout"),
+			K(TS.done, HALT.rLeg, HALT.rLegP, "sine", "inout"),
 		},
 		["Left Leg"] = {
 			K(0.00, STANCE.lLeg, STANCE.lLegP),
-			K(0.11, {-4, 4, -8}, V3(-0.04, legY(-0.14, -4), 0.12), "cubic", "out"),
-			K(0.25, ZA.lLeg, ZA.lLegP, "back", "out", 1.3),
-			K(1.35, {-21, 10, -10}, V3(-0.06, legY(-0.08, -21), 0.41), "sine", "inout"),
-			K(2.10, COIL.lLeg, COIL.lLegP, "sine", "inout"),
-			K(2.45, {-12, 10, -10}, V3(-0.06, legY(-0.2, -12), 0.28), "sine", "in"),
-			K(2.55, SNAP.lLeg, SNAP.lLegP, "back", "out", 1.3),
-			K(2.63, SNAP.lLeg, SNAP.lLegP, "quad", "out"),
-			K(2.85, {-29, 10, -10}, V3(-0.06, legY(-0.25, -29), 0.49), "sine", "inout"),
-			K(3.10, SNAP.lLeg, SNAP.lLegP, "sine", "inout"),
+			K(0.11, {-4, 4, -8}, V3(-0.04, legY(-0.13, -4), 0.12), "cubic", "out"),
+			K(0.25, UP.lLeg, UP.lLegP, "back", "out", 1.3),
+			K(1.35, {-17, 10, -10}, V3(-0.06, legY(-0.08, -17), 0.37), "sine", "inout"),
+			K(2.10, OPEN.lLeg, OPEN.lLegP, "sine", "inout"),
+			K(2.45, {-20, 10, -10}, V3(-0.06, legY(-0.14, -20), 0.4), "sine", "in"),
+			K(2.55, HALT.lLeg, HALT.lLegP, "back", "out", 1.3),
+			K(2.63, HALT.lLeg, HALT.lLegP, "quad", "out"),
+			K(2.85, {-27, 10, -10}, V3(-0.06, legY(-0.21, -27, -11), 0.47), "sine", "inout"),
+			K(TS.done, HALT.lLeg, HALT.lLegP, "sine", "inout"),
 		},
 	},
 }

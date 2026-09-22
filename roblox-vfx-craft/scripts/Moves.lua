@@ -273,8 +273,9 @@ function Moves.m1(character, isLocal, i)
 	local len = M1.Lengths[i]
 	rig:play(Clips.WorldCombo[i], {fadeIn = 0.06})
 	local dio = Clips.DioM1 and Clips.DioM1[i]
+	-- dio leads by three frames so the user throws the punch and the stand's fist follows
 	if dio then
-		Locomotion.override(character, dio, {fadeIn = 0.06, fadeOut = 0.3})
+		Locomotion.override(character, dio, {fadeIn = 0.06, fadeOut = 0.3, startAt = 0.05})
 	end
 	sfx(SWING[i], hrp, 0.75, 0.95 + i * 0.02)
 	sfx("SwingLMB", hrp, 0.35, 1.05 + i * 0.05)

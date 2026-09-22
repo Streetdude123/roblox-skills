@@ -161,19 +161,21 @@ end
 -- to the horizon while the colour drains, and a flat ring runs along the ground under them
 local function ripple(state, origin, reverse)
 	local fx = state.fx
-	local veined = Kit.mesh("FancySphere", fx, origin, V3(2, 2, 2), P.lavender, 0.2)
-	if veined then
-		veined.Anchored = true
-		veined.CanCollide = false
-		veined.CanQuery = false
-		veined.Material = Enum.Material.ForceField
-		veined.CastShadow = false
+	-- the bubble of stopped time: the striped energy sphere from the kit in neon over a glass ball, and a
+	-- flat ring that runs along the ground under them
+	local shell = Kit.mesh("Sphere", fx, origin, V3(2, 2, 2), P.lavender, 0.55)
+	if shell then
+		shell.Anchored = true
+		shell.CanCollide = false
+		shell.CanQuery = false
+		shell.Material = Enum.Material.Neon
+		shell.CastShadow = false
 	end
 	local ball = Instance.new("Part")
 	ball.Shape = Enum.PartType.Ball
 	ball.Material = Enum.Material.Glass
 	ball.Color = P.lavender
-	ball.Transparency = 0.55
+	ball.Transparency = 0.45
 	ball.Size = V3(2, 2, 2)
 	ball.Anchored = true
 	ball.CanCollide = false
@@ -182,7 +184,7 @@ local function ripple(state, origin, reverse)
 	ball.CFrame = origin
 	ball.Parent = fx
 	local ground = state.base
-	local ringMesh = Kit.mesh("Ripple", fx, ground * CFrame.new(0, 0.3, 0), V3(4, 0.05, 4), P.gold, 0.4)
+	local ringMesh = Kit.mesh("Ripple", fx, ground * CFrame.new(0, 0.3, 0), V3(4, 0.05, 4), P.lavender, 0.5)
 	if ringMesh then
 		ringMesh.Anchored = true
 		ringMesh.CanCollide = false
@@ -190,35 +192,41 @@ local function ripple(state, origin, reverse)
 		ringMesh.Material = Enum.Material.Neon
 	end
 	if reverse then
-		if veined then
-			veined.Size = V3(260, 260, 260)
-			veined.Transparency = 0.8
-			Tw.play(veined, {Size = V3(2, 2, 2), Transparency = 0.1}, 0.5, Quad, In)
+		-- time moves again: the bubble races back in from the horizon and closes on the stand
+		if shell then
+			shell.Size = V3(400, 400, 400)
+			shell.Transparency = 0.9
+			Tw.play(shell, {Size = V3(2, 2, 2), Transparency = 0.5}, 0.5, Quad, In)
 		end
-		ball.Size = V3(240, 240, 240)
+		ball.Size = V3(380, 380, 380)
 		ball.Transparency = 0.9
 		Tw.play(ball, {Size = V3(2, 2, 2), Transparency = 0.5}, 0.48, Quad, In)
 		if ringMesh then
-			ringMesh.Size = V3(140, 0.05, 140)
+			ringMesh.Size = V3(120, 0.05, 120)
 			ringMesh.Transparency = 0.9
-			Tw.play(ringMesh, {Size = V3(4, 0.05, 4), Transparency = 0.3}, 0.5, Quad, In)
+			Tw.play(ringMesh, {Size = V3(4, 0.05, 4), Transparency = 0.4}, 0.5, Quad, In)
 		end
-		Debris:AddItem(veined, 0.6 * Tw.S())
+		Debris:AddItem(shell, 0.6 * Tw.S())
 		Debris:AddItem(ball, 0.6 * Tw.S())
 		Debris:AddItem(ringMesh, 0.6 * Tw.S())
 		return
 	end
-	if veined then
-		Tw.play(veined, {Size = V3(260, 260, 260), Transparency = 1}, 0.8, Quad, Out)
+	-- the bubble grows to eighty studs while the far camera watches it dwarf the two bodies, then blasts to
+	-- the horizon and swallows the lens; it stays visible the whole way and only fades once past
+	local grow = T.engulf - T.snap - 0.05
+	if shell then
+		Tw.play(shell, {Size = V3(80, 80, 80), Transparency = 0.6}, grow, Quad, In)
+		Tw.play(shell, {Size = V3(520, 520, 520), Transparency = 1}, 0.55, Quad, In, grow)
 	end
-	Tw.play(ball, {Size = V3(240, 240, 240), Transparency = 1}, 0.72, Quad, Out)
+	Tw.play(ball, {Size = V3(78, 78, 78), Transparency = 0.55}, grow, Quad, In)
+	Tw.play(ball, {Size = V3(500, 500, 500), Transparency = 1}, 0.55, Quad, In, grow)
 	if ringMesh then
-		Tw.play(ringMesh, {Size = V3(140, 0.05, 140), Transparency = 1}, 0.7, Quad, Out)
+		Tw.play(ringMesh, {Size = V3(120, 0.05, 120), Transparency = 1}, grow + 0.3, Quad, Out)
 	end
 	Kit.burst("RingShock", ground * CFrame.new(0, 0.5, 0), fx, 1, {color = P.lavender, color2 = P.white, scale = 3, glow = 1, life = 1.2})
-	Debris:AddItem(veined, 1 * Tw.S())
-	Debris:AddItem(ball, 1 * Tw.S())
-	Debris:AddItem(ringMesh, 1 * Tw.S())
+	Debris:AddItem(shell, (grow + 0.7) * Tw.S())
+	Debris:AddItem(ball, (grow + 0.7) * Tw.S())
+	Debris:AddItem(ringMesh, (grow + 0.7) * Tw.S())
 end
 
 local function groundBelow(origin, character)
@@ -361,14 +369,24 @@ local function call(state)
 		Kit.set(aura, {Rate = 4}, {Energy1 = 1, Energy2 = 1})
 	end
 	local c = correction()
-	c.Brightness = 0.25
-	c.TintColor = Color3.fromRGB(190, 160, 255)
-	Tw.play(c, {Saturation = -1, Contrast = 0.2, Brightness = -0.06, TintColor = Color3.fromRGB(205, 200, 235)}, 0.45, Quad, Out, 0.06)
-	-- stopped time is darker: the exposure drops a third of a stop for as long as the world hangs
+	c.Brightness = 0.12
+	c.TintColor = Color3.fromRGB(215, 195, 255)
+	Tw.play(c, {Brightness = 0, TintColor = Color3.new(1, 1, 1)}, 0.2, Quad, Out, 0.05)
+	-- the colour drains and the exposure drops when the sphere swallows the lens, not on the snap
 	if Lighting:GetAttribute("TSExposure0") == nil then
 		Lighting:SetAttribute("TSExposure0", Lighting.ExposureCompensation)
 	end
-	Tw.play(Lighting, {ExposureCompensation = Lighting:GetAttribute("TSExposure0") - 0.35}, 0.6, Quad, Out, 0.1)
+	local sweep = T.engulf - T.snap
+	Tw.play(c, {Saturation = -1, Contrast = 0.2, Brightness = -0.06, TintColor = Color3.fromRGB(205, 200, 235)}, 0.35, Quad, Out, sweep)
+	Tw.play(Lighting, {ExposureCompensation = Lighting:GetAttribute("TSExposure0") - 0.35}, 0.5, Quad, Out, sweep)
+	if isLocal then
+		task.delay(sweep * Tw.S(), function()
+			if state.alive then
+				ScreenFx.flash(0.45, 0.16, P.lavender)
+				CameraRig.kick(0.35)
+			end
+		end)
+	end
 	if isLocal then
 		CameraRig.freeze(T.frames - T.snap + 0.1)
 		ScreenFx.flash(0.7, 0.14, P.pale)
@@ -380,12 +398,17 @@ local function call(state)
 	if not state.alive then
 		return
 	end
-	-- the pull back: a hard cut to a far rear three quarter that draws in while the ripple runs to the horizon
+	-- the pull back: a hard cut to a far rear three quarter where the sphere dwarfs the two bodies as it grows,
+	-- the lens drifting in until the sphere swallows it, then the bars drop for the hand back
 	if isLocal then
-		CameraRig.cutTo({angle = 34, dist = 26, height = 8, lookY = 3, fov = 68, roll = 0})
-		CameraRig.shot({dist = 15, angle = 18, height = 5.5}, T.done - T.frames - 0.1, Sine, Out)
-		ScreenFx.bars(false, 0.4)
+		CameraRig.cutTo({angle = 34, dist = 58, height = 16, lookY = 2, fov = 70, roll = 0})
+		CameraRig.shot({dist = 44, angle = 22, height = 12}, T.done - T.frames - 0.1, Sine, Out)
 		ScreenFx.vignette(0.15, 0.4)
+		task.delay((T.engulf - T.frames) * Tw.S(), function()
+			if state.alive then
+				ScreenFx.bars(false, 0.4)
+			end
+		end)
 	end
 	Tw.wait(T.done - T.frames - 0.1)
 	if not state.alive then

@@ -107,9 +107,9 @@ the raw sequences live in `ReplicatedStorage.Stand.Assets.Anims`.
 - Combo clips must chain end pose to start pose; author the last key of one as the first key of the next.
 - Piston punches: freeze the arm angle on the strike frames, translate the part, let the torso reach.
 - Stand limbs may translate 1 to 2 studs; humanoid limbs stay under 0.5.
-- The user's body during a stand move holds still in the Jotaro point from his reference image
-  (arm dead ahead at the enemy, the free forearm to the collar, chin down), not a bladed boxing
-  stance: the first bladed pass with the torso turned 32 was rejected the same night. Under the
-  five hit chain he makes one command gesture per hit that chains end to start like the stand's
-  clips (jab point, left chop, fist straight up, lean back and sweep out, lunge point). The numbers
-  and the `aim(tw, down)` solver are in SKILL.md and `scripts/Clips.lua`.
+- The user's body under the barrage holds still in the Jotaro point from his reference image (arm dead
+  ahead at the enemy, the free forearm to the collar, chin down). Under the five hit chain he COPIES the
+  stand's own clips (the show's stand user throws the punch and the stand's fist lands): the same
+  sequence on his torso, head and arms with the arm offsets scaled 0.4 and the torso roll 0.45, authored
+  planted legs, started three frames ahead. Authored command gestures read as "sitting back while the
+  stand does the work" and were cut. `aim(tw, down)` and `solveFootY` are in `scripts/Clips.lua`.

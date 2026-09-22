@@ -120,7 +120,9 @@ end
 -- a keyframesequence becomes a clip of raw keys: every pose cframe is a transform already so it is wrapped back into
 -- pose space with the wraps table (part name to c0 rotation) and the same wrap undoes it at play time
 -- opts.map renames pose names to rig joint names, opts.trimStart drops the lead in so a loop is seamless,
--- opts.extra adds procedural joints (a float root) and opts.loop overrides the sequence flag
+-- opts.extra adds procedural joints (a float root), opts.loop overrides the sequence flag, opts.only keeps
+-- a set of joints, opts.pScale (a number or a table by joint) scales the offsets and opts.rollScale (a table
+-- by joint) scales the side channel
 function Poser.fromSequence(kfs, wraps, opts)
 	opts = opts or {}
 	local map = opts.map or {}
@@ -143,13 +145,28 @@ function Poser.fromSequence(kfs, wraps, opts)
 				if p:IsA("Pose") and p.Weight > 0 and p.Name ~= "HumanoidRootPart" then
 					local name = map[p.Name] or p.Name
 					local r = wraps[name]
-					if r then
+					if r and (not opts.only or opts.only[name]) then
 						local keys = clip.joints[name]
 						if not keys then
 							keys = {}
 							clip.joints[name] = keys
 						end
-						table.insert(keys, {t = t, cf = r * p.CFrame * r:Inverse(), e = "linear"})
+						local cf = r * p.CFrame * r:Inverse()
+						-- opts.pScale shrinks a joint's offsets so a stand's floating limbs fit a planted body
+						local scale = opts.pScale and (type(opts.pScale) == "table" and opts.pScale[name] or opts.pScale)
+						if scale and scale ~= 1 then
+							cf = CFrame.new(cf.Position * scale) * cf.Rotation
+						end
+						-- opts.rollScale shrinks the side channel only, so a floating stand's torso roll fits a standing body
+						local rs = opts.rollScale and opts.rollScale[name]
+						if rs and rs ~= 1 then
+							local _, _, _, r00, r01, r02, r10, r11, r12, r20, r21, r22 = cf:GetComponents()
+							local lift = math.asin(math.clamp(r21, -1, 1))
+							local twist = math.atan2(-r20, r22)
+							local side = math.atan2(-r01, r11)
+							cf = CFrame.new(cf.Position) * CFrame.Angles(0, 0, side * rs) * CFrame.Angles(lift, 0, 0) * CFrame.Angles(0, twist, 0)
+						end
+						table.insert(keys, {t = t, cf = cf, e = "linear"})
 					end
 				end
 			end

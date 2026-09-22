@@ -174,6 +174,18 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   impact frame set, a 0.7 flash, a double `Bass`, both rigs held 0.1 s on the thrust, exposure -0.35
   and contrast 0.2 for the stopped world, a hard cut to dist 26 drawing to 15, a 0.15 vignette while
   stopped, and `Laugh` 0.35 s after the hand back. The summon was not touched.
+- 2026-09-22: "for the cutscene i want some sort of sphere to extend out to the point where it looks
+  like it's super big". The bubble of stopped time is now the kit's striped `Sphere` mesh (a wireframe
+  energy shell, MeshSize 5) in neon lavender at 0.55 over a glass ball at 0.45: both grow 2 to 80 studs
+  on a `Quad In` over 0.85 s under a far rear three quarter camera (angle 34, dist 58 to 44, height 16,
+  fov 70, still letterboxed) so it dwarfs the two bodies, then blast to 520 in 0.55 s; the grey and the
+  exposure drop sweep in at `engulf` (3.35 s, when the shell passes the lens) instead of on the snap,
+  with a lavender flash and a 0.35 kick, the bars drop there and the hand back is at 3.9 s. The veined
+  `FancySphere` was dropped: in ForceField it stays visible near full transparency and once the lens is
+  inside it the whole sky is smeared veins. The ground `Ripple` ring stops at 120 studs; at 400 it read as
+  thick yellow streaks. A slowed client (TimeScale) desyncs from the unscaled server resume, whose reverse
+  ripple then lands inside the slowed cutscene; judge the bubble from an isolated spawn of the same
+  objects, and never trust a scaled capture taken after the server's resume time.
 
 ## Reference index
 
