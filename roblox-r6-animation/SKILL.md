@@ -9,7 +9,7 @@ This is Lepy's own animation practice. He cannot animate by hand, Claude cannot 
 
 ## What made the good clips good (read this before anything)
 
-Snap keys 0.06 to 0.12 s apart on `cubic` or `quart` out. Every arrival key on `"back", "out"` with overshoot 1.2 to 1.5, never a hand placed overshoot key. Holds 0.10 to 0.20 s that keep creeping 2 to 4 degrees. The lag ladder: engine at T, head T + 1 to 2 frames, arms T + 2 to 3, legs T + 3 to 4, no two joints on the same key time in a snap. Limbs 60 to 140 degrees and the root 0.5 to 1.5 studs on a move; translation builds every pose. A recovery of at least 40 percent of the clip in two or three `sine inout` keys, the last equal to frame 0 or the next clip's first key. Beats named as silhouettes that read from behind and above, where the player's camera is. And nothing shipped without a strip capture.
+Snap keys 0.06 to 0.12 s apart on `cubic` or `quart` out. Every arrival key on `"back", "out"` with overshoot 1.2 to 1.5, never a hand placed overshoot key. Holds 0.10 to 0.20 s that keep creeping 2 to 4 degrees. The lag ladder: engine at T, head T + 1 to 2 frames, arms T + 2 to 3, legs T + 3 to 4, no two joints on the same key time in a snap. Limbs 60 to 140 degrees and the root 0.5 to 1.5 studs on a move; translation builds every pose. A recovery of at least 40 percent of the clip in two or three `sine inout` keys (a cancellable hit holds that pose and pops back in 4 to 6 frames), the last equal to frame 0 or the next clip's first key. Beats named as silhouettes that read from behind and above, where the player's camera is. And nothing shipped without a strip capture.
 
 ## Session start (mandatory, before any key is typed)
 
@@ -59,6 +59,19 @@ Clips.Move = {
 ```
 
 Ease table: snap = `cubic`/`quart` out over 4 to 7 frames; arrival = `back` out 1.2 (a landing pose), 1.25 (a root drop), 1.3 (legs), 1.5 (a flare); hold = two `sine inout` keys 0.10 to 0.20 s apart that creep in the wind up direction; settle = `quad` out 6 to 8 frames after the arrival; recovery = `sine inout`, two or three keys, at least 40 percent of the clip. The sword kit's strikes read linear because they were hand keyed at 60 fps; in Poser, `quart` out into the hold and `back` out into the strike pose reproduce that shape with fewer keys. Use explicit overshoot keys only when Lepy will edit the clip in Moon Animator.
+
+## Principles from the tutorials (the short form; `references/principles.md` has the sources)
+
+- Every hit is four key poses: idle, wind up (turned AWAY from the target with the head already on it), hit (the most exaggerated silhouette, where the VFX, sound and hitbox sit), recoil (the bounce back, our `back` overshoot). Fighting games call the spans startup, active, recovery.
+- Clarity beats smoothness: get into a pose in 4 to 7 frames and stay clearly in it; transition frames that belong to no pose read as weak. Fewer frames on the strike is more power. An anime hit may use the `snap` ease on the strike key with an afterimage; the camera never steps.
+- A cancellable gameplay hit recovers as a HELD over extended pose with follow through, then pops back to idle in 4 to 6 frames. Never ease linearly into the idle, or the player cannot tell when they may act. A summon or a cinematic keeps the smooth 30 frame recovery.
+- Anticipation shows direction and weight: the load may be 3 to 4x slower than the strike, with a still moment at the top; the stronger the hit, the bigger the wind up.
+- Squash and stretch on R6 is the root and the torso: squash = root drop 0.3 to 0.5, torso fold, knees up (before a jump, on a landing, at the bottom of a wind up); stretch = root rise, torso lean into the travel, limbs extended (an apex, a lunge, a launch). The striking limb may translate 0.3 to 0.5 further forward on the hit frame only.
+- No twins: the two arms and the two legs never mirror; every stance is asymmetric in angle and offset. No columns: no two joints keyed on the same frame in a snap.
+- Gesture line: each key pose is ONE curve through feet, hips, chest, head and lead arm; an idle is near vertical, a strike a sharp C or S, and the line must change between the wind up and the hit.
+- Smears are afterimages here: Neon clones of the limb or the body left at the previous key, fading over 0.2 to 0.3 s, plus a crescent or a Trail on a sweep.
+- Secondary action lives at the start and the end of a strike, never during the three strike frames. Arcs flatten with speed: a jab is straight, a haymaker needs a middle key.
+- Exaggerate first, tone down after the capture.
 
 The caller for a gameplay move:
 
@@ -147,6 +160,7 @@ Keys are `r = {lift, twist, side}` in degrees in the PARENT part's axes plus `p`
 - Arrival keys: every key a joint lands on after a snap is `"back", "out", 1.2..1.5`; the departure key is `cubic` or `quart` out 0.06 to 0.12 s earlier; the settle is `sine inout`.
 - Arcs: an arm that crosses the body or goes over the head needs a middle key (up and over, or forward and out); a two key lerp cuts through the torso.
 - Holds must breathe: two keys that creep, never a flat hold. Recoveries have two or three keys, never one.
+- A cancellable hit ends on a held recovery pose and a 4 to 6 frame pop back to idle (see Principles); no twins, one gesture line per pose.
 - Every clip must read from the player's camera: behind and above at a three quarter angle. A limb pointing straight forward vanishes into the body; put the strike arm up, out or across the front (hand vector up or out above 0.5). Name each beat as a silhouette and check the stand's or the arm's height on screen against the user's head in the rear capture; raise the apex until it clears by a head.
 - Piston punches: on the strike frames freeze the arm angle, translate the arm part forward, and let the torso twist make the reach. Move the arm angle only in the follow through.
 - Combo clips chain: author the last key of one hit as the first key of the next and skip the return to idle; the recovery is the next load.
@@ -174,6 +188,7 @@ Keys are `r = {lift, twist, side}` in degrees in the PARENT part's axes plus `p`
 - 2026-09-22: "Claude isn't getting it ... doesn't make it cool like yours and snappy" when a fresh chat loads this skill. A cold start test showed why: fresh sessions copied the sword kit's numbers verbatim (0.06 s holds, 5 percent overshoot on hand placed keys, 0.26 stud lunges, legs on the torso's frames, `quart` arrivals) and reported after one push. The move template, the lag ladder, the `back` arrivals, the stud size root travel, the silhouette rule for the player's camera and the definition of done above are the fix; they were only in `Clips.lua` before.
 - 2026-09-21 night (later): "wire m1s, make your own animations, posing for the actual character sucks, follow the skill, make everything more dramatic except the summon, the pointing pose should look like that" with a Jotaro point image. The first pass had pumped the body, then a bladed boxing point he did not want; the set that passed the strips is `DioPoint` (the image), `DioHeavy`, `DioM1_1..5` (command gestures chained end to start under the stand's five hits: jab point, left chop, fist straight up, lean back and sweep out, lunge point 0.55 forward), `DioTimeStop` (dip, ZA WARUDO with the fist bent overhead and the left arm flung out, tremble through the pause, coil, a 0.6 stud lunge into the point on the last syllable), all on the template: `cubic` departures, `back` arrivals, creeping holds, the lag ladder, `legY` feet. Two strip rounds and the live run are in the DIO memory. He also said "why the subagents, you can do this yourself": author clips in the main loop, no panels.
 - 2026-09-22: "the character isn't leading or copying the stand, it's sitting back while the stand is doing the work ... the animations are doing too much and they don't really follow the canon animations that jojos would use". The authored command gestures under the M1 chain were cut; DIO now copies the stand's own five clips (`only` the torso, head and arms, `pScale` 0.4 on the arms, `rollScale` 0.45 on the torso so a 55 degree stand roll becomes 25 on a standing body, planted legs from `solveFootY`) three frames ahead. The time stop went canon and quiet: hand raised open beside the face on the call, a tremble, the hand opening outward on the command, one halt push forward on the last syllable; the arms-flung ZA WARUDO and the lunge point were cut. "For the cutscene i want some sort of sphere to extend out to the point where it looks like it's super big": the bubble is the kit's striped `Sphere` mesh in neon lavender over a glass ball, growing to 80 studs under a far camera at 58 studs, then blasting to 520 with the grey sweeping in as it passes the lens. Also a real bug: E pressed inside the 1.3 s summon or spammed fired nothing or an early finisher; moves now wait 1.4 s after a summon (`StandOutAt`), a tap runs the rush for a 1.0 s minimum and the cooldown counts from the end.
+- 2026-09-22: "observe a bunch of animating tutorials online ... take reference to update your own animation skill" - read a Moon Animator punch tutorial, the M1 combo lesson, two DevForum guides, the Rivals Workshop animation library, Capcom's frame data seminar and the Guilty Gear Xrd GDC talk; the rules that survived translation to R6 are the Principles section and `references/principles.md`. The biggest change: a cancellable hit holds its recovery pose and pops back, it never eases into the idle.
 
 ## Reference index
 
@@ -182,6 +197,7 @@ Keys are `r = {lift, twist, side}` in degrees in the PARENT part's axes plus `p`
 - [attack-timing.md](references/attack-timing.md) - the sword kit decoded frame by frame, the snap hold snap settle pattern, and how it scales to code.
 - [the-world-clips.md](references/the-world-clips.md) - The World's eight stand clips decoded: the piston punch, the torso engine barrage, combo chaining, the float idle, the bladed point.
 - [pipeline.md](references/pipeline.md) - pose space, Poser, Locomotion, the push recipe, wiring a move, verification, reading clips, baking.
+- [principles.md](references/principles.md) - the tutorial and fighting game principles (core poses, clarity over smoothness, held recovery then pop, squash and stretch on R6, twins, gesture line, smears) with their sources.
 - [moon-animator.md](references/moon-animator.md) - what Moon Animator and the Animation Editor read and write, and the round trip.
 
 ## Scripts
