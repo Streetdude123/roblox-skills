@@ -34,11 +34,13 @@ Rules that follow from the ladder:
 1. **Catalogue the pack** before touching anything: scan for scripts, archive the whole pack to
    `ServerStorage`, render the meshes at real proportions, blank dead sounds. See
    `references/kit-workflow.md`. Build from his pieces; hand-roll only carriers, code emitters and glue.
-2. **Write the palette and the schedule.** A `Config.Palette`, a `Config.Sparkle` list, and one `T`
-   table of beat times that the clip, the effects, the camera and the sound all key off. See
-   `references/cinematic.md`.
-3. **Build phase by phase** with the modules in `scripts/` (`references/modules.md`): each phase is one
-   function that spawns into a `workspace` model, and `cleanup` destroys the model.
+2. **Write the palette and the schedule.** A `Config.Palette` (one dominant hue, one accent, a pale
+   core, a dark rim), a `Config.Sparkle` list, and one `T` table of beat times that the clip, the effects,
+   the camera and the sound all key off. Name the hero element of every phase. See `references/cinematic.md`.
+3. **Block in the timing in grey first** with carriers and plain textures until the gather, the overload and
+   the dissipation read (`references/principles.md`), then **build phase by phase** with the modules in
+   `scripts/` (`references/modules.md`): each phase is one function that spawns into a `workspace` model,
+   and `cleanup` destroys the model.
 4. **Verify in Studio** at QualityLevel 21 with a slowed `TimeScale`, phase attributes and captures
    that move the camera each time; profile the first cast for frame hitches. See `references/verification.md`.
 5. **Mix the sound** last, from a recording when he sends one. See `references/sound.md`.
@@ -61,6 +63,17 @@ Rules that follow from the ladder:
   Megumin vocabulary; on The World he said "star vfx doesn't really suit the world". A stand's effects
   come from its identity (The World: time, clockwork, gold and lavender menace, stopped-time ripples),
   not from the generic sparkle set.
+
+## Principles from the style guides (short form; `references/principles.md` has the sources)
+
+- Readability first: every phase names ONE hero element that gets the brightest value, the most saturated colour and the largest size; secondaries sit a step down (`Kit.scale` 0.5 to 0.8, `LightEmission` 0.6 to 0.8). The hit point shows a flash and a ring; sparks and smoke leave it so the body stays visible.
+- Scale of importance: size, brightness, duration, camera and sound all scale with the move's tier (light hit 1 to 3 studs 0.3 s; heavy 3 to 6 studs 0.6 s with a kick; special 6 to 15 studs 1 to 2 s with a build-up; ultimate 50 to 300 studs in waves). A summon that looks like an ultimate makes the ultimate small.
+- Value and colour: pale cores, not white (white only for a flash under 0.1 s); a dark rim (smoke, `deep`) under every glow so the burst has weight; one dominant hue, one accent, a pale core, a dark rim per effect; a damaging effect has more contrast than a friendly one.
+- Shapes: every hard mesh gets a soft partner (a glow particle, a puff, a Beam) and sits at 0.35+ transparency; sparks are stretched 2 to 4x with `Squash` and `VelocityParallel`; one flipbook hero per burst, not one per layer.
+- Timing: anticipation (an inward gather 0.2 to 0.6 s on a move, 1 to 3 s on an ultimate), then the overload in one or two frames (`Emit` bursts, the flash, the light spike), then process time that is longer than the impulse but short (sparks 0.3 to 0.6 s, smoke 0.8 to 1.5 s, rings 0.4 to 0.8 s). Nothing linear: bursts ease out, gathers ease in, sparks arc under gravity and drag. A big blast is waves, not one bang.
+- Block in the timing first in grey with plain textures; style hides bad timing. When a burst reads soft, fix the timing before adding particles.
+- Juice on every hit: contact flash and sparks, the target flashes white for 2 to 3 frames, camera kick 0.1 to 0.9, hit stop 0.05 to 0.09 s, bass under the hit, debris and dust that linger and fade.
+
 
 ## The numbers that matter
 
@@ -212,6 +225,7 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   ViewportFrame, a first draw the world warm-up does not cover; the first road roller hitched 884 ms
   on the land. `SummonVfx.warm` now holds a ViewportFrame at ImageTransparency 0.99 with flat Neon
   clones of the body, the stand and the roller for two frames at join.
+- 2026-09-22: "search up tutorials like the animation and stuff and improve the VFX skill" - read the League of Legends VFX style guide takeaways, Jason Keyser on block-ins and timing, the VFX Apprentice timing and design principles, Vlambeer's screenshake tricks and the Roblox DevForum particle guides; the rules that survived translation are the Principles section and `references/principles.md`. Biggest changes: one hero element per phase, pale cores with a dark rim, stretched sparks, and gather-overload-process timing with short dissipation on gameplay effects.
 
 ## Reference index
 
@@ -221,6 +235,7 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
 - [cinematic.md](references/cinematic.md) - the schedule pattern, clip drive, camera language, phases of the ultimate, the summon's phases.
 - [sound.md](references/sound.md) - the mix, Mirelo clips, measuring a recording, dead private audio.
 - [verification.md](references/verification.md) - quality level, capture cache, occluded Studio, phase polling, frame profiling.
+- [principles.md](references/principles.md) - the style guide and tutorial principles (readability, scale of importance, value and colour, shapes, timing, block-ins, juice) translated to Roblox properties and numbers, with sources.
 
 ## Scripts
 
