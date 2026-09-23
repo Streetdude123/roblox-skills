@@ -109,6 +109,8 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
 - "i want it to be flashier, more amazing looking combos" and "It's a heavy sword remember": a combo gets
   a slash arc, an afterimage and a cut line on every hit, debris and cracks on the heavy ones, impact frames
   and speed lines on the finisher only, and heavier hit stops and kicks. The weight is in the motion first.
+- "the vfx isn't too geometrical" (2026-09-22 night, again): no solid Neon copies, bars or blocks on a move;
+  soft flame, beams with a streak texture, particle debris and kit sprites only.
 - "don't send me screenshots also its okay": he judges in Studio himself. Take captures for review and
   report what they show in words.
 

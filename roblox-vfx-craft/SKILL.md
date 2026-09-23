@@ -318,6 +318,14 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   hit effect, hold the clip just before the hit (a debug hold attribute), set TimeScale 12 to 20, release,
   and capture 1 to 2 s later; the impact frame viewport still cost one 41 ms frame on the first finisher of
   a session after the join warm-up.
+- 2026-09-22 (Asta, night): "make sure the swings have full range of motion and the vfx isn't too geometrical
+  please". Taken out: the Neon block afterimages of the body, the Neon cut bars, the slate block debris
+  and the solid wind ring mesh. In their place: a burst of the blade's black flame and red rim with a soft
+  dark flame breath off the torso; the cut as camera facing Beams from the middle out with the kit's light
+  ray texture 1053548563 (black 2.2 wide, core red 1.4, pale 0.5) pinching off over 0.26 s; slam debris as a
+  burst of the ash flipbook thrown up under gravity plus a rolling dark dust wall; the spin as the kit's
+  `Tornado-01` wind swirl sprites in black over red. The kit's "rock" meshes 3027924097, 1254390558 and
+  4933939521 are faceted spiky shapes (2.3, 16.3 and 5.0 studs native), not rocks: never use them as debris.
 
 ## Reference index
 
