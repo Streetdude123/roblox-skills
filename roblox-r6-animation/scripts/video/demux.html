@@ -1,0 +1,226 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>cut</title></head>
+<body>
+<pre id="log">ready</pre>
+<script>
+const TS = 90000;
+const enc8 = (s) => new Uint8Array([...s].map((c) => c.charCodeAt(0)));
+const u8 = (...b) => new Uint8Array(b);
+const u16 = (v) => u8((v >> 8) & 255, v & 255);
+const u32 = (v) => u8((v >>> 24) & 255, (v >>> 16) & 255, (v >>> 8) & 255, v & 255);
+function cat(list) {
+  let n = 0;
+  for (const a of list) n += a.length;
+  const out = new Uint8Array(n);
+  let o = 0;
+  for (const a of list) { out.set(a, o); o += a.length; }
+  return out;
+}
+function box(type, ...parts) {
+  const body = cat(parts);
+  return cat([u32(body.length + 8), enc8(type), body]);
+}
+function full(type, version, flags, ...parts) {
+  return box(type, u8(version, (flags >> 16) & 255, (flags >> 8) & 255, flags & 255), ...parts);
+}
+const matrix = () => cat([0x00010000, 0, 0, 0, 0x00010000, 0, 0, 0, 0x40000000].map(u32));
+
+function mp4(samples, desc, w, h) {
+  const total = samples.reduce((a, s) => a + s.dur, 0);
+  const ms = Math.round(total * 1000 / TS);
+  const ftyp = box("ftyp", enc8("isom"), u32(512), enc8("isom"), enc8("iso2"), enc8("avc1"), enc8("mp41"));
+  const mvhd = full("mvhd", 0, 0, u32(0), u32(0), u32(1000), u32(ms), u32(0x00010000), u16(0x0100), u16(0), u32(0), u32(0), matrix(), new Uint8Array(24), u32(2));
+  const tkhd = full("tkhd", 0, 3, u32(0), u32(0), u32(1), u32(0), u32(ms), new Uint8Array(8), u16(0), u16(0), u16(0), u16(0), matrix(), u32(w * 65536), u32(h * 65536));
+  const mdhd = full("mdhd", 0, 0, u32(0), u32(0), u32(TS), u32(total), u16(0x55c4), u16(0));
+  const hdlr = full("hdlr", 0, 0, u32(0), enc8("vide"), new Uint8Array(12), enc8("VideoHandler"), u8(0));
+  const vmhd = full("vmhd", 0, 1, u16(0), u16(0), u16(0), u16(0));
+  const dinf = box("dinf", full("dref", 0, 0, u32(1), full("url ", 0, 1)));
+  const avc1 = box("avc1", new Uint8Array(6), u16(1), u16(0), u16(0), new Uint8Array(12), u16(w), u16(h), u32(0x00480000), u32(0x00480000), u32(0), u16(1), new Uint8Array(32), u16(0x0018), u16(0xffff), box("avcC", desc));
+  const stsd = full("stsd", 0, 0, u32(1), avc1);
+  const runs = [];
+  for (const s of samples) {
+    const last = runs[runs.length - 1];
+    if (last && last[1] === s.dur) last[0]++;
+    else runs.push([1, s.dur]);
+  }
+  const stts = full("stts", 0, 0, u32(runs.length), cat(runs.flatMap((r) => [u32(r[0]), u32(r[1])])));
+  const keys = [];
+  samples.forEach((s, i) => { if (s.key) keys.push(i + 1); });
+  const stss = full("stss", 0, 0, u32(keys.length), cat(keys.map(u32)));
+  const stsc = full("stsc", 0, 0, u32(1), u32(1), u32(samples.length), u32(1));
+  const stsz = full("stsz", 0, 0, u32(0), u32(samples.length), cat(samples.map((s) => u32(s.data.length))));
+  const moovAt = (offset) => box("moov", mvhd, box("trak", tkhd, box("mdia", mdhd, hdlr, box("minf", vmhd, dinf, box("stbl", stsd, stts, stss, stsc, stsz, full("stco", 0, 0, u32(1), u32(offset)))))));
+  const moov = moovAt(ftyp.length + moovAt(0).length + 8);
+  const dataLen = samples.reduce((a, s) => a + s.data.length, 0);
+  return new Blob([ftyp, moov, u32(dataLen + 8), enc8("mdat"), ...samples.map((s) => s.data)], {type: "video/mp4"});
+}
+
+const CONTAINERS = new Set(["moov", "trak", "mdia", "minf", "stbl"]);
+function boxes(dv, start, end) {
+  const list = [];
+  let o = start;
+  while (o + 8 <= end) {
+    let size = dv.getUint32(o);
+    const type = String.fromCharCode(dv.getUint8(o + 4), dv.getUint8(o + 5), dv.getUint8(o + 6), dv.getUint8(o + 7));
+    let head = 8;
+    if (size === 1) { size = Number(dv.getBigUint64(o + 8)); head = 16; }
+    else if (size === 0) size = end - o;
+    list.push({type, body: o + head, end: o + size});
+    o += size;
+  }
+  return list;
+}
+function find(dv, start, end, path) {
+  let scope = [{body: start, end}];
+  for (const name of path) {
+    const next = [];
+    for (const s of scope) for (const b of boxes(dv, s.body, s.end)) if (b.type === name) next.push(b);
+    scope = next;
+  }
+  return scope;
+}
+
+function demux(buf) {
+  const dv = new DataView(buf);
+  const traks = find(dv, 0, buf.byteLength, ["moov", "trak"]);
+  for (const trak of traks) {
+    const hdlr = find(dv, trak.body, trak.end, ["mdia", "hdlr"])[0];
+    const kind = String.fromCharCode(...new Uint8Array(buf, hdlr.body + 8, 4));
+    if (kind !== "vide") continue;
+    const mdhd = find(dv, trak.body, trak.end, ["mdia", "mdhd"])[0];
+    const timescale = dv.getUint32(mdhd.body + (dv.getUint8(mdhd.body) ? 20 : 12));
+    const stbl = find(dv, trak.body, trak.end, ["mdia", "minf", "stbl"])[0];
+    const kids = {};
+    for (const b of boxes(dv, stbl.body, stbl.end)) kids[b.type] = b;
+    const entry = kids.stsd.body + 8;
+    const entryEnd = entry + dv.getUint32(entry);
+    const width = dv.getUint16(entry + 32), height = dv.getUint16(entry + 34);
+    const avcC = boxes(dv, entry + 86, entryEnd).find((b) => b.type === "avcC");
+    const desc = new Uint8Array(buf.slice(avcC.body, avcC.end));
+    const hex = (v) => v.toString(16).padStart(2, "0");
+    const codec = "avc1." + hex(desc[1]) + hex(desc[2]) + hex(desc[3]);
+    const sz = kids.stsz.body;
+    const fixed = dv.getUint32(sz + 4), count = dv.getUint32(sz + 8);
+    const sizes = [];
+    for (let i = 0; i < count; i++) sizes.push(fixed || dv.getUint32(sz + 12 + i * 4));
+    const dts = [];
+    let t = 0;
+    const st = kids.stts.body;
+    for (let e = 0, n = dv.getUint32(st + 4); e < n; e++) {
+      const c = dv.getUint32(st + 8 + e * 8), d = dv.getUint32(st + 12 + e * 8);
+      for (let j = 0; j < c; j++) { dts.push(t); t += d; }
+    }
+    dts.push(t);
+    const comp = new Array(count).fill(0);
+    if (kids.ctts) {
+      const ct = kids.ctts.body;
+      let k = 0;
+      for (let e = 0, n = dv.getUint32(ct + 4); e < n; e++) {
+        const c = dv.getUint32(ct + 8 + e * 8), off = dv.getInt32(ct + 12 + e * 8);
+        for (let j = 0; j < c; j++) comp[k++] = off;
+      }
+    }
+    const chunkOffsets = [];
+    if (kids.stco) { const b = kids.stco.body; for (let i = 0, n = dv.getUint32(b + 4); i < n; i++) chunkOffsets.push(dv.getUint32(b + 8 + i * 4)); }
+    else { const b = kids.co64.body; for (let i = 0, n = dv.getUint32(b + 4); i < n; i++) chunkOffsets.push(Number(dv.getBigUint64(b + 8 + i * 8))); }
+    const sc = kids.stsc.body;
+    const runs = [];
+    for (let e = 0, n = dv.getUint32(sc + 4); e < n; e++) runs.push([dv.getUint32(sc + 8 + e * 12), dv.getUint32(sc + 12 + e * 12)]);
+    const offsets = [];
+    let s = 0;
+    for (let c = 0; c < chunkOffsets.length; c++) {
+      let per = 0;
+      for (const r of runs) if (r[0] <= c + 1) per = r[1];
+      let o = chunkOffsets[c];
+      for (let j = 0; j < per && s < count; j++) { offsets.push(o); o += sizes[s]; s++; }
+    }
+    const keys = new Set();
+    if (kids.stss) { const b = kids.stss.body; for (let i = 0, n = dv.getUint32(b + 4); i < n; i++) keys.add(dv.getUint32(b + 8 + i * 4) - 1); }
+    const samples = [];
+    for (let i = 0; i < count; i++) samples.push({offset: offsets[i], size: sizes[i], key: !kids.stss || keys.has(i), pts: (dts[i] + comp[i]) / timescale, dur: (dts[i + 1] - dts[i]) / timescale});
+    return {codec, desc, width, height, samples};
+  }
+}
+
+function show(job) { document.getElementById("log").textContent = JSON.stringify(job); }
+async function cut(src, from, to, crop, name, bitrate) {
+  const job = window.job = {state: "running", name, decoded: 0, encoded: 0};
+  show(job);
+  try {
+    const buf = await (await fetch(src)).arrayBuffer();
+    const v = demux(buf);
+    job.codec = v.codec;
+    job.samples = v.samples.length;
+    const canvas = new OffscreenCanvas(crop.w, crop.h);
+    const g = canvas.getContext("2d");
+    const chunks = [];
+    let desc = null;
+    const encoder = new VideoEncoder({
+      output: (chunk, meta) => {
+        if (meta && meta.decoderConfig && meta.decoderConfig.description) desc = new Uint8Array(meta.decoderConfig.description);
+        const data = new Uint8Array(chunk.byteLength);
+        chunk.copyTo(data);
+        chunks.push({data, ts: chunk.timestamp, key: chunk.type === "key"});
+      },
+      error: (e) => { job.error = String(e); },
+    });
+    encoder.configure({codec: "avc1.42E028", width: crop.w, height: crop.h, bitrate: bitrate || 8e6, framerate: 30, avc: {format: "avc"}, latencyMode: "quality"});
+    const fromUs = from * 1e6, toUs = to * 1e6;
+    let lastTs = -1;
+    const decoder = new VideoDecoder({
+      output: (frame) => {
+        job.decoded++;
+        const ts = frame.timestamp;
+        if (ts >= fromUs && ts <= toUs && ts > lastTs) {
+          lastTs = ts;
+          g.drawImage(frame, crop.x, crop.y, crop.w, crop.h, 0, 0, crop.w, crop.h);
+          const out = new VideoFrame(canvas, {timestamp: ts - fromUs});
+          encoder.encode(out, {keyFrame: job.encoded % 60 === 0});
+          out.close();
+          job.encoded++;
+        }
+        frame.close();
+      },
+      error: (e) => { job.error = String(e); },
+    });
+    decoder.configure({codec: v.codec, description: v.desc, codedWidth: v.width, codedHeight: v.height});
+    const bytes = new Uint8Array(buf);
+    for (let i = 0; i < v.samples.length; i++) {
+      const s = v.samples[i];
+      if (s.pts > to + 1) break;
+      decoder.decode(new EncodedVideoChunk({type: s.key ? "key" : "delta", timestamp: Math.round(s.pts * 1e6), duration: Math.round(s.dur * 1e6), data: bytes.subarray(s.offset, s.offset + s.size)}));
+      while (decoder.decodeQueueSize > 4 || encoder.encodeQueueSize > 8) {
+        await new Promise((r) => {
+          const done = () => { decoder.removeEventListener("dequeue", done); encoder.removeEventListener("dequeue", done); r(); };
+          decoder.addEventListener("dequeue", done);
+          encoder.addEventListener("dequeue", done);
+        });
+      }
+      if (i % 30 === 0) show(job);
+    }
+    await decoder.flush();
+    decoder.close();
+    await encoder.flush();
+    encoder.close();
+    chunks.sort((a, b) => a.ts - b.ts);
+    const samples = chunks.map((c, i) => {
+      const nextTs = i + 1 < chunks.length ? chunks[i + 1].ts : c.ts + 1e6 / 30;
+      return {data: c.data, key: c.key, dur: Math.max(1, Math.round((nextTs - c.ts) * TS / 1e6))};
+    });
+    const blob = mp4(samples, desc, crop.w, crop.h);
+    job.saved = await (await fetch("/save?name=" + encodeURIComponent(name), {method: "POST", body: blob})).text();
+    job.size = blob.size;
+    job.frames = samples.length;
+    job.seconds = samples.reduce((a, s) => a + s.dur, 0) / TS;
+    job.state = "done";
+  } catch (e) {
+    job.state = "error";
+    job.error = String(e && e.stack || e);
+  }
+  show(job);
+  return job;
+}
+</script>
+</body>
+</html>
