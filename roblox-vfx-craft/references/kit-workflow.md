@@ -91,3 +91,7 @@ pack must stay in Workspace for browsing, it belongs at that distance too.
 ## Sprites with a black square behind them
 
 Many kit flipbooks are authored for additive blending and carry a solid black background. Tinted dark at LightEmission 0 (a black anti-magic layer) they draw as black squares; he called it "too geometric with its squares" (2026-09-22). Before using a sprite dark, emit one of each on a grey card tinted black at LightEmission 0 and capture it: in the anime kit `Tornado-01` Windspin3, `Crack-01` Floor1, `Slash-Impact-01` SlashImpact1, the Explosion specks, the Wind smoke and the Sparkle/Sparkles textures fail; use those only additive (LightEmission 1).
+
+## Code textures that read wrong
+
+The Asta kit's code emitters use a few loose texture ids. The smoke puff 16669188960 draws as a cluster of round bubbles with visible outlines at 0.3 to 0.9 studs; the dark smoke 10180479311 tinted red at LightEmission 0.4 reads as soft red smoke at the same sizes, and tinted near black it gives the dark streaks inside a glow (the grimoire aura, 2026-09-22). Capture a new texture at the size it will be used before building layers on it.

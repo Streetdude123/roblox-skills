@@ -334,6 +334,20 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   the Wind smoke, and the Sparkle/Sparkles textures. Such sprites only work additive (LightEmission 1,
   where black adds nothing); on a dark tint use the ones with clean alpha (`Windspin1`, `2`, `4`, `5`,
   `Crack` Floor2). Render every kit sprite dark before using it dark.
+- 2026-09-22 (Asta, after the grip pass): "make the grimoire covering in a red vfx when the sword is out9
+  like the same vfx that's on the sword but like loads of it to the point where the vfx covers the book and
+  makes it's general shape with its quantity", then a reference frame (the open grimoire lit red, its
+  outline burning in thick red smoke with dark streaks, the pages still readable). Three passes. One box
+  emitter over the whole closed book read as red patches on a dark slab. The frame came from four thin
+  strips on the book's edges, but the `smoke` texture 16669188960 drew as round bubbles and the additive
+  glow read pink on the pale floor. The final layers per stud of edge (rates scale with the strip length):
+  a line of `glow` 34/s (size 0.3 to 0.46, LightEmission 0.6, 255/26/26 to 190/10/16), a bloom of `glow`
+  12/s (0.5 to 0.95, LE 0.5), red smoke from the `darksmoke` texture 20/s (LE 0.4), dark crimson blotches of
+  `darksmoke` 12/s (60/4/8 to black, LE 0), the blade's red flame 10/s and its black flame 4/s, all
+  `LockedToPart`; a thin `glow` veil over the covers (16/s at 0.8 transparency) and two red PointLights 0.9
+  off each cover (brightness 3, range 4). About 630 particles a second; idle frames stayed at 16.6 ms median
+  and 18.9 worst. A shape made of particles is an edge frame, not a filled box: the eye reads the outline,
+  and the face stays visible inside it the way the reference shows. See taste.md.
 
 ## Reference index
 

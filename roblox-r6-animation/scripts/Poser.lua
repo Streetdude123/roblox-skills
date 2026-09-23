@@ -578,6 +578,7 @@ local function step(dt)
 						end
 					end
 					joint.motor.Transform = target
+					rig.last[name] = target
 				end
 			end
 		elseif a and not rig.model.Parent then
@@ -605,7 +606,7 @@ Rig.__index = Rig
 
 -- joints are keyed by the child part name so a stand inside a character never collides with the body's own shoulder
 function Poser.attach(model, ctx)
-	local rig = setmetatable({model = model, joints = {}, ctx = ctx or {}}, Rig)
+	local rig = setmetatable({model = model, joints = {}, ctx = ctx or {}, last = {}}, Rig)
 	rig:refresh()
 	return rig
 end
@@ -626,11 +627,12 @@ function Rig:play(clip, opts)
 	Poser.compile(clip)
 	self:refresh()
 	local startAt = opts.startAt or 0
+	-- the animator zeroes every transform before presimulation so a clip started inside a step blends from the pose this rig last wrote
 	local from = {}
 	for name in pairs(clip.joints) do
 		local joint = self.joints[name]
 		if joint then
-			from[name] = joint.motor.Transform
+			from[name] = self.last[name] or joint.motor.Transform
 		end
 	end
 	local springs, poses
@@ -702,15 +704,16 @@ function Rig:stop(fade)
 		names[name] = self.joints[name]
 	end
 	if not fade or fade <= 0 then
-		for _, joint in pairs(names) do
+		for name, joint in pairs(names) do
 			joint.motor.Transform = CFrame.new()
+			self.last[name] = nil
 		end
 		return
 	end
 	local t0 = os.clock()
 	local from = {}
 	for name, joint in pairs(names) do
-		from[name] = joint.motor.Transform
+		from[name] = self.last[name] or joint.motor.Transform
 	end
 	local c
 	c = RunService.PreSimulation:Connect(function()
@@ -718,6 +721,7 @@ function Rig:stop(fade)
 		for name, joint in pairs(names) do
 			if joint.motor.Parent then
 				joint.motor.Transform = from[name]:Lerp(CFrame.new(), w)
+				self.last[name] = w < 1 and joint.motor.Transform or nil
 			end
 		end
 		if w >= 1 or self.active then
@@ -740,6 +744,7 @@ function Rig:pose(clip, t)
 		local joint = self.joints[name]
 		if joint then
 			joint.motor.Transform = toTransform(joint, cf)
+			self.last[name] = joint.motor.Transform
 		end
 	end
 end

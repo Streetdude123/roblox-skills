@@ -113,6 +113,12 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
   soft flame, beams with a streak texture, particle debris and kit sprites only.
 - "don't send me screenshots also its okay": he judges in Studio himself. Take captures for review and
   report what they show in words.
+- "the vfx covers the book and makes it's general shape with its quantity" (the grimoire while the sword is
+  out) with a reference frame: an object drawn by an effect is a thick frame of particles on its edges,
+  bright red right on the edge fading out into red smoke with dark crimson streaks, and the object's face
+  left visible and lit red inside it. A filled box of flame buries the object instead of drawing it.
+  Deep saturated red, not pink: keep LightEmission at 0.4 to 0.6 on the red layers when the background is
+  pale. The code emitter `smoke` texture 16669188960 reads as bubbles at small sizes; use `darksmoke`.
 
 ## Related feedback on animation
 

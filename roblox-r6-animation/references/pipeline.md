@@ -55,7 +55,7 @@ The easing belongs to the destination key in Poser. Roblox PoseBase documents ea
 
 `Poser.check(clip, opts)` returns the motion metrics (motion-metrics.md) with a `text` line; `Poser.dump(clip, fps, name)` returns decode text for `motion_check.js`; `Poser.posesAt(clip, t)` returns every joint's final pose (springs run from 0, post applied); `Poser.each(clip, fps, visit)` visits the clip as play would show it. All four accept `opts.ctx` or `clip.ctxAt` for procedural joints.
 
-Transforms are written in PreSimulation. Do not add another writer to the same joint unless composition and write order are explicit. Changing C0 each frame is not the ordinary authoring path. The fade blends from captured live transforms; this smooths pose differences but does not prove a clean path or matching velocity.
+Transforms are written in PreSimulation. Do not add another writer to the same joint unless composition and write order are explicit. Changing C0 each frame is not the ordinary authoring path. The fade blends from the pose the rig last wrote (`rig.last`), not from `motor.Transform`: the Humanoid's Animator zeroes every Transform between PreAnimation and PreSimulation, so a `play` called inside a step (an `onDone` hand-over to the idle) used to blend from the default pose and the body jumped for a frame (weapons.md, "The twitch when a move hands back to the idle"). The fade smooths pose differences but does not prove a clean path or matching velocity.
 
 ## Locomotion and overlays
 
