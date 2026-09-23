@@ -12,6 +12,7 @@ Learned 2026-09-22 building the Asta kit (Demon-Slayer greatsword, 8.1 studs lon
 - Look at a swing as an onion skin
 - Props that come out of other props
 - Runtime cost
+- Cinematic moves: speed curves, jumps and spins
 
 ## The grip is a joint with three axes
 
@@ -57,3 +58,13 @@ A thrown weapon that goes back into a book: fly an anchored copy from the releas
 
 - Solving every key at require time took 4.8 s. Memoize the solver by its inputs and bake the results into a module (`WeaponRig.dumpCache`, `AstaSolveCache`, 54 entries): a fresh build then takes 0.07 s with no misses. Round the fresh results the way the cache stores them, or the next key's lookup string differs.
 - Resizing a part welded into a character every frame rebuilt the assembly: 25 to 30 ms frames for a quarter second. Draw a growing part on an anchored copy placed at the welded part's frame, and switch back when it stops changing.
+
+## Cinematic moves: speed curves, jumps and spins
+
+Learned 2026-09-22 when Lepy asked for the Asta moves to be "cinematic and dramatic" and allowed slowing and speeding for effect.
+
+- **Speed curve, not rekeying.** A clip's `warp` (pipeline.md) plays its own clock faster or slower. What read well: the load at 0.75 to 0.85, the strike at 1.3 to 1.5, a hang of 0.3 to 0.45 for 0.03 to 0.05 clip seconds right after the contact, then 1.0 for the recovery. A hero hold in a draw at 0.35 for 0.12 clip seconds (0.34 s real). A strain on a grip at 0.55 with a tremble post layer (noise at 22 per second, 3 degrees on the arm, 1.4 on the torso) so the slow part is not a freeze. Keep hit, lock and chain times on the server from `Poser.realTime`, never from hand-typed seconds.
+- **A jump without moving the root.** Lift the torso (`rise` in the body def) and lift both feet with an air curve that is at least the rise (0.3 to 0.4 more tucks the legs up into the hips). A lift curve behind the torso opens a hip gap on the takeoff frame (0.12 at 0.15 s); start the lift as the legs straighten. Hand targets in root space must rise with the body or the arm hangs below the shoulder and the blade tip goes under the floor (0.52 under at the apex). A split in the air (the front foot 0.45 forward, the back foot 0.75 back) reads as a leap; straight legs read as a float.
+- **Spins past 360.** Key the torso twist straight through (-68, -12, 75, 165, 255, 325, 388) and keep the Euler branch fix off the torso and head, only on the arms and the grip. Key the blade in torso space (`swordLocal`) so it rides the spin, and give it an edge along the spin (edge = the spin axis crossed with the blade). The feet turn round the root with the torso while airborne; land with the chest 25 to 35 degrees past the hips, then pivot one foot at a time back to the stance. A blade held out level in torso space points down once the torso leans forward: at a 19 degree lean it went 1.67 under the floor; tilt it up by the lean.
+- **Chains start where the last move held.** Start each combo clip from the previous hold pose and its feet (a step window of `{-0.01, 0}` puts a foot there at t = 0), and step the feet back inside the new clip.
+- **Numbers after the pass.** Swings 28 to 47% rest in real time with contrast 3.3 to 5.8; the long cinematic draw and sheathe sit at 62 to 67% rest in real time because of their deliberate slow beats (still 3% or less, frozen 0). Locks stay near one second (the VFX skill's rule): the draw's movement cancel sits inside its hero hold at 0.96 s.

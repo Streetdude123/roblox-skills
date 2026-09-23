@@ -282,6 +282,19 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   spring (f 1.7, damping 0.85) toward a spot at the shoulder with a bob and a sway on three unrelated
   beats and a lean from its own velocity, stiffer (f 5.5) when it is presented; with 10 s of tool
   latency a sub-second hit effect needs TimeScale 30, not 6 to 10, to be in a capture.
+- 2026-09-22 (Asta, late): "make sure the animations looks the BEST as possible, animations need to be
+  cinematic and dramatic please, you can slow or speed up for effect", then "Make sure the animations need
+  to be cinematic and dramatic okay? And that it looks the best, don't send me screenshots also its okay".
+  The clips got speed curves (slow contact hangs, a slow hero pose in the draw, a slowed swallow in the
+  sheathe) and the effects followed the new beats without taking the camera: the open pages boil at 2.4x
+  and the page light flickers while he strains on the hilt, the raised blade flares (34 wisps, 22 rim, 18
+  embers and a dark red flash at mid blade) on the hero beat, the flourish cuts get the smear trail, the
+  slam and the spin landing get a black-over-red ground ring with grey dust, the spin takeoff a smaller
+  ring, and kicks of 0.22 on the pop, 0.16 on the slam and 0.18 on the spin landing. The spin smear is
+  0.12 s: at 2700 degrees a second a 0.24 s smear draws a full black disk. Effects keyed to a warped clip
+  fire on the clip clock, so a delay after an event is in real seconds (the pop wisps moved from 0.07 to
+  0.15 s because the pop now plays at 0.35x). Locks stay near one second (0.96 draw, 0.88 sheathe, 1.01
+  finisher). He does not want screenshots sent; captures are for Claude's own review.
 
 ## Reference index
 

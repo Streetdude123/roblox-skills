@@ -371,7 +371,16 @@ end
 function Rig.body(def, seed)
 	seed = seed or {}
 	local p = def.torsoP or Rig.seat(def.torso, def.tx or 0, def.tz or 0, def.crouch, def.feet)
+	-- rise lifts the body off its seat for a jump and the feet lift in the post pass
+	if def.rise then
+		p += V3(0, def.rise, 0)
+	end
 	local tp = pose({p = p, r = def.torso})
+	-- swordLocal is the sword spec in torso space so a spinning body carries the blade round with it
+	if def.swordLocal then
+		local s = def.swordLocal
+		def.sword = {tp * s[1], tp:VectorToWorldSpace(s[2]), tp:VectorToWorldSpace(s[3]), exact = s.exact}
+	end
 	local out = {torso = def.torso, torsoP = p, head = def.head, tp = tp}
 	if def.sword then
 		local hand = def.sword[1]

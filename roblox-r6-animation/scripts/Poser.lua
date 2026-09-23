@@ -309,6 +309,40 @@ local function springStep(s, x, T)
 	return s.y
 end
 
+-- a clip's warp {{t, speed}, ...} plays its own clock faster or slower (a strike snaps, a contact hangs), linear
+-- between the keys; play, the check in real time and the bake all read it
+local function warpAt(clip, t)
+	local w = clip.warp
+	if not w then
+		return 1
+	end
+	if t <= w[1][1] then
+		return w[1][2]
+	end
+	for i = 2, #w do
+		local a, b = w[i - 1], w[i]
+		if t <= b[1] then
+			return a[2] + (b[2] - a[2]) * (t - a[1]) / math.max(1e-6, b[1] - a[1])
+		end
+	end
+	return w[#w][2]
+end
+Poser.warpAt = warpAt
+
+-- real seconds a warped clip takes to reach clip time t
+function Poser.realTime(clip, t)
+	if not clip.warp then
+		return t
+	end
+	local sum, s = 0, 0
+	while s < t - 1e-9 do
+		local d = math.min(1 / 480, t - s)
+		sum += d / warpAt(clip, s + d * 0.5)
+		s += d
+	end
+	return sum
+end
+
 -- a clip is compiled once so every key carries its cframe, channels and tangents and the keys are sorted by time
 function Poser.compile(clip)
 	if clip.compiled then
@@ -433,15 +467,37 @@ local function posesNow(clip, t, ctx, lifeT)
 end
 
 -- runs a clip from 0 to upto at 60 fps with lag and springs and returns the spring states and the last poses, so a
--- pose sheet, a bake or a check shows exactly what play shows; visit(t, poses) sees every step
-local function simulate(clip, upto, ctx, visit, ctxAt)
+-- pose sheet, a bake or a check shows exactly what play shows; visit(t, poses, realT) sees every step, and real steps
+-- a warped clip at 60 real frames a second the way play does
+local function simulate(clip, upto, ctx, visit, ctxAt, real)
 	Poser.compile(clip)
 	local states = {}
 	local poses = {}
 	local prevT = 0
-	local steps = math.max(0, math.ceil(upto * 60 - 1e-6))
-	for i = 0, steps do
-		local t = math.min(upto, i / 60)
+	local times, reals = {}, {}
+	if real and clip.warp then
+		local t, rt = 0, 0
+		while t < upto - 1e-6 do
+			table.insert(times, t)
+			table.insert(reals, rt)
+			local sp = warpAt(clip, t)
+			t += sp / 60
+			rt += 1 / 60
+			if t > upto then
+				rt -= (t - upto) / sp
+			end
+		end
+		table.insert(times, upto)
+		table.insert(reals, rt)
+	else
+		local steps = math.max(0, math.ceil(upto * 60 - 1e-6))
+		for i = 0, steps do
+			local t = math.min(upto, i / 60)
+			table.insert(times, t)
+			table.insert(reals, t)
+		end
+	end
+	for i, t in ipairs(times) do
 		local c = ctxAt and ctxAt(t) or ctx or {}
 		for name, keys in pairs(clip.joints) do
 			local cf, ch = samplePose(clip, name, keys, t, c)
@@ -461,7 +517,7 @@ local function simulate(clip, upto, ctx, visit, ctxAt)
 			clip.post(poses, t, c)
 		end
 		if visit then
-			visit(t, poses)
+			visit(t, poses, reals[i])
 		end
 		prevT = t
 	end
@@ -480,7 +536,7 @@ local function step(dt)
 			if os.clock() < a.holdUntil then
 				scaled = 0
 			end
-			local adv = scaled * a.speed
+			local adv = scaled * a.speed * warpAt(a.clip, a.time)
 			a.time += adv
 			local clip = a.clip
 			local t = a.time
@@ -711,14 +767,15 @@ function Poser.bake(clip, rig, fps, name, length)
 		end
 	end
 	local nextT = 0
-	simulate(clip, length, rig.ctx, function(t, poses)
-		-- simulate steps at 60 fps; keep the steps on the bake grid and always the exact end
-		if t + 1e-6 < nextT and t < length then
+	simulate(clip, length, rig.ctx, function(t, poses, rt)
+		-- simulate steps at 60 fps; keep the steps on the bake grid and always the exact end, and a warped clip bakes
+		-- in real seconds so the asset plays at the speed play shows
+		if rt + 1e-6 < nextT and t < length then
 			return
 		end
-		nextT = t + 1 / fps
+		nextT = rt + 1 / fps
 		local kf = Instance.new("Keyframe")
-		kf.Time = t
+		kf.Time = rt
 		local made = {}
 		local function poseFor(part)
 			if made[part] then
@@ -749,7 +806,7 @@ function Poser.bake(clip, rig, fps, name, length)
 			end
 		end
 		kf.Parent = kfs
-	end, clip.ctxAt)
+	end, clip.ctxAt, true)
 	return kfs
 end
 
@@ -771,9 +828,15 @@ function Poser.check(clip, opts)
 	opts = opts or {}
 	local length = opts.length or math.min(20, (clip.length or 1) + tailOf(clip))
 	local frames = {}
-	simulate(clip, length, opts.ctx, function(_, poses)
+	-- opts.real measures a warped clip in the real seconds play shows instead of its own clock
+	local realLen = length
+	simulate(clip, length, opts.ctx, function(_, poses, rt)
 		table.insert(frames, table.clone(poses))
-	end, opts.ctxAt or clip.ctxAt)
+		realLen = rt
+	end, opts.ctxAt or clip.ctxAt, opts.real)
+	if opts.real then
+		length = realLen
+	end
 	local names = {}
 	for name in pairs(frames[1] or {}) do
 		table.insert(names, name)

@@ -101,6 +101,14 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
 - "No change in quality" means the look stays; the lag fix is a join-time draw warm-up, not fewer pieces.
 - It still needs a beat structure: gather, pop, rise, settle. Small is not flat.
 
+## Cinematic character moves (2026-09-22, Asta)
+
+- "animations need to be cinematic and dramatic please, you can slow or speed up for effect": on a
+  character kit he wants speed ramps (slow contact hangs, a slow hero beat) and big beats, not a cutscene.
+  The camera stays his: kicks only, no takeover, and the body is free again near one second.
+- "don't send me screenshots also its okay": he judges in Studio himself. Take captures for review and
+  report what they show in words.
+
 ## Related feedback on animation
 
 His animation feedback lives in the `roblox-r6-animation` skill. The one that crosses over: the
