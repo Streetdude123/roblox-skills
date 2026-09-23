@@ -136,7 +136,7 @@ For an inspected stock arm, `root.CFrame:VectorToObjectSpace(-arm.CFrame.UpVecto
 
 ## Video of a clip for Lepy (scripts/video)
 
-When he asks to see animations and is away, record MP4 files in Play and send them with SendUserFile. Measured on his machine (Ryzen 5 2400G, 6 GB, SATA QLC SSD) on 2026-09-23.
+Record a video ONLY when the current request asks for one ("only record a video when I ask you to", 2026-09-23); he checks moves himself in Studio. When he asks, record MP4 files in Play and send them with SendUserFile. Measured on his machine (Ryzen 5 2400G, 6 GB, SATA QLC SSD) on 2026-09-23.
 
 1. Bring Studio to the front, start Play, set QualityLevel 21. Hide nothing in the game: the Roblox top bar cannot be turned off from execute_luau (`SetCore("TopbarEnabled")` returns ok and does nothing), so crop it: `record.ps1 -top 233` (window rect offsets left 11, top 233, right 470, bottom 231 give the 1454 x 584 viewport under the top bar).
 2. Start `record.ps1 -dir <take> -seconds <n> -scale 1.0` in the background, then drive the take from one execute_luau call. The call runs about 2 to 3 s after the recorder starts; put 1.5 s of lead in the take script and write `DateTime.now().UnixTimestampMillis` marks; `times.txt` starts with the recorder's Unix ms, so a mark minus that gives the frame time. Keep every loop bounded in time: a `repeat until` on a MoveTo arrival hung the call until execute_luau timed out.
