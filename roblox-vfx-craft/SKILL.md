@@ -326,6 +326,14 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   burst of the ash flipbook thrown up under gravity plus a rolling dark dust wall; the spin as the kit's
   `Tornado-01` wind swirl sprites in black over red. The kit's "rock" meshes 3027924097, 1254390558 and
   4933939521 are faceted spiky shapes (2.3, 16.3 and 5.0 studs native), not rocks: never use them as debris.
+- 2026-09-22 (Asta, last): "use the vfx pack kit for the little vfx spin thing cause it's too geometric with
+  its squares and stuff". The spin already used the kit's `Tornado-01`, but one of its sprites (`Windspin3`,
+  12685367098) has a solid black background: tinted black at LightEmission 0 it drew a black square. A
+  test sheet of every kit sprite tinted black at LightEmission 0 found the same square behind `Crack-01`
+  Floor1 (used black under the slam and the drag), `Slash-Impact-01` SlashImpact1, the Explosion specks and
+  the Wind smoke, and the Sparkle/Sparkles textures. Such sprites only work additive (LightEmission 1,
+  where black adds nothing); on a dark tint use the ones with clean alpha (`Windspin1`, `2`, `4`, `5`,
+  `Crack` Floor2). Render every kit sprite dark before using it dark.
 
 ## Reference index
 

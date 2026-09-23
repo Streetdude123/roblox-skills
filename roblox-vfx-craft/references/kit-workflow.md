@@ -87,3 +87,7 @@ Neon ghost, then hides them again. The first cast dropped from a 57 ms frame to 
 
 A showcase arena sits 2600 studs from the pack's old position so nothing from it streams in. If the
 pack must stay in Workspace for browsing, it belongs at that distance too.
+
+## Sprites with a black square behind them
+
+Many kit flipbooks are authored for additive blending and carry a solid black background. Tinted dark at LightEmission 0 (a black anti-magic layer) they draw as black squares; he called it "too geometric with its squares" (2026-09-22). Before using a sprite dark, emit one of each on a grey card tinted black at LightEmission 0 and capture it: in the anime kit `Tornado-01` Windspin3, `Crack-01` Floor1, `Slash-Impact-01` SlashImpact1, the Explosion specks, the Wind smoke and the Sparkle/Sparkles textures fail; use those only additive (LightEmission 1).

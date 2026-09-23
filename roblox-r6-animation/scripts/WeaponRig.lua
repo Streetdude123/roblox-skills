@@ -269,6 +269,11 @@ function solveSwordRaw(tp, hand, blade, edge, seed)
 		if fold > 0.35 then
 			c += 40 * (fold - 0.35) ^ 2
 		end
+		-- a real fist holds the handle across the forearm so the handle stays within 25 degrees of square to the arm block or it reads as run through the arm
+		local along = math.abs(h.UpVector:Dot(a.UpVector))
+		if along > 0.42 then
+			c += 60 * (along - 0.42) ^ 2
+		end
 		c += 0.08 * ((x[4] / 90) ^ 2 + (x[5] / 90) ^ 2 + (x[6] / 90) ^ 2)
 		-- stay physically near the last key (the rotation between them not the channel numbers) or a strike flips to a lookalike solution and whips the sword around
 		local _, aa = (prevArm:Inverse() * pose({r = {x[1], x[2], x[3]}})):ToAxisAngle()

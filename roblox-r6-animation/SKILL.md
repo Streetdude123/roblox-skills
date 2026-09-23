@@ -98,6 +98,7 @@ Give each joint one writer. Avoid TweenService on animated joints.
 - **Waist rule.** The torso turns about its centre, so a lean swings the hips. Add the waist offset so the body bends at the hips.
 - **Rigid legs.** Turning the torso turns the hips around the feet. A 56 degree turn from a guard to a punch kept both feet planted only with the torso dropped 0.36 (a search in the example); plan the drop with the turn, and use `Feet.gap` to see what a pose needs.
 - **Toe yaw.** `Feet.stand` turned toes the wrong way until 2026-09-22 (the left idle toe ended 98 degrees off its target and nothing flagged it). The foot checks now print `twist` (a planted leg against the torso); keep it under about 45 degrees and pivot the feet with the hips.
+- **Fist grip.** A held weapon's handle runs within about 25 degrees of square to the forearm or the block arm looks pierced ("no one holds a sword like that", 2026-09-22). The solver penalises it and logs `gripErr`; pick arm directions and blades that are square before solving (weapons.md).
 - **No elbows or knees.** Suggest a bend with a short translation up into the torso or a piston along the limb (the stand fists slide 0.3 to 0.6 studs on the strike frames).
 
 ## Read only what the task needs
