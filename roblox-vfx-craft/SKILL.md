@@ -417,6 +417,23 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
 - Capture trap from that pass: after hours of pushes and Play sessions Studio held 4.5 GB private on his 6 GB machine and
   stalled for 0.6 to 1.9 s during takes; a recorder at 75% size with two JPEG threads and closing every browser tab gave
   clean takes again. The fix that lasts is a save and a Studio restart, which is his call.
+- 2026-09-23 (Asta block and dash, MOVE rung): "Create a blocking and dashing system now, I frames for the dash frames, asta is
+  strong but make sure to incorporate it's weight as asta use's the sword's real weight to attack", "perfect block is none, i
+  want it parry based like deepwoken", "don't mlae UI for the guard meter please", "By the way clicking f activates the parry,
+  if you click f you'll be vulnerable, holding f means you're just blocking". No UI, no sounds (the kit has none), no camera
+  take, no speed lines. Dash: push = dirt puff 5, ash 4, a 0.55 black-over-red ring at the feet, blade wisps 16 and rim 8 with
+  the smear on for 0.16 s, kick 0.08; the i-frames read as two `Echo` afterimage bursts (life 0.26, alpha 0.6) at 0.16 and
+  0.24 s that leave black smoke along the path; skid = puff 7 and rubble 3, kick 0.14 armed and 0.08 sheathed. Block = a pale
+  flash 2.6 for 0.06 s, 14 embers, `Hit` 0.7 pale to rim, kick 0.12 on the blocker and 0.08 on the attacker. Parry = a pale
+  flash 6 for 0.08 s, a 1.7 ring facing the attacker, 36 embers, puff 5, `SlashImpact` 1.2 with 8 + 8 specs, 0.1 s hit stop
+  on both bodies, kick 0.35. Guard break = a core red flash 5 for 0.1 s, `BigCrack` 0.5 red over black, 30 embers, ash 16, puff
+  8, kick 0.45. Measured first casts: dash median 20.0 ms worst 23.8 against an idle 17.9 / 22.8; first guard and parry median
+  19.5 worst 23.9 against an idle worst of 25.6.
+- Two traps from that build. The kit's `Crack` Floor2 sprite tinted black at LightEmission 0 draws an opaque dark square about
+  6 studs wide (seen on the guard break floor hit; the shared `floorBite` helper of the M1 floor hits uses the same call), so
+  the guard break uses a ring, dust and embers instead. The floating grimoire's spring (f 1.7, z 0.85) lags 2 x z x v / w
+  studs: 2.5 at walk speed, about 14 at a 90 stud/s dash; feed the body's velocity into the spring above 20 studs/s (full at
+  60) and raise f to 4 during a dash so the walk float stays as he liked it.
 
 ## Reference index
 
