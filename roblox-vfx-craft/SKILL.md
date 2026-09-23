@@ -348,6 +348,39 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   off each cover (brightness 3, range 4). About 630 particles a second; idle frames stayed at 16.6 ms median
   and 18.9 worst. A shape made of particles is an edge frame, not a filled box: the eye reads the outline,
   and the face stays visible inside it the way the reference shows. See taste.md.
+- 2026-09-23 (Asta ultimate): "i'd like you to create an ultimate ability like this please where asta raises
+  the sword above his head gripping it with 2 hands and the sword grows with astronomical size by pressing Q
+  and once it grows to it's full size it can be slammed down in the direction the player is facing when
+  pressing Q again. Make sure it's a cutscene copying the video I sent you and make it look really cool with
+  amazing VFX please", then "/roblox-vfx-craft make sure cutscene is cinematic", "send ss of the ultimate"
+  (he now wants screenshots of the ultimate), "asta hold's the handle of the sword above his head by the way,
+  fix that" and, after the R6 reach limit was explained, "Nevermind just keep it like that". He answered the
+  open choices: turn only in the hold with a 15 s auto slam, 55 damage plus a launch and a 30 s cooldown,
+  keep the current (day) lighting, Q only with the sword out. Rules he set the same day: every UI and VFX piece
+  is a real instance tree (templates in `Assets.Ult` and a ScreenGui in StarterGui, cloned and driven by
+  code), no comments in code, few defensive guards, nothing he did not ask for. The build is in
+  cinematic.md ("The phases of the Asta sword ultimate"). What the captures taught:
+  - The giant blade is an anchored clone of the blade mesh placed at the hilt every frame (len x70 = 384,
+    width x16 = 24.6), its direction low-passed (lag 0.3 s growing, 0.05 s slamming) so the tower moves with
+    weight, and clamped at -1.5 degrees so the tip never dives. It casts no shadow: its shadow darkened him in
+    every close shot. Grow the length first and the width late; wide early read as a slab.
+  - The clip's lightning (thick black bolts with magenta-crimson rims) is a template of 13 attachments and
+    12 core + 12 rim Beams with no texture: core black LE 0, rim 205/14/44 LE 0.7, width tapered to points,
+    the path re-jittered every 0.04 to 0.08 s. Widths must scale with the camera: 1 to 1.5 studs in close shots,
+    7 to 11 studs and 60 to 170 studs long at 300 studs, four to six alive at once.
+  - The kit's `Fire-01` flipbook (13818306392) is an orange texture: tinted white it stays orange. Use the
+    grayscale fire aura flipbook 16676455805 for white flames.
+  - White flames on a day sky: at LightEmission 0.85 the eruption became one white blob that hid him; a ring
+    (Disc with ShapePartial 0.55) of white flames at LE 0.25 plus a ring of black flames reads as flames with
+    him dark in the middle.
+  - An avatar's accessories and the raised arms block close shots; pick angles per shot and capture them.
+  - Tests: a covered Studio does not render (RenderStepped 0) and captures time out; bring it forward with
+    user32 first. Slowing only the client desynced the server's hold timer; the server delays now multiply by
+    the TimeScale attribute set on the server. Screenshots he asked for come from a desktop capture of the
+    Studio window cropped to the viewport (shot.ps1 with offsets), sent with SendUserFile.
+  - Measured at normal speed: both dummies in the line 300 to 245 and launched, the one outside untouched;
+    frames median 19.8 ms over the whole cast, worst 50 ms on the first cutscene frame, 34 and 36 ms at the
+    impact; 0 warnings on client and server.
 
 ## Reference index
 

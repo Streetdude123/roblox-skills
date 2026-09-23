@@ -406,7 +406,7 @@ function Rig.body(def, seed)
 	end
 	local l = def.lArm
 	if l == "grip" and out.handle then
-		local target = out.handle * V3(0, Rig.GRIP_Y + 1.05, 0)
+		local target = out.handle * V3(0, Rig.GRIP_Y + (def.lGrip or 1.05), 0)
 		local k, x = Rig.solveReach(tp, -1, target, seed.left)
 		out.lArm, out.lArmP = k.r, k.p
 		seed.left = x

@@ -102,6 +102,7 @@ Give each joint one writer. Avoid TweenService on animated joints.
 - **Combo flow.** Each swing starts from the last swing's end pose and carries the blade on the way it was going; the end of one swing is the load of the next ("it should naturally flow from the end positions of the m1s", 2026-09-22). Plan the chain as one path before keying (weapons.md).
 - **Hand-over twitch.** The Animator zeroes `Motor6D.Transform` before PreSimulation, so a blend that starts inside a step must come from the rig's last written pose (Poser does this now). Check every move's end into the idle with a per-frame part record in Play; an Edit-mode step cannot show it.
 - **No elbows or knees.** Suggest a bend with a short translation up into the torso or a piston along the limb (the stand fists slide 0.3 to 0.6 studs on the strike frames).
+- **Overhead reach.** An R6 fist reaches at most torso y 1.99, straight over the shoulder, and the head top is 2.0; over the head centre it reaches only forehead height. A two-handed grip above the head is impossible without sliding the arms out of the shoulders. Explain the limit and ask before building such a pose (weapons.md, "Overhead holds").
 
 ## Read only what the task needs
 

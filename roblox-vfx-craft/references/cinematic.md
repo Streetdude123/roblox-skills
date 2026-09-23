@@ -109,6 +109,28 @@ One `T` table again (`Config.RoadRoller.Beats`), every phase a function into `st
 7. **Off (9.3)**: the anchor and the freeze released, `DioMove` under the walk 0.5 s later, the laugh runs on the voice line.
 8. **Fade (11.2 to 12.0)**: fade to black in 0.4, the default camera wakes behind the body, bars and vignette off, fade in 0.5. The server restores WalkSpeed and JumpPower at done; the client never touches them.
 
+## The phases of the Asta sword ultimate (the third cinematic piece, 2026-09-23)
+
+Copied shot by shot from a 6.4 s Black Clover clip he sent (studied as a contact sheet at 0.4 s, then 0.1 s, from a Node page that draws seeked frames into a canvas; its audio would not decode in the browser). Q starts a 6.6 s grow cutscene, he then holds the giant blade and turns to aim (70 degrees a second), Q again (or 15 s) brings the slam cutscene of 3.3 s. The clip events drive both the camera (caster only) and the effects (every client); the camera rig is `AstaCamera` (the skill's CameraRig ported), the screen is `AstaScreen` driving a saved ScreenGui tree, the effects are `AstaUltFx` over templates saved in `Assets.Ult`.
+
+Grow (clip time = real time):
+1. **Face 0.0**: close-up on the head (angle 180, dist 3.4 to 2.8, fov 38), bars and vignette 0.35 in, DoF focus 3.
+2. **Under 0.18**: from under the fists looking up the blade (origin the hilt, dist 2.6, height -2.6, lookY 3 to 5, fov 80) so the fists, the crossguard and his face sit under the growing blade. Looking straight up the blade (height -1.4, lookY 9) lost the body and read as a monolith only.
+3. **Front 0.34**: front pull-back (dist 11 to 17, height 0.2, lookY 2.4 to 4.2, fov 55). A higher lookY put his legs under the bottom bar.
+4. **Burst 0.98**: impact frames `ink` (white figure on black, the clip's white flame shape) 0.06 then `white` 0.04 with the camera frozen 0.1, kick 0.5, a crack at the feet.
+5. **Erupt 1.06**: low front wide (dist 30 to 26, height -1.2, lookY 6, roll 4), the eruption ring, the black wing, six black bolts round him.
+6. **Far 1.6**: the obelisk from 320 to 300 studs (angle 202 to 194, height 10, lookY 150 to 200, fov 52); the arena walls stand in for the clip's tree line; long bolts snake along the blade every 0.1 to 0.18 s.
+7. **Low 3.85**: low Dutch profile from his left (angle 255 to 242, dist 5 to 4.6, height -0.5, lookY 1.7, roll 12 to 9) with the burning grimoire, the black wing, light pillars and motes. From the front the raised arms hid the face; from the right his avatar's big cutout accessory filled the frame.
+8. **Eye 5.3**: the right eye from 28 degrees off front (dist 1.3 to 1.05, fov 34) with a red eye glow; straight on, the hilt covered the face.
+9. **White 5.95**, **done 6.3**: fade to white 0.2, hand the default camera back under the white, bars and vignette out, white out 0.5.
+
+Slam:
+1. **Wind 0.02**: side shot at the middle of the line (angle 90 to 96, dist 340 to 300, height 40 to 26, lookY 170 to 30 on a quad in so the frame falls with the tower), bars, bolts every 0.12 to 0.22 s, the blade aura doubled. The blade turns its edge toward the target in the wind-up so the side camera sees the full 25 stud flat as it falls; flat-leading it was a thin pole from the side.
+2. **Fall 0.4**: the blade trail on (a Trail between Base and Tip attachments that follow the blade length).
+3. **Impact 0.9**: freeze 0.16, kick 1, speed lines 0.8 for 0.45, impact frames white/ink/blood 0.05 each with the giant blade in the silhouette, then the line: every 24 studs a dust wall to each side (8 dust at 16 to 44 studs), 12 clods, 8 black flame bursts (18 to 36 studs, 40 to 70 up), 8 crimson fire, one white flash sprite, a crack every second point, a ring every third, a bolt every third, a red light every third. 0.16 s later a cut to a high three quarter over the middle of the line (angle 125 to 118, dist 95 to 110, height 55 to 62): the half buried edge-down blade is a low wall, so a ground camera beside it saw only the wall.
+4. **Dissolve 1.85**: the blade shrinks to normal over 0.5 s inside a burst of its own black flames and embers; an aerial from behind looking down the whole line (origin 120 studs along, angle 8 to 2, dist 175 to 160, height 95 to 85).
+5. **Back 2.4**: fade to black 0.3, default camera, fade in 0.45.
+
 ## Reference material he sent
 
 - A DevForge Studio TikTok for the ultimate: white flash frame, red dome, spiked crown, pillar with

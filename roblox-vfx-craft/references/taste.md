@@ -119,6 +119,12 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
   left visible and lit red inside it. A filled box of flame buries the object instead of drawing it.
   Deep saturated red, not pink: keep LightEmission at 0.4 to 0.6 on the red layers when the background is
   pale. The code emitter `smoke` texture 16669188960 reads as bubbles at small sizes; use `darksmoke`.
+- "Make sure it's a cutscene copying the video I sent you" (the Asta ultimate, 2026-09-23): copy the reference
+  shot by shot (the same shot order, the same angles, the same beat lengths), then fix what Roblox changes:
+  his day lighting (he kept it, so white energy needs a dark partner), his avatar's accessories, R6 reach.
+  The screenshot rule changed for this: "send ss of the ultimate" - when he asks for screenshots, send them.
+- The same day he set standing code rules: UI and VFX as real instance trees, no comments, few guards, ask
+  before assuming, nothing extra. See the animation skill's project-style.md and his memory.
 
 ## Related feedback on animation
 
