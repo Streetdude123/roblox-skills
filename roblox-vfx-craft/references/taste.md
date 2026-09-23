@@ -106,6 +106,9 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
 - "animations need to be cinematic and dramatic please, you can slow or speed up for effect": on a
   character kit he wants speed ramps (slow contact hangs, a slow hero beat) and big beats, not a cutscene.
   The camera stays his: kicks only, no takeover, and the body is free again near one second.
+- "i want it to be flashier, more amazing looking combos" and "It's a heavy sword remember": a combo gets
+  a slash arc, an afterimage and a cut line on every hit, debris and cracks on the heavy ones, impact frames
+  and speed lines on the finisher only, and heavier hit stops and kicks. The weight is in the motion first.
 - "don't send me screenshots also its okay": he judges in Studio himself. Take captures for review and
   report what they show in words.
 

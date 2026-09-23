@@ -97,6 +97,7 @@ Give each joint one writer. Avoid TweenService on animated joints.
 - **Hip rule.** A leg key's translation is the gap at the hip: the hip pivots at the leg's outer top corner. Put a stance into hip angles or `Feet.post`, never into leg slides; a leg pushed up into the torso is hidden and allowed. Keep any downward gap under 0.12. "it can be a TINY little bit off the body but not like that" (2026-09-22).
 - **Waist rule.** The torso turns about its centre, so a lean swings the hips. Add the waist offset so the body bends at the hips.
 - **Rigid legs.** Turning the torso turns the hips around the feet. A 56 degree turn from a guard to a punch kept both feet planted only with the torso dropped 0.36 (a search in the example); plan the drop with the turn, and use `Feet.gap` to see what a pose needs.
+- **Toe yaw.** `Feet.stand` turned toes the wrong way until 2026-09-22 (the left idle toe ended 98 degrees off its target and nothing flagged it). The foot checks now print `twist` (a planted leg against the torso); keep it under about 45 degrees and pivot the feet with the hips.
 - **No elbows or knees.** Suggest a bend with a short translation up into the torso or a piston along the limb (the stand fists slide 0.3 to 0.6 studs on the strike frames).
 
 ## Read only what the task needs

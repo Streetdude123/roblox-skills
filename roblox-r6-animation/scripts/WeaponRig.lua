@@ -401,9 +401,12 @@ function Rig.body(def, seed)
 	end
 	local l = def.lArm
 	if l == "grip" and out.handle then
-		local k, x = Rig.solveReach(tp, -1, out.handle * V3(0, Rig.GRIP_Y + 1.05, 0), seed.left)
+		local target = out.handle * V3(0, Rig.GRIP_Y + 1.05, 0)
+		local k, x = Rig.solveReach(tp, -1, target, seed.left)
 		out.lArm, out.lArmP = k.r, k.p
 		seed.left = x
+		-- how far the left fist stays off the handle so a two handed key the arm cannot reach shows up
+		out.leftMiss = (Rig.gripPoint(Rig.arm(tp, -1, pose(k))) - target).Magnitude
 	elseif typeof(l) == "Vector3" then
 		local k, x = Rig.solveReach(tp, -1, l, seed.left)
 		out.lArm, out.lArmP = k.r, k.p

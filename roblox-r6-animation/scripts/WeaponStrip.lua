@@ -318,7 +318,12 @@ function _G.astaFeet(clip, opts)
 	local order = readRig(RIG)
 	local out, anchor, tipLow = {}, {}, math.huge
 	for _, leg in ipairs({"Right Leg", "Left Leg"}) do
-		out[leg] = {low = math.huge, high = -math.huge, slide = 0, gap = 0}
+		out[leg] = {low = math.huge, high = -math.huge, slide = 0, gap = 0, twist = 0}
+	end
+	-- toe direction against the root's forward so a leg twisted round its own length shows up (the solver once turned the left toe 98 degrees the wrong way)
+	local function yawOf(cf)
+		local f = cf:VectorToWorldSpace(V3(0, 0, -1))
+		return math.deg(math.atan2(-f.X, -f.Z))
 	end
 	Poser.each(clip, 60, function(t, poses)
 		local world = fk(order, CFrame.identity, poses)
@@ -335,7 +340,8 @@ function _G.astaFeet(clip, opts)
 			end
 			local h = lowest.Y + 3
 			r.low, r.high = math.min(r.low, h), math.max(r.high, h)
-			local sole = cf * V3(0, -1, 0)
+			-- the clip's forward travel moves the root so a planted sole is judged in the world (root space minus the travel)
+			local sole = cf * V3(0, -1, 0) - V3(0, 0, clip.root and clip.root(t) or 0)
 			if h < 0.06 then
 				anchor[leg] = anchor[leg] or sole
 				r.slide = math.max(r.slide, V3(sole.X - anchor[leg].X, 0, sole.Z - anchor[leg].Z).Magnitude)
@@ -345,11 +351,13 @@ function _G.astaFeet(clip, opts)
 			local s = leg == "Right Leg" and 1 or -1
 			local c = world.Torso:PointToObjectSpace((cf * CFrame.new(0.5 * s, 1, 0)).Position)
 			r.gap = math.max(r.gap, math.max(0, -1 - c.Y) + math.sqrt((c.X - s) ^ 2 + c.Z ^ 2))
+			local tw = (yawOf(cf) - yawOf(world.Torso) + 180) % 360 - 180
+			r.twist = math.max(r.twist, math.abs(tw))
 		end
 	end, opts)
 	local lines = {}
 	for leg, r in pairs(out) do
-		table.insert(lines, ("%s low %.2f..%.2f slide %.2f gap %.2f"):format(leg, r.low, r.high, r.slide, r.gap))
+		table.insert(lines, ("%s low %.2f..%.2f slide %.2f gap %.2f twist %.0f"):format(leg, r.low, r.high, r.slide, r.gap, r.twist))
 	end
 	table.sort(lines)
 	table.insert(lines, ("tip low %.2f"):format(tipLow + 3))

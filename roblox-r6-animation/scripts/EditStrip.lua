@@ -160,9 +160,14 @@ function _G.feet(clip, opts)
 	local floorY = 0
 	local out = {}
 	for _, leg in ipairs({"Right Leg", "Left Leg"}) do
-		out[leg] = {low = math.huge, high = -math.huge, slide = 0, gap = 0}
+		out[leg] = {low = math.huge, high = -math.huge, slide = 0, gap = 0, twist = 0}
 	end
 	local anchor = {}
+	-- toe direction against the torso's so a leg twisted round its own length shows up (Feet.stand once turned every toe the wrong way: the left idle toe ended 98 degrees off)
+	local function yawOf(cf)
+		local fwd = cf:VectorToWorldSpace(Vector3.new(0, 0, -1))
+		return math.deg(math.atan2(-fwd.X, -fwd.Z))
+	end
 	Poser.each(clip, 60, function(t, poses)
 		local world = fk(order, rootCF, poses)
 		for leg, r in pairs(out) do
@@ -176,7 +181,8 @@ function _G.feet(clip, opts)
 				end
 				local h = lowest.Y - floorY
 				r.low, r.high = math.min(r.low, h), math.max(r.high, h)
-				local sole = cf * Vector3.new(0, -RIG[leg].Size.Y / 2, 0)
+				-- a clip with root travel (clip.root(t), studs forward) moves the root, so judge a planted sole in the world
+				local sole = cf * Vector3.new(0, -RIG[leg].Size.Y / 2, 0) - Vector3.new(0, 0, clip.root and clip.root(t) or 0)
 				if h < 0.06 then
 					anchor[leg] = anchor[leg] or sole
 					local d = Vector3.new(sole.X - anchor[leg].X, 0, sole.Z - anchor[leg].Z).Magnitude
@@ -187,12 +193,13 @@ function _G.feet(clip, opts)
 				local s = leg == "Right Leg" and 1 or -1
 				local c = world.Torso:PointToObjectSpace((cf * CFrame.new(0.5 * s, 1, 0)).Position)
 				r.gap = math.max(r.gap, math.max(0, -1 - c.Y) + math.sqrt((c.X - s) ^ 2 + c.Z ^ 2))
+				r.twist = math.max(r.twist, math.abs((yawOf(cf) - yawOf(world.Torso) + 180) % 360 - 180))
 			end
 		end
 	end, opts)
 	local lines = {}
 	for leg, r in pairs(out) do
-		table.insert(lines, ("%s lowest corner %.2f..%.2f slide %.2f hip gap %.2f"):format(leg, r.low, r.high, r.slide, r.gap))
+		table.insert(lines, ("%s lowest corner %.2f..%.2f slide %.2f hip gap %.2f twist %.0f"):format(leg, r.low, r.high, r.slide, r.gap, r.twist))
 	end
 	table.sort(lines)
 	return table.concat(lines, "; ")

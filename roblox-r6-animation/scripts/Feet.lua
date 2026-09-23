@@ -49,7 +49,8 @@ function Feet.stand(tp, s, fx, fz, yaw, lift)
 			local fwd = (tp.Rotation * R):VectorToWorldSpace(V3(0, 0, -1))
 			local cur = math.deg(math.atan2(-fwd.X, -fwd.Z))
 			local delta = ((yaw or 0) - cur + 180) % 360 - 180
-			R = CFrame.fromAxisAngle(w.Unit, math.rad(delta)) * R
+			-- the turn axis runs up the leg (sole to hip) so a positive delta turns the toe left the way yaw counts; w points down and turned every toe the wrong way (the left idle foot ended at -88 for a target of 10)
+			R = CFrame.fromAxisAngle(-w.Unit, math.rad(delta)) * R
 		end
 		gap = math.max(0, -py)
 		pose = CFrame.new(0, math.max(py, -HIP_GAP), 0) * R

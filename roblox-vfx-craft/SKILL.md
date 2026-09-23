@@ -295,6 +295,29 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   fire on the clip clock, so a delay after an event is in real seconds (the pop wisps moved from 0.07 to
   0.15 s because the pop now plays at 0.35x). Locks stay near one second (0.96 draw, 0.88 sheathe, 1.01
   finisher). He does not want screenshots sent; captures are for Claude's own review.
+- 2026-09-22 (Asta, later): "i'd like if the vfx and animation combos would be more flashier and amazing,
+  like its pretty nice im not gonna lie but i want it to be flashier, more amazing looking combos" (with the
+  heavy two-handed rebuild of the combo). Added on the MOVE rung, never taking the camera: a slash arc on
+  every hit from the kit's anime slash plates (`FancySlashDark` black under `FancySlash` in the core red and
+  a pale copy; the crescent is an arc of 0.45 of the plate round its centre, so the plate centre sits on the
+  fists, the plate lies in the swing plane taken from the blade's turn over the last frames (walk back until
+  it turned 25 degrees, which works for a 2700 degree a second spin and a slowed clock), and it sweeps on 22
+  to 40 degrees while it grows 0.82 to 1.1 and fades over 0.34 to 0.45 s); a dark red Neon afterimage of the
+  body and the blade on each hit (a black second one on hits 3 and 4, three during the spin); a thin black
+  cut with a pale core across the body that was hit along each swing's line; red sparks and grey grit when
+  the blade tip drags on the floor (one raycast a frame while the tip moves); a dust puff where the lead foot
+  lands; on the slam slate chunks thrown up and falling under gravity, a red crack and the `Big-Crack` burst;
+  on the spin the kit's wind ring flat round him in black over red spinning with the whirl; on the
+  finisher's hit two impact frames (blood red with black cutouts 0.05, the void with red cutouts 0.04) and
+  a 0.85 speed line pulse. Hit stops 0.07/0.07/0.09/0.12, kicks 0.2/0.2/0.34/0.55 for the weight.
+- Lessons from that pass: a flat slash plate in a vertical swing plane is edge on to a camera behind the
+  player (a chop from behind drew nothing), so each client tips the plate toward its own camera until it
+  faces it by at least 0.55; the rock meshes 3027924097, 1254390558 and 4933939521 on a SpecialMesh load at
+  their own huge size (giant spiked balls on the first slam), so debris is plain slate blocks and wedges
+  sized in studs; screen_capture does include ScreenGuis (the speed lines showed); to catch a sub-second
+  hit effect, hold the clip just before the hit (a debug hold attribute), set TimeScale 12 to 20, release,
+  and capture 1 to 2 s later; the impact frame viewport still cost one 41 ms frame on the first finisher of
+  a session after the join warm-up.
 
 ## Reference index
 
