@@ -381,6 +381,14 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   - Measured at normal speed: both dummies in the line 300 to 245 and launched, the one outside untouched;
     frames median 19.8 ms over the whole cast, worst 50 ms on the first cutscene frame, 34 and 36 ms at the
     impact; 0 warnings on client and server.
+  - Then on the eruption: "Make sure you use wind vfx instead of that smoke thing for the growing, it's just
+    covers up too much", and after a wind version: "no no keep the smoke but it has to be angled behind him on
+    the ground not floating", "see?" with the clip's frame (a wall of white flame spikes growing from the
+    ground behind him and to both sides, him dark in front). The eruption is now a 46 x 10 stud strip 8 studs
+    behind him that burns 0.8 s (white 238/244/255 to 165/185/230, LE 0.25, rising 6 to 16 studs a second,
+    plus a few black flames) with the rising wind streaks round him; the wind spiral was taken out because the
+    frame has none. An effect that sits between the camera and the body reads as "covers up too much" even
+    when it is the right element: put it behind the body relative to the shot.
 
 ## Reference index
 
