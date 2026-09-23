@@ -389,6 +389,16 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
     plus a few black flames) with the rising wind streaks round him; the wind spiral was taken out because the
     frame has none. An effect that sits between the camera and the body reads as "covers up too much" even
     when it is the right element: put it behind the body relative to the shot.
+  - Then "zoom in so i don't see the ends of the wind": the eruption shot moved in until the wind streaks
+    leave the frame on both sides. An effect whose ends show in frame reads as a prop; crop it with the lens.
+- 2026-09-23 (refactor): "fix the scripts all of them and make them modular and follow the rules i give you",
+  scope "All 27 scripts", and "Delete the script" for an empty font READ ME. Every emitter, trail, light and
+  carrier the combo VFX built with `Instance.new` became a saved template in `Assets.Fx` (the book aura is a
+  Model with its offset from the book saved as a CFrame attribute, measured from the old runtime bounds); the
+  impact frame and speed line ScreenGuis are saved in StarterGui with Enabled false. Trap: a Camera saved
+  inside a StarterGui ViewportFrame does not reach the client (Cameras do not replicate), so the viewport
+  camera is made on the client the first time. Prove a refactor did not change the look with numbers: every
+  clip pose against the backup (3.6e-7 studs), the solve cache hit count, spawn lists per hit, then captures.
 
 ## Reference index
 

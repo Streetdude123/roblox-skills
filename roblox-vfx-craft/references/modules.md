@@ -124,3 +124,7 @@ UIGradient rotation 90 transparent at the inner end, re-rolled (angle jitter 9 d
 - `remember` / `ghost` / `materialize` / `hide` in the summon: the stand's real Material, Color and
   transparency live in `Mat`/`Col`/`Tr` attributes set once, so a gold Neon ghost can be restored
   without a clone. `materialize` tweens transparency from 0.6 to the stored value over 0.22 s.
+
+## Saved GUI templates and the viewport camera
+
+ImpactFrames and SpeedLines use ScreenGuis saved in StarterGui (`AstaImpactFrame` with `Bg` and `View`, `AstaSpeedLines` with 36 `Ray` frames that carry an `Angle` attribute and a `Strength` NumberValue), Enabled false until first use. Do not save the viewport Camera: Cameras do not replicate, so the PlayerGui copy has `CurrentCamera` nil. Make it on the client the first time (`View.CurrentCamera or lens(View)`).
