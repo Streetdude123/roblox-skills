@@ -399,6 +399,24 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   inside a StarterGui ViewportFrame does not reach the client (Cameras do not replicate), so the viewport
   camera is made on the client the first time. Prove a refactor did not change the look with numbers: every
   clip pose against the backup (3.6e-7 studs), the solve cache hit count, spawn lists per hit, then captures.
+- 2026-09-23 (Asta, after the videos): "don't add an impact frame for the last m1 please but it should still be impactful
+  without an impact frame" (he chose a longer freeze and kick plus a bigger burst: hit stop 0.12 to 0.18 s on both bodies, the
+  server delays the knockback by the same 0.18 s so the target hangs before it flies, kick 0.55 to 0.75, ring 2.2 to 3.1, crack
+  0.45 to 0.63, embers 34 to 48, ash 16 to 22, puffs 1.4x); "Clean up the impact frame on the sword by the way it looks kind of
+  bad, especially those speed lines" / "Like the ultimate pact frame" (the slam impact frame keeps white, black and red with
+  no lines, and the camera now stays frozen until the red frame ends: a cut on a fixed delay landed inside the frames and
+  the blade jumped); "yeah also remove the speedline for the m1's those don't look good". The procedural speed lines are
+  gone from every Asta move: do not use them for him. Then "make the falling of the sword way More cinematic" (he chose a
+  slow-motion fall with cuts, and shadow plus air pressure): the fall is 0.95 to 2.46 s through the clip warp (slow hang at the
+  top at 0.12x, a violent last drop at 2.4x) over three shots: a low shot from the SIDE looking up (from the front an
+  edge-first blade is a needle), a ride on the blade (camera follow on a point at 30% of the blade, the lens near the tip
+  looking down at him and the arena; looking up the blade showed only sky and the sun), and the wide side shot for the last
+  0.3 s. The shadow is a soft black `glow` image on a SurfaceGui projected along `Lighting:GetSunDirection()`: a straight
+  down projection hid under the blade in every shot. The air pressure is dust and wind streaks blown sideways off the line
+  0.2 s before contact (dark dust 96/88/80, light dust vanished on the pale floor from 300 studs).
+- Capture trap from that pass: after hours of pushes and Play sessions Studio held 4.5 GB private on his 6 GB machine and
+  stalled for 0.6 to 1.9 s during takes; a recorder at 75% size with two JPEG threads and closing every browser tab gave
+  clean takes again. The fix that lasts is a save and a Studio restart, which is his call.
 
 ## Reference index
 
