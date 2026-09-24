@@ -658,6 +658,26 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   every 0.5 s (first capture median 27.9 ms). Memory: after about 8 Play sessions Studio held 5.85 GB private on the 6 GB machine
   and takes froze for 0.3 to 1.8 s (one ran 5 frames in 3.8 s); a frozen client also sends its hits late and the server refuses
   them. Ask him to save and restart Studio before the final takes instead of recording through the thrash.
+- 2026-09-24 (later): "M1's must lock the player in place for rotation by the way and movement. Also the vfx and animation for
+  the water spear rush needs to be more dramatic and flashier, for animations keep in note that these types of moves need a lot of
+  motion, since the character isn't moving or utilizing it's body as much, animation utilizes the entire body." His picks: the
+  laser locks too ("shots just face where you are looking at not where your cursor is"), spinning slash + deep lunges + a bigger
+  windup coil + "the move just general moves farther, make this animation matches the new distance", water afterimages + hit stop
+  on hits + bigger arcs and ground spray, about 2.2 s; then "you may close my playtest whenever you want". Built on the MOVE rung:
+  `Fx.Echo` (six R6 body parts, SmoothPlastic 0.55 in 70/170/255 with a pale outline Highlight on the echo model, never on the
+  rig) fading over 0.24 to 0.3 s, one per slash, one every 0.07 s through the spin and two on the last slash; hit stop through
+  `Controller.hitStop` on the caster and a new `AstaHitbox.hold(victim, dur)` (Asta controller, dummy rig, or registered holders
+  such as the water animator) with 0.07/0.05/0.06/0.13 s, viewers get the same from the Hit remote, and the server delays the
+  launch by the last stop (`Combat.land` option `hang`) so the target hangs before it flies; slash arcs 1.3 to 1.45x with a
+  second layered arc; three flat swipes round the waist in the spin; a water spray under each step. Captures taught: (1) ForceField
+  afterimages drew flat, solid light-blue blocks on the body (the look he rejected on Asta); translucent plastic plus an outline
+  reads as water bodies, and an echo that overlaps the body tints it blue. (2) Two crescent swipes rotated 45 and -135 degrees
+  make a circle, not an X: from his rear camera it was a screen-filling ring over the target. An X is two straight streaks
+  (the kit's WaterSlash 15379124700) at +45 and -45. (3) A caustic flipbook in white at LightEmission 0.9 reads as white clouds;
+  pale to cyan at 0.7 reads as ripples. Verified in Play: 6/4/4/5 + launch with the hit stops (hits arrive 0.70, 0.98, 1.35,
+  1.78 s), block = 0 damage, parry on slash 1 = caster stun 1.00 s, sabers gone by 1.31 s, dodge = no hit request, M1 = body snaps
+  to the camera yaw and walk 0 and AutoRotate off for the click. First cast of a fresh session: median 22.2 ms, p95 26.2, worst
+  30.2. The shield with the new layers: median 29.9 ms, p95 34.1, worst 36.0.
 
 ## Reference index
 

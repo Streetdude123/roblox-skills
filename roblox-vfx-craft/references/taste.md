@@ -210,6 +210,14 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
   (caustic flipbook sprites locked to two counter-turning shells), the space around it (8 spiral Trails from the ground to the top,
   orbiting bubbles and glints) and the ground (mist, a splash ring every 0.5 s). Pale caustics on a pale shell disappear: the shell
   needs a deeper blue and a dark caustic layer for contrast.
+- "the vfx and animation for the water spear rush needs to be more dramatic and flashier" (2026-09-24). His picks: water
+  afterimages, hit stop on hits, bigger arcs and ground spray (not stronger kicks or a flash). Flashier for him means more
+  layers that trace the body's motion (afterimages, a ring round the spin, spray under the steps, a frozen instant on each
+  hit), not a bigger single burst: a finisher burst that fills the frame hides the launch. Afterimages must read as water, not
+  as solid blocks.
+- "M1's must lock the player in place for rotation by the way and movement", "shots just face where you are looking at not
+  where your cursor is" (2026-09-24). Casting attacks root the caster: no walking, no turning, and shots follow the camera
+  centre, never the cursor.
 
 ## Related feedback on animation
 
