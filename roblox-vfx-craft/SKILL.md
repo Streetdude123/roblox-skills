@@ -625,6 +625,24 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   frame (median 27.5 against about 21 without). Verified: dummy pushed 12.5 studs with 5 damage and a stun, a 10-damage test hit
   returned nil and the caster kept 100 HP, walk 8 then 16 at 3.04 s, the key again dropped it at once, clicks did nothing while it
   was up. The shield clip is a 3 s held pose: frozen 0, still 0, rest 69.7%, contrast 15.1 (the one-shot targets do not fit a hold).
+- 2026-09-24 (later): "Create water spear rush now please" (picks: key 2, dash + spear volley, 3 x 4 + 10 launch, block/dodge
+  work and a parry stuns the caster 1 s). Dash up to 24 studs at the target in the aim cone (stops 4 studs short; 24 straight
+  ahead without one), three `Fx.Spear` lances (tapered FaceCamera beams Back to Tip, Width1 0.04) that follow the body and aim at
+  the target, three stabs that fly into it, then an `Fx.SpearBig` (k 2.2) that forms over the right shoulder and launches it.
+  What the captures taught: (1) from the player's rear camera, spears at shoulder height hide behind the body and his companion
+  accessory; slots at 2.2 up and 2.8 out (and 3 up, 1.6 back for the top one) read. (2) A spear that points away from the camera
+  reads as a vertical light column; the big spear sits at (2, 2.4, 2.4) so it aims about 20 degrees down, not 34. (3) After the
+  dash the spears aim at the target only while it is inside the hit area (6.5 studs of the point ahead); otherwise they strike the
+  point ahead, or a dodged target still gets a splash that looks like a hit. (4) The server sees a dashing caster up to 21 studs
+  behind its real place, so a rush hit is checked against the dash path (distance from the target to the segment from the cast
+  origin along the cast direction), and the launch goes along the cast direction. (5) The launch did not fly: the dummy rose 2.2
+  studs and moved 1 to 4 studs/s forward because the stab's `Combat.slide` (a plane `LinearVelocity`, MaxForce 1e6, alive for the
+  whole hurt clip) still held it. `Combat.knock` now ends a running slide first, and the client ragdoll handler turns off every
+  `LinearVelocity` on the root before `Impulse.push`. After the fix the dummy flew 17.7 studs back and 1.7 up. Any move that
+  slides and then launches needs this. Verified in Play: 4/4/4/10 with stuns 0.5/0.5/0.5/0.6; block = 4 hits, 0 damage, no launch;
+  parry on stab 1 = caster stun 1.00 s, the other hits never sent, spears dissolve; dodge (i-frames and 14 studs aside) = no hit
+  request; no target = 23.9 studs. First cast frames: median 18.9 to 22.1 ms, p95 24.3 to 27.8, worst 30 to 34 (one take 85
+  with the recorder at scale 0.75).
 
 ## Reference index
 

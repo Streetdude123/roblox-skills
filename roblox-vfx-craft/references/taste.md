@@ -189,6 +189,11 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
   Look: a translucent water sphere (SmoothPlastic 0.74 with a Neon glow shell and a white outline) with two thin torrent rings
   spinning round it like a gyroscope, foam and blobs on its surface, a splash on the side a blocked hit comes from, and a burst at
   the end. A large foam-ring flipbook sprite at the size of the sphere reads as smoke plumes at its edges; do not use it as a rim.
+- "Create water spear rush now please" (2026-09-24). From his list: "Dashes toward an enemy while creating several water spears.
+  The final hit launches the opponent." Picks: key 2, a dash with a spear volley (three stabs, then one big spear), 4 + 4 + 4 then
+  10 with a ragdoll launch, block stops each hit, a dash dodges, a parry stops the rush and stuns the caster 1 s. Taste rules
+  from the captures: the spears must read from his own rear camera (above the shoulders, clear of his companion accessory);
+  a launch must visibly fly (the dummy travels about 18 studs); a miss must look like a miss (no splash on a target that dodged).
 
 ## Related feedback on animation
 
