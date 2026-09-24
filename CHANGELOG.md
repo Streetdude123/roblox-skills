@@ -5,6 +5,19 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-24 — Smooth ragdoll, Deepwoken parry, Bull Leap, grounded dash (user-authorized)
+
+- `roblox-r6-animation`: feedback log (`references/project-style.md`) gains the ragdoll smoothness entry (the attacker's
+  client runs a ragdolled dummy's physics; a server-run body stepped every 3 to 5 frames) and the 2026-09-24 entry: a
+  Deepwoken guard (parry window and block from the press, parry only while stunned after a 0.2 s shaky time, the queued
+  block that must re-wait an extended stun), a grounded dash (foot contacts of 2 to 3 frames at 55 studs/s, the `carry`
+  swing capped at 0.4 studs, a two-key skid, blade drag angles, a square trailing grip) and Bull Leap (R6 two-hand limits,
+  the `lift` root curve, late landing feet), with the measured checks and the camera-lock trap for side takes.
+- `roblox-vfx-craft`: feedback log (`SKILL.md`) and `references/taste.md` gain the ragdoll entry and the Bull Leap and dash
+  VFX: the reference read, the floor-material crater with an open rear arc, flat slabs, no smear during root travel, kit
+  `Wind1` rings instead of view-axis streaks, floor-tinted dust, and how to judge a fast effect (emitter TimeScale 0.08 or
+  video) with the frame numbers.
+
 ## 2026-09-22 (night) — Weapons on R6 and the Asta anti-magic vocabulary (user-authorized)
 
 - `roblox-r6-animation`: new `references/weapons.md` from the Asta greatsword kit (draw from the grimoire,

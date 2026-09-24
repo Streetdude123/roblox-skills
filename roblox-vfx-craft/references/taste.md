@@ -130,6 +130,16 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
   effects before building and name them (the arcs, the streaks, the flare, the spikes), then build those in his palette.
   An effect list chosen from the kit's habits instead of the reference read as "not dramatic" for a strong move.
   "don't include the bull": copy the effects of a panel, not its creatures or props.
+- "also the ragdoll is really laggy and not smooth which is why it also doesn't feel clean either" (2026-09-23): a hit
+  feels dirty when the body it launches steps. A server-simulated dummy reached the attacker's client every 3 to 5 frames;
+  the attacker's client now runs the dummy's flight, and he said "issue fixed". Smooth motion of the target is part of how
+  clean a hit feels, the same as the effects.
+- "I sent a reference for bull leap if you want to look at it" and "don't forget to make bull leap VFX too" (2026-09-24):
+  he picked "Reference + Asta" over "Asta palette only": the reference's broken floor, white shockwave and tan dust column,
+  with his black-red flame, red crack and embers on top. The cracked floor is the floor he stands on (its own material and
+  colour), not a generic rock. He picked "kick only" for the camera: no impact frame on a move even when the reference has one.
+- "better realistic animations and better vfx to the dashing" (2026-09-24): realistic dust takes the floor's colour; dark
+  generic dust on a pale floor reads as soot.
 
 ## Related feedback on animation
 

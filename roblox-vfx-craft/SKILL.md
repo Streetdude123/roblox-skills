@@ -469,6 +469,38 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
 
 - 2026-09-23 (ult landing): "the ultimate is WAYY Too hard to land" with "armor" in all phases, "Wider impact, Faster fall, Aim assist". The slam fall (a cinematic slow hang he asked for) now runs 0.42 to 0.5x instead of 0.12 to 0.18x through the hang: the impact lands 1.19 s after the press instead of 2.45 s, and the cutscene shots, keyed to the clip events, still read (a low side shot looking up at the tilting blade at clip 0.5). Gameplay needs beat a hang: a cinematic beat that gives opponents 2.4 s to walk out of a line is too long for a move that must land.
 
+- 2026-09-23 (ragdoll smoothness): "also the ragdoll is really laggy and not smooth which is why it also doesn't feel clean
+  either", then "issue fixed". The server ran the ragdolled dummy's physics, so the attacker's client saw a new position only
+  every 3 to 5 frames. Now the server gives the dummy's physics to the attacking player one Heartbeat after the joint swap,
+  that client applies the impulse and runs the flight, and the server takes it back at the end. The dummy moves on every
+  frame on the attacker's screen; the launch comes about 1.0 s after the fourth click (0.76 s before) and flies 12 to 16
+  studs. He judges "clean" by the motion he sees: a body that the viewer watches in flight must be simulated on that
+  viewer's client, or it steps at the replication rate. Full entry: the animation skill's project-style.md.
+
+- 2026-09-24 (Asta Bull Leap and dash, MOVE rung): "we'll be creating a second ability wired to keybind "2" that allows the
+  player to leap into the air and slam the sword into the ground, cracking the floor underneath them", "I sent a reference for
+  bull leap if you want to look at it", "don't forget to make bull leap VFX too", "Also add better realistic animations and
+  better vfx to the dashing please", "you'll be recording video's by the way so be prepared". His picks: camera kick only (no
+  impact frame), "Reference + Asta" VFX, a grounded burst dash. The reference (Asta vs Vetto, 9.6 s at 10 fps, read frame by
+  frame): the ground breaks into big blocks along a fissure, a black jagged impact frame, a pale translucent shockwave disc and
+  rings seen from above, then a tan dust column. Built: rock slabs in the floor's own material and colour (raycast; Terrain
+  colour from `GetMaterialColor`) tilted outward round the blade's entry point 3.5 ahead, a fissure of slab pairs along the
+  facing, 14 thrown chunks on a scripted arc that land and sink, pale `Shock` rings (4.5 then 7), the tan `LeapColumn` and
+  `LeapBase` dust, `Pebbles`, the red `Crack` and `BigCrack`, a core red flash, embers, ash and the blade's black-red flame; kick
+  0.85, hit stop 0.12. Dash: pale kit `Wind1` rings at the push and each step, floor-tinted dust from every contact, a dust wake
+  every 0.035 s through the skid, the blade's scrape sparks in the drag. Measured in Play: leap median 19.5 to 21.2 ms, worst
+  29 to 35 ms on repeat casts and 47 ms on the first cast (164 ms once with the recorder running on a machine with 450 MB free);
+  dash median 16.5 to 19.8 ms, worst 21 to 37 ms.
+- Traps from that build: (1) the crater rocks behind the player stood between the player's camera and the body; leave the rear
+  arc (60 degrees) open. (2) Cubes read as blocks; flat slabs (height 0.35 to 0.55 of the width) read as broken floor. (3) The
+  blade's world-space smear trail on a body moving 40 to 60 studs/s through the air drew a huge red-black plane over the frame;
+  no trail during root travel. (4) Wind streak beams along a straight dash lie on the camera's view axis and vanish; the kit's
+  `Wind1` sprites (VelocityPerpendicular) flying backward face the camera and read; `Wind1` has a black background, so tint it
+  pale at LightEmission 1 only. (5) The `CutLine` "Pale" layer is C.Pale (255/96/96), a pink red, not white. (6) Dark DIRT dust
+  (62/56/52) on his pale marble read as soot; sample the floor colour and lerp 35% toward grey-brown. (7) Captures at TimeScale
+  30 come 3 to 10 s after a hold and show only the first 0.1 s of an effect; to judge a template, clone it and emit with the
+  emitter TimeScale at 0.08, or record a video.
+
 ## Reference index
 
 - [taste.md](references/taste.md) - his taste in full, why each rule exists, and the identity rule for stands.
