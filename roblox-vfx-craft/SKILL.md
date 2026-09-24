@@ -435,6 +435,38 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   studs: 2.5 at walk speed, about 14 at a 90 stud/s dash; feed the body's velocity into the spring above 20 studs/s (full at
   60) and raise f to 4 during a dash so the walk float stays as he liked it.
 
+- 2026-09-23 (Asta Bull Thrust, MOVE rung): "add vfx to bull thrust please", his picks "Trail, bursts, shockwave" and
+  "No camera effect", then "vfx for thrust needs to be more dramatic, it's a strong move okay?" and, with the manga
+  panel of Bull Thrust, "don't include the bull though, look at your reference, see the vfx?". The panel's effects:
+  big curved wind arcs spiralling round the thrust axis and meeting at the tip, straight streaks along the path, a white
+  flare at the tip on contact and heavy black jagged spikes out of the impact. Built from his kit: brace = red `Crack`
+  under the back foot, grit, the blade's flames and the grimoire straining; burst = a black-over-red `Shock` ring 1.5
+  behind the launch, a red-only `Shock` 3.4 under it, red `Crack` 1.3 and `BigCrack` Impact1 red over Impact2 black
+  (0.6, Top), dust 12, rubble 8, ash 12, two slash crescents (radius 5.5 and 6) wrapping back round him, a `Tornado`
+  vortex (Windspin1/2/4/5 only, black LE 0 under red LE 0.8) with its Y axis on the thrust line at the tip, a red-only
+  forward `Shock` ring ahead of the tip, a pale tip flash 5; flight = every 0.045 s a slash crescent in the plane
+  across the thrust axis whose middle turns 75 degrees per tick (a drill tunnel of crescents along the path), two
+  cut-line streaks 1.8 studs to each side at 0.4 width, a pale tip flash 2.4, the tip vortex every second tick, an echo
+  every third, dust under him; hit = pale flash 9, `Hit` black 2.4 under pale 1.9, `BigCrack` Impact1 red over Impact2
+  black (0.9, Front), `SlashImpact` 1.8 with 10 + 10 specs, a red ring, embers 44, ash 16. No kick. Measured: thrust
+  frames median 17.0 to 18.4 ms against an idle 16.9 to 17.5 (the worst frames matched Studio's own idle stalls).
+- Traps from that build: a black-under-red `Shock` ring facing the camera draws as a solid black disc in its first
+  frames and hid the body (use a red-only additive ring for anything between the lens and the body); a camera-facing
+  cut-line beam along the view axis (the player's camera behind a straight dash) degenerates into a huge dark wedge
+  over the lower screen, so keep path streaks off the centre line and thin; a clip hold (`AstaHoldAt`) freezes the
+  body but not a spawn loop, so judge a moving trail from a timed capture at TimeScale 20 instead.
+- 2026-09-23 (other players' view, team test): "the animation and VFX is visually broken for other players ... especially
+  the ultimate where the sword grows not upwards", "Observe my teamtest right now, when i die everything get's buggy",
+  "make sure camera resets when you're hit on the ult", "ult can be interupted", a screenshot of his friend's screen
+  "after having his ult interuppted" (bars, blur and the cutscene camera stuck), "Also my friend can't attack or dash",
+  "it happens after a ragdoll". Causes: the cutscene released the camera only on its last event, so an interrupt left
+  the camera, bars and depth of field; a controller was never stopped on death (a deferred AncestryChanged is dropped
+  when the body is destroyed), so a dead body's burning grimoire stayed and its render step errored every frame; the
+  stun end time was the server's os.clock read against each client's own clock. Now any non-ult action that interrupts
+  the ult runs the full cutscene stop on that client, and the server's cancel sets an attribute every client listens to.
+  He chose: a hit in any phase cancels the ult with the full 30 s cooldown, and the eruption pushes everyone within
+  26 studs away with the ult's knockback (70 out, 100 up).
+
 ## Reference index
 
 - [taste.md](references/taste.md) - his taste in full, why each rule exists, and the identity rule for stands.

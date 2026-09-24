@@ -126,6 +126,11 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
 - The same day he set standing code rules: UI and VFX as real instance trees, no comments, few guards, ask
   before assuming, nothing extra. See the animation skill's project-style.md and his memory.
 
+- "look at your reference, see the vfx?" (Bull Thrust, 2026-09-23): when he gives or approves a reference, read its
+  effects before building and name them (the arcs, the streaks, the flare, the spikes), then build those in his palette.
+  An effect list chosen from the kit's habits instead of the reference read as "not dramatic" for a strong move.
+  "don't include the bull": copy the effects of a panel, not its creatures or props.
+
 ## Related feedback on animation
 
 His animation feedback lives in the `roblox-r6-animation` skill. The one that crosses over: the
