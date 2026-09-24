@@ -545,6 +545,10 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   from the player's camera; keep the muzzle to chunks, a ring and drops. (8) A beam and an attachment with the same name under one
   part: indexing by name returned the attachment. Measured at normal speed: combo, laser, dash, fade out and manifest in one run
   median 16.6 ms, p95 17.9, worst 26.9 ms; first casts of a session hitched up to 823 ms while the kit textures loaded.
+- 2026-09-24 (night): "Record videos from now on please, until i say stop recording videos, please record a video for the water
+  vfx". Until he says stop, every finished or changed effect goes out as an MP4 (the recording method is in the animation skill's
+  pipeline.md, "Video of a clip for Lepy"). The water video: a close side shot of the manifest and one bubble, a wide side shot of
+  the full combo, and a high rear shot; 23 s, 20.5 to 21.3 fps, no dropped frames after a Play restart and a warm-up run.
 
 ## Reference index
 

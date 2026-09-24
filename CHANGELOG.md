@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-24 (night, later) — Video rule changed; Water Mage video notes (user-authorized)
+
+- `roblox-r6-animation`: `references/pipeline.md` records his new rule ("Record videos from now on please, until i say stop recording videos") and adds step 8 (memory pressure and a warm-up run before takes, hide the cursor, turns that follow the camera, a high rear camera past his accessory); `references/project-style.md` logs the sentence.
+- `roblox-vfx-craft`: feedback log (`SKILL.md`) logs the sentence and the water video.
+
 ## 2026-09-24 (night) — Water Mage kit: water VFX, wand overlay clips (user-authorized)
 
 - `roblox-vfx-craft`: feedback log (`SKILL.md`) and `references/taste.md` gain the Water Mage entry: the water vocabulary built
