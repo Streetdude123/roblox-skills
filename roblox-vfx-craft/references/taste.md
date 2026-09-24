@@ -140,6 +140,10 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
   colour), not a generic rock. He picked "kick only" for the camera: no impact frame on a move even when the reference has one.
 - "better realistic animations and better vfx to the dashing" (2026-09-24): realistic dust takes the floor's colour; dark
   generic dust on a pale floor reads as soot.
+- "more vfx for when an attack is blocked and parried please" and "change guardbreak too" (2026-09-24): he picked white-gold
+  metal sparks with Asta's red under them for a blade clash, not the all-red palette; a parry is a big clash without a camera
+  change; a block is a smaller clang plus a brace at the feet. Kit star sprites at full size read as a sparkle field; keep
+  clash glints few and small.
 
 ## Related feedback on animation
 

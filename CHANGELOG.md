@@ -5,6 +5,13 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-24 (later) — Block, parry and guard break clash VFX (user-authorized)
+
+- `roblox-vfx-craft`: feedback log (`SKILL.md`) and `references/taste.md` gain the guard clash entry: white-gold metal sparks
+  with Asta's red, new `Clash` and `ShieldBreak` templates from the kit, the layer sizes and counts per kind, the first-cast
+  frame times, and five traps (full-size kit stars read as a sparkle field, additive gold blooming to white, red shards
+  turning pink, a ring that lay flat, a puppet spawned before the server saw the move).
+
 ## 2026-09-24 — Smooth ragdoll, Deepwoken parry, Bull Leap, grounded dash (user-authorized)
 
 - `roblox-r6-animation`: feedback log (`references/project-style.md`) gains the ragdoll smoothness entry (the attacker's

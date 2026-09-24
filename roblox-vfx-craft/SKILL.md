@@ -500,6 +500,25 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   (62/56/52) on his pale marble read as soot; sample the floor colour and lerp 35% toward grey-brown. (7) Captures at TimeScale
   30 come 3 to 10 s after a hold and show only the first 0.1 s of an effect; to judge a template, clone it and emit with the
   emitter TimeScale at 0.08, or record a video.
+- 2026-09-24 (Asta guard, MOVE rung): "more vfx for when an attack is blocked and parried please", then mid-build "change
+  guardbreak too". His picks: "Big clash" for the parry (no camera change), "Clang + brace" for the block, white-gold sparks
+  with Asta's red. New templates `Assets.Vfx.Clash` (from the kit's `vfx pack` Explosion: `Ring` = the quick Shockwave, `Streaks`
+  = Star, `Glints` = blue star 1, `Shards`; from `Shiny-01`: `Star` = Lines1, `Core`) and `Assets.Vfx.ShieldBreak` (from
+  `Shield-Break-01`: `Ring`, `Bits`, `Chips`), built by `Asta/ClashTemplates.lua`. The contact point is 2.3 studs up the
+  defender's blade. Parry: gold flash 5, star lines 6 at 0.7 (life 0.1 to 0.18, random rotation), gold ring 0.32, streaks 20 at
+  0.3 (speed 40 to 90), glints 4 at 0.2, a gold-to-red `Shock` that faces the attacker (the template's up along the look:
+  `cf * Angles(-90, 0, 0)`), `SlashImpact` gold to red, embers 34, both blades' flame, freeze 0.15 s, kick 0.5. Block: flash 2.8,
+  star 4 at 0.45, ring 0.18, streaks 10 at 0.25, gold `Hit` 0.8, embers 12, brace dust at the defender's feet (floor colour 60%
+  toward grey-brown) with pebbles, kick 0.18 and 0.1. Break: the clash at 0.6/0.3, `ShieldBreak` ring 1 + bits 30 + chips 20 at
+  1.4, red shards 10 at 0.2 (LE 0.6), the red-black `BigCrack`, embers 40, ash 18, dust, full blade flare, kick 0.6 and 0.25.
+  Measured first casts: parry median 16.4 ms worst 25; break median 16.7 worst 22; server results parry and break as scheduled.
+- Traps from that build: (1) at their own sizes the explosion's `Star` and `blue star 1` sprites and the Shiny lines filled the
+  frame with white four-point stars (the sparkle look he rejected on the stand); streaks at 0.25 to 0.3 with speed 40 to 90 and
+  only a few glints at 0.2 read as metal sparks. (2) Additive gold at LE 1 on his bright arena blooms to white; LE 0.7 with a deep
+  gold second colour (255/150/40) keeps it gold. (3) Red `Shards` at LE 1 and scale 0.6 drew 10-stud pink bars; red light on a
+  pale scene turns pink, so keep red layers at LE 0.6 and small. (4) The old parry "ring facing the attacker" passed
+  `cf * Angles(90)` into `Burst.ring`, which adds its own 90: the ring lay flat. (5) A puppet made in the same call that moved
+  the player spawned at the old position; wait until the server sees the move.
 
 ## Reference index
 
