@@ -569,6 +569,24 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   (4) Under memory pressure (450 to 600 MB free) takes at recorder scale 0.75 dropped up to 175 frames and missed the start;
   `-scale 0.6 -quality 78` with a 6.5 s lead gave 23.7 fps and 0 drops. (5) After many Play restarts the MCP start timed out and
   "Start play hasn't finished yet" came back; an F5 key press started Play.
+- 2026-09-24 (later): "Laser doesn't look natural like the bubbles ... anime style ... references from black clover and demon
+  slayer", then "No, torrent only" and "sea dragon roar should be made as first ability". Built `WaterVfxTorrent.lua`: a chain of
+  12 Beam segments per path over 5 paths (a centre path, a wavy core path, 3 helix strands) and 9 layers (deep navy shade, a
+  cyan ribbon glow, a solid blue base, cyan flow stripes, a white streak sheen, a 0.45 white core, two streak strands, a white
+  stroke), 108 beams and 65 attachments in a real template (`Fx.Torrent`). The laser and the dragon body both drive it with nodes
+  {position, distance, width scale, alpha}. Sea Dragon's Roar = a Toolbox dragon head (1513601847) at 3x as water, a homing
+  flight at 85 studs/s, a serpentine sway, the torrent body resampled from the head's path history, a crash splash with the tail
+  pouring in. Traps: (1) A chain of `FaceCamera` beams makes wedge gaps and overlaps at every joint, because the engine turns each
+  segment as a whole; set `FaceCamera = false` and write each joint attachment as `CFrame.fromMatrix(p, tangent, tangent:Cross(eye
+  - p).Unit)` every frame, so neighbours share one edge. Stacked layers still show a one pixel line at joints; keep the darkest layer
+  near 0.45. (2) Seen from behind, a wavy centre path turns camera-facing beams into shards; keep the laser's thick body straight
+  and put the wave in the thin core and strands. (3) Curves: `CurveSize0 = CurveSize1 = length / 3` with each attachment's X axis
+  on the path tangent gives a smooth chain. (4) `Stretch` texture mode with a whole number of repeats per segment keeps the stripes
+  continuous. (5) A MeshPart head from the Toolbox faces its local -X or +X; check with a still capture (this one needed
+  `CFrame.Angles(0, pi/2, 0)`). (6) The `TimeScale` attribute multiplies durations (5 = five times slower); a scale change during a
+  cast jumps any clock written as `elapsed / Tw.S()`. (7) A capture with no camera arguments returned the same cached image four
+  times in Play; always pass camera arguments that differ. (8) Two takes in one Play session paged the 6 GB machine (2.0 and 2.5 s
+  stalls, 94 dropped frames); the first take after a fresh Play start was clean (0 drops, worst game frame 39.6 ms).
 
 ## Reference index
 

@@ -157,6 +157,17 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
   an ambient layer in every frame, foreground depth, a rim light on the body, cel textures, and few repeated shapes. His picks for
   the water: a flash and a stronger kick on the laser (no impact frame, no world darkening, no speed lines), deep blue with a white
   core and white foam, an ambient layer only while casting, and a water trail on the dash. Never copy a reference's text cards.
+- "Laser doesn't look natural like the bubbles it doesn't look as good, anime style though like get references from black
+  clover and demon slayer on the internet" (2026-09-24). Straight stacked beams read as a light bar, not water. What reads as
+  anime water: one thick body in deep navy and blue with flow stripes scrolling along it (Demon Slayer bands), width surges that
+  travel along the stream, a thin wavy white core instead of a flat white bar, white spiral strokes around the body, and water
+  blobs and foam curls streaming along and peeling off (the same flipbook sprites that make the bubbles look natural). Asked if
+  the laser should get a dragon head: "No, torrent only".
+- "Oh yeah sea dragon roar should be made as first ability" (2026-09-24). His picks: a homing curve toward the target under the
+  crosshair, Bull Thrust numbers (12 damage, knockback and ragdoll, 10 s cooldown, breaks a block), a flash and a camera kick at
+  the launch and the hit (the camera stays his), and a free model dragon head turned into water. The water look that won the
+  comparison: SmoothPlastic blue at 0.35, a Neon cyan shell 1.07x at 0.82 and a white outline; Glass with a Highlight fill reads
+  flat and dark, ForceField reads noisy.
 
 ## Related feedback on animation
 
