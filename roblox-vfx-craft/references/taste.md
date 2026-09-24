@@ -194,6 +194,22 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
   10 with a ragdoll launch, block stops each hit, a dash dodges, a parry stops the rush and stuns the caster 1 s. Taste rules
   from the captures: the spears must read from his own rear camera (above the shoulders, clear of his companion accessory);
   a launch must visibly fly (the dummy travels about 18 studs); a miss must look like a miss (no splash on a target that dodged).
+- "i kind of want water spear rush to function like the one star mantra ice blade in deepwoken, but more flashier and cooler, just
+  search it up" (2026-09-24). He names a reference from another game and expects me to look it up: read the wiki rules and watch the
+  GIF before asking. Deepwoken's Ice Blade: two ice sabers, a 0.5 s windup, a rapid flurry of 4 forward slashes (first hit hardest),
+  a 10 s cooldown, a parry cancels it, a right-click after any slash cancels it, and the sabers shatter into shards at the end.
+  His picks: flurry only (no dash, about 6 studs of steps), shatter plus launch, a water saber over the wand plus one in the left
+  hand, the right-click cancel, the first hit hardest (6, 4, 4, 5). "Flashier" meant: layered water blades, a water swipe sprite in
+  every slash plane, a crossed-sabers glint, a crossed water X on the last slash, and a shard burst. Traps: full-blade saber trails
+  with FaceCamera off draw flat pale panels in the player's camera, so trail only the outer half of the blade with a streak texture;
+  a dark trail under a fast blade draws big dark smears; a Grid8x8 crescent flipbook starts as a full white disc, which reads as a
+  10-stud white blob.
+- "i don't like the water shield vfx's its just so basic and just has too much space as in not much vfx" (2026-09-24). Picks: spiral
+  water streams, orbiting drops and bubbles, mist and splash pulses, and the sphere kept with moving ripples, a brighter rim and a
+  second shell turning the other way. A single translucent ball with two rings and edge foam read as empty; fill the surface itself
+  (caustic flipbook sprites locked to two counter-turning shells), the space around it (8 spiral Trails from the ground to the top,
+  orbiting bubbles and glints) and the ground (mist, a splash ring every 0.5 s). Pale caustics on a pale shell disappear: the shell
+  needs a deeper blue and a dark caustic layer for contrast.
 
 ## Related feedback on animation
 

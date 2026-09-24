@@ -643,6 +643,21 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   parry on stab 1 = caster stun 1.00 s, the other hits never sent, spears dissolve; dodge (i-frames and 14 studs aside) = no hit
   request; no target = 23.9 studs. First cast frames: median 18.9 to 22.1 ms, p95 24.3 to 27.8, worst 30 to 34 (one take 85
   with the recorder at scale 0.75).
+- 2026-09-24 (later): "i kind of want water spear rush to function like the one star mantra ice blade in deepwoken, but more
+  flashier and cooler, just search it up". Looked it up (wiki rules + the wiki GIF laid out as screenshots in the built-in browser,
+  because image pages block injected scripts). Rebuilt as a flurry: `Fx.Saber` (4 FaceCamera beam layers in two segments, a blade
+  that holds its width then tapers; drops, foam and glints on the body; a streak Trail on the outer half and a white edge Trail
+  near the tip), placed each PreRender from the hand along the arm's front vector (the right one from the wand grip along the
+  wand), grown over 0.36 s; `Fx.Slash` (the kit's water swipe crescent + a thin water streak + a dark shade, VelocityPerpendicular
+  sprites laid in each slash plane); `Fx.Cross` (two crossed water swipes on the last slash, a glint at the crossed blades);
+  `Fx.Shatter` (the kit's shard flipbooks, splash blobs, mist, drops, four bursts along each blade). Three rounds of captures
+  from his rear camera: round 1 showed flat trail panels and dark smears, round 2 a white disc from the Grid8x8 crescent, round 3
+  read clean. Verified: 6/4/4/5 + ragdoll, right-click cancel (server stops the rush and restores walk 16 at once), dodge = no hit
+  request and no splash. Also "i don't like the water shield vfx's its just so basic and just has too much space": the shield now
+  has two counter-turning caustic shells, 8 spiral stream Trails, orbiting bubbles, drops and glints, base mist and a splash pulse
+  every 0.5 s (first capture median 27.9 ms). Memory: after about 8 Play sessions Studio held 5.85 GB private on the 6 GB machine
+  and takes froze for 0.3 to 1.8 s (one ran 5 frames in 3.8 s); a frozen client also sends its hits late and the server refuses
+  them. Ask him to save and restart Studio before the final takes instead of recording through the thrash.
 
 ## Reference index
 
