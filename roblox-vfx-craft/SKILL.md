@@ -598,6 +598,15 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   Head 4x, body 48 studs at 1.15 width. A head 13.5 studs up left a normal player camera's frame during the coil; 9.5 fits. Frames:
   first Roar of a fresh session with the recorder on, median 22.6 ms, p95 28.5, worst 35.2. In slow motion the flight once ran at
   full speed while the form was slowed; judge the flight at real time.
+- 2026-09-24 (later): "Make sure it's blockable and parryable", then "a bit too much, tone it down" (picks: dragon size a little
+  smaller, cast about 1.6 s). The Roar hit no longer passes `breaks`; verified with a server probe Script (made in Edit mode,
+  armed by a workspace attribute, calling the live `Guard.raise` on a dummy that faces the caster) and a client listener on
+  `Asta.Remotes.Guard`: guard up 1.02 s after the cast = "block" (0 damage, no stun, guard kept); up at 1.87 s = "parry" at 1.95 s
+  (0 damage, the caster not stunned). The probe's listeners must start at the cast, not at the arming call: two MCP calls can be 8 s
+  apart. Toned values: head 3x, body 36 at 0.88 width, neck 3.2, spiral radius 3.2 to 4.6 and top +7.4, rear 4.5 back and 8.5 up,
+  the rise ends 0.28 s before the launch, roar burst 2.4 and 1.6, hit radius 4.5; clip 1.6 s (launch 0.9, lock 1.2): rest 36.2%,
+  contrast 5.0, stops 1.61/s, unison 4.38/s. Play: rooted 1.21 s, hit 1.59 s after the cast; first Roar of a fresh session median
+  20.6 ms, p95 28.1, worst 33.5, 0 dropped frames; the whole coil fits a normal camera.
 
 ## Reference index
 

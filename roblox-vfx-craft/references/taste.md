@@ -173,6 +173,11 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
   then 90), the camera stays his (a low rumble while it forms, hard kicks on the roar and the crash), a bigger dragon, a whirlpool
   at the feet and water rain after the crash; no sound yet. "Dramatic" on a move means build-up, a hero beat and a speed ramp,
   not a cutscene.
+- "Make sure it's blockable and parryable" and "I also think the sea dragon roar is a bit too much, tone it down" (2026-09-24,
+  right after the dramatic pass). An ability may break a guard only when he says so; the Roar now blocks like an M1 and a parry
+  cancels it. "Too much" was the size and the length, not the screen work: his picks were the dragon about 25% smaller and a
+  1.6 s cast (launch 0.9, rooted 1.2); the rumble, flashes, whirlpool, crash and rain stayed. When a first dramatic pass lands too
+  big, trim size and length first and ask before cutting the beats.
 
 ## Related feedback on animation
 
