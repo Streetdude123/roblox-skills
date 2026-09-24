@@ -178,6 +178,10 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
   cancels it. "Too much" was the size and the length, not the screen work: his picks were the dragon about 25% smaller and a
   1.6 s cast (launch 0.9, rooted 1.2); the rumble, flashes, whirlpool, crash and rain stayed. When a first dramatic pass lands too
   big, trim size and length first and ask before cutting the beats.
+- "Remove the rain at the impact please" and "And make sure players can dodge sea dragons roar too" (2026-09-24). An aftermath
+  layer (the rain) was one layer too many on a move. A homing move must stay dodgeable: his pick was that the dragon stops
+  homing 15 studs from the target and flies at the target's last position, so a late sidestep or dash makes it miss, and dash
+  i-frames still cancel the hit. Every attack he adds must answer block, parry and dodge.
 
 ## Related feedback on animation
 

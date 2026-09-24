@@ -607,6 +607,14 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   the rise ends 0.28 s before the launch, roar burst 2.4 and 1.6, hit radius 4.5; clip 1.6 s (launch 0.9, lock 1.2): rest 36.2%,
   contrast 5.0, stops 1.61/s, unison 4.38/s. Play: rooted 1.21 s, hit 1.59 s after the cast; first Roar of a fresh session median
   20.6 ms, p95 28.1, worst 33.5, 0 dropped frames; the whole coil fits a normal camera.
+- 2026-09-24 (later): "Remove the rain at the impact please", "make sure players can dodge sea dragons roar too" (pick: homing
+  stops near the target). `Fx.Rain` and its code are gone; `Config.Roar.Commit = 15` freezes the goal once the dragon is 15 studs
+  from it. A 1.9 s paging stall made a flight step jump past the dummy (no hit); the step is now capped at 0.1 s of travel, the hit
+  is sampled every 3 studs along the step, and a step that reaches the goal ends the flight there. Verified in Play (client-side
+  target moves, because the attacker's client decides the hit): no move = hit 12; a 9-stud sidestep when the dragon was 13 studs
+  away = miss (closest 10.6 studs, no damage); a sidestep at 30 studs = the dragon turned after it and hit; i-frames = no damage
+  although the dragon passed 3.8 studs away. Under paging, fixed server timings drift by seconds: trigger test events from the
+  client on the effect's real distance, not on a timer.
 
 ## Reference index
 
