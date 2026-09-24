@@ -615,6 +615,16 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   away = miss (closest 10.6 studs, no damage); a sidestep at 30 studs = the dragon turned after it and hit; i-frames = no damage
   although the dragon passed 3.8 studs away. Under paging, fixed server timings drift by seconds: trigger test events from the
   client on the effect's real distance, not on a timer.
+- 2026-09-24 (later): "Create aqua shield only please" (from his Water Knight moveset list). A shield that blocks every hit needs
+  one gate shared by all kits: `Combat.absorb(model, attacker)` in the Knight's Combat returns true while `ShieldUntil` (server
+  time) is ahead and stamps `ShieldHitFrom`/`ShieldHitAt` on the target; `strike()` calls it first and the Asta ult's `targets()`
+  checks it; `AstaHitbox.open` skips shielded targets so no attacker predicts a hit. The water client watches `ShieldHitAt` for the
+  splash. The push uses the existing paths: a dummy slides on the server (`Combat.land` slide 12), a player slides on its own
+  client through the hurt clip's root scaled by distance (the water Hit remote with kind "Shield"). Two `Fx.Torrent` rings as
+  closed circles (nodes on a tilted circle, `up` = the ring normal) make a spinning water gyroscope; the pair costs about 6 ms of
+  frame (median 27.5 against about 21 without). Verified: dummy pushed 12.5 studs with 5 damage and a stun, a 10-damage test hit
+  returned nil and the caster kept 100 HP, walk 8 then 16 at 3.04 s, the key again dropped it at once, clicks did nothing while it
+  was up. The shield clip is a 3 s held pose: frozen 0, still 0, rest 69.7%, contrast 15.1 (the one-shot targets do not fit a hold).
 
 ## Reference index
 

@@ -182,6 +182,13 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
   layer (the rain) was one layer too many on a move. A homing move must stay dodgeable: his pick was that the dragon stops
   homing 15 studs from the target and flies at the target's last position, so a late sidestep or dash makes it miss, and dash
   i-frames still cancel the hit. Every attack he adds must answer block, parry and dodge.
+- He sent a full "Water Knight Moveset" (Water Lance, Sea Dragon's Roar, Aqua Shield, Water Spear Rush, Valkyrie Armor ultimate)
+  and wrote "Create aqua shield only please" (2026-09-24). Build only the item he names from a list, and do not rearrange the rest
+  (the Roar stayed on key 1 although his list numbers it 2). Aqua Shield picks: key 3, 3 s with a slow walk and no attacks (the
+  key again drops it), blocks all hits from all sides, and anyone within 7 studs is pushed 12 studs with 5 damage once per shield.
+  Look: a translucent water sphere (SmoothPlastic 0.74 with a Neon glow shell and a white outline) with two thin torrent rings
+  spinning round it like a gyroscope, foam and blobs on its surface, a splash on the side a blocked hit comes from, and a burst at
+  the end. A large foam-ring flipbook sprite at the size of the sphere reads as smoke plumes at its edges; do not use it as a rim.
 
 ## Related feedback on animation
 
