@@ -467,6 +467,8 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   He chose: a hit in any phase cancels the ult with the full 30 s cooldown, and the eruption pushes everyone within
   26 studs away with the ult's knockback (70 out, 100 up).
 
+- 2026-09-23 (ult landing): "the ultimate is WAYY Too hard to land" with "armor" in all phases, "Wider impact, Faster fall, Aim assist". The slam fall (a cinematic slow hang he asked for) now runs 0.42 to 0.5x instead of 0.12 to 0.18x through the hang: the impact lands 1.19 s after the press instead of 2.45 s, and the cutscene shots, keyed to the clip events, still read (a low side shot looking up at the tilting blade at clip 0.5). Gameplay needs beat a hang: a cinematic beat that gives opponents 2.4 s to walk out of a line is too long for a move that must land.
+
 ## Reference index
 
 - [taste.md](references/taste.md) - his taste in full, why each rule exists, and the identity rule for stands.
