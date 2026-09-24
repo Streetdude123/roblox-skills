@@ -5,6 +5,17 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-24 (night) — Water Mage kit: water VFX, wand overlay clips (user-authorized)
+
+- `roblox-vfx-craft`: feedback log (`SKILL.md`) and `references/taste.md` gain the Water Mage entry: the water vocabulary built
+  from the kit's water sheets and waterfall beams (bubble, charge, splash, laser), his sentences on the wand, the water VFX,
+  the beam start ("cuts off here not smoothly") and the simple selector GUI, and eight traps (disabled template emitters never
+  emit from Rate, black-background beam textures need LightEmission 1, a beam must taper and fade in at its source, a glass
+  ball reads as a crystal, mist puffs read as smoke, curved long beams do not spiral, muzzle mist hides the beam, name clashes).
+- `roblox-r6-animation`: `references/project-style.md` gains the Water Mage entry: upper-body overlay clips over the walk with
+  root-space arm and head keys, the wand as a pointer joint, the checks, and three traps (an upside-down union, WeldConstraint
+  parts in Edit strips, a hold that overshoots an event).
+
 ## 2026-09-24 (later) — Block, parry and guard break clash VFX (user-authorized)
 
 - `roblox-vfx-craft`: feedback log (`SKILL.md`) and `references/taste.md` gain the guard clash entry: white-gold metal sparks

@@ -145,6 +145,13 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
   change; a block is a smaller clang plus a brace at the feet. Kit star sprites at full size read as a sparkle field; keep
   clash glints few and small.
 
+- "Make sure this water VFX looks really cool for me alright?" (Water Mage, 2026-09-24): a water mage's identity is bubbles, foam
+  and flowing water in blue with pale foam; a clean glass ball reads as a crystal, not water, until foam and swirling water sit on it.
+- "Don't really like how it cuts off here not smoothly" (2026-09-24, a screenshot of the laser start): he reads the edges of an
+  effect first. A beam must grow out of its source (taper and fade in), never start at full width.
+- "Make the gui super bareboens and insanely simple" (2026-09-24, the character select): plain buttons in a list, one text line,
+  no menu, no tweens, no corners.
+
 ## Related feedback on animation
 
 His animation feedback lives in the `roblox-r6-animation` skill. The one that crosses over: the

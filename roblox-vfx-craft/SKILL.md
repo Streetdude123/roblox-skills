@@ -519,6 +519,32 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   pale scene turns pink, so keep red layers at LE 0.6 and small. (4) The old parry "ring facing the attacker" passed
   `cf * Angles(90)` into `Burst.ring`, which adds its own 90: the ring lay flat. (5) A puppet made in the same call that moved
   the player spawned at the old position; wait until the server sees the move.
+- 2026-09-24 (Water Mage kit, MOVE rung, Grimoire Battlegrounds): "Okay we'll be making a new grimoire now, for water, find a free
+  model as placeholder", "Grab a free model wand from the toolbox", "The wand doesn't come out of the grimoire though, just like
+  manifest it through fading in by having it fade in as a neon white and then back to normal color before falling into the players
+  grip", "M1's will consist of range move of shooting out charged bubbles of water and a big blast of water functioning like a
+  laser. Make sure this water VFX looks really cool for me alright?", "also wand can't parry or block", then "wand is just like a
+  simple wooden stick wand" (an ornate staff scaled to wand size was swapped for the Toolbox "Crooked wand" 5602887281) and, with a
+  screenshot of the beam start, "Don't really like how it cuts off here not smoothly". The water vocabulary built from his kit's
+  `VFX :D` sheets and `Beams.Waterfall-01`: bubble = a Glass ball at 0.7 (no reflectance) with a Neon core at 0.3, a locked foam
+  ring sprite (Water_ripple 15011478368) on its outline, locked swirling water blobs (16664715772), a halo, sparkles, falling
+  drops and faint mist; charge = inward drops and water blobs from a 2.2-stud sphere shell plus a shrinking foam ring; splash =
+  the popping bubble flipbook (16924362907), the side-view crown (14816608240, FacingCameraWorldUp), blue clouds (16664772965),
+  a dark blob under it, 26 drops under gravity, a foam ring; laser = the waterfall body (12781828706), streaks (10365550877) and
+  ribbons (9541055154) as scrolling Beams plus a pale core, foam rings flying along it (VelocityPerpendicular, speed 90), drops
+  and mist off a body part the length of the beam, a continuous crown and spray where it hits, widths 5.5/4.4/6.2/1.1.
+- Traps from that build: (1) template emitters saved with `Enabled = false` never emit from `Rate`, only from `Emit`: every
+  continuous layer (swirl, gather, beam rings, spray) was silent until the builder saved them enabled at rate 0. (2) The waterfall
+  streak and ribbon textures have black backgrounds: at LightEmission 0.55 they drew a dark translucent box round the beam; use them
+  additive (LE 1). (3) A beam that starts at full width reads as a hard cut at the wand ("cuts off here not smoothly"): each layer
+  now has a 7-stud neck beam from the tip (width 0.18 to 1, fading in over its first half) and the main beam fades in over the same
+  7 studs; the beam end fades out when it hits nothing. (4) A glass ball at 0.4 transparency with reflectance read as a crystal
+  ball; bubbles read as water only with the foam ring and swirl sprites on them. (5) Mist puffs left along a projectile path read as
+  cartoon smoke; keep them small and faint. (6) Two helix ribbons made by curving an 80-stud beam bowed 5 studs out as thin lines,
+  not a spiral; the scrolling ribbon texture gives the swirl. (7) The muzzle mist and splash formed one cloud that hid the beam
+  from the player's camera; keep the muzzle to chunks, a ring and drops. (8) A beam and an attachment with the same name under one
+  part: indexing by name returned the attachment. Measured at normal speed: combo, laser, dash, fade out and manifest in one run
+  median 16.6 ms, p95 17.9, worst 26.9 ms; first casts of a session hitched up to 823 ms while the kit textures loaded.
 
 ## Reference index
 
