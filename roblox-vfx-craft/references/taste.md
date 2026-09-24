@@ -168,6 +168,11 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
   the launch and the hit (the camera stays his), and a free model dragon head turned into water. The water look that won the
   comparison: SmoothPlastic blue at 0.35, a Neon cyan shell 1.07x at 0.82 and a white outline; Glass with a Highlight fill reads
   flat and dark, ForceField reads noisy.
+- "Make the sea dragons roar slower and more dramatic and cooler" (2026-09-24). A 0.5 s flight was too fast to see. His picks: a
+  2 s cast where the dragon forms first (rooted about 1.6 s), a speed ramp (slow 30 studs/s for 0.4 s so the whole dragon reads,
+  then 90), the camera stays his (a low rumble while it forms, hard kicks on the roar and the crash), a bigger dragon, a whirlpool
+  at the feet and water rain after the crash; no sound yet. "Dramatic" on a move means build-up, a hero beat and a speed ramp,
+  not a cutscene.
 
 ## Related feedback on animation
 

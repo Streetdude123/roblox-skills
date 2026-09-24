@@ -587,6 +587,17 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   cast jumps any clock written as `elapsed / Tw.S()`. (7) A capture with no camera arguments returned the same cached image four
   times in Play; always pass camera arguments that differ. (8) Two takes in one Play session paged the 6 GB machine (2.0 and 2.5 s
   stalls, 94 dropped frames); the first take after a fresh Play start was clean (0 drops, worst game frame 39.6 ms).
+- 2026-09-24 (later): "Make the sea dragons roar slower and more dramatic and cooler". Beats (clip time): charge 0.04 (a spinning
+  `Fx.Whirlpool` at the feet: flat LockedToPart slash crescents, a foam ring and a deep navy burst, the part turned 4 to 10 rad/s,
+  plus rising crescents and spray; a rumble held by `kick(dt * (2.2 + 0.25))` per frame, which outpaces the 2.2/s decay), form 0.08
+  (the dragon rises out of the whirlpool on a 1.5-turn spiral round the caster, radius 3.6 to 5.2, height -2.6 to +8.4, eased out,
+  the body following the head's path so it coils round the caster), rear 0.95 to 1.3 (the head drifts to 5 studs behind and 9.5
+  above the root and turns to the target), roar 1.3 (a Muzzle burst at scale 3 and a Splash ring at the mouth, the head punches
+  1.15x for 0.3 s, flash, kick 0.8), flight (30 studs/s for 0.4 s, then 90), crash (splash 2.8, Impact 1.8, kick 0.7, flash) and
+  `Fx.Rain` 0.22 s later for 1 s (streak drops, white lines and crescents from a box 14 studs up, ground ripples 15 per second).
+  Head 4x, body 48 studs at 1.15 width. A head 13.5 studs up left a normal player camera's frame during the coil; 9.5 fits. Frames:
+  first Roar of a fresh session with the recorder on, median 22.6 ms, p95 28.5, worst 35.2. In slow motion the flight once ran at
+  full speed while the form was slowed; judge the flight at real time.
 
 ## Reference index
 
