@@ -217,7 +217,11 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
   as solid blocks.
 - "M1's must lock the player in place for rotation by the way and movement", "shots just face where you are looking at not
   where your cursor is" (2026-09-24). Casting attacks root the caster: no walking, no turning, and shots follow the camera
-  centre, never the cursor.
+  heading, never the cursor.
+- "water magic currently aims to the floor right now, it needs to aim straight ahead from the body, perpendicular from the
+  torso and in the direction it's facing" (2026-09-24 night). The camera heading is its yaw only: a shot flies flat along the
+  body's facing. Aiming at the point the camera centre ray hits sends every shot into the floor, because his camera looks
+  down at the body.
 
 ## Related feedback on animation
 

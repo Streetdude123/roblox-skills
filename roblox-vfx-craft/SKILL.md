@@ -679,6 +679,14 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   to the camera yaw and walk 0 and AutoRotate off for the click. First cast of a fresh session: median 22.2 ms, p95 26.2, worst
   30.2. The shield with the new layers: median 29.9 ms, p95 34.1, worst 36.0.
 
+- 2026-09-24 (night): "quick fix, water magic currently aims to the floor right now, it needs to aim straight ahead from the
+  body, perpendicular from the torso and in the direction it's facing", then "no video". The M1 aimed from the wand tip at the
+  point under the viewport centre; his camera looks down at the body, so that point is on the floor and every bubble and the
+  laser dived. Shots now take only the camera's yaw: the root turns to it and the shot direction is the root's flat LookVector
+  (Y = 0), from the wand tip. Measured in Play with the camera pitched down 55 degrees: the bubble path is 60.2 studs with a
+  direction Y of -0.003 (0.17 degrees off the facing); the laser is 0.0 degrees off in all 61 frames. Rule: "where you are
+  looking" means the camera's heading, never the point the camera ray hits.
+
 ## Reference index
 
 - [taste.md](references/taste.md) - his taste in full, why each rule exists, and the identity rule for stands.
