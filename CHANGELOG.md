@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-24 (night, last) — Reference study and the water VFX overhaul (user-authorized)
+
+- `roblox-vfx-craft`: new `references/study-atomic.md` (what a Roblox "I AM ATOMIC" recreation does to look amazing: a dark stage in the effect hue, one hue family with white-hot cores, thin lines, an ambient layer in every frame, foreground depth, a rim light, cel textures, repeated shapes, ground reaction, editing; and how it maps to a MOVE rung). `references/taste.md` and the feedback log (`SKILL.md`) gain his sentences (including "Don't copy the text though"), his picks, the water overhaul (dark partner layers, anime sprites from the kit, thin lines, spiral trail streams, lights on caster and target, a casting aura, a dash wake, a real ScreenGui flash) and five traps (Glass hides inner parts, per-frame Trail sampling jags fast spirals, a dark partner inside an orb reads grey, recorder scale 0.6 under memory pressure, F5 when the MCP play start sticks).
+
 ## 2026-09-24 (night, later) — Video rule changed; Water Mage video notes (user-authorized)
 
 - `roblox-r6-animation`: `references/pipeline.md` records his new rule ("Record videos from now on please, until i say stop recording videos") and adds step 8 (memory pressure and a warm-up run before takes, hide the cursor, turns that follow the camera, a high rear camera past his accessory); `references/project-style.md` logs the sentence.

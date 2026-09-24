@@ -549,6 +549,26 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   vfx". Until he says stop, every finished or changed effect goes out as an MP4 (the recording method is in the animation skill's
   pipeline.md, "Video of a clip for Lepy"). The water video: a close side shot of the manifest and one bubble, a wide side shot of
   the full combo, and a high rear shot; 23 s, 20.5 to 21.3 fps, no dropped frames after a Play restart and a warm-up run.
+- 2026-09-24 (night, later): he sent a Roblox "I AM ATOMIC" recreation ("Shadow Fake atomic") with "What we should take note on
+  how this guy uses vfx to make his VFX look amazing, improve the water vfx significantly please it needs to look just amazing and
+  anime like", then "Don't copy the text though". The study is references/study-atomic.md. His picks for the water (MOVE rung): a
+  flash under 0.1 s plus a stronger kick (0.6) on the laser, deep blue + white core + white foam, an ambient layer only while
+  casting, a water trail on the dash. Built: every bright layer got a deep blue (6, 40, 120) LightEmission-0 partner (the cel
+  banding: white core -> cyan -> deep blue edge) on the splash, the ground ripple and the laser (a wider deep blue water-body beam);
+  anime sprites from his kit (water crescents 16924704235, cel splash blobs 84551112950263, a radial droplet burst 13580371343 laid
+  flat as a ground ripple, water slash crescents 14117827133 as arcs at the wand); thin lines (speed streaks flying along the beam
+  from the surface of a 5-stud box round it, droplet streaks, two spiral Trail streams orbiting each bubble); a highlight glint on
+  the bubble; a PointLight on the charge (0 -> 2.6 bubble, 0 -> 4 laser), a 3.5 pulse on every splash and a 3-brightness muzzle light,
+  so the caster and the target are lit in the water colour; a casting aura (specks, rising streams, drops, crescents) round the
+  body; a foot ripple on every release; the dash splash, wake crescents and ripples; the flash as a real `StarterGui.WaterFlash`.
+  Measured after a warm-up: combo + laser + dash + fade out median 16.5 ms, p95 18.8, worst 26.3 ms; the cold first run 182 ms.
+- Traps from that pass: (1) Glass hides the parts inside it: the bubble's Neon core never showed and the charged orb read dark
+  grey; a SmoothPlastic shell at 0.72 lets the core glow through. (2) A Trail samples once per frame: a spiral that turns 1.1 rad per
+  frame (0.7 rad per stud at 95 studs/s) draws jagged zig-zags; 0.28 rad per stud reads as smooth curves. (3) A dark partner layer
+  locked inside a transparent ball shows through it as a grey centre; put dark partners on splashes and beams, not inside orbs.
+  (4) Under memory pressure (450 to 600 MB free) takes at recorder scale 0.75 dropped up to 175 frames and missed the start;
+  `-scale 0.6 -quality 78` with a 6.5 s lead gave 23.7 fps and 0 drops. (5) After many Play restarts the MCP start timed out and
+  "Start play hasn't finished yet" came back; an F5 key press started Play.
 
 ## Reference index
 

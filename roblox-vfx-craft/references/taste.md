@@ -151,6 +151,12 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
   effect first. A beam must grow out of its source (taper and fade in), never start at full width.
 - "Make the gui super bareboens and insanely simple" (2026-09-24, the character select): plain buttons in a list, one text line,
   no menu, no tweens, no corners.
+- "What we should take note on how this guy uses vfx to make his VFX look amazing, improve the water vfx significantly please it
+  needs to look just amazing and anime like" (2026-09-24, with a Roblox "I AM ATOMIC" recreation) and "Don't copy the text though".
+  The lessons are in study-atomic.md: a dark stage in the effect's hue, one hue family with white-hot cores, thin lines everywhere,
+  an ambient layer in every frame, foreground depth, a rim light on the body, cel textures, and few repeated shapes. His picks for
+  the water: a flash and a stronger kick on the laser (no impact frame, no world darkening, no speed lines), deep blue with a white
+  core and white foam, an ambient layer only while casting, and a water trail on the dash. Never copy a reference's text cards.
 
 ## Related feedback on animation
 
