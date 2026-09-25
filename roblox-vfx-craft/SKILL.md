@@ -796,6 +796,11 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   height), a foam cap rides the top, the column collapses from 0.7 s with a splash at the base, and every upward burst was slowed to
   stay under the feet. Verified from a side camera: both the geyser and the mage's spout end at the feet. Video
   water_mage_air_combo_v2.mp4 (player camera, then the side view).
+- 2026-09-25 (later): "Rocks nees to form also under the geyser please to have a source where it's forming from". The geyser now
+  breaks the ground: `Burst.bowl` 2.6/7 at the load and 4.6/12 at the eruption with `Burst.debris` 8 and floor-coloured puffs,
+  rocks in the floor's material. Verified from a side camera with 0 dropped frames: the column rises out of the rock ring and ends at
+  the target's feet. A 14 s take after many Play sessions paged (112 dropped, a 677 ms gap); stopping and starting Play gave back
+  about 100 MB and a clean 13 s take. Video water_geyser_rocks.mp4.
 
 ## Reference index
 

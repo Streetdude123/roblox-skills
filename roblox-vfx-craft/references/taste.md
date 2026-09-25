@@ -275,3 +275,7 @@ more than a second.
   and ends under its feet (the top follows the lifted root, leaning to its x and z), a foam crown (`Fx.Spout` at high rates) sits on
   the top, and the burst particles are slowed so none rise past the feet (jet 24 to 34, foam 18 to 30, drops 16 to 30, streaks 40 to
   55 studs/s; the crown splash at 0.45 with no spikes or rain).
+- "Rocks nees to form also under the geyser please to have a source where it's forming from" (2026-09-25). An eruption needs a
+  visible source in the ground: the rocks tell where the force comes from. A small cracked ring rises at the load (`Burst.bowl`
+  radius 2.6, 7 rocks, a floor-coloured puff), then a wider ring bursts at the eruption (radius 4.6, 12 rocks, 8 flying debris,
+  a puff) and stays after the column collapses.
