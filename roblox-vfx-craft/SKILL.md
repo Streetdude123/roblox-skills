@@ -779,6 +779,17 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   flash. New handlers on one schedule with the clips: Uppercut (load, takeoff, hit, apex, land), Air (slash on and off, hit), Slam
   (raise, dive, hit, impact with a scaled Leap slam crater, heave). Kicks: uppercut 0.35, air 0.18/0.18/0.28, slam 0.7; hit stops
   0.08, 0.05/0.05/0.07 and 0.12. The full air combo ran at a frame median of 18.0 ms and p95 20.7 ms. Video asta_fast_combat.mp4.
+- 2026-09-25 (Water Mage fast combat): "Make it geyser with the mage rides up but be sure players can also defend themselves in the
+  air too", "Water fist slam", then "Reference for down slam" (a Black Clover water fist). MOVE rung, all from the water templates
+  plus Asta's crater helpers: the geyser is `Fx.Geyser` (jet, shade, foam, drops, streaks, mist, ring, sheet) + a scaled `Fx.Slam`
+  crown + a torrent column 18 studs tall for 0.5 s; the mage rides a thinner torrent spout with `Fx.Spout` foam at the feet and a
+  whirlpool at the base until the air string ends. The 3 air hits reuse the bubble at 150 studs/s aimed at the held target. The slam
+  is `Fx.Fist` (the free model fist mesh at 1.3x, pale glass 0.42 + neon core, cut disc, fist foam, swing trails) with a torrent
+  sheath and two white W-path spirals; it forms 6.5 up and 5.5 to the side, punches along the diagonal, and drives the victim into
+  `Burst.bowl` (a full ring of tilted rocks, new in VfxBurst), `Burst.debris`, dust, a crown splash and 10 white trail ribbons
+  (`Fx.Ribbon`) curling out over 0.3 to 0.42 s. Two capture rounds: round 1 showed the blob fist, the drill spirals, a blue floor
+  flood and victims thrown high (knockback up 14); round 2 (side entry, white spirals, light 2.5, up 5) reads as an arm and a crater.
+  Combo + ground slam median 18.1 ms, p95 26.9 ms on a 16.9 ms idle. Video water_mage_air_combo.mp4.
 
 ## Reference index
 

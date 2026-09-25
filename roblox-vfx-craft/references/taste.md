@@ -263,3 +263,9 @@ more than a second.
   and short spark streaks at the contact. It does not come from a white flash on the body or from UI. The reference showed a hit
   every 0.2 to 0.3 s, sparks, the victim staggered, the attacker stepped in, a knockback with a dash follow-up that the player inputs,
   and an uppercut into an air string that ends in a slam crater.
+- "Reference for down slam" (2026-09-25), a Black Clover frame: a huge clear water fist driven straight down onto a victim whose legs stick
+  out of the ground, chunky rocks thrown out of a broken crater, and long white spray ribbons whipping across the frame. From the
+  player's camera behind the caster, a fist that punches away from the camera is foreshortened into a blue blob at the top of the frame;
+  brought in diagonally from the upper side (up 6.5, right 5.5 of the contact) its forearm crosses the view and reads as an arm. Spiral
+  streams drawn with the full torrent read as a drill; the white W path alone reads as ribbons. A crater move does not want the
+  hammer's floor flash: light 6 to 2.5, no Flash emit.
