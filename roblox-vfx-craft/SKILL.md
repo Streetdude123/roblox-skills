@@ -764,6 +764,15 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   hit 18 damage and 90 to 116 studs of flight, parry 0 damage and the caster stunned 0.91 s, the head centre at 12 to 20% of the
   viewport height during the hold. Cost: first cast median 27.9 ms, p95 29.8, worst 35 on an 18.7 ms idle (about 9 ms for the
   construct; 1.8 ms of it is the Lua of four torrents, about 2 ms the face whirls and halo, Glass about 0).
+- 2026-09-25 (later): "now with what you learned, improve the VFX from the block if you need to rebuild it or anything.", then "the
+  water mage block". `Fx.Vortex` v4: the whirl sprites were spawning anywhere in the 4 x 4 disc part (scattered blots); they now emit
+  from a centre attachment, so the whirl is concentric. The edge spray had sprayed upward from a thin line; eight rim attachments now
+  spray outward. A soft deep blue glow replaced the blotchy dark burst, and the fill is blue with white only on thin crescents and the
+  rim foam. New: concentric ripple rings, rising air bubbles, a fixed shine crescent, a ripple and flash at each contact point, and a
+  wobble of the torrent ring on block (0.1) and parry (0.16). The ring torrent uses `fine` textures and 4 segments. A Glass lens was
+  tried and removed (it hid the sprites and read as a crystal disc). Verified in Play: parry 0.08 s, block 1.42 s, break 2.82 s, 0
+  damage with the camera behind; holding the block median 21.7 ms on a 19.0 ms idle. Video water_block_v4.mp4. Lessons in
+  `references/water.md` section 8.
 
 ## Reference index
 

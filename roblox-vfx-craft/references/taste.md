@@ -255,3 +255,6 @@ more than a second.
   across the view and the hand is a real hand mesh, not primitives. When he says "too geometric" twice, change the method (mesh, flow
   beams, break-up at the edges), not the numbers. "After learning, update the vfx skill": research goes into the skill
   (references/water.md) before the work is called done.
+- "now with what you learned, improve the VFX from the block if you need to rebuild it or anything.", then "the water mage block"
+  (2026-09-25). A lesson learned on one effect is applied to the related ones without being asked twice: after the hammer research
+  he expected the water block to be checked against the same water rules.

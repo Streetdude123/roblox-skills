@@ -111,6 +111,28 @@ The official tutorial builds water only from Beams and ParticleEmitters. Its num
 - Stills at a frozen `TimeScale` lie for a move: the clip clock and the construct clock drifted and three
   captures showed the same pose. Judge a move from a recorded take (a contact sheet by time).
 
+## 8. What the block rebuild proved (measured 2026-09-25)
+
+- Facing sprites (`VelocityPerpendicular`, `LockedToPart`) on a flat 4 x 4 carrier part spawn anywhere in the
+  part's box, so a whirl built from them is scattered blots, not a whirlpool. Parent them to one centre
+  `Attachment` and they are concentric. Ripple rings need the same centre point.
+- A `Disc` shape on a flat part with the default `EmissionDirection` (Top) sprays upward from a thin line, not
+  from the rim. For rim spray that breaks off the edge, use attachments round the rim (8 on a 2-stud ring) with
+  their Y axis pointing outward and `EmissionDirection` Top, spread 22 to 30 degrees, gravity -18 to -40.
+- A Glass lens over a sprite-built surface hides the sprites inside it and reads as a crystal disc (the
+  "crystal ball" trap again). The shine comes from a fixed white crescent sprite at the upper left instead.
+- White layers stacked on one centre read as a white cloud. Keep the fill blue (70, 170, 250 to 25, 100, 225 at
+  `LightEmission` 0.3), white only on thin crescents (7 a second) and the rim foam.
+- The radial droplet burst sprite (13580371343) as the dark partner drew scattered ink blots; a soft `glow`
+  sprite in `DEEP` behind the whirl gives the dark rim without shapes.
+- From the player camera behind the caster, the body hides the centre of a small chest-height block; what reads
+  is the rim (the torrent ring, the rim spray, the ripples at the edge). Put the hit reactions where they show:
+  radial rim spray, a ripple at the contact point, and a wobble of the torrent ring (radius times
+  1 + k sin(34u) e^(-7u) sin(2a + side), k 0.1 on a block and 0.16 on a parry).
+- Test trap: a take camera placed in front of the caster turns the body toward the camera heading, so a later
+  hit comes from behind and counts as a "drop" (the hit lands). Keep the camera behind the caster for guard tests.
+- Cost: holding the new block cost median 21.7 to 21.9 ms, p95 about 25, on an 18.7 to 19.0 ms idle (about 3 ms).
+
 ## Sources
 
 - VFX Apprentice, "How to Make Water VFX and Use Properties of Water for Stylized VFX" and "How to Draw
