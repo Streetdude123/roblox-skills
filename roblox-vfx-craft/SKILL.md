@@ -737,6 +737,17 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
     server times. A dummy's parry window is 0.2 s and the hammer hit reaches the server about 1.02 s after the cast lock: raise 0.95 s after.
     With Studio at 4.3 GB private and 562 MB free on the 6 GB machine, frames stalled up to 1.4 s and every hammer hit was refused.
 
+- 2026-09-25 (Trade Legacy): after a Studio restart the place still held 3.4 GB in Edit with about 740 MB free, and every take
+  stalled 0.3 to 8 s. Asked how to free memory, he said: "delete the VFX kit but bring it back by using free models whenever you need
+  to create VFX". `ServerStorage.VfxKit` (12,292 instances) was deleted; the one mesh a builder still copied (the swirl 6092662636) is kept
+  as `Water.Assets.Swirl`. From now on a new effect that needs pieces not in the Assets templates gets them from a free model pack
+  inserted for the build, scanned, extracted into the templates and removed (`Asta/ClashTemplates.lua` still reads the old kit).
+  Recording under that pressure: the recorder at `-fps 24 -scale 0.5 -quality 75` gave usable takes where 30 fps at 0.6 did not, and
+  the undo history keeps a deleted folder in memory until a save and restart. Test trap: a probe that raises a dummy's guard leaves it
+  up, so the next attack on that dummy is a guard break, not a hit; use another dummy or lower the guard. Verified after the restart:
+  the vortex block (parry 0.13 s, block 1.46 s, break 2.87 s, 0 damage), the Roar (12 damage, the dragon flew level at 3.9 to 7.3 studs),
+  the hammer (18 damage, 100 studs of flight; the parried cast kicked back and collapsed).
+
 ## Reference index
 
 - [taste.md](references/taste.md) - his taste in full, why each rule exists, and the identity rule for stands.
