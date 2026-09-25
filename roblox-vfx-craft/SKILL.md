@@ -790,6 +790,12 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   (`Fx.Ribbon`) curling out over 0.3 to 0.42 s. Two capture rounds: round 1 showed the blob fist, the drill spirals, a blue floor
   flood and victims thrown high (knockback up 14); round 2 (side entry, white spirals, light 2.5, up 5) reads as an arm and a crater.
   Combo + ground slam median 18.1 ms, p95 26.9 ms on a 16.9 ms idle. Video water_mage_air_combo.mp4.
+- 2026-09-25 (later): "Fist needs to go straight down and the geyser can't go through the body maybe foams at the top or it ends at
+  the top". The fist forms 7 over the contact and punches straight down (D = -Y). The geyser column's top follows the nearest lifted
+  target within 5.5 studs of the spot (feet = root - 3.1, the top leaning to its x and z; before it is found, a 0.28 s ease to the rise
+  height), a foam cap rides the top, the column collapses from 0.7 s with a splash at the base, and every upward burst was slowed to
+  stay under the feet. Verified from a side camera: both the geyser and the mage's spout end at the feet. Video
+  water_mage_air_combo_v2.mp4 (player camera, then the side view).
 
 ## Reference index
 

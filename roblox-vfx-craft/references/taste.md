@@ -269,3 +269,9 @@ more than a second.
   brought in diagonally from the upper side (up 6.5, right 5.5 of the contact) its forearm crosses the view and reads as an arm. Spiral
   streams drawn with the full torrent read as a drill; the white W path alone reads as ribbons. A crater move does not want the
   hammer's floor flash: light 6 to 2.5, no Flash emit.
+- "Fist needs to go straight down and the geyser can't go through the body maybe foams at the top or it ends at the top" (2026-09-25).
+  A conjured slam follows the reference's direction even when a side entry reads better from the player camera: the fist now forms
+  7 studs over the contact and drops vertically. A launcher column never passes through the body it lifts: it grows with the target
+  and ends under its feet (the top follows the lifted root, leaning to its x and z), a foam crown (`Fx.Spout` at high rates) sits on
+  the top, and the burst particles are slowed so none rise past the feet (jet 24 to 34, foam 18 to 30, drops 16 to 30, streaks 40 to
+  55 studs/s; the crown splash at 0.45 with no spikes or rain).
