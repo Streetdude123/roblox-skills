@@ -57,6 +57,12 @@ Rules that follow from the ladder:
 - Speed lines are a 0.4 s pulse on a hit, never an overlay on a phase.
 - "Too geometric": clean Neon solids read as cheap. Glow comes from Beams, soft particles, hand-stroke
   and ripple meshes; a mesh solid sits at 0.35 or more transparency with a glow particle behind it.
+- "Okay" is a fail; he aims for AMAZING. A second "too geometric" means change the method, not the numbers.
+- Water reads from four things: transparency, reflection (Glass), bubbles and moving ripples. Its edges
+  break up into blobs, bubbles and droplets; foam sits where it moves fastest. `references/water.md`.
+- A conjured limb or body reads only from a real mesh (a free model hand, not sphere fingers), and only
+  when it stands across the player camera's view. Frame the hero for the player camera: measure it with
+  `WorldToViewportPoint` in the take and keep it inside the frame during the hold.
 - A summon is small and never lags: preload assets at join AND draw every piece once at join nearly
   invisible so the first cast has no first-draw hitch.
 - The effect vocabulary must fit the character. Rainbow four-point stars are the sword ultimate's
@@ -747,6 +753,17 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   up, so the next attack on that dummy is a guard break, not a hit; use another dummy or lower the guard. Verified after the restart:
   the vortex block (parry 0.13 s, block 1.46 s, break 2.87 s, 0 damage), the Roar (12 damage, the dragon flew level at 3.9 to 7.3 studs),
   the hammer (18 damage, 100 studs of flight; the parried cast kicked back and collapsed).
+- 2026-09-25 (later): "Where's the water arm controlling the hammer? Also again, the water hammer is too geometric… make sure use a
+  TON of vfx academy and vfx tutorials for roblox and try again, the hammer looks okay for vfx but im not aiming for okay im aiming
+  for AMAZING, lets do this", then "After learning, update the vfx skill". The research is `references/water.md`. The rebuild: the arm
+  was invisible because the construct pointed away from the player camera and the fist hid it; four primitive rebuilds read as stacked
+  discs, rings and a ribbed hose. What worked: a free model fist-and-forearm mesh (75041501802813, "giant bendy hand/fist", no scripts,
+  kept as `Water.Assets.Fist`) in Glass 0.36 with a Neon copy inside, the handle across the fist grip, the head axis along the forearm,
+  a moving elbow (hold low beside the caster with the hammer up, a short windup, an overhead arc that lands the head in front with the
+  forearm reaching down at 35 degrees), two water helices round the head, `fine` torrent textures, `FaceCamera` swing trails. Verified:
+  hit 18 damage and 90 to 116 studs of flight, parry 0 damage and the caster stunned 0.91 s, the head centre at 12 to 20% of the
+  viewport height during the hold. Cost: first cast median 27.9 ms, p95 29.8, worst 35 on an 18.7 ms idle (about 9 ms for the
+  construct; 1.8 ms of it is the Lua of four torrents, about 2 ms the face whirls and halo, Glass about 0).
 
 ## Reference index
 
@@ -757,6 +774,7 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
 - [sound.md](references/sound.md) - the mix, Mirelo clips, measuring a recording, dead private audio.
 - [verification.md](references/verification.md) - quality level, capture cache, occluded Studio, phase polling, frame profiling.
 - [principles.md](references/principles.md) - the style guide and tutorial principles (readability, scale of importance, value and colour, shapes, timing, block-ins, juice) translated to Roblox properties and numbers, with sources.
+- [water.md](references/water.md) - water constructs: the four water properties, edge break-up, line/fill/shadow/foam layers, the Creator Hub waterfall numbers, mesh VFX practice, and what the Judgement's Hammer rebuild proved (framing for the player camera, a hand mesh, fractional torrent textures, camera-facing swing trails), with sources.
 
 ## Scripts
 

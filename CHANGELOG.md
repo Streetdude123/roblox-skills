@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-25 — Water construct research and the Judgement's Hammer rebuild (user-authorized)
+
+- `roblox-vfx-craft`: new `references/water.md` (VFX Apprentice, the Creator Hub waterfall tutorial, DevForum mesh VFX and water threads, Real Time VFX, 2D water animation guides, translated to Roblox: the four water properties, edge break-up, line/fill/shadow/foam layers, the waterfall numbers, mesh VFX practice, and what the hammer rebuild proved: framing for the player camera, a free model hand mesh, fractional torrent textures, camera-facing swing trails, the cost of a big construct). `SKILL.md` gains three rules, the feedback log entry and the reference index line; `references/taste.md` logs his sentences.
+
 ## 2026-09-24 (night, final) — Basketball commission feedback (user-authorized)
 
 - `roblox-r6-animation`: `references/project-style.md` logs his sentences on the basketball clips and the code style, with the held-ball method (the ball as a Motor6D keyed in torso space, hands reached after the torso) and the measured numbers.

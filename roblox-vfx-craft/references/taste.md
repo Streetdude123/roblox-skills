@@ -249,3 +249,9 @@ more than a second.
   reference": a conjured limb ends in a clean flat cut, not a stream back to the caster.
 - "if the judgement hammer is parried, let it fall, like there's nothing supporting the water anymore" (2026-09-24 night). A parried water
   construct loses its shape: it is knocked back, then falls and splashes.
+- "Where's the water arm controlling the hammer? Also again, the water hammer is too geometric… make sure use a TON of vfx academy and
+  vfx tutorials for roblox and try again, the hammer looks okay for vfx but im not aiming for okay im aiming for AMAZING, lets do this"
+  (2026-09-25). "Okay" is a fail: the bar is AMAZING. A conjured limb must read as a limb from the player camera, so the forearm stands
+  across the view and the hand is a real hand mesh, not primitives. When he says "too geometric" twice, change the method (mesh, flow
+  beams, break-up at the edges), not the numbers. "After learning, update the vfx skill": research goes into the skill
+  (references/water.md) before the work is called done.
