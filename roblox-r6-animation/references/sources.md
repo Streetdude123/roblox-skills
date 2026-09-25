@@ -47,6 +47,18 @@ Read as text through web fetches and summaries; no video was watched frame by fr
 | [AnimSeeds, posing principles](https://www.animseeds.com/post/21-posing-principles-for-animation-and-figure-drawing-for-animators) | Line of action, contrapposto, twinning, negative space, push the pose, head and hand gesture. The posing checklist. |
 | [MoCap Online, idle design](https://mocaponline.com/blogs/mocap-news/idle-animation-game-dev-guide) | Additive breathing layers and idle variations. |
 
+## Reference videos and motion style (2026-09-25)
+
+The Moon Animator video was read frame by frame from the user's file (all unique frames on contact sheets). The other two videos were read from their captions only; their frames were not downloaded.
+
+| Source | Supports |
+| --- | --- |
+| [CVswhndja, Animation Practice 2 - Moon Animator 2](https://www.youtube.com/watch?v=WR6VH4x5VTw) | The target style and every measured number in study-moon-practice2.md: snap and hold, anticipation in stages, weight by character, smears, impact frames, camera and shot rhythm. |
+| [Alan Becker, 12 Principles of Animation](https://www.youtube.com/watch?v=uDqjIdI4bF4) | Anticipation in levels, staging, keys then extremes then breakdowns, smears as filled arcs, timing ladders, twos for snap, exaggerating fast extremes, standing up with the halves offset. |
+| [Devgrams, Make Your Roblox Animations Feel REAL](https://www.youtube.com/watch?v=AH30avEEC9A) | Anticipation by moving the key back, drag on a rising arm, impact then overshoot then return, motion paths for arcs, torso lean in and out on a swing, rotoscoping reference to learn posing and timing. |
+| [Easy Allies forum summary of the Guilty Gear Xrd GDC talk (Junya Motomura)](https://forums.easyallies.com/topic/4187/how-the-3d-anime-style-is-made-explained-by-junya-motomura-guilty-gear-xrd-technical-director-more) | 3D characters keyed without in-betweens and with frames removed to look like 2D anime. Read as a search summary; the talk itself was not watched this revision. |
+| [CGSpectrum, The animation secrets of Spider-Man: Into the Spider-Verse](https://www.cgspectrum.com/blog/spider-man-into-the-spider-verse-how-they-got-that-mind-blowing-look) and [Smear frame](https://en.wikipedia.org/wiki/Smear_frame) | Smears in 3D: stretched geometry, extra limbs and speed lines on fast frames. Read as search summaries. |
+
 ## Evidence boundaries
 
 - The rotation, contact-solve, and loop-measurement procedures are derived for this skill's Poser convention. They are not quoted tutorial recipes.

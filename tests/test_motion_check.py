@@ -70,3 +70,12 @@ def test_a_held_pose_is_frozen(tmp_path):
     r = measure(write_clip(tmp_path, 'Statue', frames))
     assert r['frozenPct'] == 100
     assert r['stillPct'] == 100
+
+
+@pytest.mark.skipif(NODE is None, reason='node is not installed')
+def test_range_and_sweep_measure_how_far_each_joint_turns(tmp_path):
+    frames = [{'Torso': 90 * i / 30 if i <= 30 else 90 - 30 * (i - 30) / 30, 'Head': 0.0} for i in range(61)]
+    r = measure(write_clip(tmp_path, 'Swing', frames))
+    assert abs(r['range']['Torso'] - 90) < 0.5
+    assert abs(r['sweep']['Torso'] - 120) < 0.5
+    assert r['range']['Head'] == 0

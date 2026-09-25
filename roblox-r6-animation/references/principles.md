@@ -5,14 +5,23 @@ The rules a professional animator applies, translated to R6 and to Poser fields.
 ## Contents
 
 - Poses first: the posing checklist
+- Keys, extremes and breakdowns
 - Motion is the curve, not the keys
 - Timing and spacing in frames
+- Snap and hold
+- Anticipation in stages
+- Exaggerate fast actions
 - Overlap: successive breaking of joints
 - Moving holds and settles
 - Follow-through and springs
 - Game feel: anticipation, contact, hitstop, recovery, cancel
 - Weight and support
 - Arcs and paths
+- Smears and multiples
+- Limited timing for anime hits
+- Jumps, entrances and landings
+- Weight by character
+- Staging for the viewer
 - Motion recipes: idle, walk, run, jump and landing, attack and combo, emote, stand and weapon
 - A worked example
 
@@ -31,6 +40,10 @@ Motion cannot rescue a weak pose. Check every key pose from the player's camera 
 9. **Clarity of overlap.** When limbs cross the body, the front one must still read.
 
 Block these poses with the curve stepped or as a strip (`EditStrip`), judge them, and only then do the motion pass.
+
+## Keys, extremes and breakdowns
+
+Pose to pose works in levels: keys (the story poses), then extremes (the farthest point of each move in each direction), then breakdowns (how one extreme turns into the next), then the curve does the rest. Finish each level before the next. In the studied Moon Animator reference ([study-moon-practice2.md](study-moon-practice2.md)) every key is an extreme; no key is a neutral pose.
 
 ## Motion is the curve, not the keys
 
@@ -64,6 +77,27 @@ Starting ranges (60 fps; adapt to the gameplay contract and the reference):
 | Head turn | 20 to 28 | A quick look or dart 8 to 12 with a one or two frame hold. |
 
 For a strike decide where the fastest spacing is: before, at or through the contact. A committed hit accelerates into the contact and keeps going (the spline does this when the contact key is a breakdown between the apex and the follow-through). A soft contact brakes early (a `flat` contact key).
+
+## Snap and hold
+
+The studied reference moves between keys in 0.03 to 0.15 s (2 to 9 frames at 60: the throw's whip one capture frame, its release 0.07 s, the lunge 0.13 s, the sword draw 0.15 s) and holds between them for 0.17 to 0.9 s while the pose drifts. The pro sword kit shows the same shape at gameplay scale ([attack-timing.md](attack-timing.md): a snap into the wind-up, a 2 to 4 frame hold, a 3 to 4 frame strike).
+
+- The snap is a short segment between two keys a few frames apart. Spline keys carry the speed; use `quart` or `expo` only for a hard arrival.
+- The hold is a moving hold: a second key 5 to 15% further along with `auto` tangents. Never a frozen pose, never a slow ease back toward rest.
+- Snap from extreme to extreme. The reference never spends a slow segment between two extremes; its slow parts are the drifting holds and the slow out after a whip.
+- In a gameplay one-shot the checks still apply (still 5% or less, because the holds drift). A cinematic sequence with long holds may pass contrast 10; report it and say why.
+
+## Anticipation in stages
+
+A big action winds up in stages: a load, a wind-up, a further wind-up, then the snap. The studied throw: a load 0.17 s, a turn away 0.17 s, a hard twist away 0.17 s, a whip of one capture frame, a slow out of 0.3 s as the arm pushes forward, then a release snap. A punch can wind out, wind up, then throw the other arm back before it strikes (Alan Becker, sources.md).
+
+A player's gameplay move keeps its whole anticipation inside the 4 to 8 frame window; use stages on heavies, finishers, enemy telegraphs and cinematics.
+
+## Exaggerate fast actions
+
+An extreme that is on screen for one frame reads weaker than the same still frame. Hold the extreme 2 to 4 frames as a moving hold, or push it further. Push until it is too much, then pull back.
+
+Range of motion carries force. Measure it (`range` and `sweep` in motion-metrics.md) and compare with a pro clip of the same kind: the pro stand strikes turn the torso 77 to 120 degrees in 0.33 to 0.5 s. Two reviews flagged strikes that moved too little (2026-09-22 and 2026-09-24, project-style.md).
 
 ## Overlap: successive breaking of joints
 
@@ -120,6 +154,50 @@ In R6, compression is a torso drop with the legs re-aimed at their floor targets
 ## Arcs and paths
 
 Track the part that carries the action (the fist, the sole, the blade tip) in world space; a good joint curve can still draw a bad path. Natural motion travels on arcs; a jab may be near straight. Add a breakdown to control a path (a hand going out and around the chest, a blade clearing the head), not to add keys. Poser interpolates Euler channels: a turn over 180 degrees needs an intermediate key in the chosen direction.
+
+## Smears and multiples
+
+When a limb, a blade or the whole body travels more than about its own width between two frames, the eye sees it jump. Put a smear on that frame, as 2D animators and stylised 3D films do (Spider-Verse used stretched geometry, extra limbs and speed lines, sources.md). Kinds seen in the studied reference, each on screen one to three capture frames (2 to 6 frames at 60):
+
+- **Swoosh**: a crescent that follows the tip of a blade or a fist along its arc, dark or in the effect colour, fading toward the tail.
+- **Stretch**: one shape in the limb's colour stretched along the motion from the start position to the end position (the golem's legs became long spikes on a launch).
+- **Streaks**: flat strips in the character's own colours along a dash path.
+- **Multiples**: extra copies of the moving part at in-between positions on its arc, partly transparent, most transparent at the tail.
+- **Ground marks**: scrape lines along a skid, radial lines at a landing.
+
+Build each smear as a real instance tree on the client: a Folder in `workspace` per play; each smear a Part or a MeshPart with `Anchored` true and `CanCollide`, `CanQuery`, `CanTouch` and `CastShadow` false. At runtime read the moving part's `CFrame` every frame; when its tip moves more than its width in one frame, place the smear between the previous and the current frame, then destroy it after its frames. The VFX skill builds blade swooshes from slash plates and Trails. This skill has not yet built or captured a body smear in Studio: capture the first one frame by frame and log what it shows.
+
+## Limited timing for anime hits
+
+Guilty Gear Xrd keyed its 3D characters without in-betweens and removed frames on purpose to look like 2D anime (for example 4 frames held at the chest, 2 for the transition, 4 for the punch; sources.md). In Poser that is `e = "step"` on the keys of the strike beats. Use it only when the requested style is limited anime animation; the studied Moon Animator reference and the pro stand set move on every frame of their capture. The checks count a stepped hold of 4 frames or more as a stop; state that the style is stepped when you report the numbers.
+
+## Jumps, entrances and landings
+
+- **Takeoff**: a crouch, then the launch in about 4 frames (the studied hop and launch). A big launch can stretch the legs into a smear.
+- **Air**: the body travels on an arc and slows near the top. Ease the height only; keep the travel even. The studied golem hangs 0.3 s at the top of a hop before it lunges.
+- **Landing**: the contact with the legs spread and the torso still moving down, then the compression (the lowest point) 3 to 6 frames later (the studied golem), then a skid and a recovery for a heavy body or a quick recoil for a light one. The body settles on an arc, not straight down. R6 compresses by dropping the torso over planted feet (`Feet.post`).
+- **Superhero landing** (measured): a fall of 0.1 s, the contact with radial lines, one knee and one fist down held 0.9 s with only the head rising, a push up of 0.15 s, the body straight after 0.3 s more.
+- **Entrances and exits** for a camera: [cinematic-shots.md](cinematic-shots.md).
+
+## Weight by character
+
+Write each character's weight before keying: stance depth, skid length, recovery time, time in the air. The same move then changes most after the contact; the snap into the contact stays fast for every body.
+
+| | Heavy (the studied golem) | Light (the studied noob) |
+| --- | --- | --- |
+| Stance | low and wide, deep crouches | narrower; the legs split on a wind-up or a sword stance |
+| Steps | about 0.1 s apart, the whole body drops on each | quick, often airborne |
+| After the action | a skid of 0.3 s and a recovery of 0.6 to 0.9 s after a landing | a recoil of 0.12 s after the throw; straight from a dash landing into the draw |
+| Camera | low and close | wider, room to fly |
+
+## Staging for the viewer
+
+- The main action sits in the centre or on a third of the frame, with room in the direction the character faces.
+- One action at a time; let one finish before the next starts, unless the overlap is the point.
+- Show a hand before it does something (a draw, a reach into a pocket), or the viewer misses it.
+- Big actions read from far away, expressions from close up.
+- When a character stands up, offset the top half from the bottom half.
+- Secondary action is a gesture that supports the main action (the free hand, the head); overlap is the timing offset of the carried parts. They are different tools.
 
 ## Motion recipes
 

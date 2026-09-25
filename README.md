@@ -45,8 +45,9 @@ Package layout:
 - `references/` - the craft (posing checklist, timing in frames, overlap,
   moving holds, springs, game feel, recipes), the motion metrics with the
   professional and earlier Claude numbers, R6 transform and contact math, the
-  Poser runtime contract, diagnosis, sources, decoded reference clips, and
-  project review history.
+  Poser runtime contract, diagnosis, sources, decoded reference clips,
+  project review history, the frame-by-frame reference study method, the
+  measured study of the target Moon Animator fight, and cinematic shots.
 - `templates/clip-plan.md` - brief, beat table, motion layers, measurements,
   review record.
 - `scripts/` - `Poser.lua` (runtime with `curve = "spline"`, `lag`,
@@ -54,7 +55,9 @@ Package layout:
   `Feet.lua` (planted R6 legs), `ExampleClips.lua` (a guard and a right cross
   built on the method), `EditStrip.lua` (Edit-mode pose strips and the foot
   check), `LoadTest.lua` (fresh module copies from `serve.js`),
-  `motion_check.js` (the metrics on decode text), the DIO project clips,
+  `motion_check.js` (the metrics on decode text, with range and sweep),
+  `video/ref_sheets.py` (frame-by-frame sheets, cuts and holds of a
+  reference or a take), the DIO project clips,
   capture, decode and bake helpers, and `check_decode.py`.
 
 Legacy Poser clips play exactly as before. The Python decode checker and the

@@ -9,7 +9,8 @@ Fill this in task notes. Keep only fields relevant to the request. Record unknow
 - Rig and inspected joint/prop setup:
 - Duration and authoring FPS:
 - Loop or one-shot:
-- Player camera:
+- Player camera, or the shot list for a cinematic (cinematic-shots.md):
+- Weight of each character (stance depth, skid, recovery time, time in the air):
 - Allowed world movement and planted contacts:
 - Required impact, cancel, or transition times:
 - Runtime and requested delivery:
@@ -19,16 +20,21 @@ Fill this in task notes. Keep only fields relevant to the request. Record unknow
 | Source URL or asset path | Timestamp or frame range | FPS if known | Observed poses, spacing, and support | How inspected |
 | --- | --- | --- | --- | --- |
 
+- Study folder (`ref_sheets.py`): capture fps, cut and flash events, static runs, sheets read:
+
 ## Beat table
 
 Count at 60 fps.
 
-| Frame / seconds | Intent and silhouette | Support or grip | Lead and secondary response | Endpoint path | Event |
-| --- | --- | --- | --- | --- | --- |
+| Frame / seconds | Reference frames | Intent and silhouette | Support or grip | Lead and secondary response | Endpoint path | Event |
+| --- | --- | --- | --- | --- | --- | --- |
 
 ## Motion layers
 
 - Curve: `curve = "spline"`; keys marked `flat` and why:
+- Anticipation stages (load, wind-up, further wind-up) and their frames:
+- Snaps (frames from extreme to extreme) and holds (frames, drift):
+- Smears (frame, part, kind: swoosh, stretch, streaks, multiples, ground marks):
 - Moving holds (which hold, how far it drifts, 5 to 15%):
 - Keyed follow-through of the leading parts (the key past the contact, the drift):
 - `lag` per carried joint (frames):
@@ -51,14 +57,19 @@ Count at 60 fps.
 
 ## Measurements
 
-| Revision | frozen% | still% / longest | rest% | stops/s | unison/s | contrast | spread | feet (corner, slide, hip gap) |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Revision | frozen% | still% / longest | rest% | stops/s | unison/s | contrast | spread | range torso / striking limb (pro match) | feet (corner, slide, hip gap) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 
 Targets for a one-shot: frozen 0, still 5% or less and 0.1 s or less, rest 45% or less, contrast 2 to 10, stops 3/s or less, unison 5/s or less, planted corners within 0.03, slide 0.05 or less, hip gap 0.12 or less. A loop or a held pose: frozen 0.
 
 ## Review
 
 | Revision | Time and view | Observed fault | Change and reason | Recheck result |
+| --- | --- | --- | --- | --- |
+
+Take against reference (same beats, both sheeted): key poses, timing per beat, spacing, arcs, holds, overlap, weight, smears, staging.
+
+| Revision | Beat | Reference | Take | Fix |
 | --- | --- | --- | --- | --- |
 
 - Source / instance path:

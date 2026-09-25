@@ -26,6 +26,8 @@ Speeds are central differences over 4 frames (so decode rounding cannot fake a s
 | contrast | Peak body speed over median body speed | Over 10 means the body snaps between near-stills. |
 | spread | Standard deviation of the frames where each active joint peaks | Near 0 means every part peaks on one frame. |
 | lag | Frame offset of the best speed correlation between the torso and each joint (positive trails) | Overlap. |
+| range | Per joint, the largest turn between any two frames of the clip, in degrees | How far a part swings. Force needs range of motion. |
+| sweep | Per joint, the total turn along the clip, in degrees | How much a part travels, reversals included. |
 
 ## Professional reference clips
 
@@ -51,6 +53,23 @@ Speeds are central differences over 4 frames (so decode rounding cannot fake a s
 | sword idle (a static weapon overlay) | 4.15 | 100 | 100 | 0 | 0 | 0 | 5.5 | 0 |
 
 Readings: no professional one-shot has a still frame. Their parts rest 16 to 50% of the time, never all at once for long, and the peak speed stays within about 2 to 10 times the median. The model idle is slow (still at the 12 deg/s action threshold) but never frozen. A weapon idle that is a static overlay relies on a lower layer to breathe.
+
+## Range of motion in the professional clips
+
+`node scripts/motion_check.js references/decodes/*.txt --json` (added 2026-09-25):
+
+| Clip | Length | Torso range / sweep | Right Arm range / sweep | Left Arm range / sweep | Head range |
+| --- | --- | --- | --- | --- | --- |
+| TW RightPunch | 0.42 | 120 / 130 | 13 / 21 | 29 / 36 | 118 |
+| TW LeftPunch | 0.42 | 90 / 110 | 78 / 116 | 102 / 109 | 88 |
+| TW LeftUpperCut | 0.42 | 106 / 141 | 68 / 134 | 75 / 79 | 75 |
+| TW HeavyPunch | 0.50 | 77 / 117 | 104 / 194 | 95 / 144 | 48 |
+| TW RightKick | 0.33 | 82 / 85 | 8 / 14 | 50 / 56 | 53 |
+| TW LeftStab | 0.33 | 83 / 90 | 12 / 12 | 44 / 45 | 40 |
+| TW Barrage (loop) | 0.67 | 110 / 837 | 83 / 168 | 67 / 284 | 110 |
+| TW idle | 2.5 | 6 / 14 | 14 / 28 | 8 / 17 | 7 |
+
+Readings: every pro strike turns the torso 77 to 120 degrees in a third to a half of a second. The striking arm of a piston punch barely turns (8 to 13 degrees) because the torso whip does the reach; a hook or an uppercut swings the arm 68 to 104 degrees. The Stand floats, so a grounded body with planted feet turns less (the example cross needed a torso drop for a 56 degree turn, SKILL.md "Rigid legs"); compare with a pro clip of the same kind and support, and report the difference.
 
 ## Earlier Claude clips
 
@@ -109,6 +128,7 @@ For a one-shot action of 0.3 to 1.5 s:
 | stops/s | 3 or less | 0.4 to 2.7 |
 | unison/s | 5 or less | 0 to 4.8 |
 | spread | information only (three pro strikes peak every part on one frame) | 0 to 5.7 |
+| range / sweep | compare with a pro clip of the same kind; report the torso and the striking limb | torso 77 to 120 on the stand strikes |
 | planted feet | lowest corner within 0.03, slide 0.05 or less, hip gap 0.12 or less | not measured |
 
 For a loop or a held pose: frozen 0%. Walks and runs sit at rest under 8% and contrast under 2.

@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-25 (night) - Animation quality: reference study, the target style, cinematic shots (user-authorized)
+
+- `roblox-r6-animation`: new `references/study-moon-practice2.md` (the Moon Animator fight the user named as the target, read frame by frame: shot list, five actions beat by beat, what makes it professional, where the method fell short; lessons from Alan Becker's 12 principles and the Devgrams tips), `references/reference-study.md` (get a reference, sheet every unique frame, rotoscope keys and timing, review a take against the reference), `references/cinematic-shots.md` (shot list first, pose for the lens, cut on the action, entrances, camera, impact frames, breathers). `references/principles.md` gains keys then extremes then breakdowns, snap and hold, anticipation in stages, exaggerating fast actions, smears and multiples, limited timing for anime hits, jumps and landings, weight by character and staging. `scripts/video/ref_sheets.py` makes the sheets and finds cuts, flashes and holds; `scripts/motion_check.js` reports range and sweep per joint, measured on the pro decodes in `references/motion-metrics.md`. `SKILL.md`, `references/sources.md` and `templates/clip-plan.md` follow. Tests cover the new metric and the sheet logic.
+
 ## 2026-09-25 (later) — Water Mage block rebuilt with the water rules (user-authorized)
 
 - `roblox-vfx-craft`: `references/water.md` section 8 (centre attachments for facing sprites, rim attachments for edge spray, the Glass lens trap, white stacking, the blotchy dark partner, rim-first hit reactions for the player camera, the take camera that turns the body, the cost). `SKILL.md` feedback log and `references/taste.md` log his sentences.

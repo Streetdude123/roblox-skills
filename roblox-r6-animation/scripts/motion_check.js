@@ -1,19 +1,10 @@
-// measures how alive a clip moves from ReadClips decode text (name|joint|t|lift|twist|side|x|y|z|...), the format
-// that ReadClips.lua and Poser.dump write; Poser.check computes the same numbers inside Studio
-// usage: node motion_check.js clip.txt [more.txt ...] [--json]
 const fs = require('fs');
 
 const R = Math.PI / 180;
-// speeds are central differences over 4 frames so 0.1 degree and 0.01 stud rounding in a decode cannot fake a stop
 const WIN = 2;
-// a body is still (reads as a paused action) when no joint turns faster than 12 deg/s or slides faster than 0.3 stud/s
 const ROT_STILL = 12, MOV_STILL = 0.3;
-// a joint is resting under 10 percent of its own peak speed; a stop is a rest of 4 frames or more
 const REST = 0.1, STOP_FRAMES = 4;
-// 1 stud of slide counts like 30 degrees of turn (the end of a 2 stud limb moves 1 stud in 30 degrees)
 const STUD = 30;
-// a body is frozen when nothing turns over 1.5 deg/s or slides over 0.06 stud/s across a 16 frame window (breath and
-// drift count as life here; the wide window keeps decode rounding under the threshold)
 const FWIN = 8, ROT_FROZEN = 1.5, MOV_FROZEN = 0.06;
 
 function mat(l, t, s) {
@@ -44,7 +35,6 @@ function read(path) {
   return clip;
 }
 
-// per joint speed arrays; joints sampled much more sparsely than the rest are dropped
 function speeds(clip) {
   const most = Math.max(...Object.values(clip.joints).map(s => s.length));
   const out = {};
@@ -80,7 +70,6 @@ function analyze(clip) {
     const moving = names.some(k => sp[k].rot[i] > ROT_STILL || sp[k].mov[i] > MOV_STILL);
     if (moving) run = 0; else { still++; run++; longest = Math.max(longest, run); }
   }
-  // active joints actually take part in the action
   const active = names.filter(k => Math.max(...sp[k].v) >= 60);
   const resting = active.map(k => { const pk = Math.max(...sp[k].v); return sp[k].v.map(x => x < REST * pk); });
   let rest = 0, stops = 0;
@@ -92,7 +81,6 @@ function analyze(clip) {
       else { if (len2 >= STOP_FRAMES && len2 < n) stops++; len2 = 0; }
     }
   });
-  // unison: the moment three or more active joints are resting together begins
   let unison = 0, was = false;
   for (let i = 0; i < n; i++) {
     const all = resting.filter(r => r[i]).length >= 3;
@@ -106,8 +94,18 @@ function analyze(clip) {
   const peaks = active.map(k => sp[k].v.indexOf(Math.max(...sp[k].v)));
   const mean = peaks.reduce((x, y) => x + y, 0) / Math.max(1, peaks.length);
   const spread = Math.sqrt(peaks.reduce((s, x) => s + (x - mean) ** 2, 0) / Math.max(1, peaks.length));
-  // overlap: frames of the best speed correlation between the torso and each other joint (positive = trails)
   const lag = {};
+  const range = {}, sweep = {};
+  for (const [k, s] of Object.entries(clip.joints)) {
+    if (!(k in sp)) continue;
+    let far = 0, path = 0;
+    for (let i = 0; i < s.length; i++) {
+      if (i > 0) path += turn(s[i - 1].m, s[i].m);
+      for (let j = i + 1; j < s.length; j++) far = Math.max(far, turn(s[i].m, s[j].m));
+    }
+    range[k] = +far.toFixed(1);
+    sweep[k] = +path.toFixed(1);
+  }
   if (sp.Torso) {
     const a = sp.Torso.v, ma = a.reduce((x, y) => x + y, 0) / n;
     for (const k of names) {
@@ -129,7 +127,7 @@ function analyze(clip) {
     restPct: +(100 * rest / Math.max(1, active.length)).toFixed(1),
     stopsPerSec: +(stops / Math.max(1, active.length) / len).toFixed(2),
     unisonPerSec: +(unison / len).toFixed(2),
-    contrast: +contrast.toFixed(1), peakSpread: +spread.toFixed(1), lag,
+    contrast: +contrast.toFixed(1), peakSpread: +spread.toFixed(1), lag, range, sweep,
   };
 }
 
@@ -137,9 +135,10 @@ const args = process.argv.slice(2);
 const rows = args.filter(a => !a.startsWith('--')).map(f => analyze(read(f)));
 if (args.includes('--json')) console.log(JSON.stringify(rows, null, 1));
 else {
-  console.log('clip                  len  frozen%  still%  longest  rest%  stops/s  unison/s  contrast  spread  lag head,rArm,lArm');
+  console.log('clip                  len  frozen%  still%  longest  rest%  stops/s  unison/s  contrast  spread  lag head,rArm,lArm  range torso,rArm,lArm');
   for (const r of rows) {
     const L = k => (k in r.lag ? r.lag[k] : '-');
-    console.log(`${r.clip.slice(0, 20).padEnd(20)} ${String(r.len).padStart(5)} ${String(r.frozenPct).padStart(8)} ${String(r.stillPct).padStart(8)} ${String(r.longestStill).padStart(8)} ${String(r.restPct).padStart(6)} ${String(r.stopsPerSec).padStart(8)} ${String(r.unisonPerSec).padStart(9)} ${String(r.contrast).padStart(9)} ${String(r.peakSpread).padStart(7)}   ${L('Head')},${L('Right Arm')},${L('Left Arm')}`);
+    const G = k => (k in r.range ? Math.round(r.range[k]) : '-');
+    console.log(`${r.clip.slice(0, 20).padEnd(20)} ${String(r.len).padStart(5)} ${String(r.frozenPct).padStart(8)} ${String(r.stillPct).padStart(8)} ${String(r.longestStill).padStart(8)} ${String(r.restPct).padStart(6)} ${String(r.stopsPerSec).padStart(8)} ${String(r.unisonPerSec).padStart(9)} ${String(r.contrast).padStart(9)} ${String(r.peakSpread).padStart(7)}   ${L('Head')},${L('Right Arm')},${L('Left Arm')}  ${G('Torso')},${G('Right Arm')},${G('Left Arm')}`);
   }
 }
