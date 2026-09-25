@@ -258,3 +258,8 @@ more than a second.
 - "now with what you learned, improve the VFX from the block if you need to rebuild it or anything.", then "the water mage block"
   (2026-09-25). A lesson learned on one effect is applied to the related ones without being asked twice: after the hammer research
   he expected the water block to be checked against the same water rules.
+- "I know this is fist to fist combat but i want to make the combat feel like this, fast paced and engaging. (Don't inclide UI)"
+  and "No, sparks only" (2026-09-25). Fast combat reads from the tempo (hits 0.35 to 0.5 s apart), a stagger of the victim on each hit
+  and short spark streaks at the contact. It does not come from a white flash on the body or from UI. The reference showed a hit
+  every 0.2 to 0.3 s, sparks, the victim staggered, the attacker stepped in, a knockback with a dash follow-up that the player inputs,
+  and an uppercut into an air string that ends in a slam crater.

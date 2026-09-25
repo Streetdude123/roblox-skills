@@ -773,6 +773,12 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   tried and removed (it hid the sprites and read as a crystal disc). Verified in Play: parry 0.08 s, block 1.42 s, break 2.82 s, 0
   damage with the camera behind; holding the block median 21.7 ms on a 19.0 ms idle. Video water_block_v4.mp4. Lessons in
   `references/water.md` section 8.
+- 2026-09-25 (Asta fast combat): a reference video of fist combat, "I know this is fist to fist combat but i want to make the combat
+  feel like this, fast paced and engaging. (Don't inclide UI)", then "No, sparks only". MOVE rung. Every M1 hit adds `Assets.Vfx.Clash`
+  streaks (pale to rim red, LightEmission 0.8, scale 0.24 and 0.32, count 8 and 16, speed 40 to 90, life 0.08 to 0.16) with no body
+  flash. New handlers on one schedule with the clips: Uppercut (load, takeoff, hit, apex, land), Air (slash on and off, hit), Slam
+  (raise, dive, hit, impact with a scaled Leap slam crater, heave). Kicks: uppercut 0.35, air 0.18/0.18/0.28, slam 0.7; hit stops
+  0.08, 0.05/0.05/0.07 and 0.12. The full air combo ran at a frame median of 18.0 ms and p95 20.7 ms. Video asta_fast_combat.mp4.
 
 ## Reference index
 
