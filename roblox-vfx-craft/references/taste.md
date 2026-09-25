@@ -88,6 +88,18 @@ later. I checked for backdoors already its fine." And later: "I'll always add vf
 - Still run the script scan on every pack. A free pack shipped a `require(assetId)` backdoor once and a
   free crate carried a Command Bar social-engineering payload in a byte array; his check is a start,
   not a guarantee. See kit-workflow.md.
+- "Use the free models from workspace, just search up VFX and get all the vfx packs from there" and "You
+  need to get as much VFX packs as possible to create customized VFX" (2026-09-24, a basketball
+  commission with no kit in the place). When a place has no packs, pull free packs from the Creator
+  Store into one `ServerStorage` folder, scan them, and build custom templates from their emitters and
+  textures; the shipped effects keep only the copied pieces (`ReplicatedStorage.Assets.<Feature>.Fx`).
+  The prize tiers were a size ladder on one template shape: Make (2 emitters and a sound), Common (3
+  emitters), Rare (5), Epic (10, two sounds), Legendary (21 emitters, 2 beams, 3 sounds, a coin rain,
+  firework streaks and a gold screen flash for the shooter only). A confetti texture drew dark squares
+  at LightEmission 0.25; check every borrowed texture at the real LightEmission in a capture. The first
+  Legendary cast measured 17.8 ms average and one 30.4 ms frame at QualityLevel 21 while the recorder ran.
+- "UI should be super barebones, and very simple please" (same commission). A scripting test wants
+  plain labels and one bar: the cash label, a gain label and the meter; no panels, no popups.
 
 ## The summon rung
 

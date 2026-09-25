@@ -687,6 +687,12 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   direction Y of -0.003 (0.17 degrees off the facing); the laser is 0.0 degrees off in all 61 frames. Rule: "where you are
   looking" means the camera's heading, never the point the camera ray hits.
 
+- 2026-09-24 (a basketball commission): "Use the free models from workspace, just search up VFX and get all the vfx packs
+  from there", "You need to get as much VFX packs as possible to create customized VFX" and "UI should be super barebones,
+  and very simple please". With no kit in the place, free Creator Store packs went into one `ServerStorage` folder for the
+  scan and the build; the shipped prize effects are a size ladder of templates (Make, Common, Rare, Epic, Legendary) in
+  `ReplicatedStorage.Assets`. The UI is plain labels and one meter bar. Details in taste.md, "The kit rule".
+
 ## Reference index
 
 - [taste.md](references/taste.md) - his taste in full, why each rule exists, and the identity rule for stands.

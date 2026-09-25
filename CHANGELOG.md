@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-24 (night, final) — Basketball commission feedback (user-authorized)
+
+- `roblox-r6-animation`: `references/project-style.md` logs his sentences on the basketball clips and the code style, with the held-ball method (the ball as a Motor6D keyed in torso space, hands reached after the torso) and the measured numbers.
+- `roblox-vfx-craft`: feedback log (`SKILL.md`) and `references/taste.md` ("The kit rule") log his sentences on collecting free VFX packs and a barebones UI, the prize tier template ladder, the confetti texture trap and the first-cast frame times.
+
 ## 2026-09-24 (night, last) — Reference study and the water VFX overhaul (user-authorized)
 
 - `roblox-vfx-craft`: new `references/study-atomic.md` (what a Roblox "I AM ATOMIC" recreation does to look amazing: a dark stage in the effect hue, one hue family with white-hot cores, thin lines, an ambient layer in every frame, foreground depth, a rim light, cel textures, repeated shapes, ground reaction, editing; and how it maps to a MOVE rung). `references/taste.md` and the feedback log (`SKILL.md`) gain his sentences (including "Don't copy the text though"), his picks, the water overhaul (dark partner layers, anime sprites from the kit, thin lines, spiral trail streams, lights on caster and target, a casting aura, a dash wake, a real ScreenGui flash) and five traps (Glass hides inner parts, per-frame Trail sampling jags fast spirals, a dark partner inside an orb reads grey, recorder scale 0.6 under memory pressure, F5 when the MCP play start sticks).
