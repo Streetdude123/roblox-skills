@@ -693,6 +693,50 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   scan and the build; the shipped prize effects are a size ladder of templates (Make, Common, Rare, Epic, Legendary) in
   `ReplicatedStorage.Assets`. The UI is plain labels and one meter bar. Details in taste.md, "The kit rule".
 
+- 2026-09-24 (night, Water Mage guard, trap, Judgement's Hammer, MOVE rung): "Roar should fire straight ahead yes, next, i wanna add
+  blocking and parrying for water magic. It will behave the same way for sword blocking but you will see the block forming quickly with
+  water vfx and stuff, have the animation conjuring up the block ... defensive magic from frieren ... the hexagonal shields they use, but
+  don't make it hexagonal as that's too geometric for water, but the block should form like that please. Next turn the Aqua shield into an
+  offensive move that shoots a fast bubble forward ... trap the player in a drowning and flailing animation inside the bubble ... make a
+  fourth ability called judgements hammer ... Make sure the VFX craft looks SUPER good and accurate to the reference ... If knockback is
+  applied to the player while stuck in a bubble, it is cancelled". Picks: anyone may hit a trapped player, 3 s, the hammer breaks a block
+  and a parry stuns the caster, "water scales, crest". Then "if the judgement hammer is parried, let it fall, like there's nothing
+  supporting the water anymore", a second Frieren frame ("another good reference for the defense"), "record video also", "/roblox-vfx-craft
+  Make the hammer less geometric ... it's water it's flowly. Also don't forget to make that hand ... and make sure the hand and part of the
+  forearm cuts off cleanly like in the reference", "No, remove those circles and borders it should be natural on the block, just water vfx
+  only", "i don't like how the block looks, redesign it to your liking so it looks visually amazing!", "make sure the block vfx is much
+  smaller and centered". What was built and what each round taught:
+  - Block, round 1: 21 round cells as SurfaceGuis with a UIStroke ring and a UICorner fill (a Frieren tile look without hexagons) that pop
+    in from the hand. He rejected it: rings and borders read as UI, not water. Round 2: each cell a patch of the water blob flipbook with a
+    deep blue partner and foam: read as a cloudy blue smoke wall. Round 3 (his "redesign it to your liking"): `Fx.Vortex`, a spinning water
+    disc of flat sprites facing forward (VelocityPerpendicular, EmissionDirection Front, LockedToPart, the part turned 5 rad/s): a deep blue
+    burst shade, water slash crescents, white crescent arms, a foam ring, caustics, a glow core, edge spray and flicks from a Disc-shape
+    Surface emitter; a torrent ring (the laser's beam chain) round the rim that grows out of the hand in 0.16 s; block = splash + faster
+    spin, parry = a 1.2x pulse, a radial splash and a glint, break = the ring snaps and the water bursts, drop = the ring shrinks into the
+    centre. Final size after "much smaller and centered": ring radius 2, sprites 2.5 to 4.7 studs, 2.3 studs ahead at chest height.
+  - Trap prison: the old 11-stud shield sphere scaled to 8.6 kept its particle sizes and rates, so the surface was covered 2.7 times as
+    densely and read as one white cloud that hid the drowning body. Scale rates by the area (x0.6) and sprite sizes by the radius when a
+    template shrinks. Air bubbles leave the victim's mouth in gasps (5 every 0.45 to 0.7 s).
+  - Hammer: primitives (cylinder head and rims, an ellipsoid fist with four finger rolls and a thumb, a cylinder handle and forearm) read
+    as blue plastic toys; Glass and ForceField twins did not help. What made it read as water: body parts at 0.4 to 0.45 transparency over a
+    Neon core, a scrolling water-body Beam as the skin of the forearm and the handle, 13 ellipsoid lobes on the head's side and rims so the
+    outline is lumpy, two torrent hoops that wobble round the barrel (the reference's swirl strokes), locked water blobs and white crescent
+    strokes on the surface, splash flicks off the rims, every part wobbling 3.5% in size and 0.07 studs in place, the kit swirl mesh
+    6092662636 (a funnel along its Y axis; seen down that axis it is a spiral) flattened on each face. The forearm ends in a flat cut with a
+    pale rim and foam, no stream to the caster. A Neon face plate plus the swirl bloomed into a white disc; the plate is pale water now.
+    From his rear camera a raised construct leaves the top of the frame (his viewport is 1453 x 584); the ready pose holds the head at
+    about 4 studs above the root, and a wind-up of -45 degrees swept the head over the lens as a blue band (-22 reads).
+  - A parried hammer is already on the ground when the parry arrives (the hit resolves at the slam), so a plain collapse showed no fall:
+    it now kicks back up 38 degrees over 0.16 s, then every part falls under gravity, sags and fades, and splashes where the head and the fist
+    land.
+  - Traps: a Highlight outline is about one pixel at any distance, so it can never be an anime rim; a camera script in this place writes the
+    camera every frame, so a Scriptable camera set from a test VM does not hold (screen_capture with camera arguments does); the Studio
+    `generate_mesh` tool made a small blob figure holding a hammer when asked for a fist gripping a handle, so build hands from rounded parts.
+  - Tests: the recorder starts 5 to 15 s after its tool call and two MCP calls can be 20 s apart, so poll for frames before a take and drive
+    guard tests from game signals (a probe Script made in Edit mode that waits for the \`Guard\` attribute or a \`JumpHeight\` change), not from
+    server times. A dummy's parry window is 0.2 s and the hammer hit reaches the server about 1.02 s after the cast lock: raise 0.95 s after.
+    With Studio at 4.3 GB private and 562 MB free on the 6 GB machine, frames stalled up to 1.4 s and every hammer hit was refused.
+
 ## Reference index
 
 - [taste.md](references/taste.md) - his taste in full, why each rule exists, and the identity rule for stands.

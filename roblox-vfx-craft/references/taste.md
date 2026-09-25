@@ -240,3 +240,12 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
 His animation feedback lives in the `roblox-r6-animation` skill. The one that crosses over: the
 clip and the effects must key off the same schedule, and gameplay moves never lock the body for
 more than a second.
+- "it should be natural on the block, just water vfx only", "i don't like how the block looks, redesign it to your liking so it looks
+  visually amazing!", "make sure the block vfx is much smaller and centered" (2026-09-24 night). Water effects must be water: no UI rings,
+  strokes or borders drawn on top, even for a tile look borrowed from another show. A defensive piece is small and centered on the body.
+- "Make the hammer less geometric please ... it's got a shape but it's flowly and isn't fully trapped into that specific shape it has some
+  freedom, it's water it's flowly" (2026-09-24 night). A water construct keeps its silhouette loose: lumpy lobes, wobble, surface blobs,
+  flicks off the edges and flowing strands, over translucent parts. "make sure the hand and part of the forearm cuts off cleanly like in the
+  reference": a conjured limb ends in a clean flat cut, not a stream back to the caster.
+- "if the judgement hammer is parried, let it fall, like there's nothing supporting the water anymore" (2026-09-24 night). A parried water
+  construct loses its shape: it is knocked back, then falls and splashes.
