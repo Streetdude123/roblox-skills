@@ -79,11 +79,15 @@ end
 local function flash()
 	local white = Players.LocalPlayer.PlayerGui.FrierenFlash.White
 	white.BackgroundTransparency = 0.1
-	Tw.play(white, {BackgroundTransparency = 1}, 0.2, QUAD, IN, 0.08)
+	Tw.play(white, {BackgroundTransparency = 1}, 0.06, QUAD, OUT, 0.03)
 end
 
 local function tip(arm)
 	return (arm.CFrame * CFrame.new(0, -1, 0)).Position
+end
+
+local function gem(char)
+	return char.Staff.Grip.Tip.WorldPosition
 end
 
 local function grow(c, k, dur, draw, fast)
@@ -171,7 +175,7 @@ function Frieren.zoltraak(char)
 
 	local circle, base, parts, conn
 	at(0.65, function()
-		local center = tip(char["Right Arm"]) + look * Z.Ahead
+		local center = gem(char) + look * Z.Ahead
 		base = CFrame.lookAt(center, center + look)
 		circle = spawn("Circle", base)
 		conn, parts = grow(circle, Z.Radius / 3, Z.Circle, 0.3, 5)
@@ -191,7 +195,11 @@ function Frieren.zoltraak(char)
 
 		at(Z.Line, function()
 			hide(line.Line, 0.05)
-			emit(circle, {Flash = 1, Glint = 1, Specks = 24, Gust = 30, Hoops = 3})
+			emit(circle, {Flash = 1, Glint = 1, Specks = 24, Gust = 30, Hoops = 5})
+			rates(circle, {Stream = 16})
+			at(Z.Hold, function()
+				rates(circle, {Stream = 0})
+			end)
 			if Z.Flash then
 				flash()
 			end
@@ -276,7 +284,7 @@ function Frieren.volley(char)
 				local a = (k - 1) * 2 * math.pi / (V.Count - 1) + math.pi / 2
 				off = (right * math.cos(a) + Vector3.yAxis * math.sin(a)) * V.Spread
 			end
-			local center = tip(char["Right Arm"]) + look * V.Ahead + off
+			local center = gem(char) + look * V.Ahead + off
 			local c = spawn("SmallCircle", CFrame.lookAt(center, center + look))
 			local conn, parts = grow(c, 1, 0.18, 0.1, 4)
 			at(V.Delay, function()

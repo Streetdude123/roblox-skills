@@ -812,6 +812,21 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   flowers. Studied from 19 Sakugabooru clips (references/study-frieren.md). Built without Studio: `FrierenTemplates.lua` (the instance
   tree), `FrierenVfx.lua` (the runtime on the schedule of the `ExampleFrieren.lua` clips), `Config.frieren.lua`; run offline against the
   Roblox API dump with no errors and full cleanup. Not seen in Studio yet.
+- 2026-09-26 (Frieren in Studio): "Continue the Frieren animation and VFX work for my Roblox game, now directly in Roblox
+  Studio. The goal is Frieren-level animation and VFX quality" and "Again, the skills should be general meaning it can create
+  anything but it has to be as good as frieren style level animation and vfx". First Studio run (study-frieren.md, "Checked in
+  Studio"): ZOffset split the layers, three textures were sheets or a disc, the flower fade cost 106 ms frames. His first-review
+  picks: keep the hex cells as they are and the 19-cell panel while blocking; the release flash under 0.1 s (was 0.28 s of 80%
+  white); a staff instead of the bare hand (a free model Frieren staff, the circles and bolts from its gem); rings along the beam
+  so it reads from his camera behind the caster (a beam that points away from the camera is only a streak). He chose no Studio
+  restart when paging spoiled the frame times.
+- 2026-09-26 (later): "Use the roblox sfx finder skill by the way please to create the sound effects just like frieren", then
+  "use sfx finder please, sfx synth is only last resort". "record a video by the way", then "No record a video after you're done
+  with the whole thing": one video at the end of the task, not during it.
+- 2026-09-26 (later): "Make the lighting absoluting STUNNING, a beautiful sunset in a field, whre we can test the flowers, that
+  will bloom out wit beautiful vfx" and "And make all these moves cinematic cutscenes too, 12-15 second cutscenes". His picks:
+  separate cinematic keys (the gameplay moves stay), cutscenes for Zoltraak, the volley and the flowers (not the barrier), a free
+  model monster as the opponent, and impact frames, a white-out and a fade to black at the end (no letterbox bars).
 
 ## Reference index
 

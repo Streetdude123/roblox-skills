@@ -8,13 +8,28 @@ local Example = {}
 local S = {
 	torso = {-1, 4, 0},
 	head = {-4, -3, 1},
-	rArm = {8, 0, -3},
+	rArm = {35, 0, -5},
 	lArm = {30, 0, 18},
 	rFoot = {0.5, 0.12, -6},
 	lFoot = {-0.5, -0.1, 8},
 }
 
-local stand = Feet.post({r = S.rFoot, l = S.lFoot})
+local GRIP = math.rad(25)
+local GRIP_R = CFrame.fromMatrix(Vector3.zero, Vector3.xAxis, Vector3.new(0, math.sin(GRIP), -math.cos(GRIP)))
+
+local function staff(post)
+	return function(poses, t, ctx)
+		post(poses, t, ctx)
+		local arm = (poses.Torso * CFrame.new(1, 0.5, 0) * poses["Right Arm"]).Rotation
+		local pitch = math.deg(math.asin(math.clamp(-arm.YVector.Y, -1, 1)))
+		local lean = math.rad(-8 + 38 * math.clamp(-pitch / 90, 0, 1))
+		local up = Vector3.new(0.12, math.cos(lean), -math.sin(lean)).Unit
+		local side = (Vector3.xAxis - up * up.X).Unit
+		poses.Grip = arm:Inverse() * CFrame.fromMatrix(Vector3.zero, side, up) * GRIP_R:Inverse()
+	end
+end
+
+local stand = staff(Feet.post({r = S.rFoot, l = S.lFoot}))
 
 local function add(v, d)
 	return {v[1] + d[1], v[2] + d[2], v[3] + d[3]}
@@ -49,6 +64,7 @@ Example.CalmIdle = {
 		},
 		["Right Leg"] = {K(0)},
 		["Left Leg"] = {K(0)},
+		Grip = {K(0)},
 	},
 	lag = {Head = 0.4, ["Right Arm"] = 0.6, ["Left Arm"] = 0.7},
 	life = 1,
@@ -86,14 +102,14 @@ Example.Zoltraak = {
 		},
 		["Right Arm"] = {
 			K(0, S.rArm),
-			K(0.4, {22, 0, -4}),
+			K(0.4, {48, 0, -5}),
 			K(0.62, AIM, V3(0, 0.05, -0.08)),
 			K(0.72, add(AIM, {2, 0, 0}), V3(0, 0.05, -0.1)),
 			K(1.25, add(AIM, {1, 0, -1}), V3(0, 0.05, -0.12)),
 			K(1.36, add(AIM, {7, 0, 0}), V3(0, 0.06, -0.02)),
 			K(1.5, AIM, V3(0, 0.05, -0.08)),
 			K(2.05, add(AIM, {1, 0, 0}), V3(0, 0.05, -0.1)),
-			K(2.35, {40, 0, -8}),
+			K(2.35, {55, 0, -6}),
 			K(2.8, S.rArm),
 		},
 		["Left Arm"] = {
@@ -105,6 +121,7 @@ Example.Zoltraak = {
 		},
 		["Right Leg"] = {K(0)},
 		["Left Leg"] = {K(0)},
+		Grip = {K(0)},
 	},
 	lag = {["Left Arm"] = 0.1},
 	springs = {["Left Arm"] = "follow"},
@@ -132,7 +149,7 @@ Example.BarrierRaise = {
 		},
 		["Right Arm"] = {
 			K(0, S.rArm),
-			K(0.12, {24, 0, -4}),
+			K(0.12, {44, 0, -5}),
 			K(0.3, B.rArm, V3(0, 0.04, -0.08)),
 			K(0.36, add(B.rArm, {2, 0, 0}), V3(0, 0.04, -0.11)),
 			K(0.7, B.rArm, V3(0, 0.04, -0.08)),
@@ -144,6 +161,7 @@ Example.BarrierRaise = {
 		},
 		["Right Leg"] = {K(0)},
 		["Left Leg"] = {K(0)},
+		Grip = {K(0)},
 	},
 	springs = {["Left Arm"] = "follow"},
 	life = 0.6,
@@ -178,6 +196,7 @@ Example.BarrierHold = {
 		},
 		["Right Leg"] = {K(0)},
 		["Left Leg"] = {K(0)},
+		Grip = {K(0)},
 	},
 	lag = {Head = 0.4, ["Left Arm"] = 0.6},
 	life = 0.8,
@@ -212,6 +231,7 @@ Example.BarrierHit = {
 		},
 		["Right Leg"] = {K(0)},
 		["Left Leg"] = {K(0)},
+		Grip = {K(0)},
 	},
 	springs = {Head = "follow", ["Left Arm"] = "follow"},
 	life = 0.6,
@@ -247,11 +267,11 @@ Example.Flowers = {
 		},
 		["Right Arm"] = {
 			K(0, S.rArm),
-			K(0.25, {14, 0, -10}),
+			K(0.25, {44, 0, -30}),
 			K(0.75, CUP.r, V3(0, 0.03, 0)),
 			K(1.85, add(CUP.r, {4, 0, -10}), V3(0, 0.06, 0)),
 			K(2.25, {50, 0, 28}, V3(0, 0.05, 0)),
-			K(3.1, {34, 0, 18}),
+			K(3.1, {42, 0, 10}),
 			K(3.6, S.rArm),
 		},
 		["Left Arm"] = {
@@ -265,6 +285,7 @@ Example.Flowers = {
 		},
 		["Right Leg"] = {K(0)},
 		["Left Leg"] = {K(0)},
+		Grip = {K(0)},
 	},
 	lag = {Torso = 0.1},
 	life = 0.8,
@@ -280,7 +301,7 @@ local function volleyArm()
 		table.insert(keys, K(t + 0.05, add(AIM, {5 + i * 0.5, 0, 0}), V3(0, 0.06, -0.04)))
 	end
 	table.insert(keys, K(1.3, add(AIM, {1, 0, 0}), V3(0, 0.05, -0.1)))
-	table.insert(keys, K(1.62, {36, 0, -8}))
+	table.insert(keys, K(1.62, {52, 0, -6}))
 	table.insert(keys, K(1.9, S.rArm))
 	return keys
 end
@@ -315,6 +336,7 @@ Example.ZoltraakVolley = {
 		},
 		["Right Leg"] = {K(0)},
 		["Left Leg"] = {K(0)},
+		Grip = {K(0)},
 	},
 	lag = {["Left Arm"] = 0.08},
 	springs = {["Left Arm"] = "follow"},
@@ -322,7 +344,7 @@ Example.ZoltraakVolley = {
 	post = stand,
 }
 
-local WALK = {cycle = 1.1, speed = 2.4, stance = 0.6, width = 0.42, lift = 0.22}
+local WALK = {cycle = 0.66, speed = 6, stance = 0.55, width = 0.42, lift = 0.3}
 
 local function walkFoot(offset, x, yaw)
 	return function(t)
@@ -353,15 +375,15 @@ local function walkDrop(t)
 end
 
 local function walkKeys()
-	local joints = {Torso = {}, Head = {}, ["Right Arm"] = {}, ["Left Arm"] = {}, ["Right Leg"] = {K(0)}, ["Left Leg"] = {K(0)}}
+	local joints = {Torso = {}, Head = {}, ["Right Arm"] = {}, ["Left Arm"] = {}, ["Right Leg"] = {K(0)}, ["Left Leg"] = {K(0)}, Grip = {K(0)}}
 	local n = 12
 	for i = 0, n do
 		local t = WALK.cycle * i / n
 		local w = math.cos(2 * math.pi * i / n)
-		table.insert(joints.Torso, T(t, {-2, -3 * w, 0}, V3(0, -walkDrop(t) - 0.01, 0)))
-		table.insert(joints.Head, K(t, {-3, 3 * w, 0}))
-		table.insert(joints["Right Arm"], K(t, {-12 * w + 2, 0, 3}))
-		table.insert(joints["Left Arm"], K(t, {12 * w + 2, 0, -3}))
+		table.insert(joints.Torso, T(t, {-4, -5 * w, 0}, V3(0, -walkDrop(t) - 0.01, 0)))
+		table.insert(joints.Head, K(t, {-2, 5 * w, 0}))
+		table.insert(joints["Right Arm"], K(t, {35 - 4 * w, 0, -4}))
+		table.insert(joints["Left Arm"], K(t, {18 * w + 2, 0, -3}))
 	end
 	return joints
 end
@@ -375,7 +397,7 @@ Example.CalmWalk = {
 	joints = walkKeys(),
 	lag = {Head = 0.06, ["Right Arm"] = 0.05, ["Left Arm"] = 0.05},
 	life = 0.5,
-	post = Feet.post({r = walkFoot(0, WALK.width, -4), l = walkFoot(0.5, -WALK.width, 4)}),
+	post = staff(Feet.post({r = walkFoot(0, WALK.width, -4), l = walkFoot(0.5, -WALK.width, 4)})),
 }
 
 Example.LeanDodge = {
@@ -398,8 +420,8 @@ Example.LeanDodge = {
 		},
 		["Right Arm"] = {
 			K(0, S.rArm),
-			K(0.12, {12, 0, 22}),
-			K(0.36, {13, 0, 24}),
+			K(0.12, {38, 0, 22}),
+			K(0.36, {39, 0, 24}),
 			K(0.8, S.rArm),
 		},
 		["Left Arm"] = {
@@ -410,6 +432,7 @@ Example.LeanDodge = {
 		},
 		["Right Leg"] = {K(0)},
 		["Left Leg"] = {K(0)},
+		Grip = {K(0)},
 	},
 	springs = {Head = "follow"},
 	life = 0.6,

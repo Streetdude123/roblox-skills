@@ -8,6 +8,9 @@ local Clips = require(ReplicatedStorage.Anim.Modules.ExampleFrieren)
 local Vfx = require(ReplicatedStorage.Frieren.Modules.FrierenVfx)
 
 local player = Players.LocalPlayer
+local Assets = ReplicatedStorage.Frieren.Assets
+local tilt = math.rad(25)
+local GRIP = CFrame.new(0, -0.8, 0) * CFrame.fromMatrix(Vector3.zero, Vector3.xAxis, Vector3.new(0, math.sin(tilt), -math.cos(tilt)))
 local camera = workspace.CurrentCamera
 
 local char, hum, hrp, rig, shield, walkSpeed
@@ -92,6 +95,14 @@ local function spawned(c)
 	for _, track in hum.Animator:GetPlayingAnimationTracks() do
 		track:Stop(0)
 	end
+	local staff = Assets.Staff:Clone()
+	local grip = Instance.new("Motor6D")
+	grip.Name = "Grip"
+	grip.Part0 = c["Right Arm"]
+	grip.Part1 = staff.Grip
+	grip.C0 = GRIP
+	grip.Parent = c["Right Arm"]
+	staff.Parent = c
 	rig = Poser.attach(c)
 	shield = nil
 	state = "idle"

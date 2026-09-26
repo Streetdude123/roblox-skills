@@ -104,7 +104,7 @@ function _G.editStrip(clip, times, opts)
 		local g = ghost(folder, ("Ghost%02d"):format(i), opts.plain ~= false)
 		local world = fk(order, rootCF, Poser.posesAt(clip, t, opts.ctx))
 		for name, cf in pairs(world) do
-			local part = g:FindFirstChild(name)
+			local part = g:FindFirstChild(name, true)
 			if part then
 				part.CFrame = cf
 			end

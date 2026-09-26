@@ -182,6 +182,12 @@ Captures from the player camera (12.5 studs behind, 4.7 up), in slow motion with
 - **The flower field** reads as clumps of pale periwinkle flowers round the caster, sparse next to the dense carpet of the reference.
 - The grey cel smoke and the single black rocks at a hit read as meant.
 
+### After his first review (2026-09-26)
+
+- **Flash:** 0.03 s hold and a 0.06 s fade (was 0.08 s and 0.2 s).
+- **Beam from behind:** a `Stream` emitter on the circle throws the `shock` ring sheet along the aim at 60 to 80 studs/s, 16 a second, through the hold; the release burst is larger (flash 10, glint 5, 5 hoops of 3 to 6). From his camera the beam reads as a bright core in the circle with rings flying away through it.
+- **Staff:** `scripts/FrierenStaff.lua` builds `Assets.Staff` from the free model 84222065610676 ("Frieren staff", no scripts, inserted as `ServerStorage.Quarantine.StaffA`): scaled to 4.8 studs, an invisible `Grip` part 40% up the shaft, the body and the gem on Motor6Ds (EditStrip poses only Motor6D trees), a `Tip` attachment at the gem. The Zoltraak circle and the volley circles start at the tip. With the staff upright on the aim, the circle stands above the head and the whole ring reads from his camera. Trap: an Attachment's `WorldPosition` set before it has a parent becomes its local `Position`; the first tip sat 58 studs away and the circle formed over the target. Set it after parenting.
+
 ## Where this meets his earlier rules
 
 - "Too geometric" was said of Neon solids, and of UI rings and borders on a water block. The Frieren circle and hexes are geometric because the reference is; here they are thin light beams over faint flat fills with glints and fragments. Ask him about the geometry on the first review.

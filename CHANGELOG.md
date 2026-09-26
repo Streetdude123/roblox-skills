@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 - Frieren first review: staff, calm walk at 6, flash, beam rings (user-authorized)
+
+- `roblox-vfx-craft`: the release flash is under 0.1 s; a ring stream along the Zoltraak beam and a larger release burst; new `scripts/FrierenStaff.lua` (the staff asset from a free model); the circles start at the staff gem; `FrierenClient.lua` attaches the staff. `SKILL.md` log and `study-frieren.md` follow.
+- `roblox-r6-animation`: `ExampleFrieren.lua` CalmWalk re-keyed for 6 studs/s; a `Grip` joint on every clip turned by a post pass from the arm's pitch; the right arm carries the staff (idle lift 35). `EditStrip.lua` finds parts inside prop models. `project-style.md` logs his picks.
+
 ## 2026-09-26 - Frieren in Studio: flat beams, ZOffset, textures, sync and cost (user-authorized)
 
 - `roblox-vfx-craft`: the Frieren effects and clips were installed and run in Studio for the first time. `FrierenTemplates.lua`: `ZOffset` values cut from 0 to 4 studs to 0 to 0.08 (the layers split apart off the screen centre), the disc texture swapped for the `shock` ring sheet as a OneShot flipbook, the rock sheet played as one random frame, and the invisible `specs` dots swapped for `glow`. `FrierenVfx.lua`: the flower field moves with one `BulkMoveTo` a frame and fades without tweens (the fade cost 106 ms frames). New `scripts/FrierenClient.lua` (keys, test attributes, CalmIdle and CalmWalk). `study-frieren.md` gains "Checked in Studio" (event times, cost table, texture findings); `verification.md` gains the decal texture check, the ZOffset rule and the paging check.
