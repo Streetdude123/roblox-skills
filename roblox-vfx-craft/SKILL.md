@@ -833,6 +833,24 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   outer band and the inner pattern as separate textures), uploaded with his permission. Each layer is one flat Beam across the
   circle (`FaceCamera` off, `TextureMode.Stretch`, `TextureLength` 1), the band turning against the core. When he gives a
   drawing of a magic circle or a glyph, use the drawing as the texture.
+- 2026-09-26 (later): "Make the lighting absoluting STUNNING, a beautiful sunset in a field" - built with `scripts/FrierenField.lua`
+  (a 1024-stud terrain meadow, hills that stay low toward the sun, a pond toward the sun, a photo sunset skybox from the Toolbox, sun
+  6 degrees up, warm atmosphere, bloom, rays, a warm grade, golden motes). The place's animated grass hid 0.5 to 2 stud props; the
+  plugin cannot set `Terrain.Decoration` or `GrassLength`, so he sets them. LeafyGrass has no blades but reads as dead leaf litter.
+- 2026-09-26 (later): "make sure all the VFX is significantly more dramatic, it's good but I think it's too minimalistic, also prepare
+  for the cutscenes, 12-15 seconds long with supee good animation quality" and "from now you can use the internet for vfx stuff like the
+  images for zoltraak, i give you permission to upload all of them". The drama pass took pieces from a Toolbox pack (below) and added:
+  his circle flat on the ground under the caster, a gather of lines and spinning crescents into the circle, a barrel of three circles,
+  a release with a star burst, a forward shock ring and a lens streak, a camera kick (0.15 on the fire line, 0.55 on the release, 0.1 to
+  0.2 on hits), a beam twice as wide that pulses, crescents spinning along it, a blast at the hit (flash, star, spikes, two shock rings,
+  sparks, cel smoke, single rocks, a glint, a light of 7), a ring trail on each volley bolt, a flash ripple across the barrier panel from
+  each hit, and for the flowers a cup gather, a floor circle, two light rings sweeping out with the bloom, a glint on every flower and
+  90 petals.
+- Pack intake that day: of eight Toolbox models (four dragons, four VFX packs), five carried the same hidden script: a fake Quenty
+  `LightConfig` (or a `Structure` or `CoreSkyboxSystem` script) inside a bone, an arm part or a `SurfaceAppearance`, with a
+  `require` and a module that touches `MarketplaceService`. Keyword-stuffed names ("Dragon Wings Classic Dragon Rigged Magic
+  Detailed") were the tell every time; they were deleted unread. "Anime VFX Pack" (13295712552) was clean (preview loops only) and gave
+  the textures; its pieces are listed in study-frieren.md.
 
 ## Reference index
 

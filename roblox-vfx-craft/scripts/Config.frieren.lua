@@ -58,7 +58,7 @@ Config.Flowers = {
 	Near = 2.5,
 	Speed = 14,
 	Count = 110,
-	Petals = 36,
+	Petals = 90,
 	Life = 7,
 }
 

@@ -82,6 +82,26 @@ local function flash()
 	Tw.play(white, {BackgroundTransparency = 1}, 0.06, QUAD, OUT, 0.03)
 end
 
+local trauma = 0
+RunService:BindToRenderStep("FrierenKick", Enum.RenderPriority.Camera.Value + 1, function(dt)
+	if trauma <= 0 then
+		return
+	end
+	trauma = math.max(0, trauma - dt * 1.8 / Tw.S())
+	local t = os.clock() * 13
+	local k = trauma * trauma
+	workspace.CurrentCamera.CFrame *= CFrame.new(math.noise(t, 1.5) * k * 0.9, math.noise(t, 2.5) * k * 0.9, 0) * CFrame.Angles(0, 0, math.noise(t, 3.5) * k * 0.03)
+end)
+
+local function kick(a)
+	trauma = math.min(1, trauma + a)
+end
+
+local function ground(pos, char)
+	local hit = ray(pos + Vector3.new(0, 2, 0), Vector3.new(0, -30, 0), char)
+	return hit and hit.Position or pos - Vector3.new(0, 3, 0)
+end
+
 local function tip(arm)
 	return (arm.CFrame * CFrame.new(0, -1, 0)).Position
 end
@@ -134,6 +154,13 @@ local function grow(c, k, dur, draw, fast)
 	return conn, parts, close
 end
 
+local function floorCircle(char, k, dur)
+	local p = ground(char.HumanoidRootPart.Position, char) + Vector3.new(0, 0.15, 0)
+	local c = spawn("FloorCircle", CFrame.new(p) * CFrame.Angles(-math.pi / 2, 0, 0))
+	local conn, _, close = grow(c, k, dur, 0.3, 3)
+	return c, conn, close
+end
+
 local function spikes(pos, k)
 	local s = spawn("Burst", CFrame.new(pos) * CFrame.Angles(math.random() * 6.28, math.random() * 6.28, 0))
 	for _, a in ipairs(s:GetChildren()) do
@@ -165,7 +192,13 @@ function Frieren.zoltraak(char)
 	local fire = 0.65 + Z.Circle
 	local stop = fire + Z.Line + Z.Hold
 
-	updraft(char, {Motes = 30, Streaks = 14, Glints = 4}, fire)
+	updraft(char, {Motes = 60, Streaks = 30, Glints = 10}, fire)
+
+	local sigil, sigilConn, sigilClose
+	at(0.3, function()
+		sigil, sigilConn, sigilClose = floorCircle(char, 1, 0.5)
+		rates(sigil, {Rise = 30, Lines = 12})
+	end)
 
 	at(0.4, function()
 		local p = spawn("Pillars", hrp.CFrame)
@@ -181,12 +214,24 @@ function Frieren.zoltraak(char)
 		Debris:AddItem(p, 1.2 * Tw.S())
 	end)
 
-	local circle, base, conn, close
+	local circle, base, conn, close, charge
+	local barrel = {}
 	at(0.65, function()
 		local center = gem(char) + look * Z.Ahead
 		base = CFrame.lookAt(center, center + look)
 		circle = spawn("Circle", base)
 		conn, _, close = grow(circle, Z.Radius / 3, Z.Circle, 0.3, 5)
+		charge = spawn("Charge", base)
+		rates(charge, {Gather = 60, Arcs = 10, Core = 20})
+		Tw.play(charge.Light, {Brightness = 5}, Z.Circle, QUAD, IN)
+		for i, step in ipairs({{1.9, 0.7}, {3.5, 0.45}}) do
+			at(0.08 * i, function()
+				local p = center + look * step[1]
+				local c = spawn("Circle", CFrame.lookAt(p, p + look) * CFrame.Angles(0, (i % 2) * math.pi, 0))
+				local cn, _, cl = grow(c, Z.Radius / 3 * step[2], Z.Circle - 0.08 * i, 0.3, 5)
+				table.insert(barrel, {c, cn, cl})
+			end)
+		end
 	end)
 
 	at(fire, function()
@@ -200,54 +245,89 @@ function Frieren.zoltraak(char)
 		line.Finish.Position = Vector3.new(0, 0, -len / 2)
 		local w = beams(line)
 		show(line.Line, w[line.Line], 0.03)
+		rates(charge, {Gather = 0, Arcs = 0, Core = 0})
+		Tw.play(charge.Light, {Brightness = 0}, 0.4, QUAD, IN, Z.Line)
+		Debris:AddItem(charge, 1.5 * Tw.S())
+		emit(sigil, {Dust = 2})
+		kick(0.15)
 
 		at(Z.Line, function()
 			hide(line.Line, 0.05)
-			emit(circle, {Flash = 1, Glint = 1, Specks = 24, Gust = 30, Hoops = 5})
-			rates(circle, {Stream = 16})
+			emit(circle, {Flash = 1, Glint = 1, Specks = 40, Gust = 50, Hoops = 6, Star = 1, Shock = 2, Streak = 1})
+			for _, b in ipairs(barrel) do
+				emit(b[1], {Flash = 1, Shock = 1})
+			end
+			rates(circle, {Stream = 24})
 			at(Z.Hold, function()
 				rates(circle, {Stream = 0})
 			end)
 			if Z.Flash then
 				flash()
 			end
+			kick(0.55)
 			for _, name in ipairs({"Edge", "Fringe", "Glow", "Core"}) do
 				local b = line[name]
 				show(b, {w[b][1] * Z.Width, w[b][2] * Z.Width}, 0.06, BACK)
 				hide(b, 0.18, Z.Hold)
 			end
-			rates(line, {Streaks = 70})
+			local t0 = os.clock()
+			local pulse
+			at(0.08, function()
+				pulse = RunService.RenderStepped:Connect(function()
+					local t = (os.clock() - t0) / Tw.S()
+					local k = Z.Width * (1 + 0.07 * math.sin(t * 40) + 0.05 * math.sin(t * 23))
+					for _, name in ipairs({"Edge", "Fringe", "Glow", "Core"}) do
+						local b = line[name]
+						b.Width0, b.Width1 = w[b][1] * k, w[b][2] * k
+					end
+				end)
+			end)
+			at(Z.Hold - 0.02, function()
+				pulse:Disconnect()
+			end)
+			rates(line, {Streaks = 90, Arcs = 40})
 			at(Z.Hold, function()
-				rates(line, {Streaks = 0})
+				rates(line, {Streaks = 0, Arcs = 0})
 			end)
 			Debris:AddItem(line, (Z.Hold + 0.6) * Tw.S())
 
-			local h = spawn("Hit", CFrame.new(finish))
-			emit(h, {Flash = 1, Glint = 1, Ring = 1, Sparks = 24, Smoke = 10})
-			if hit then
-				emit(h, {Debris = 12})
-			end
-			spikes(finish, 1.4)
-			h.Light.Brightness = 3
-			Tw.play(h.Light, {Brightness = 0}, Z.Hold + 0.3, QUAD, IN)
-			for i = 1, math.floor(Z.Hold / 0.12) do
-				at(0.12 * i, function()
-					emit(h, {Sparks = 6, Smoke = 2})
+			local h = spawn("Blast", CFrame.new(finish))
+			emit(h, {Flash = 1, Star = 1, Spikes = 1, Ring = 1, Ring2 = 1, Sparks = 40, Smoke = 14, Glint = 1, Rocks = hit and 18 or 0})
+			spikes(finish, 2)
+			h.Light.Brightness = 7
+			Tw.play(h.Light, {Brightness = 0}, Z.Hold + 0.6, QUAD, IN)
+			for i = 1, math.floor(Z.Hold / 0.1) do
+				at(0.1 * i, function()
+					emit(h, {Sparks = 8, Smoke = 3, Rocks = hit and 2 or 0})
 				end)
 			end
-			Debris:AddItem(h, (Z.Hold + 1.5) * Tw.S())
+			at(Z.Hold, function()
+				emit(h, {Ring2 = 1, Smoke = 10})
+			end)
+			Debris:AddItem(h, (Z.Hold + 2.5) * Tw.S())
 		end)
 	end)
 
 	at(stop, function()
 		close(0.3)
-		at(0.35, function()
+		sigilClose(0.4)
+		for _, b in ipairs(barrel) do
+			b[3](0.25)
+		end
+		rates(sigil, {Rise = 0, Lines = 0})
+		at(0.45, function()
 			conn:Disconnect()
 			circle:Destroy()
+			sigilConn:Disconnect()
+			sigil:Destroy()
+			for _, b in ipairs(barrel) do
+				b[2]:Disconnect()
+				b[1]:Destroy()
+			end
 		end)
 	end)
 
-	return stop + 0.35
+	return stop + 0.45
 end
 
 function Frieren.volley(char)
@@ -264,8 +344,9 @@ function Frieren.volley(char)
 				bolts[b] = nil
 				local spot = hit and hit.Position or s.pos
 				local h = spawn("Hit", CFrame.new(spot))
-				emit(h, {Flash = 1, Glint = 1, Ring = 1, Sparks = 10, Smoke = hit and 4 or 0, Debris = hit and 5 or 0})
-				h.Light.Brightness = 2
+				emit(h, {Flash = 1, Glint = 1, Ring = 1, Star = 1, Sparks = 16, Smoke = hit and 6 or 0, Debris = hit and 6 or 0})
+				kick(0.1)
+				h.Light.Brightness = 3
 				Tw.play(h.Light, {Brightness = 0}, 0.3, QUAD, IN)
 				Debris:AddItem(h, 1.3 * Tw.S())
 				spikes(spot, 0.8)
@@ -283,6 +364,16 @@ function Frieren.volley(char)
 
 	local start = 0.15
 	local last = start + (V.Count - 1) * V.Gap + V.Delay
+	local sigil, sigilConn, sigilClose = floorCircle(char, 0.75, 0.3)
+	rates(sigil, {Rise = 24, Lines = 10})
+	at(last + 0.35, function()
+		sigilClose(0.35)
+		rates(sigil, {Rise = 0, Lines = 0})
+		at(0.4, function()
+			sigilConn:Disconnect()
+			sigil:Destroy()
+		end)
+	end)
 	for k = 0, V.Count - 1 do
 		at(start + k * V.Gap, function()
 			local off = Vector3.zero
@@ -294,9 +385,10 @@ function Frieren.volley(char)
 			local c = spawn("SmallCircle", CFrame.lookAt(center, center + look))
 			local conn, _, close = grow(c, 1, 0.18, 0.1, 4)
 			at(V.Delay, function()
-				emit(c, {Flash = 1, Glint = 1})
+				emit(c, {Flash = 1, Glint = 1, Star = 1, Shock = 1})
+				kick(0.12)
 				local b = spawn("Bolt", CFrame.lookAt(center, center + look))
-				rates(b, {Glow = 60, Dashes = 40})
+				rates(b, {Glow = 60, Dashes = 50, Rings = 40})
 				bolts[b] = {pos = center, from = center}
 			end)
 			at(last - start - k * V.Gap + 0.35, function()
@@ -353,7 +445,8 @@ function Frieren.barrier(char)
 				show(b, w, 0.08)
 			end
 			if bright then
-				emit(c, {Flash = 1, Glint = 1})
+				emit(c, {Flash = 1, Glint = 1, Star = 1})
+				kick(0.08)
 			end
 			if list then
 				table.insert(list, c)
@@ -363,7 +456,7 @@ function Frieren.barrier(char)
 
 	local function close(c)
 		cells[c] = nil
-		emit(c, {Rings = 5, Shards = 3})
+		emit(c, {Rings = 7, Shards = 5})
 		for b in pairs(beams(c)) do
 			hide(b, 0.12)
 		end
@@ -396,6 +489,18 @@ function Frieren.barrier(char)
 	function shield.hit(point)
 		local dir = hrp.CFrame:VectorToObjectSpace(point - (hrp.Position + Vector3.new(0, B.Lift, 0))).Unit
 		local list = {}
+		local spot = Vector3.new(0, B.Lift, 0) + dir * B.Radius
+		for c, o in pairs(cells) do
+			at((o.Position - spot).Magnitude / 25, function()
+				if cells[c] then
+					emit(c, {Flash = 1})
+				end
+			end)
+		end
+		local h = spawn("Hit", CFrame.new(hrp.CFrame * spot))
+		emit(h, {Flash = 1, Star = 1, Ring = 1, Sparks = 14})
+		Debris:AddItem(h, 1 * Tw.S())
+		kick(0.18)
 		open(place(dir, 0, 0), 0, true, list)
 		local pick = math.random(1, 6)
 		for i = 0, B.Cluster - 2 do
@@ -438,19 +543,39 @@ function Frieren.flowers(char)
 
 	updraft(char, {Motes = 10, Streaks = 3, Glints = 2}, release + 0.5)
 
-	local cup, follow
+	local cup, follow, charge
 	at(gather, function()
 		cup = spawn("Cup", CFrame.new((tip(rarm) + tip(larm)) / 2))
-		rates(cup, {Core = 24, Glints = 5, Lines = 6, Motes = 10})
-		Tw.play(cup.Light, {Brightness = 2.2}, F.Gather, QUAD, OUT)
+		charge = spawn("Charge", cup.CFrame)
+		rates(cup, {Core = 24, Glints = 8, Lines = 10, Motes = 16})
+		rates(charge, {Gather = 40, Arcs = 6, Core = 14})
+		Tw.play(cup.Light, {Brightness = 4}, F.Gather, QUAD, OUT)
 		follow = RunService.RenderStepped:Connect(function()
 			cup.CFrame = CFrame.new((tip(rarm) + tip(larm)) / 2 + Vector3.new(0, 0.15, 0))
+			charge.CFrame = cup.CFrame
+		end)
+	end)
+
+	local sigil, sigilConn, sigilClose
+	at(release - 0.2, function()
+		sigil, sigilConn, sigilClose = floorCircle(char, 1.2, 0.4)
+		rates(sigil, {Rise = 40, Lines = 16})
+		at(1.9, function()
+			sigilClose(0.5)
+			rates(sigil, {Rise = 0, Lines = 0})
+			at(0.55, function()
+				sigilConn:Disconnect()
+				sigil:Destroy()
+			end)
 		end)
 	end)
 
 	at(release, function()
 		follow:Disconnect()
 		rates(cup, {Core = 0, Glints = 0, Lines = 0, Motes = 0})
+		rates(charge, {Gather = 0, Arcs = 0, Core = 0})
+		Debris:AddItem(charge, 1 * Tw.S())
+		kick(0.2)
 		Tw.play(cup.Light, {Brightness = 0}, 0.4, QUAD, IN)
 		Debris:AddItem(cup, 1.8 * Tw.S())
 		local rise = spawn("Rise", cup.CFrame)
@@ -470,7 +595,7 @@ function Frieren.flowers(char)
 		local x, z = hrp.Position.X + math.cos(a) * r, hrp.Position.Z + math.sin(a) * r
 		local free = true
 		for _, s in ipairs(spots) do
-			if (s[1].X - x) ^ 2 + (s[1].Z - z) ^ 2 < 1.2 then
+			if (s[1].X - x) ^ 2 + (s[1].Z - z) ^ 2 < 3.2 then
 				free = false
 				break
 			end
@@ -508,10 +633,10 @@ function Frieren.flowers(char)
 			local u = math.min(1, (now - g[2]) / (g[3] * Tw.S()))
 			local y
 			if g[4] then
-				y = -0.3 * u * u
+				y = -0.5 * u * u
 			else
 				local s = 1.70158
-				y = -0.9 + 0.9 * (1 + (s + 1) * (u - 1) ^ 3 + s * (u - 1) ^ 2)
+				y = -1.5 + 1.5 * (1 + (s + 1) * (u - 1) ^ 3 + s * (u - 1) ^ 2)
 			end
 			if g[4] and u >= 1 then
 				growing[f] = nil
@@ -535,24 +660,28 @@ function Frieren.flowers(char)
 
 	at(bloomAt, function()
 		local field = spawn("Bloom", CFrame.new(hrp.Position.X, floor, hrp.Position.Z))
-		rates(field, {Drift = 12})
+		rates(field, {Drift = 30})
+		local wave = spawn("Wave", CFrame.new(hrp.Position.X, floor + 0.3, hrp.Position.Z))
+		emit(wave, {Ring = 1, Thin = 1, Star = 1})
+		at(0.25, function()
+			emit(wave, {Thin = 1})
+		end)
+		Debris:AddItem(wave, 2 * Tw.S())
 		local pop = field.Pop
 		for n, s in ipairs(spots) do
 			at(s[2] / F.Speed, function()
 				local base = CFrame.new(s[1]) * CFrame.Angles(0, s[3], 0)
-				local f = spawn("Flower", base * CFrame.new(0, -0.9, 0))
+				local f = spawn("Flower", base * CFrame.new(0, -1.5, 0))
 				growing[f] = {base, os.clock(), 0.3, false, f:GetChildren()}
-				if n % 3 == 0 then
-					pop.WorldPosition = s[1] + Vector3.new(0, 0.7, 0)
-					emit(pop, {Specks = 3, Glint = 1})
-				end
+				pop.WorldPosition = s[1] + Vector3.new(0, 1.2, 0)
+				emit(pop, {Specks = n % 2 == 0 and 3 or 0, Glint = 1})
 				at(F.Life, function()
 					growing[f] = {base, os.clock(), 0.8, true, f:GetChildren()}
 				end)
 			end)
 		end
 		for _ = 1, F.Petals do
-			at(math.random() * 2, function()
+			at(math.random() * 3, function()
 				local r = F.Radius * math.sqrt(math.random())
 				local a = math.random() * 2 * math.pi
 				local pos = Vector3.new(hrp.Position.X + math.cos(a) * r, floor + 0.4 + math.random() * 3, hrp.Position.Z + math.sin(a) * r)
@@ -560,7 +689,7 @@ function Frieren.flowers(char)
 				petals[p] = {
 					t0 = os.clock(),
 					pos = pos,
-					vel = Vector3.new(1.8 + math.random(), 0.2 + math.random() * 0.4, 0.8 + math.random() * 0.6),
+					vel = Vector3.new(2.6 + math.random() * 1.4, 0.3 + math.random() * 0.6, 1.1 + math.random() * 0.9),
 					w = 2 + math.random() * 2,
 					spin = Vector3.new(math.random() * 4 - 2, math.random() * 4 - 2, math.random() * 4 - 2),
 					life = 2.5 + math.random() * 1.5,

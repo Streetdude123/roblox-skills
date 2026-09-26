@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 - A sunset field and the drama pass (user-authorized)
+
+- `roblox-vfx-craft`: new `scripts/FrierenField.lua` (terrain meadow, pond, sunset sky and lighting, motes). `FrierenTemplates.lua` adds `Charge`, `Blast`, `FloorCircle` and `Wave` and new release, beam and hit emitters from a scanned Toolbox pack; `FrierenVfx.lua` adds a camera kick, the floor circle, the gather, a barrel of circles, a pulsing wide beam, the blast, bolt ring trails, a barrier hit ripple and the flower waves; the flower model is 1.7 times larger. `SKILL.md` log (with the backdoor pattern found in five Toolbox models) and `study-frieren.md` follow.
+
 ## 2026-09-26 - The Zoltraak circle from his drawing (user-authorized)
 
 - `roblox-vfx-craft`: new `scripts/circle_texture.py` turns a line drawing of a magic circle into glow, band and core textures; `FrierenTemplates.lua` draws the `Circle` and `SmallCircle` as textured flat beams (19 beams instead of 160); `FrierenVfx.grow` counter-rotates the band and closes the circle into its centre. `SKILL.md` log and `study-frieren.md` follow.

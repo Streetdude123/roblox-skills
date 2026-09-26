@@ -10,12 +10,20 @@ local TEX = {
 	star = "rbxassetid://1084970835",
 	spark = "rbxassetid://8037777212",
 	shards = "rbxassetid://10439119562",
-	rocks = "rbxassetid://12111686783",
-	smoke = "rbxassetid://10180479311",
-	shock = "rbxassetid://16477162837",
 	circleGlow = "rbxassetid://135349041132558",
 	circleBand = "rbxassetid://92707612794775",
 	circleCore = "rbxassetid://83546864948047",
+	starBurst = "rbxassetid://7417147728",
+	spikes = "rbxassetid://4753492159",
+	ringThin = "rbxassetid://5259803254",
+	ringThick = "rbxassetid://244221613",
+	streak = "rbxassetid://7524776499",
+	glint = "rbxassetid://298984512",
+	crescent = "rbxassetid://5726444189",
+	puff = "rbxassetid://6706234595",
+	dustRing = "rbxassetid://348103573",
+	rock = "rbxassetid://626588936",
+	line = "rbxassetid://7458821155",
 }
 
 local function folder(parent, name)
@@ -177,9 +185,7 @@ emitter(circle, "Gust", {
 	LightEmission = 1,
 })
 emitter(circle, "Hoops", {
-	Texture = TEX.shock,
-	FlipbookLayout = Enum.ParticleFlipbookLayout.Grid4x4,
-	FlipbookMode = Enum.ParticleFlipbookMode.OneShot,
+	Texture = TEX.ringThin,
 	Color = ColorSequence.new(P.white, P.lilac),
 	Size = seq({{0, 3}, {1, 6}}),
 	Transparency = seq({{0, 0.1}, {0.5, 0.5}, {1, 1}}),
@@ -190,9 +196,7 @@ emitter(circle, "Hoops", {
 	LightEmission = 1,
 })
 emitter(circle, "Stream", {
-	Texture = TEX.shock,
-	FlipbookLayout = Enum.ParticleFlipbookLayout.Grid4x4,
-	FlipbookMode = Enum.ParticleFlipbookMode.OneShot,
+	Texture = TEX.ringThin,
 	Color = ColorSequence.new(P.white, P.lilac),
 	Size = seq({{0, 1.8}, {1, 2.8}}),
 	Transparency = seq({{0, 0.15}, {0.5, 0.45}, {1, 1}}),
@@ -232,11 +236,11 @@ local function layer(name, width, color, t, le, z)
 	b:SetAttribute("Width", width)
 	return b
 end
-layer("Edge", 1.9, P.ink, seq({{0, 0.9}, {0.03, 0.35}, {0.94, 0.35}, {1, 1}}), 0, 0)
-layer("Fringe", 1.55, P.fringe, seq({{0, 0.9}, {0.03, 0.55}, {0.94, 0.55}, {1, 1}}), 1, 0.02)
-layer("Glow", 1.25, P.lilac, seq({{0, 0.8}, {0.03, 0.25}, {0.94, 0.25}, {1, 0.9}}), 1, 0.04)
-layer("Core", 0.55, P.white, fade, 1, 0.06)
-layer("Line", 0.07, P.white, NumberSequence.new(0), 1, 0.08)
+layer("Edge", 3.4, P.ink, seq({{0, 0.9}, {0.03, 0.35}, {0.94, 0.35}, {1, 1}}), 0, 0)
+layer("Fringe", 2.8, P.fringe, seq({{0, 0.9}, {0.03, 0.55}, {0.94, 0.55}, {1, 1}}), 1, 0.02)
+layer("Glow", 2.2, P.lilac, seq({{0, 0.8}, {0.03, 0.25}, {0.94, 0.25}, {1, 0.9}}), 1, 0.04)
+layer("Core", 0.9, P.white, fade, 1, 0.06)
+layer("Line", 0.1, P.white, NumberSequence.new(0), 1, 0.08)
 emitter(ray, "Streaks", {
 	Texture = TEX.spark,
 	Color = ColorSequence.new(P.white, P.lilac),
@@ -271,11 +275,9 @@ emitter(hit, "Glint", {
 	ZOffset = 0.06,
 })
 emitter(hit, "Ring", {
-	Texture = TEX.shock,
-	FlipbookLayout = Enum.ParticleFlipbookLayout.Grid4x4,
-	FlipbookMode = Enum.ParticleFlipbookMode.OneShot,
+	Texture = TEX.ringThick,
 	Color = ColorSequence.new(P.white),
-	Size = seq({{0, 5}, {1, 9}}),
+	Size = seq({{0, 0.5}, {1, 10}}),
 	Transparency = seq({{0, 0}, {0.5, 0.4}, {1, 1}}),
 	Lifetime = NumberRange.new(0.4),
 	Speed = NumberRange.new(0),
@@ -294,7 +296,7 @@ emitter(hit, "Sparks", {
 	LightEmission = 1,
 })
 emitter(hit, "Smoke", {
-	Texture = TEX.smoke,
+	Texture = TEX.puff,
 	Color = ColorSequence.new(P.smoke, P.smokeDark),
 	Size = seq({{0, 2.5}, {1, 5.5}}),
 	Transparency = seq({{0, 0}, {0.7, 0.1}, {1, 1}}),
@@ -307,11 +309,8 @@ emitter(hit, "Smoke", {
 	LightEmission = 0,
 })
 emitter(hit, "Debris", {
-	Texture = TEX.rocks,
-	FlipbookLayout = Enum.ParticleFlipbookLayout.Grid2x2,
-	FlipbookFramerate = NumberRange.new(0),
-	FlipbookStartRandom = true,
-	Color = ColorSequence.new(P.ink),
+	Texture = TEX.rock,
+	Color = ColorSequence.new(Color3.fromRGB(70, 62, 70)),
 	Size = seq({{0, 0.55}, {1, 0.4}}),
 	Lifetime = NumberRange.new(0.8, 1.2),
 	Speed = NumberRange.new(20, 40),
@@ -372,8 +371,8 @@ emitter(small, "Glint", {
 })
 
 local bolt = carrier("Bolt")
-local head, tail = att(bolt, "Head", CFrame.new()), att(bolt, "Tail", CFrame.new(0, 0, 5))
-for _, l in ipairs({{"Shell", 1.1, P.lilac, 0.35, 0}, {"Body", 0.7, P.white, 0, 0.02}}) do
+local head, tail = att(bolt, "Head", CFrame.new()), att(bolt, "Tail", CFrame.new(0, 0, 8))
+for _, l in ipairs({{"Shell", 1.7, P.lilac, 0.35, 0}, {"Body", 1.05, P.white, 0, 0.02}}) do
 	local b = beam(bolt, l[1], head, tail, {
 		Width0 = l[2],
 		Width1 = 0,
@@ -412,12 +411,12 @@ emitter(bolt, "Dashes", {
 })
 
 local pillars = carrier("Pillars")
-local spots = {{0.3, 2.2, 7}, {1.1, 3.1, 5}, {1.9, 1.7, 9}, {2.6, 2.8, 6}, {3.3, 3.4, 8}, {4.0, 2.0, 4.5}, {4.7, 3.0, 7.5}, {5.5, 2.4, 6}, {6.0, 3.6, 5}, {2.2, 1.6, 8.5}}
+local spots = {{0.3, 2.2, 10}, {1.1, 3.1, 7}, {1.9, 1.7, 12}, {2.6, 2.8, 8}, {3.3, 3.4, 11}, {4.0, 2.0, 6}, {4.7, 3.0, 10}, {5.5, 2.4, 8}, {6.0, 3.6, 7}, {2.2, 1.6, 12}, {0.8, 4.2, 9}, {3.8, 4.4, 8}, {5.1, 4.0, 10}, {2.9, 1.2, 6}}
 for i, s in ipairs(spots) do
 	local x, z = math.cos(s[1]) * s[2], math.sin(s[1]) * s[2]
 	local b = beam(pillars, "Pillar" .. i, att(pillars, "Low" .. i, CFrame.new(x, -3, z)), att(pillars, "High" .. i, CFrame.new(x, -3 + s[3], z)), {
-		Width0 = 0.25 + 0.05 * (i % 4),
-		Width1 = 0.1,
+		Width0 = 0.35 + 0.08 * (i % 4),
+		Width1 = 0.14,
 		Segments = 1,
 		FaceCamera = true,
 		Color = ColorSequence.new(P.white, P.lilac),
@@ -557,9 +556,7 @@ emitter(cell, "Glint", {
 	ZOffset = 0.08,
 })
 emitter(cell, "Rings", {
-	Texture = TEX.shock,
-	FlipbookLayout = Enum.ParticleFlipbookLayout.Grid4x4,
-	FlipbookMode = Enum.ParticleFlipbookMode.OneShot,
+	Texture = TEX.ringThin,
 	Color = ColorSequence.new(P.edge),
 	Size = seq({{0, 0.5}, {1, 0.7}}),
 	Transparency = seq({{0, 0}, {0.5, 0.2}, {1, 1}}),
@@ -672,9 +669,9 @@ emitter(pop, "Specks", {
 	LightEmission = 1,
 })
 emitter(pop, "Glint", {
-	Texture = TEX.star,
-	Color = ColorSequence.new(P.mint),
-	Size = seq({{0, 0}, {0.3, 0.35}, {1, 0}}),
+	Texture = TEX.glint,
+	Color = ColorSequence.new(P.white, P.mint),
+	Size = seq({{0, 0}, {0.3, 1.2}, {1, 0}}),
 	Lifetime = NumberRange.new(0.2),
 	Speed = NumberRange.new(0),
 	LightEmission = 1,
@@ -692,6 +689,334 @@ emitter(bloom, "Drift", {
 	Rotation = NumberRange.new(0, 360),
 	RotSpeed = NumberRange.new(-60, 60),
 	LightEmission = 0.6,
+})
+
+local S = function(a, b)
+	return ColorSequence.new(a, b or a)
+end
+local R = NumberRange.new
+
+emitter(circle, "Star", {
+	Texture = TEX.starBurst,
+	Color = S(P.white, P.lilac),
+	Size = seq({{0, 2}, {0.25, 11}, {1, 13}}),
+	Transparency = seq({{0, 0}, {0.6, 0.3}, {1, 1}}),
+	Lifetime = R(0.28),
+	Speed = R(0),
+	Rotation = R(0, 360),
+	LockedToPart = true,
+	LightEmission = 1,
+	ZOffset = 0.1,
+})
+emitter(circle, "Shock", {
+	Texture = TEX.ringThin,
+	Color = S(P.white, P.lilac),
+	Size = seq({{0, 4}, {1, 22}}),
+	Transparency = seq({{0, 0}, {1, 1}}),
+	Lifetime = R(0.45),
+	Speed = R(0.01),
+	EmissionDirection = Enum.NormalId.Front,
+	Orientation = Enum.ParticleOrientation.VelocityPerpendicular,
+	LightEmission = 1,
+})
+emitter(circle, "Streak", {
+	Texture = TEX.streak,
+	Color = S(P.white, P.lilac),
+	Size = seq({{0, 6}, {0.3, 24}, {1, 8}}),
+	Transparency = seq({{0, 0}, {1, 1}}),
+	Lifetime = R(0.3),
+	Speed = R(0),
+	LockedToPart = true,
+	LightEmission = 1,
+	ZOffset = 0.12,
+})
+
+emitter(ray, "Arcs", {
+	Texture = TEX.crescent,
+	Color = S(P.white, P.lavender),
+	Size = seq({{0, 2.6}, {1, 3.8}}),
+	Transparency = seq({{0, 0.25}, {1, 1}}),
+	Lifetime = R(0.35, 0.5),
+	Speed = R(50, 70),
+	EmissionDirection = Enum.NormalId.Front,
+	Orientation = Enum.ParticleOrientation.VelocityPerpendicular,
+	Rotation = R(0, 360),
+	RotSpeed = R(-600, 600),
+	LightEmission = 1,
+})
+
+emitter(small, "Star", {
+	Texture = TEX.starBurst,
+	Color = S(P.white, P.lilac),
+	Size = seq({{0, 1}, {0.3, 5}, {1, 6}}),
+	Transparency = seq({{0, 0}, {1, 1}}),
+	Lifetime = R(0.22),
+	Speed = R(0),
+	Rotation = R(0, 360),
+	LockedToPart = true,
+	LightEmission = 1,
+	ZOffset = 0.1,
+})
+emitter(small, "Shock", {
+	Texture = TEX.ringThin,
+	Color = S(P.white, P.lilac),
+	Size = seq({{0, 1.5}, {1, 8}}),
+	Transparency = seq({{0, 0}, {1, 1}}),
+	Lifetime = R(0.3),
+	Speed = R(0.01),
+	EmissionDirection = Enum.NormalId.Front,
+	Orientation = Enum.ParticleOrientation.VelocityPerpendicular,
+	LightEmission = 1,
+})
+
+emitter(bolt, "Rings", {
+	Texture = TEX.ringThin,
+	Color = S(P.white, P.lilac),
+	Size = seq({{0, 1.4}, {1, 2.8}}),
+	Transparency = seq({{0, 0.2}, {1, 1}}),
+	Lifetime = R(0.28),
+	Speed = R(0.01),
+	EmissionDirection = Enum.NormalId.Back,
+	Orientation = Enum.ParticleOrientation.VelocityPerpendicular,
+	LightEmission = 1,
+})
+
+emitter(hit, "Star", {
+	Texture = TEX.starBurst,
+	Color = S(P.white, P.lilac),
+	Size = seq({{0, 1}, {0.3, 7}, {1, 8}}),
+	Transparency = seq({{0, 0}, {1, 1}}),
+	Lifetime = R(0.25),
+	Speed = R(0),
+	Rotation = R(0, 360),
+	LightEmission = 1,
+	ZOffset = 0.1,
+})
+
+emitter(cell, "Star", {
+	Texture = TEX.starBurst,
+	Color = S(P.white, P.edge),
+	Size = seq({{0, 0.5}, {0.3, 3.2}, {1, 4}}),
+	Transparency = seq({{0, 0}, {1, 1}}),
+	Lifetime = R(0.2),
+	Speed = R(0),
+	Rotation = R(0, 360),
+	LockedToPart = true,
+	LightEmission = 1,
+	ZOffset = 0.1,
+})
+
+local charge = carrier("Charge", Vector3.new(7, 7, 7))
+emitter(charge, "Gather", {
+	Texture = TEX.line,
+	Color = S(P.white, P.lilac),
+	Size = seq({{0, 0.9}, {1, 0.3}}),
+	Transparency = seq({{0, 1}, {0.3, 0.1}, {1, 0}}),
+	Lifetime = R(0.25, 0.35),
+	Speed = R(14, 22),
+	Shape = Enum.ParticleEmitterShape.Sphere,
+	ShapeStyle = Enum.ParticleEmitterShapeStyle.Surface,
+	ShapeInOut = Enum.ParticleEmitterShapeInOut.Inward,
+	Orientation = Enum.ParticleOrientation.VelocityParallel,
+	LightEmission = 1,
+})
+emitter(charge, "Arcs", {
+	Texture = TEX.crescent,
+	Color = S(P.white, P.lavender),
+	Size = seq({{0, 2}, {1, 4.5}}),
+	Transparency = seq({{0, 1}, {0.3, 0.3}, {1, 1}}),
+	Lifetime = R(0.3, 0.45),
+	Speed = R(0),
+	Rotation = R(0, 360),
+	RotSpeed = R(-500, 500),
+	LockedToPart = true,
+	LightEmission = 1,
+})
+emitter(charge, "Core", {
+	Texture = TEX.glow,
+	Color = S(P.white, P.lilac),
+	Size = seq({{0, 1}, {0.5, 2.6}, {1, 1.5}}),
+	Transparency = seq({{0, 0.3}, {1, 1}}),
+	Lifetime = R(0.15),
+	Speed = R(0),
+	LockedToPart = true,
+	LightEmission = 1,
+	ZOffset = 0.1,
+})
+new("PointLight", charge, {Name = "Light", Color = P.lilac, Brightness = 0, Range = 18, Shadows = false})
+
+local blast = carrier("Blast", Vector3.new(2, 2, 2))
+emitter(blast, "Flash", {
+	Texture = TEX.glow,
+	Color = S(P.white, P.lilac),
+	Size = seq({{0, 4}, {0.2, 16}, {1, 0}}),
+	Transparency = seq({{0, 0}, {1, 1}}),
+	Lifetime = R(0.16),
+	Speed = R(0),
+	LightEmission = 1,
+	ZOffset = 0.1,
+})
+emitter(blast, "Star", {
+	Texture = TEX.starBurst,
+	Color = S(P.white),
+	Size = seq({{0, 2}, {0.25, 14}, {1, 16}}),
+	Transparency = seq({{0, 0}, {0.6, 0.3}, {1, 1}}),
+	Lifetime = R(0.3),
+	Speed = R(0),
+	Rotation = R(0, 360),
+	LightEmission = 1,
+	ZOffset = 0.12,
+})
+emitter(blast, "Spikes", {
+	Texture = TEX.spikes,
+	Color = S(P.white, P.lilac),
+	Size = seq({{0, 3}, {1, 18}}),
+	Transparency = seq({{0, 0}, {1, 1}}),
+	Lifetime = R(0.35),
+	Speed = R(0),
+	Rotation = R(0, 360),
+	LightEmission = 1,
+	ZOffset = 0.08,
+})
+emitter(blast, "Ring", {
+	Texture = TEX.ringThick,
+	Color = S(P.white, P.lavender),
+	Size = seq({{0, 1}, {1, 26}}),
+	Transparency = seq({{0, 0}, {0.5, 0.4}, {1, 1}}),
+	Lifetime = R(0.5),
+	Speed = R(0),
+	LightEmission = 1,
+})
+emitter(blast, "Ring2", {
+	Texture = TEX.ringThin,
+	Color = S(P.white),
+	Size = seq({{0, 2}, {1, 34}}),
+	Transparency = seq({{0, 0}, {1, 1}}),
+	Lifetime = R(0.75),
+	Speed = R(0),
+	LightEmission = 1,
+})
+emitter(blast, "Sparks", {
+	Texture = TEX.spark,
+	Color = S(P.spark, P.white),
+	Size = seq({{0, 0.4}, {1, 0.1}}),
+	Squash = seq({{0, 2}, {1, 2}}),
+	Lifetime = R(0.2, 0.35),
+	Speed = R(60, 120),
+	SpreadAngle = Vector2.new(180, 180),
+	Orientation = Enum.ParticleOrientation.VelocityParallel,
+	Drag = 4,
+	LightEmission = 1,
+})
+emitter(blast, "Smoke", {
+	Texture = TEX.puff,
+	Color = S(P.smoke, P.smokeDark),
+	Size = seq({{0, 4}, {1, 11}}),
+	Transparency = seq({{0, 0.1}, {0.7, 0.3}, {1, 1}}),
+	Lifetime = R(1.2, 1.9),
+	Speed = R(6, 16),
+	SpreadAngle = Vector2.new(180, 180),
+	Rotation = R(0, 360),
+	RotSpeed = R(-40, 40),
+	Drag = 3,
+	LightEmission = 0,
+})
+emitter(blast, "Rocks", {
+	Texture = TEX.rock,
+	Color = S(Color3.fromRGB(70, 62, 70)),
+	Size = seq({{0, 1}, {1, 0.8}}),
+	Lifetime = R(1.2, 1.8),
+	Speed = R(30, 55),
+	SpreadAngle = Vector2.new(60, 60),
+	EmissionDirection = Enum.NormalId.Top,
+	Acceleration = Vector3.new(0, -70, 0),
+	Rotation = R(0, 360),
+	RotSpeed = R(-250, 250),
+	LightEmission = 0,
+})
+emitter(blast, "Glint", {
+	Texture = TEX.glint,
+	Color = S(P.white),
+	Size = seq({{0, 0}, {0.2, 9}, {1, 0}}),
+	Lifetime = R(0.22),
+	Speed = R(0),
+	LightEmission = 1,
+	ZOffset = 0.14,
+})
+new("PointLight", blast, {Name = "Light", Color = P.lilac, Brightness = 0, Range = 30, Shadows = false})
+
+local floorc = carrier("FloorCircle", Vector3.new(11, 11, 0.2))
+ring(floorc, "Outer", 6.15, 24, 0.12, P.white, 0, 0.06, true, 0)
+disc(floorc, "Glow", 6.2, TEX.circleGlow, P.lavender, 0.55, 0, 0, 0)
+disc(floorc, "Band", 6, TEX.circleBand, P.white, 0.15, 0.04, 0.05, -1.5)
+disc(floorc, "Core", 6, TEX.circleCore, P.lilac, 0.2, 0.02, 0.15, 0)
+emitter(floorc, "Rise", {
+	Texture = TEX.glow,
+	Color = S(P.white, P.lilac),
+	Size = seq({{0, 0.35}, {1, 0.12}}),
+	Transparency = seq({{0, 1}, {0.2, 0.1}, {1, 1}}),
+	Lifetime = R(1, 1.6),
+	Speed = R(3, 7),
+	EmissionDirection = Enum.NormalId.Back,
+	SpreadAngle = Vector2.new(8, 8),
+	LightEmission = 1,
+})
+emitter(floorc, "Lines", {
+	Texture = TEX.line,
+	Color = S(P.white, P.lilac),
+	Size = seq({{0, 1.2}, {1, 0.5}}),
+	Transparency = seq({{0, 1}, {0.2, 0.2}, {1, 1}}),
+	Lifetime = R(0.5, 0.8),
+	Speed = R(10, 18),
+	EmissionDirection = Enum.NormalId.Back,
+	Orientation = Enum.ParticleOrientation.VelocityParallel,
+	LightEmission = 1,
+})
+emitter(floorc, "Dust", {
+	Texture = TEX.dustRing,
+	Color = S(Color3.fromRGB(214, 196, 182)),
+	Size = seq({{0, 2}, {1, 22}}),
+	Transparency = seq({{0, 0.3}, {1, 1}}),
+	Lifetime = R(0.7),
+	Speed = R(0.01),
+	EmissionDirection = Enum.NormalId.Back,
+	Orientation = Enum.ParticleOrientation.VelocityPerpendicular,
+	LightEmission = 0,
+})
+
+local wave = carrier("Wave")
+emitter(wave, "Ring", {
+	Texture = TEX.ringThick,
+	Color = S(P.mint, P.petal),
+	Size = seq({{0, 2}, {1, 30}}),
+	Transparency = seq({{0, 0.1}, {0.7, 0.4}, {1, 1}}),
+	Lifetime = R(1),
+	Speed = R(0.01),
+	EmissionDirection = Enum.NormalId.Top,
+	Orientation = Enum.ParticleOrientation.VelocityPerpendicular,
+	LightEmission = 1,
+})
+emitter(wave, "Thin", {
+	Texture = TEX.ringThin,
+	Color = S(P.white, P.mint),
+	Size = seq({{0, 1}, {1, 34}}),
+	Transparency = seq({{0, 0}, {1, 1}}),
+	Lifetime = R(1.2),
+	Speed = R(0.01),
+	EmissionDirection = Enum.NormalId.Top,
+	Orientation = Enum.ParticleOrientation.VelocityPerpendicular,
+	LightEmission = 1,
+})
+emitter(wave, "Star", {
+	Texture = TEX.starBurst,
+	Color = S(P.white, P.mint),
+	Size = seq({{0, 2}, {0.3, 14}, {1, 16}}),
+	Transparency = seq({{0, 0}, {1, 1}}),
+	Lifetime = R(0.4),
+	Speed = R(0),
+	Rotation = R(0, 360),
+	LightEmission = 1,
+	ZOffset = 0.1,
 })
 
 local flower = new("Model", vfx, {Name = "Flower"})
@@ -727,6 +1052,7 @@ for k, b in ipairs({{0, 0, 0.7, 0}, {0.35, 0.2, 0.5, 1.2}, {-0.25, 0.3, 0.6, 2.5
 end
 flower.PrimaryPart = stems[1]
 flower.WorldPivot = CFrame.new()
+flower:ScaleTo(1.7)
 
 local petal = new("Part", vfx, {
 	Name = "Petal",
