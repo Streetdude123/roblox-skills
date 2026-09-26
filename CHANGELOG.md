@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 - Frieren effects (user-authorized)
+
+- `roblox-vfx-craft`: new `references/study-frieren.md` (the effect language in eight rules, the Zoltraak and barrier timings measured frame by frame, palettes by k-means, the builds and what is unverified). New `scripts/FrierenTemplates.lua` builds the templates as a real instance tree (537 instances) and a flash ScreenGui; `scripts/FrierenVfx.lua` runs a Zoltraak beam, a hex barrier with hits and a drop, and light with a flower field on the schedule of the `ExampleFrieren.lua` clips; `scripts/Config.frieren.lua` holds the palette and timings. Run offline against the Roblox API dump with no errors and full cleanup; not seen in Studio. `SKILL.md` (a default look, the log, the index, the scripts), `taste.md` and the README follow.
+
 ## 2026-09-26 - Frieren as the default animation style (user-authorized)
 
 - `roblox-r6-animation`: new `references/study-frieren.md` from 19 Sakugabooru clips sheeted frame by frame and the Sakuga Blog and SHINSEIKI articles: the drawing timing of acting and action cuts (acting holds 31 to 63% of screen time, median holds 0.33 to 1.23 s), six rules, the Zoltraak finisher beat by beat, and the R6 translation. New `scripts/ExampleFrieren.lua` (a calm idle, a Zoltraak cast, a barrier raise, hold and hit, a flower conjure) built and measured offline, chained through the runtime. `SKILL.md` makes Frieren the default style and keeps the Moon study for fight mechanics; `motion-metrics.md`, the README, `LoadTest.lua` and one test follow. Not played in Studio.

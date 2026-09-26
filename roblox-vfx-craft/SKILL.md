@@ -11,6 +11,10 @@ ultimate for his portfolio and a 1.3 second DIO stand summon. He supplies VFX pa
 does not like in a sentence. Every rule and number below was either measured in Studio or came from
 one of those sentences. Read the references before building; do not invent particle counts.
 
+## Default look
+
+Since 2026-09-26 new effects are drawn the Frieren way ([study-frieren.md](references/study-frieren.md)): flat cel light with white cores, thin light lines, four-point glints at the points of power, geometric magic drawn as thin lines over faint fills, calm before and a short burst after, light that tints the caster and the hit, cel smoke and black debris after. A character's identity (water, anti-magic) still picks the vocabulary; a reference he sends still wins.
+
 ## Decision framework: the tone ladder
 
 Pick the rung first. The biggest mistake made so far was a summon built with ultimate tools.
@@ -802,6 +806,13 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   the target's feet. A 14 s take after many Play sessions paged (112 dropped, a 677 ms gap); stopping and starting Play gave back
   about 100 MB and a clean 13 s take. Video water_geyser_rocks.mp4.
 
+- 2026-09-26 (Frieren): "Frieren i think has the most beautiful and amazing animation i have ever seen ... I want you to be able to
+  animate roblox rigs as well as frieren does their animation, maybe you can research more about that, start going, improve the vfx
+  to be like frieren too". His picks: Frieren as the default style; the first effects a Zoltraak beam, a barrier shield, and light and
+  flowers. Studied from 19 Sakugabooru clips (references/study-frieren.md). Built without Studio: `FrierenTemplates.lua` (the instance
+  tree), `FrierenVfx.lua` (the runtime on the schedule of the `ExampleFrieren.lua` clips), `Config.frieren.lua`; run offline against the
+  Roblox API dump with no errors and full cleanup. Not seen in Studio yet.
+
 ## Reference index
 
 - [taste.md](references/taste.md) - his taste in full, why each rule exists, and the identity rule for stands.
@@ -811,6 +822,7 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
 - [sound.md](references/sound.md) - the mix, Mirelo clips, measuring a recording, dead private audio.
 - [verification.md](references/verification.md) - quality level, capture cache, occluded Studio, phase polling, frame profiling.
 - [principles.md](references/principles.md) - the style guide and tutorial principles (readability, scale of importance, value and colour, shapes, timing, block-ins, juice) translated to Roblox properties and numbers, with sources.
+- [study-frieren.md](references/study-frieren.md) - the default look: Frieren's effect language in eight rules, the Zoltraak and barrier timings measured frame by frame, the palettes, the three builds (Zoltraak, barrier, light and flowers) with their schedules, and what is still unverified.
 - [water.md](references/water.md) - water constructs: the four water properties, edge break-up, line/fill/shadow/foam layers, the Creator Hub waterfall numbers, mesh VFX practice, and what the Judgement's Hammer rebuild proved (framing for the player camera, a hand mesh, fractional torrent textures, camera-facing swing trails), with sources.
 
 ## Scripts
@@ -823,3 +835,4 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
 - `scripts/RebuildStandPlace.lua` + `scripts/rebuild/` - rebuild the whole DIO place from a fresh baseplate that holds his packs, the old Stand model and the free model.
 - `scripts/RoadRoller.lua` - the second cinematic piece (the road roller: a procedural root and roller on one beat table, the land, the rush on the deck, the boom, the fade; the server side is `startRoadRoller` and `blast` in `MovesServer.lua`).
 - `scripts/ScanPack.lua`, `scripts/MeshGallery.lua`, `scripts/BlankDeadSounds.lua` - the pack intake tools.
+- `scripts/FrierenTemplates.lua`, `scripts/FrierenVfx.lua`, `scripts/Config.frieren.lua` - the Frieren effects: the Edit-mode builder of the template tree, the client runtime (`zoltraak`, `barrier` with `hit` and `drop`, `flowers`) and the palette and timings.

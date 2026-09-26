@@ -235,6 +235,12 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
   body's facing. Aiming at the point the camera centre ray hits sends every shot into the floor, because his camera looks
   down at the body.
 
+- "Frieren i think has the most beautiful and amazing animation i have ever seen ... improve the vfx to be like frieren too"
+  (2026-09-26). His picks: Frieren as the default style, and a Zoltraak beam, a barrier shield, and light and flowers first. The
+  look is in study-frieren.md: flat cel light with white cores, thin light lines, star glints, geometric magic as thin lines over
+  faint fills, calm before and a short burst after. The hex barrier is geometric by reference; his earlier "too geometric" and
+  "remove those circles and borders" were about water, so ask on the first review.
+
 ## Related feedback on animation
 
 His animation feedback lives in the `roblox-r6-animation` skill. The one that crosses over: the

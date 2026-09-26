@@ -96,11 +96,13 @@ Package layout:
 - `SKILL.md` - the tone ladder, the workflow, the rules he taught, the
   measured numbers and the feedback log.
 - `references/` - `taste.md`, `kit-workflow.md`, `modules.md`, `cinematic.md`,
-  `sound.md`, `verification.md`.
+  `sound.md`, `verification.md`, and `study-frieren.md` (the default look).
 - `scripts/` - `Tw.lua`, `Emitters.lua`, `Kit.lua`, `CameraRig.lua`,
   `ScreenFx.lua`, `ImpactFrames.lua`, `SpeedLines.lua`, the two worked
   examples `SummonVfx.lua` and `UltimateVfx.lua` with their client, server and
-  config files, and the intake tools `ScanPack.lua`, `MeshGallery.lua` and
+  config files, the Frieren effects (`FrierenTemplates.lua`, `FrierenVfx.lua`,
+  `Config.frieren.lua`: a Zoltraak beam, a hex barrier, light and flowers),
+  and the intake tools `ScanPack.lua`, `MeshGallery.lua` and
   `BlankDeadSounds.lua`.
 
 The Lua scripts run inside Roblox Studio through an execute-Luau bridge; they
