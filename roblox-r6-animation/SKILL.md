@@ -75,6 +75,15 @@ In Edit mode (`scripts/LoadTest.lua` loads the modules fresh, `scripts/EditStrip
 2. Play the clip on the character in Play mode and record a take from the player's camera (pipeline.md, "Video of a clip"). Sheet every unique frame with `scripts/video/ref_sheets.py` and put the sheet next to the reference's sheet at the same beats ([reference-study.md](references/reference-study.md)). Write the differences: key poses, timing per beat, spacing, arcs, holds, overlap, weight, smears, staging. Where recording is not possible, capture at the contact and the recovery and say so. Without Studio, `scripts/poser_offline.py` runs the clip module on the real Poser with the Luau command line tool and writes `Poser.dump` decode text; that text, or the retarget's, renders frame by frame with `scripts/r6_render.py` (any view, onion skins, a one-dot-per-frame hand or foot path) and measures with `scripts/beats.py` and `scripts/feet_check.py`; say that the review was of the box preview, not the game.
 3. Change the smallest pose, timing, lag or spring that fixes the largest difference; measure and record again. Two rounds minimum. Stop when the checks pass and the remaining differences from the reference are choices, not faults.
 
+The loop without Studio (Python 3 with numpy and pillow, the `luau` command line tool; pipeline.md, "Source transfer and review tools"):
+
+1. `python3 scripts/poser_offline.py <clips.lua> out` prints `Poser.check` for every clip and writes its decode text.
+2. `python3 scripts/faults.py out/<clip>.txt --strike <contact s> --smears` and `python3 scripts/feet_check.py out/<clip>.txt`.
+3. `python3 scripts/r6_render.py out/<clip>.txt sheets --view rear34,front34,side --times <each key> --trail "Right Arm"` (or `--trail Sword`), then read the sheets: silhouette, line of action, arcs, spacing.
+4. For a chain, a hitstop or a cancel: `poser_offline.py <clips.lua> out --runtime "<timed calls>"` and run steps 2 and 3 on its decode.
+
+Every example in `ExampleMoves.lua` and `ExampleSword.lua` was built this way; motion-metrics.md records each round and what it fixed.
+
 ## Verify and hand off
 
 1. Check joint names, increasing key times, clip bounds, start and end poses, event times and joint ownership.
