@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 - The Poser runtime offline (user-authorized)
+
+- `roblox-r6-animation`: `scripts/poser_offline.py --runtime` plays timed `Rig` calls (play with fade, blend, start, speed and a chained clip; hold; speed; seek; stop) through the real runtime on a stock R6 motor set with a stepped clock and PreSimulation signal (`roblox_shim.luau` gains firing signals and a settable `os.clock`), and writes what Poser wrote as decode text. Checked: plain playback equals `Poser.dump` one frame ahead; a hitstop delays the chain; stop fades to rest. It found that fading the example Guard in from the default stand slides both feet 0.5 studs in 0.1 s (`r6-mechanics.md`). `pipeline.md`, `SKILL.md`, the README and two tests follow. Also fixed: a loop variable in the runner shadowed the decode name.
+
 ## 2026-09-26 - A leap strike built offline (user-authorized)
 
 - `roblox-r6-animation`: `scripts/ExampleMoves.lua` adds `LeapStrike`, the study's hop, hang and lunge as an in-place leap attack with the feet solver off in the air, built in four rounds with `faults.py`. `r6_render.py --follow` now also rises with a torso above standing height. `r6-mechanics.md` (airborne legs with `Feet.post`), `principles.md`, `motion-metrics.md`, `real-motion.md`, `SKILL.md` and the README follow. Not played in Studio.

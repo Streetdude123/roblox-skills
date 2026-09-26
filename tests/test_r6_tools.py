@@ -384,3 +384,29 @@ def test_faults_finds_a_wind_up_that_outruns_the_strike(tmp_path):
 def test_faults_passes_the_pro_stand_strikes():
     for p in sorted((ROOT / 'roblox-r6-animation/references/decodes').glob('*.txt')):
         assert fl.find(p, feet=False)[1] == [], p.name
+
+
+def test_runtime_scenario_parses_play_then_hold_and_stop():
+    steps = po.scenario('0 play Guard; 0.5 play Cross then Guard fade=0.1 blend=cross; 0.79 hold 0.08; 2 stop 0.2')
+    assert steps[1] == {'t': 0.5, 'act': 'play', 'clip': 'Cross', 'after': 'Guard', 'fade': 0.1, 'blend': 'cross'}
+    assert steps[2] == {'t': 0.79, 'act': 'hold', 'v': 0.08}
+    assert steps[3]['act'] == 'stop'
+
+
+@pytest.mark.skipif(not LUAU, reason='needs the luau cli (set LUAU or put luau on PATH)')
+def test_runtime_matches_the_dump_and_a_hold_delays_the_chain(tmp_path):
+    ex = SCRIPTS / 'ExampleClips.lua'
+    dump = po.run(ex, luau=LUAU)['Cross']['decode']
+    rt = po.run(ex, luau=LUAU, steps=po.scenario('0 play Cross fade=0'), length=0.5, name='Rt')['Rt']['decode']
+    (tmp_path / 'd.txt').write_text(dump)
+    (tmp_path / 'r.txt').write_text(rt)
+    a, b = rr.read_decode(tmp_path / 'r.txt'), rr.read_decode(tmp_path / 'd.txt')
+    for j in JOINTS:
+        for i in range(len(a['joints'][j]) - 1):
+            ra, rb = rr.quat_to_mat(a['joints'][j][i][1]), rr.quat_to_mat(b['joints'][j][i + 1][1])
+            assert fl.angle(ra, rb) < 0.2
+    res = po.run(ex, luau=LUAU, steps=po.scenario('0 play Guard fade=0; 0.5 play Cross then Guard; 0.79 hold 0.08'), length=2.0, name='Chain')
+    assert '1.300 done Cross, play Guard' in res['events']
+    (tmp_path / 'c.txt').write_text(res['Chain']['decode'])
+    for r in fc.feet(rr.read_decode(tmp_path / 'c.txt')).values():
+        assert r['slide'] <= 0.05 and r['gap'] <= 0.12

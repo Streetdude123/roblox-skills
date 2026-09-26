@@ -312,16 +312,44 @@ local function robloxTypeof(v)
 end
 
 local function signal()
-	return {
-		Connect = function(_, f)
-			return {Disconnect = function() end, Connected = true}
-		end,
-		Once = function(_, f)
-			return {Disconnect = function() end}
-		end,
-		Wait = function() end,
-	}
+	local list = {}
+	local sig = {}
+	function sig:Connect(f)
+		local c = {Connected = true}
+		function c:Disconnect()
+			c.Connected = false
+			local i = table.find(list, c)
+			if i then
+				table.remove(list, i)
+			end
+		end
+		c.f = f
+		table.insert(list, c)
+		return c
+	end
+	function sig:Once(f)
+		local c
+		c = sig:Connect(function(...)
+			c:Disconnect()
+			f(...)
+		end)
+		return c
+	end
+	function sig:Fire(...)
+		for _, c in ipairs(table.clone(list)) do
+			if c.Connected then
+				c.f(...)
+			end
+		end
+	end
+	sig.Wait = function() end
+	return sig
 end
+
+local now = 0
+local fakeOs = setmetatable({clock = function()
+	return now
+end}, {__index = os})
 
 local services = {
 	RunService = {PreSimulation = signal(), Heartbeat = signal(), RenderStepped = signal(), Stepped = signal(), PostSimulation = signal(), PreAnimation = signal()},
@@ -388,4 +416,8 @@ return {
 	Enum = Enum,
 	Instance = {new = newInstance},
 	task = task,
+	os = fakeOs,
+	setClock = function(t)
+		now = t
+	end,
 }

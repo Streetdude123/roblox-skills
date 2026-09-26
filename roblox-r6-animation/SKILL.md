@@ -79,7 +79,7 @@ In Edit mode (`scripts/LoadTest.lua` loads the modules fresh, `scripts/EditStrip
 
 1. Check joint names, increasing key times, clip bounds, start and end poses, event times and joint ownership.
 2. Report `Poser.check` and `_G.feet` numbers next to the pro ranges, and the captures you read (times and views).
-3. Exercise the loop, the transition, the cancel, the speed change, the respawn or the second client that applies. Check the Studio output.
+3. Exercise the loop, the transition, the cancel, the speed change, the respawn or the second client that applies. Check the Studio output. Without Studio, `poser_offline.py --runtime` plays the chain, the hitstop, the speed change and the stop through the real `Rig` code on a stock R6 motor set and writes what the game would show as decode text for `faults.py` and the foot check; replication and the real Animator stay unverified.
 4. Inspect the exported `KeyframeSequence` and replay it. `Poser.bake` includes lag, life, springs and the post pass. Check duration, end pose, hierarchy, priority, loop flag, keyed joints and markers (pipeline.md).
 5. Report the instance path, key decisions, checks and remaining limits. Distinguish **authored**, **measured**, **visually reviewed**, **runtime tested** and **user accepted**. One does not imply the others.
 
@@ -94,7 +94,7 @@ Keep the editable key source. Never claim a clip looks good; report what the num
 | New action with no animation reference | Start from real motion: find a capture of the action, retarget it (`bvh_to_r6.py`), read it (`r6_render.py`), stylize it (`stylize.py`), then finish it as an animator ([real-motion.md](references/real-motion.md)). |
 | Supplied professional animation | Inspect and measure it first (`ReadClips.lua` then `motion_check.js`); play it raw through `Poser.fromSequence` instead of reauthoring. |
 | New place or unknown setup | Ask which handoff is needed before installing a controller or replacing the default character animation. |
-| No Studio connection | Author the source; run `Poser.check` and `Poser.dump` offline with `poser_offline.py` (the Luau command line tool), the foot check with `feet_check.py`, preview with `r6_render.py` and measure with `motion_check.js` and `beats.py`. Leave in-game visuals and runtime checks (`Rig:play`, blends, replication) marked unverified. Never fabricate captures or numbers. |
+| No Studio connection | Author the source; run `Poser.check` and `Poser.dump` offline with `poser_offline.py` (the Luau command line tool) and the chains and hitstops with its `--runtime`, the foot check with `feet_check.py`, the faults with `faults.py`, preview with `r6_render.py` and measure with `motion_check.js` and `beats.py`. Leave in-game visuals, replication and the real Animator marked unverified. Never fabricate captures or numbers. |
 
 Give each joint one writer. Avoid TweenService on animated joints.
 

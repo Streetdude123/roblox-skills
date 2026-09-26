@@ -64,7 +64,8 @@ Package layout:
   `beats.py` (moves and holds of the hands, feet and head), `mocap_study.py`
   (strike, jump and gait timing on captures), `stylize.py` (exaggeration, the
   cartoon animation filter, snap, slow in and slow out), `poser_offline.py`
-  (`Poser.check` and `Poser.dump` on the Luau command line tool, no Studio),
+  (`Poser.check`, `Poser.dump` and timed `Rig` calls on the Luau command line
+  tool, no Studio),
   `feet_check.py` (the foot check on decode text), `faults.py` (common
   animation faults on decode text), the DIO project clips,
   capture, decode and bake helpers, and `check_decode.py`.

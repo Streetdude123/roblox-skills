@@ -142,7 +142,13 @@ python3 scripts/feet_check.py out/Cross.txt
 python3 scripts/r6_render.py out/Cross.txt sheets --view rear34,side --every 2 --trail "Right Arm"
 ```
 
-Checked on 2026-09-26: the Luau `math.noise` gives the Roblox value (0.5098056793212891 at 1.25, 5.75), so the life layer matches; rounding every CFrame and Vector3 to 32-bit floats, as Roblox stores them, changed no number. With the `Feet.lua` of the commit that recorded the Studio numbers, the offline Cross gives frozen 0, still 0, rest 38.9 (Studio 38.1), stops 2.08 (2.1), unison 4.17 (4.2), contrast 5.9 (6.0), spread 0.7 (0.7) and the Guard contrast 1.2 (1.2). The rest differs by about one joint frame; the cause was not found. The foot check on decode text reads within 0.01 stud of Studio's (the decode rounds to 0.1 degree and 0.01 stud). The runtime (`Rig:play`, the inertial blend, Motor6D writes, replication) does not run offline; play it in Studio.
+Checked on 2026-09-26: the Luau `math.noise` gives the Roblox value (0.5098056793212891 at 1.25, 5.75), so the life layer matches; rounding every CFrame and Vector3 to 32-bit floats, as Roblox stores them, changed no number. With the `Feet.lua` of the commit that recorded the Studio numbers, the offline Cross gives frozen 0, still 0, rest 38.9 (Studio 38.1), stops 2.08 (2.1), unison 4.17 (4.2), contrast 5.9 (6.0), spread 0.7 (0.7) and the Guard contrast 1.2 (1.2). The rest differs by about one joint frame; the cause was not found. The foot check on decode text reads within 0.01 stud of Studio's (the decode rounds to 0.1 degree and 0.01 stud). `--runtime` runs the real runtime too: `Poser.attach` on a stock R6 motor set (the R6 C0 rotations), a clock and a PreSimulation signal the runner steps at 60 fps, the transforms zeroed before each step as the Animator does, and what Poser writes recorded back in pose space as decode text. The scenario is a list of timed calls:
+
+```sh
+python3 scripts/poser_offline.py scripts/ExampleClips.lua out --runtime "0 play Guard fade=0; 0.5 play Cross then Guard; 0.79 hold 0.08" --length 2.2 --name Chain
+```
+
+`play <clip>` takes `fade=`, `blend=cross|inertial`, `start=`, `speed=` and `then <clip>` (played from `onDone`); `hold`, `speed`, `seek` and `stop` take one number. It prints each call and each `onDone` with its time. Checked on 2026-09-26: a plain `play` writes exactly the `Poser.dump` poses one frame ahead (the step advances the clock before it samples), a hold of 0.08 moves the Cross's `onDone` from 1.22 to 1.30, and `stop 0.2` reaches rest in 0.2 s. Replication, the real Animator and other scripts writing the same motors do not run offline; play those in Studio.
 
 `AnalyzeClips.js` gives legacy Euler range tables. Use `check_decode.py` for rotation-aware local seam and sample measurements. Neither tool sees world-space contacts or proves successful playback. Use live observations for those claims.
 
