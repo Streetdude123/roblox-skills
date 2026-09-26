@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 (evening) - A staged-anticipation throw built offline (user-authorized)
+
+- `roblox-r6-animation`: new `scripts/ExampleThrow.lua`, a 1.45 s throw on the beat structure measured in the target Moon Animator study (load, two wind-ups, a two-frame whip, a push, the release, a fold, a recoil), built in five offline rounds with `poser_offline.py`, `feet_check.py` and `r6_render.py`. `LoadTest.lua` loads it. `principles.md` (the example under "Anticipation in stages"), `r6-mechanics.md` (the Euler branch sets the path; toe twist against the torso and foot pivots), `motion-metrics.md` (its numbers, the five rounds, why a two-frame whip raises rest), `SKILL.md` and the README follow; the offline test covers it. Not played in Studio.
+
 ## 2026-09-26 (later) - Poser and the foot check without Studio (user-authorized)
 
 - `roblox-r6-animation`: new `scripts/poser_offline.py` and `scripts/offline/roblox_shim.luau` run a clip module with the real `Poser.lua`, `Tw.lua` and `Feet.lua` on the Luau command line tool and print `Poser.check` and `Poser.dump` for every clip. New `scripts/feet_check.py` ports `_G.feet` (lowest corner, planted slide, hip gap, toe twist) to decode text. Checked against the recorded Studio numbers (`pipeline.md`). `motion-metrics.md` updates the example clip numbers, which were recorded before the `Feet.lua` toe-turn fix. `SKILL.md`, `real-motion.md` and the README follow; new tests in `tests/test_r6_tools.py` (the Luau one skips without `luau`).

@@ -325,3 +325,15 @@ def test_example_clips_pass_offline(tmp_path):
         path.write_text(clips[name]['decode'])
         for r in fc.feet(rr.read_decode(path)).values():
             assert abs(r['low']) <= 0.03 and r['slide'] <= 0.05 and r['gap'] <= 0.12
+
+
+@pytest.mark.skipif(not LUAU, reason='needs the luau cli (set LUAU or put luau on PATH)')
+def test_example_throw_peaks_on_the_whip_offline(tmp_path):
+    c = po.run(SCRIPTS / 'ExampleThrow.lua', luau=LUAU)['Throw']
+    assert c['check']['frozen'] == 0 and c['check']['still'] == 0 and c['check']['spread'] < 2
+    path = tmp_path / 'Throw.txt'
+    path.write_text(c['decode'])
+    feet = fc.feet(rr.read_decode(path))
+    assert feet['Right Leg']['low'] >= -0.03 and feet['Right Leg']['high'] <= 0.03
+    for r in feet.values():
+        assert r['low'] >= -0.03 and r['slide'] <= 0.05 and r['gap'] <= 0.12 and r['twist'] <= 50

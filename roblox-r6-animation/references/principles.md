@@ -94,6 +94,8 @@ A big action winds up in stages: a load, a wind-up, a further wind-up, then the 
 
 A player's gameplay move keeps its whole anticipation inside the 4 to 8 frame window; use stages on heavies, finishers, enemy telegraphs and cinematics.
 
+`scripts/ExampleThrow.lua` keys that throw on a stock R6 (1.45 s): ready, the ball up to the face with a lean back (0.12), the arms spread as the body turns away (0.29), a coil with the arm cocked up and back while the front foot steps (0.47), a two-frame whip over the top (0.53 to 0.56), a push forward with shrinking spacing (to 0.86), the release snap (0.93), a fold (1.06), a recoil (1.18) and the step back to ready. Measured offline: every active joint peaks on the whip (spread 0.9 frames), contrast 8.0, rest 49.2%. Each stage must be slower than the strike: in a draft the first wind-up swung the arm 140 degrees in 0.1 s and outran the whip.
+
 ## Exaggerate fast actions
 
 An extreme that is on screen for one frame reads weaker than the same still frame. Hold the extreme 2 to 4 frames as a moving hold, or push it further. Push until it is too much, then pull back.
