@@ -64,7 +64,8 @@ def find(path, fps=60.0, pop=90.0, twin=8.0, loop=None, feet=True, flat=55.0, tw
     def add(kind, a, b, text):
         out.append({'kind': kind, 'from': round(times[a], 3), 'to': round(times[b], 3), 'text': text})
 
-    for j in JOINTS:
+    props = [k for k in rr.PROPS if k in world[0]]
+    for j in JOINTS + props:
         for i in range(1, n):
             d = angle(world[i - 1][j][0], world[i][j][0])
             if d > pop:
@@ -94,7 +95,7 @@ def find(path, fps=60.0, pop=90.0, twin=8.0, loop=None, feet=True, flat=55.0, tw
     body = sum(v[j] for j in JOINTS)
     if not loop and n > 10:
         peak = int(np.argmax(body)) if strike is None else min(n - 1, int(round(strike * fps)))
-        for j in ('Torso', 'Head', 'Right Arm', 'Left Arm'):
+        for j in ('Torso', 'Right Arm', 'Left Arm'):
             pk = int(np.argmax(v[j]))
             if v[j][pk] < 60 or abs(pk - peak) <= 6:
                 continue
@@ -119,7 +120,7 @@ def find(path, fps=60.0, pop=90.0, twin=8.0, loop=None, feet=True, flat=55.0, tw
             elif overlap > 0.75:
                 add('small silhouette change', k, k, f'from the {view} camera the strike pose keeps {100 * overlap:.0f}% of the first silhouette (pro strikes 46 to 67%): push the pose')
 
-    for j in ('Right Arm', 'Left Arm', 'Head', 'Torso'):
+    for j in ['Right Arm', 'Left Arm', 'Head', 'Torso'] + props:
         low = []
         for w in world:
             r, p, size = w[j]

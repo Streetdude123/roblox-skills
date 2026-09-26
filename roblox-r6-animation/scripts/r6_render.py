@@ -19,10 +19,12 @@ JOINTS = {
     'Left Leg': ('Torso', (-1, -1, 0), (0.5, -1, 0), (1, 2, 1)),
 }
 ORDER = ['Torso', 'Head', 'Right Arm', 'Left Arm', 'Right Leg', 'Left Leg']
-TIPS = {'Right Arm': (0, -1, 0), 'Left Arm': (0, -1, 0), 'Right Leg': (0, -1, 0), 'Left Leg': (0, -1, 0), 'Head': (0, 0.5, 0), 'Torso': (0, 0, 0)}
+GRIP_R = np.array([[1.0, 0, 0], [0, 0, -1.0], [0, 1.0, 0]])
+PROPS = {'Sword': ('Right Arm', (0, -0.9, 0), GRIP_R, (0, 0.35, 0), (0, -2.26, 0), (0.3, 8.14, 0.12))}
+TIPS = {'Sword': (0, -4.07, 0), 'Right Arm': (0, -1, 0), 'Left Arm': (0, -1, 0), 'Right Leg': (0, -1, 0), 'Left Leg': (0, -1, 0), 'Head': (0, 0.5, 0), 'Torso': (0, 0, 0)}
 COLORS = {
     'Torso': (40, 110, 200), 'Head': (245, 205, 60), 'Right Arm': (245, 205, 60), 'Left Arm': (225, 185, 50),
-    'Right Leg': (120, 180, 70), 'Left Leg': (100, 160, 60),
+    'Right Leg': (120, 180, 70), 'Left Leg': (100, 160, 60), 'Sword': (200, 205, 215),
 }
 VIEWS = {'side': (90, 5), 'front': (180, 5), 'rear': (0, 8), 'rear34': (35, 12), 'front34': (145, 8), 'top': (90, 80), 'low': (160, -12)}
 
@@ -91,7 +93,7 @@ def read_decode(path):
     clip = {'name': head.group(1) if head else Path(path).stem, 'len': float(head.group(2)) if head else 0.0, 'joints': {}}
     for line in lines[1:]:
         f = line.split('|')
-        if len(f) < 9 or f[1] == 'MARKER' or f[1] not in JOINTS:
+        if len(f) < 9 or f[1] == 'MARKER' or (f[1] not in JOINTS and f[1] not in PROPS):
             continue
         t = float(f[2])
         m = pose_matrix(float(f[3]), float(f[4]), float(f[5]))
@@ -133,6 +135,13 @@ def world_parts(clip, t, root=None):
         r = base_r @ pr
         p = piv + base_r @ pp + r @ np.array(c1, dtype=float)
         out[name] = (r, p, size)
+    for name, (parent, c0, r0, c1, centre, size) in PROPS.items():
+        if name in clip['joints'] and parent in out:
+            pr, pp = sample(clip['joints'][name], t)
+            base_r, base_p = out[parent][:2]
+            r = base_r @ pr @ r0
+            origin = base_p + base_r @ np.array(c0, dtype=float) + base_r @ pp - r @ np.array(c1, dtype=float)
+            out[name] = (r, origin + r @ np.array(centre, dtype=float), size)
     return out
 
 
@@ -205,7 +214,7 @@ def part_pixels(parts, cam, only=None):
     ids = {name: i + 1 for i, name in enumerate(ORDER)}
     polys = []
     for name, (r, p, size) in parts.items():
-        if only and name != only:
+        if name not in ids or (only and name != only):
             continue
         c = corners(r, p, size)
         pts, z = cam.project(c)

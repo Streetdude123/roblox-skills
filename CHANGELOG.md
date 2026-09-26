@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 - Swords offline and a sword draw (user-authorized)
+
+- `roblox-r6-animation`: `r6_render.py` draws a `Sword` joint with `WeaponRig`'s grip geometry (its tip matched `Rig.handle` to four decimals) and traces it with `--trail Sword`; `faults.py` checks props for pops and the floor and no longer counts the head in "outruns the strike" (a head that holds the eyes on the target barely moves at the strike). `poser_offline.py` answers `FindFirstChild`, so `WeaponRig.lua` runs offline. New `scripts/ExampleSword.lua`: the studied sword draw from `Rig.body` solves in three rounds. `LoadTest.lua` loads `WeaponRig` and the example; `weapons.md`, `motion-metrics.md`, `quality-review.md`, `SKILL.md`, the README and tests follow. Not played in Studio.
+
 ## 2026-09-26 - Project clip modules offline, feet on travelling cycles (user-authorized)
 
 - `roblox-r6-animation`: `poser_offline.py --path <folder>` finds modules a project clip module requires from outside the scripts folder (`require(root.Config)`) and stubs place assets; the shim gains Color3, sequence, range and TweenInfo values. It reproduced the Studio legacy numbers of the DIO clips in `Clips.lua` (`pipeline.md`). `feet_check.py` and `faults.py` take `--travel <studs/s>` so the stance foot of a cycle played in place is judged in the world. One test.

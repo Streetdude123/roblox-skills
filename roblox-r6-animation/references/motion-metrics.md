@@ -138,6 +138,7 @@ The spline removes about a quarter to a third of the parked time and roughly hal
 | HeavyLand (1.4 s, `ExampleMoves.lua`) | 0 | 3.5 | 48.4 | 2.38 | 3.57 | 6.9 | 2.3 | corners -0.01 to 0.01, slide 0.01, hip gap 0.00, toe twist 38 right, 25 left |
 | HeroLand (1.6 s, `ExampleMoves.lua`) | 0 | 0 | 77.7 | 1.35 | 1.25 | 43.2 | 1.5 | planted corners -0.01 to 0.01, slide 0.02, hip gap 0.00, fist -0.03 to 0.07 over the floor in the hold; the kneeling leg's twist reads 74 and does not apply |
 | LeapStrike (1.3 s, `ExampleMoves.lua`) | 0 | 0 | 50.8 | 2.18 | 3.08 | 5.4 | 13.5 | planted corners -0.01 to 0.01, slide 0.03, hip gap 0.00; `faults.py --strike 0.7` finds nothing |
+| SwordDraw (0.92 s, `ExampleSword.lua`) | 0 | 1.8 | 43.4 | 2.17 | 3.26 | 8.8 | 4.1 | corners -0.01 to 0.01, slide 0.01, hip gap 0.00; `faults.py --strike 0.15` finds nothing; lowest blade tip 0.12 |
 | Throw (1.45 s, `ExampleMoves.lua`) | 0 | 0 | 49.2 | 2.07 | 3.45 | 8.0 | 0.9 | planted corners -0.01 to 0.01 (the stepping foot lifts 0.29), slide 0.01, hip gap 0.04, toe twist 37 right, 42 left |
 
 Measured 2026-09-26 offline (`poser_offline.py`, `feet_check.py` on the decode, which rounds to 0.01 stud). The first numbers (Studio, rest 38.1, contrast 6.0, spread 0.7, Guard contrast 1.2, corners 0.00) came before the `Feet.lua` toe-turn fix: the turn axis pointed down the leg and turned every toe the wrong way (toe twist 127 and 143 degrees on the Cross). The fixed feet change the leg motion, so rest, contrast and spread moved.

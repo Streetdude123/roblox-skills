@@ -39,6 +39,10 @@ end})
 local folder = setmetatable({}, {__index = function(_, k)
 	if k == "Parent" then
 		return top
+	elseif k == "FindFirstChild" then
+		return function(_, name)
+			return mods[name] and name or nil
+		end
 	end
 	return k
 end})

@@ -439,3 +439,29 @@ def test_feet_check_judges_an_in_place_step_in_the_world(tmp_path):
     still = fc.feet(clip)['Right Leg']['slide']
     moving = fc.feet(clip, travel=1.2)['Right Leg']['slide']
     assert still > 0.3 and moving < still
+
+
+@pytest.mark.skipif(not LUAU, reason='needs the luau cli (set LUAU or put luau on PATH)')
+def test_the_sword_prop_matches_weaponrig_and_the_draw_passes(tmp_path):
+    mod = tmp_path / 'Grip.lua'
+    mod.write_text('''local Rig = require(script.Parent.WeaponRig)
+local Poser = require(script.Parent.Poser)
+local V3 = Vector3.new
+local torso = {r = {-12, 25, 6}, p = V3(0.1, -0.2, -0.1)}
+local arm = {r = {60, 10, -20}, p = V3(0, 0.05, -0.1)}
+local wrist = {r = {30, -20, 15}}
+local tip = Rig.handle(Rig.arm(Poser.poseCF(torso), 1, Poser.poseCF(arm)), Poser.poseCF(wrist)) * V3(0, Rig.TIP_Y, 0)
+print(("@@event tip %.4f %.4f %.4f"):format(tip.X, tip.Y + 3, tip.Z))
+local function K(k)
+	return {t = 0, r = k.r, p = k.p}
+end
+return {Grip = {name = "Grip", length = 0.05, joints = {Torso = {K(torso)}, ["Right Arm"] = {K(arm)}, Sword = {K(wrist)}}}}
+''')
+    res = po.run(mod, luau=LUAU)
+    want = [float(x) for x in res['events'][0].split()[1:]]
+    (tmp_path / 'g.txt').write_text(res['Grip']['decode'])
+    got = rr.tip_point(rr.world_parts(rr.read_decode(tmp_path / 'g.txt'), 0), 'Sword')
+    assert np.allclose(got, want, atol=1e-3)
+    draw = po.run(SCRIPTS / 'ExampleSword.lua', luau=LUAU)['SwordDraw']
+    (tmp_path / 'd.txt').write_text(draw['decode'])
+    assert fl.find(tmp_path / 'd.txt', strike=0.15)[1] == []

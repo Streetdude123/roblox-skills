@@ -47,6 +47,12 @@ Poser splines each Euler channel. `{l, t, s}` and `{180 - l, t + 180, s + 180}` 
 
 `Poser.check` sees the body. For a weapon also sample per frame: the lowest blade tip height (under the floor means a flip or a bad key), the fastest blade turn per frame (a spike far over the strike frames means a spin), and the miss and blade error of every solved key. The Asta clips ended with tips at 0.15 or more above the floor and the fastest turns 42 to 73 degrees per frame, only on the strike frames.
 
+## See the blade without Studio
+
+`scripts/poser_offline.py` runs `WeaponRig.lua` (the solves run when the clip module loads; the sword draw's nine keys take about 3 s), and `scripts/r6_render.py` draws a `Sword` joint from the Right Arm with WeaponRig's grip (the fist at `(0, -0.9, 0)`, `GRIP_R`, the grip point 0.35 up the handle, the pommel at 1.81 and the tip at -6.33 in handle space: the Asta greatsword; change `PROPS` in the renderer for another weapon). Its tip matched `Rig.handle` to four decimals on a test pose. `--trail Sword` draws the tip one dot per frame (the arc and the spacing of a swing); `faults.py` checks the blade for one-frame turns over 90 degrees and for going under the floor.
+
+`scripts/ExampleSword.lua` keys the studied noob's draw (study-moon-practice2.md) with `Rig.body` definitions and `Rig.nearestEuler` between keys: the hand on the hilt at the left hip with the blade back in the sheath, the draw out through a horizontal cut to the right (0.15 s), a glint hold, a raised stance drifting 0.2 s, the blade brought down in front into a low stance with the blade level. Three rounds: the first dropped from the raised to the low stance in 0.08 s and whipped both arms faster than the draw itself; the second gave that change 0.16 s and a breakdown with the tip coming down in front; the third drifted the low stance, which had moved 0.02 studs (still 8.8% to 1.8%). The reference cut the camera between the two stances; a game clip has to animate that change. The lowest tip is 0.12 above the floor at the first frame.
+
 ## Look at a swing as an onion skin
 
 A strip of ghosts is too small to read a swing from. `_G.astaOnion(clip, bodies, t0, t1)` in `WeaponStrip.lua` puts one or two bodies on one root and a faded, colour-ramped copy of the sword every frame from t0 to t1; capture it from above (the arc), from the front three quarter (the height of the arc) and from behind (the player's view).
