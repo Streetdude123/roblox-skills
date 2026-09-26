@@ -3,7 +3,7 @@
 -- ServerStorage.PoserTest folder, a new ModuleScript each run because the Edit VM caches require, checks the syntax
 -- first and returns the folder path; the place's own modules are not touched. Delete the folder when the task ends.
 local PORT = 8767
-local NAMES = {"Tw", "Poser", "Feet", "ExampleClips", "ExampleThrow"}
+local NAMES = {"Tw", "Poser", "Feet", "ExampleClips", "ExampleMoves"}
 local HttpService = game:GetService("HttpService")
 local was = HttpService.HttpEnabled
 HttpService.HttpEnabled = true

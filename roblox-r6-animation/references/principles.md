@@ -94,7 +94,7 @@ A big action winds up in stages: a load, a wind-up, a further wind-up, then the 
 
 A player's gameplay move keeps its whole anticipation inside the 4 to 8 frame window; use stages on heavies, finishers, enemy telegraphs and cinematics.
 
-`scripts/ExampleThrow.lua` keys that throw on a stock R6 (1.45 s): ready, the ball up to the face with a lean back (0.12), the arms spread as the body turns away (0.29), a coil with the arm cocked up and back while the front foot steps (0.47), a two-frame whip over the top (0.53 to 0.56), a push forward with shrinking spacing (to 0.86), the release snap (0.93), a fold (1.06), a recoil (1.18) and the step back to ready. Measured offline: every active joint peaks on the whip (spread 0.9 frames), contrast 8.0, rest 49.2%. Each stage must be slower than the strike: in a draft the first wind-up swung the arm 140 degrees in 0.1 s and outran the whip.
+`scripts/ExampleMoves.lua` keys that throw on a stock R6 (1.45 s): ready, the ball up to the face with a lean back (0.12), the arms spread as the body turns away (0.29), a coil with the arm cocked up and back while the front foot steps (0.47), a two-frame whip over the top (0.53 to 0.56), a push forward with shrinking spacing (to 0.86), the release snap (0.93), a fold (1.06), a recoil (1.18) and the step back to ready. Measured offline: every active joint peaks on the whip (spread 0.9 frames), contrast 8.0, rest 49.2%. Each stage must be slower than the strike: in a draft the first wind-up swung the arm 140 degrees in 0.1 s and outran the whip.
 
 ## Exaggerate fast actions
 
@@ -181,6 +181,7 @@ Guilty Gear Xrd keyed its 3D characters without in-betweens and removed frames o
 - **Air**: the body travels on an arc and slows near the top. Ease the height only; keep the travel even. The studied golem hangs 0.3 s at the top of a hop before it lunges.
 - **Landing**: the contact with the legs spread and the torso still moving down, then the compression (the lowest point) 3 to 6 frames later (the studied golem; real small jumps take 12 frames and sink as deep as the takeoff crouch, then stand in 10), then a skid and a recovery for a heavy body or a quick recoil for a light one. The body settles on an arc, not straight down. R6 compresses by dropping the torso over planted feet (`Feet.post`).
 - **Superhero landing** (measured): a fall of 0.1 s, the contact with radial lines, one knee and one fist down held 0.9 s with only the head rising, a push up of 0.15 s, the body straight after 0.3 s more.
+- `scripts/ExampleMoves.lua` keys both on a stock R6. `HeavyLand` (1.4 s): the contact with the arms still up, the lowest point at 0.10 with one arm braced forward and down and the free arm flung back, a skid to 0.40 in which the torso pitches further forward (the feet are slowed and the body is not), an overshoot at the stop, two breaths in a crouch with a head turn, and a rise to a wide stance. `HeroLand` (1.6 s): the back knee drops in three frames, the fist planted within 0.07 of the floor through a 0.9 s hold in which the body breathes and only the head lifts, the push up, a stance with attitude. Numbers and rounds: motion-metrics.md.
 - **Entrances and exits** for a camera: [cinematic-shots.md](cinematic-shots.md).
 
 ## Weight by character
@@ -193,6 +194,8 @@ Write each character's weight before keying: stance depth, skid length, recovery
 | Steps | about 0.1 s apart, the whole body drops on each | quick, often airborne |
 | After the action | a skid of 0.3 s and a recovery of 0.6 to 0.9 s after a landing | a recoil of 0.12 s after the throw; straight from a dash landing into the draw |
 | Camera | low and close | wider, room to fly |
+
+`HeavyLand` in `scripts/ExampleMoves.lua` is the heavy column keyed: a 1.1 drop, a 0.3 s skid, a 0.6 s recovery in a crouch, arms hanging wide at the end.
 
 ## Staging for the viewer
 

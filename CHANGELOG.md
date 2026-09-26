@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 (night) - Heavy and superhero landings built offline (user-authorized)
+
+- `roblox-r6-animation`: `scripts/ExampleThrow.lua` becomes `scripts/ExampleMoves.lua` and adds `HeavyLand` (a 1.1 stud drop, a 0.3 s skid with the torso pitching forward, an overshoot at the stop, a 0.6 s recovery in a crouch) and `HeroLand` (one knee and one fist down, the fist within 0.07 of the floor through a 0.9 s hold, the push up), both on the measured beats of the target Moon Animator study and built in offline rounds. `r6-mechanics.md` adds world pitch = own lift + torso lift for limbs, the leg angle under a leaned torso with `Feet.post`, the floor reach of an arm and the kneel; `principles.md` and `motion-metrics.md` record the clips, their numbers and the rounds. `LoadTest.lua`, `SKILL.md`, the README and the offline test follow. Not played in Studio.
+
 ## 2026-09-26 (evening) - A staged-anticipation throw built offline (user-authorized)
 
 - `roblox-r6-animation`: new `scripts/ExampleThrow.lua`, a 1.45 s throw on the beat structure measured in the target Moon Animator study (load, two wind-ups, a two-frame whip, a push, the release, a fold, a recoil), built in five offline rounds with `poser_offline.py`, `feet_check.py` and `r6_render.py`. `LoadTest.lua` loads it. `principles.md` (the example under "Anticipation in stages"), `r6-mechanics.md` (the Euler branch sets the path; toe twist against the torso and foot pivots), `motion-metrics.md` (its numbers, the five rounds, why a two-frame whip raises rest), `SKILL.md` and the README follow; the offline test covers it. Not played in Studio.

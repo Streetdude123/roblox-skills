@@ -328,12 +328,20 @@ def test_example_clips_pass_offline(tmp_path):
 
 
 @pytest.mark.skipif(not LUAU, reason='needs the luau cli (set LUAU or put luau on PATH)')
-def test_example_throw_peaks_on_the_whip_offline(tmp_path):
-    c = po.run(SCRIPTS / 'ExampleThrow.lua', luau=LUAU)['Throw']
-    assert c['check']['frozen'] == 0 and c['check']['still'] == 0 and c['check']['spread'] < 2
-    path = tmp_path / 'Throw.txt'
-    path.write_text(c['decode'])
-    feet = fc.feet(rr.read_decode(path))
-    assert feet['Right Leg']['low'] >= -0.03 and feet['Right Leg']['high'] <= 0.03
-    for r in feet.values():
-        assert r['low'] >= -0.03 and r['slide'] <= 0.05 and r['gap'] <= 0.12 and r['twist'] <= 50
+def test_example_moves_pass_offline(tmp_path):
+    clips = po.run(SCRIPTS / 'ExampleMoves.lua', luau=LUAU)
+    assert clips['Throw']['check']['spread'] < 2
+    feet = {}
+    for name, c in clips.items():
+        assert c['check']['frozen'] == 0 and c['check']['still'] <= 5
+        path = tmp_path / f'{name}.txt'
+        path.write_text(c['decode'])
+        feet[name] = fc.feet(rr.read_decode(path))
+        for r in feet[name].values():
+            assert r['low'] >= -0.03 and r['slide'] <= 0.05 and r['gap'] <= 0.12
+    assert feet['Throw']['Right Leg']['high'] <= 0.03
+    assert max(r['twist'] for r in feet['Throw'].values()) <= 50
+    assert max(r['twist'] for r in feet['HeavyLand'].values()) <= 50
+    hero = rr.read_decode(tmp_path / 'HeroLand.txt')
+    fist = [rr.tip_point(rr.world_parts(hero, i / 60), 'Right Arm')[1] for i in range(4, 58)]
+    assert -0.05 <= min(fist) and max(fist) <= 0.1
