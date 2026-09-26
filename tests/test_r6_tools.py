@@ -410,3 +410,21 @@ def test_runtime_matches_the_dump_and_a_hold_delays_the_chain(tmp_path):
     (tmp_path / 'c.txt').write_text(res['Chain']['decode'])
     for r in fc.feet(rr.read_decode(tmp_path / 'c.txt')).values():
         assert r['slide'] <= 0.05 and r['gap'] <= 0.12
+
+
+def test_faults_finds_a_strike_the_player_camera_cannot_see(tmp_path):
+    frames = [{'Torso': (-8, -22, 0), 'Left Arm': (84, 0, 16), 'Right Arm': (80, 0, -34)}] * 6
+    frames += [{'Torso': (-8, -24, 0), 'Left Arm': (84 + 2 * i, 0, 16 - 10 * i), 'Right Arm': (80, 0, -34)} for i in range(1, 4)]
+    frames += [{'Torso': (-8, -24, 0), 'Left Arm': (90, 0, -14), 'Right Arm': (80, 0, -34)}] * 10
+    path = write_decode(tmp_path / 'h.txt', 'H', frames)
+    assert {'hidden strike', 'small silhouette change'} & {f['kind'] for f in fl.find(path, feet=False, strike=8 / 60)[1]}
+
+
+@pytest.mark.skipif(not LUAU, reason='needs the luau cli (set LUAU or put luau on PATH)')
+def test_m1_string_keeps_the_feet_planted_through_the_blends(tmp_path):
+    steps = po.scenario('0 play Guard fade=0; 0.3 play M1Jab; 0.4 hold 0.06; 0.56 play M1Cross; 0.68 hold 0.06; 0.86 play M1Hook; 0.99 hold 0.06; 1.18 play M1Upper then Guard; 1.38 hold 0.1')
+    res = po.run(SCRIPTS / 'ExampleMoves.lua', luau=LUAU, steps=steps, length=2.4, name='M1')
+    assert '1.967 done M1Upper, play Guard' in res['events']
+    (tmp_path / 'm.txt').write_text(res['M1']['decode'])
+    for r in fc.feet(rr.read_decode(tmp_path / 'm.txt')).values():
+        assert r['slide'] <= 0.03 and r['gap'] <= 0.05

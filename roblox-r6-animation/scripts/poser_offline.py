@@ -68,6 +68,17 @@ local motors = {
 local rig = Poser.attach({Parent = true, GetDescendants = function()
 	return motors
 end})
+local function find(name)
+	if type(clips[name]) == "table" then
+		return clips[name]
+	end
+	for _, m in pairs(cache) do
+		if type(m) == "table" and type(m[name]) == "table" and m[name].joints then
+			return m[name]
+		end
+	end
+	error("no clip " .. name)
+end
 local done, lines, count, clock = {}, {}, 0, 0
 for f = 0, math.floor(LENGTH * FPS + 0.5) do
 	clock = f / FPS
@@ -80,10 +91,10 @@ for f = 0, math.floor(LENGTH * FPS + 0.5) do
 				if s.after then
 					opts.onDone = function()
 						print(("@@event %.3f done %s, play %s"):format(clock, s.clip, s.after))
-						rig:play(clips[s.after], {fadeIn = s.fade, blend = s.blend})
+						rig:play(find(s.after), {fadeIn = s.fade, blend = s.blend})
 					end
 				end
-				rig:play(clips[s.clip], opts)
+				rig:play(find(s.clip), opts)
 			elseif s.act == "hold" then
 				rig:hold(s.v)
 			elseif s.act == "stop" then

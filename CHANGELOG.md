@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 - A four-hit M1 string, staging checks, planted feet through blends (user-authorized)
+
+- `roblox-r6-animation`: `scripts/ExampleMoves.lua` adds `M1Jab`, `M1Cross`, `M1Hook` and `M1Upper` on the example guard's stance, checked per clip and as a string through the offline runtime with hitstops. `faults.py` adds "hidden strike" and "small silhouette change" from the player camera (`r6_render.part_pixels` counts each part's visible pixels), calibrated on the pro stand strikes; they reworked the jab and the hook. `Poser.lua`: when the outgoing and incoming clips share one post function, the post pass runs again on the blended torso, so the feet stay planted through the blend (0.07 to 0.01 on the string); other clips blend as before. `poser_offline.py --runtime` finds a named clip in any loaded module. `principles.md` (staging for the player camera, the M1 string), `r6-mechanics.md`, `quality-review.md`, `pipeline.md`, `SKILL.md`, the README and tests follow. Not played in Studio.
+
 ## 2026-09-26 - The Poser runtime offline (user-authorized)
 
 - `roblox-r6-animation`: `scripts/poser_offline.py --runtime` plays timed `Rig` calls (play with fade, blend, start, speed and a chained clip; hold; speed; seek; stop) through the real runtime on a stock R6 motor set with a stepped clock and PreSimulation signal (`roblox_shim.luau` gains firing signals and a settable `os.clock`), and writes what Poser wrote as decode text. Checked: plain playback equals `Poser.dump` one frame ahead; a hitstop delays the chain; stop fades to rest. It found that fading the example Guard in from the default stand slides both feet 0.5 studs in 0.1 s (`r6-mechanics.md`). `pipeline.md`, `SKILL.md`, the README and two tests follow. Also fixed: a loop variable in the runner shadowed the decode name.

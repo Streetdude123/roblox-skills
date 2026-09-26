@@ -52,7 +52,7 @@ def speeds(world, fps, win=2):
     return out
 
 
-def find(path, fps=60.0, pop=90.0, twin=8.0, loop=None, feet=True, flat=55.0, twist=60.0, strike=None):
+def find(path, fps=60.0, pop=90.0, twin=8.0, loop=None, feet=True, flat=55.0, twist=60.0, strike=None, view='rear34'):
     clip = rr.read_decode(path)
     head = Path(path).read_text(encoding='utf-8').splitlines()[0]
     if loop is None:
@@ -101,6 +101,18 @@ def find(path, fps=60.0, pop=90.0, twin=8.0, loop=None, feet=True, flat=55.0, tw
             near = v[j][max(0, peak - 3):peak + 4].max()
             if v[j][pk] > 0.9 * near:
                 add('outruns the strike', pk, pk, f'{j} is fastest at {times[pk]:.2f} s, not at the strike {times[peak]:.2f} s ({v[j][pk]:.0f} against {near:.0f}): slow the wind-up or the recovery')
+        if peak >= 3:
+            limb = max(('Right Arm', 'Left Arm', 'Right Leg', 'Left Leg'), key=lambda j: v[j][max(0, peak - 2):peak + 3].max())
+            cam = rr.make_camera(view, 240, 200, 9, 50)
+            _, first = rr.part_pixels(world[0], cam)
+            seen, now = rr.part_pixels(world[peak], cam)
+            alone, _ = rr.part_pixels(world[peak], cam, only=limb)
+            overlap = float((first & now).sum()) / max(1, int((first | now).sum()))
+            shown = seen[limb] / max(1, alone[limb])
+            if shown < 0.2 and overlap > 0.7:
+                add('hidden strike', peak, peak, f'from the {view} camera the {limb} shows {100 * shown:.0f}% and the body keeps {100 * overlap:.0f}% of its first silhouette: move the strike out of the body or change the body more')
+            elif overlap > 0.75:
+                add('small silhouette change', peak, peak, f'from the {view} camera the strike frame keeps {100 * overlap:.0f}% of the first silhouette (pro strikes 46 to 67%): push the pose')
 
     for j in ('Right Arm', 'Left Arm', 'Head', 'Torso'):
         low = []
@@ -153,9 +165,10 @@ def main():
     ap.add_argument('--twist', type=float, default=60.0, help='a planted toe further than this off the torso heading is twisted')
     ap.add_argument('--float', action='store_true', help='a stand or any rig whose feet do not touch the floor: skip the foot checks')
     ap.add_argument('--strike', type=float, help='seconds of the strike or contact; default the fastest whole-body moment')
+    ap.add_argument('--view', default='rear34', help='camera for the staging checks: rear34 (the player), side, front34 and the other r6_render views')
     a = ap.parse_args()
     for p in a.decodes:
-        name, found = find(p, pop=a.pop, twin=a.twin, feet=not a.float, flat=a.flat, twist=a.twist, strike=a.strike)
+        name, found = find(p, pop=a.pop, twin=a.twin, feet=not a.float, flat=a.flat, twist=a.twist, strike=a.strike, view=a.view)
         print(f'{name}: {len(found)} found')
         for f in found:
             span = f"{f['from']:.2f}" if f['from'] == f['to'] else f"{f['from']:.2f}-{f['to']:.2f}"

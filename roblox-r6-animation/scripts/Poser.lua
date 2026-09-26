@@ -563,6 +563,7 @@ local function step(dt)
 			if clip.post then
 				clip.post(poses, t, rig.ctx)
 			end
+			local targets = {}
 			for name in pairs(clip.joints) do
 				local joint = rig.joints[name]
 				if joint and joint.motor.Parent then
@@ -577,9 +578,23 @@ local function step(dt)
 							target = a.from[name]:Lerp(target, blend)
 						end
 					end
-					joint.motor.Transform = target
-					rig.last[name] = target
+					targets[name] = target
 				end
+			end
+			if blend < 1 and a.samePost then
+				local blended = {}
+				for name, target in pairs(targets) do
+					local joint = rig.joints[name]
+					blended[name] = joint.r * target * joint.rinv
+				end
+				clip.post(blended, t, rig.ctx)
+				for name in pairs(targets) do
+					targets[name] = toTransform(rig.joints[name], blended[name])
+				end
+			end
+			for name, target in pairs(targets) do
+				rig.joints[name].motor.Transform = target
+				rig.last[name] = target
 			end
 		elseif a and not rig.model.Parent then
 			rigs[rig] = nil
@@ -651,8 +666,10 @@ function Rig:play(clip, opts)
 			end
 		end
 	end
+	local samePost = clip.post ~= nil and self.active ~= nil and self.active.clip.post == clip.post
 	self.active = {
 		clip = clip,
+		samePost = samePost,
 		time = startAt,
 		elapsed = 0,
 		speed = opts.speed or 1,

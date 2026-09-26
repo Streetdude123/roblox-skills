@@ -148,7 +148,7 @@ Checked on 2026-09-26: the Luau `math.noise` gives the Roblox value (0.509805679
 python3 scripts/poser_offline.py scripts/ExampleClips.lua out --runtime "0 play Guard fade=0; 0.5 play Cross then Guard; 0.79 hold 0.08" --length 2.2 --name Chain
 ```
 
-`play <clip>` takes `fade=`, `blend=cross|inertial`, `start=`, `speed=` and `then <clip>` (played from `onDone`); `hold`, `speed`, `seek` and `stop` take one number. It prints each call and each `onDone` with its time. Checked on 2026-09-26: a plain `play` writes exactly the `Poser.dump` poses one frame ahead (the step advances the clock before it samples), a hold of 0.08 moves the Cross's `onDone` from 1.22 to 1.30, and `stop 0.2` reaches rest in 0.2 s. Replication, the real Animator and other scripts writing the same motors do not run offline; play those in Studio.
+A scenario may name a clip from any module the clip module requires (the example string plays `Guard` from `ExampleClips.lua`). `play <clip>` takes `fade=`, `blend=cross|inertial`, `start=`, `speed=` and `then <clip>` (played from `onDone`); `hold`, `speed`, `seek` and `stop` take one number. It prints each call and each `onDone` with its time. Checked on 2026-09-26: a plain `play` writes exactly the `Poser.dump` poses one frame ahead (the step advances the clock before it samples), a hold of 0.08 moves the Cross's `onDone` from 1.22 to 1.30, and `stop 0.2` reaches rest in 0.2 s. Replication, the real Animator and other scripts writing the same motors do not run offline; play those in Studio.
 
 `AnalyzeClips.js` gives legacy Euler range tables. Use `check_decode.py` for rotation-aware local seam and sample measurements. Neither tool sees world-space contacts or proves successful playback. Use live observations for those claims.
 

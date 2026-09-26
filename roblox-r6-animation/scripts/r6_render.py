@@ -198,6 +198,28 @@ def box_polys(parts, cam, alpha=255, tint=None):
     return polys
 
 
+def part_pixels(parts, cam, only=None):
+    from PIL import Image, ImageDraw
+    img = Image.new('L', (cam.w, cam.h), 0)
+    d = ImageDraw.Draw(img)
+    ids = {name: i + 1 for i, name in enumerate(ORDER)}
+    polys = []
+    for name, (r, p, size) in parts.items():
+        if only and name != only:
+            continue
+        c = corners(r, p, size)
+        pts, z = cam.project(c)
+        for face, n in zip(FACES, NORMALS):
+            nw = r @ np.array(n, dtype=float)
+            if np.dot(nw, cam.pos - c[list(face)].mean(axis=0)) <= 0:
+                continue
+            polys.append((float(z[list(face)].mean()), [tuple(pts[i]) for i in face], ids[name]))
+    for _, pts, v in sorted(polys, key=lambda e: -e[0]):
+        d.polygon(pts, fill=v)
+    counts = np.bincount(np.asarray(img).ravel(), minlength=len(ORDER) + 1)
+    return {name: int(counts[i]) for name, i in ids.items()}, np.asarray(img) > 0
+
+
 def draw_floor(draw, cam, floor_y=0.0, span=8, step=1.0):
     cx = round((cam.pos[0] + cam.f[0] * 6) / step) * step
     cz = round((cam.pos[2] + cam.f[2] * 6) / step) * step

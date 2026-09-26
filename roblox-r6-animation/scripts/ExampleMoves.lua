@@ -1,6 +1,6 @@
 local Feet = require(script.Parent.Feet)
 local Ex = require(script.Parent.ExampleClips)
-local K, T = Ex.helpers.K, Ex.helpers.T
+local K, T, aim = Ex.helpers.K, Ex.helpers.T, Ex.helpers.aim
 local V3 = Vector3.new
 
 local Example = {}
@@ -337,5 +337,71 @@ Example.LeapStrike = {
 	life = 0.6,
 	post = Feet.post({r = leapFoot({0.55, 0.4, -20}, {0.75, 0.2, -30}), l = leapFoot({-0.45, -0.45, 10}, {-0.65, -0.7, 20})}),
 }
+
+local M1 = {
+	torso = {-8, -22, 0}, y = -0.1,
+	head = {6, 20, 0},
+	rArm = {80, 0, -34}, rArmP = V3(0, 0.08, 0.05),
+	lArm = {84, 0, 16}, lArmP = V3(0, 0.1, 0),
+}
+local stance = Ex.Guard.post
+
+local function guard(t)
+	return {
+		Torso = T(t, M1.torso, V3(0, M1.y, 0)),
+		Head = K(t, M1.head),
+		["Right Arm"] = K(t, M1.rArm, M1.rArmP),
+		["Left Arm"] = K(t, M1.lArm, M1.lArmP),
+	}
+end
+
+local function clip(name, length, hit, keys)
+	local joints = {["Right Leg"] = {K(0)}, ["Left Leg"] = {K(0)}}
+	for _, set in ipairs(keys) do
+		for j, k in pairs(set) do
+			joints[j] = joints[j] or {}
+			table.insert(joints[j], k)
+		end
+	end
+	return {name = name, length = length, curve = "spline", events = {hit = hit}, joints = joints, springs = {Head = "follow"}, life = 0.5, post = stance}
+end
+
+Example.M1Jab = clip("M1Jab", 0.42, 0.10, {
+	guard(0),
+	{Torso = T(0.05, {-10, -16, 2}, V3(0, -0.16, 0.04)), Head = K(0.05, {8, 15, 0}), ["Left Arm"] = K(0.05, {80, 0, 12}, V3(0, 0.1, 0.08)), ["Right Arm"] = K(0.05, {96, 0, -50}, V3(0, 0.1, 0.04))},
+	{Torso = T(0.10, {-22, -44, -4}, V3(0, -0.3, -0.28)), Head = K(0.10, {18, 41, 2}), ["Left Arm"] = K(0.10, aim(-44, 0.05), V3(-0.02, 0.04, -0.34)), ["Right Arm"] = K(0.10, {102, 0, -56}, V3(0, 0.1, 0))},
+	{Torso = T(0.15, {-24, -47, -5}, V3(0, -0.32, -0.31)), Head = K(0.15, {19, 44, 2}), ["Left Arm"] = K(0.15, aim(-47, 0.06), V3(-0.02, 0.04, -0.38))},
+	{Torso = T(0.28, {-14, -31, 1}, V3(0, -0.18, -0.08)), Head = K(0.28, {10, 29, 0}), ["Left Arm"] = K(0.28, {87, 0, 21}, V3(0, 0.1, 0)), ["Right Arm"] = K(0.28, {88, 0, -44}, M1.rArmP)},
+	guard(0.42),
+})
+
+Example.M1Cross = clip("M1Cross", 0.46, 0.12, {
+	guard(0),
+	{Torso = T(0.06, {-10, -30, 2}, V3(0, -0.18, 0.05)), Head = K(0.06, {7, 28, -1}), ["Right Arm"] = K(0.06, {66, 0, -26}, V3(0, 0.07, 0.12)), ["Left Arm"] = K(0.06, {86, 0, 14}, M1.lArmP)},
+	{Torso = T(0.12, {-14, 20, -3}, V3(0, -0.28, -0.1)), Head = K(0.12, {2, -18, 2}), ["Right Arm"] = K(0.12, aim(20, 0.04), V3(0.03, 0.05, -0.34)), ["Left Arm"] = K(0.12, {60, 0, 90}, V3(0.03, 0.08, 0))},
+	{Torso = T(0.17, {-15, 25, -4}, V3(0, -0.3, -0.13)), Head = K(0.17, {1, -22, 3}), ["Right Arm"] = K(0.17, aim(25, 0.06), V3(0.03, 0.05, -0.38)), ["Left Arm"] = K(0.17, {58, 0, 94}, V3(0.03, 0.08, 0))},
+	{Torso = T(0.27, {-10, -4, 0}, V3(0, -0.2, -0.04)), Head = K(0.27, {5, 4, 0}), ["Right Arm"] = K(0.27, {78, 0, -30}, V3(0, 0.07, 0))},
+	guard(0.46),
+})
+
+Example.M1Hook = clip("M1Hook", 0.48, 0.13, {
+	guard(0),
+	{Torso = T(0.06, {-10, -2, 4}, V3(0, -0.22, 0.03)), Head = K(0.06, {8, 2, -2}), ["Left Arm"] = K(0.06, {88, 0, -78}, V3(0, 0.08, 0.05)), ["Right Arm"] = K(0.06, {90, 0, -40}, M1.rArmP)},
+	{Torso = T(0.13, {-17, -48, -7}, V3(0, -0.33, -0.12)), Head = K(0.13, {12, 44, 3}), ["Left Arm"] = K(0.13, {92, 0, 42}, V3(0, 0.06, -0.1)), ["Right Arm"] = K(0.13, {100, 0, -54}, V3(0, 0.1, 0))},
+	{Torso = T(0.18, {-18, -51, -8}, V3(0, -0.34, -0.14)), Head = K(0.18, {12, 47, 3}), ["Left Arm"] = K(0.18, {90, 0, 52}, V3(0, 0.06, -0.1))},
+	{Torso = T(0.33, {-12, -32, -1}, V3(0, -0.21, -0.04)), Head = K(0.33, {8, 30, 0}), ["Left Arm"] = K(0.33, {87, 0, 23}, V3(0, 0.1, 0)), ["Right Arm"] = K(0.33, {88, 0, -40}, M1.rArmP)},
+	guard(0.48),
+})
+
+Example.M1Upper = clip("M1Upper", 0.7, 0.2, {
+	guard(0),
+	{Torso = T(0.10, {-22, -34, 4}, V3(0, -0.45, 0.02)), Head = K(0.10, {18, 30, -2}), ["Right Arm"] = K(0.10, {30, 0, 10}, V3(0, 0.08, 0.05)), ["Left Arm"] = K(0.10, {90, 0, 18}, M1.lArmP)},
+	{Torso = T(0.13, {-20, -36, 4}, V3(0, -0.47, 0.03)), ["Right Arm"] = K(0.13, {26, 0, 12}, V3(0, 0.08, 0.05))},
+	{Torso = T(0.20, {8, 24, -4}, V3(0, -0.08, -0.12)), Head = K(0.20, {-10, -22, 2}), ["Right Arm"] = K(0.20, {158, 0, -14}, V3(0, 0.02, -0.1)), ["Left Arm"] = K(0.20, {50, 0, 60}, V3(0, 0.08, 0))},
+	{Torso = T(0.26, {12, 28, -5}, V3(0, -0.06, -0.14)), Head = K(0.26, {-14, -25, 2}), ["Right Arm"] = K(0.26, {168, 0, -16}, V3(0, 0.02, -0.12))},
+	{Torso = T(0.36, {10, 26, -4}, V3(0, -0.08, -0.13)), Head = K(0.36, {-12, -24, 2}), ["Right Arm"] = K(0.36, {164, 0, -15}, V3(0, 0.02, -0.12))},
+	{Torso = T(0.50, {-8, 0, 0}, V3(0, -0.15, -0.04)), Head = K(0.50, {6, 0, 0}), ["Right Arm"] = K(0.50, {90, 0, -30}, V3(0, 0.07, 0)), ["Left Arm"] = K(0.50, {80, 0, 20}, M1.lArmP)},
+	guard(0.70),
+})
 
 return Example

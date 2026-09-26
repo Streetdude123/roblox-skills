@@ -54,9 +54,11 @@ Use stepped poses for the first check and real-time playback for timing. Use slo
 | flat leg | a planted leg more than 55 degrees from vertical | the pro landing angles its legs 25 to 40 degrees back; the first two landing drafts (57 to 68) read flat; a kneel is flat on purpose |
 | leg twist | a planted toe more than 60 degrees off the torso's heading | the examples read 5 to 51; the first throw draft 97 to 111 |
 | hip gap, foot slide | the foot check over 0.12 and 0.05 | SKILL.md |
+| hidden strike | at the strike frame the striking limb shows under 20% of its pixels from the player camera (`--view`, default `rear34`) and the whole figure keeps more than 70% of its start silhouette | the first M1 jab (1%, 83%) and hook (0%, 73%); the pro left stab hides its arm (4%) but keeps only 46% of its silhouette and passes |
+| small silhouette change | the strike frame keeps more than 75% of the start silhouette from the player camera | the pro strikes keep 46 to 67%; the throw's whip frame keeps 77% (the arm passes over the head, inside the outline) and stays flagged |
 | outruns the strike | an arm, the head or the torso has its fastest world speed more than 6 frames from the strike and more than 0.9 of its speed at the strike | the seven pro stand clips pass; raw motion capture flags recoveries and hooks where the fastest whole-body moment is not the strike, so name it with `--strike` |
 
-The seven pro stand clips and the stand's idle in `references/decodes` pass with `--float`; the example clips pass except the flags kept on purpose.
+The seven pro stand clips and the stand's idle in `references/decodes` pass with `--float`; the example clips pass except the flags kept on purpose (the throw's whip: a pop that needs a smear and a small silhouette change; the superhero kneel's flat leg). The staging checks skip a clip whose fastest moment is its first frames (a landing). Name the strike with `--strike` on a clip with several hits.
 
 - Plant drift: maximum horizontal distance from the chosen world contact target during its contact interval.
 - Floor error: signed height of the selected support point and the lowest sole corner relative to the actual floor.

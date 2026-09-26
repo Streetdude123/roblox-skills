@@ -206,6 +206,11 @@ Write each character's weight before keying: stance depth, skid length, recovery
 - Big actions read from far away, expressions from close up.
 - When a character stands up, offset the top half from the bottom half.
 - Secondary action is a gesture that supports the main action (the free hand, the head); overlap is the timing offset of the carried parts. They are different tools.
+- The player sees a gameplay move from behind and to the right (`rear34`). From there the torso hides a lead-hand strike of an orthodox stance: the first M1 jab and hook showed their striking arm on 0 to 1% of its pixels and kept 73 to 83% of the start silhouette. The pro stand strikes keep only 46 to 67% of their start silhouette at the strike frame, and when their striking arm is hidden (the left stab shows 4% of it) the whole body changes shape instead. So a hand the camera cannot see needs the body to sell it: a step-in lean, a bigger turn, the rear hand tucked to the chin, a wind-up that swings the arm out past the body's edge first. `faults.py` measures both ("hidden strike", "small silhouette change").
+
+## A gameplay M1 string
+
+`scripts/ExampleMoves.lua` keys four hits from the example guard: `M1Jab` (contact at 0.10 s), `M1Cross` (0.12), `M1Hook` (0.13, the lead arm swung out wide on the load) and `M1Upper` (0.20, a finisher that drops, then rises onto the punch and hangs 0.16 s). Each startup sits in the 4 to 8 frame window and each clip recovers to the guard on its own. They share the guard's post pass (`Ex.Guard.post`), so the runtime keeps the feet planted through the blends between hits (r6-mechanics.md). Played through the real runtime with a 0.06 s hitstop on each contact, a 0.1 s one on the finisher and the next hit started 0.1 s after each stop (`poser_offline.py --runtime "0 play Guard fade=0; 0.3 play M1Jab; 0.4 hold 0.06; 0.56 play M1Cross; 0.68 hold 0.06; 0.86 play M1Hook; 0.99 hold 0.06; 1.18 play M1Upper then Guard; 1.38 hold 0.1"`), the contacts land at 0.40, 0.68, 1.00 and 1.38 s and the string hands back to the guard at 1.97 s; slide 0.01, hip gaps 0.
 
 ## Motion recipes
 
