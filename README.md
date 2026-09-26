@@ -47,7 +47,8 @@ Package layout:
   professional and earlier Claude numbers, R6 transform and contact math, the
   Poser runtime contract, diagnosis, sources, decoded reference clips,
   project review history, the frame-by-frame reference study method, the
-  measured study of the target Moon Animator fight, and cinematic shots.
+  measured study of the target Moon Animator fight, cinematic shots, the
+  real-motion pipeline, and real human timing measured from motion capture.
 - `templates/clip-plan.md` - brief, beat table, motion layers, measurements,
   review record.
 - `scripts/` - `Poser.lua` (runtime with `curve = "spline"`, `lag`,
@@ -57,11 +58,16 @@ Package layout:
   check), `LoadTest.lua` (fresh module copies from `serve.js`),
   `motion_check.js` (the metrics on decode text, with range and sweep),
   `video/ref_sheets.py` (frame-by-frame sheets, cuts and holds of a
-  reference or a take), the DIO project clips,
+  reference or a take), `r6_render.py` (an R6 box preview of decode text
+  without Studio), `bvh_to_r6.py` (motion capture to R6 decode and Poser clip),
+  `beats.py` (moves and holds of the hands, feet and head), `mocap_study.py`
+  (strike, jump and gait timing on captures), `stylize.py` (exaggeration, the
+  cartoon animation filter, snap, slow in and slow out), the DIO project clips,
   capture, decode and bake helpers, and `check_decode.py`.
 
-Legacy Poser clips play exactly as before. The Python decode checker and the
-Node motion checker are covered by the repository tests; Roblox runtime,
+Legacy Poser clips play exactly as before. The Python decode checker, the
+Node motion checker and the Python preview, retarget, beat and stylize tools
+are covered by the repository tests; Roblox runtime,
 visual quality and replication still require Studio verification.
 
 ### `roblox-vfx-craft`

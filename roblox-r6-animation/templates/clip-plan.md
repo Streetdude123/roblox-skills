@@ -21,6 +21,8 @@ Fill this in task notes. Keep only fields relevant to the request. Record unknow
 | --- | --- | --- | --- | --- |
 
 - Study folder (`ref_sheets.py`): capture fps, cut and flash events, static runs, sheets read:
+- Real motion base (real-motion.md): dataset and licence, take, cut, retarget options, stylize options:
+- Measured human timing used (mocap-timing.md) and how it was compressed or held on purpose:
 
 ## Beat table
 
@@ -59,6 +61,9 @@ Count at 60 fps.
 
 | Revision | frozen% | still% / longest | rest% | stops/s | unison/s | contrast | spread | range torso / striking limb (pro match) | feet (corner, slide, hip gap) |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+
+Spacing shape (`beats.py`, striking tip): move frames, frames to the fastest point, frames to the stop, peak speed, hold frames, against the pro table in motion-metrics.md:
+
 
 Targets for a one-shot: frozen 0, still 5% or less and 0.1 s or less, rest 45% or less, contrast 2 to 10, stops 3/s or less, unison 5/s or less, planted corners within 0.03, slide 0.05 or less, hip gap 0.12 or less. A loop or a held pose: frozen 0.
 

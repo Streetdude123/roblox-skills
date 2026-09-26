@@ -132,6 +132,8 @@ Before cloning a live character, check `Archivable`. If it is false, `Clone()` r
 
 For an inspected stock arm, `root.CFrame:VectorToObjectSpace(-arm.CFrame.UpVector)` reports the arm direction in root axes (X sideways, Y up, negative Z forward). This normalized direction does not measure hand position, grip error, or a world-space contact; use the endpoint checks in [r6-mechanics.md](r6-mechanics.md) for those.
 
+Without Studio, decode text is enough to look and measure: `scripts/r6_render.py` draws the stock R6 box figure with the same C0 and C1 offsets and the same pose convention as Poser (a part = its parent x C0 position x pose x its offset), so `Poser.dump` output, `ReadClips.lua` decodes and the motion capture retarget all render the same way; `scripts/beats.py` measures moves and holds of the tips. They need Python 3 with numpy and pillow. The workflow and its limits are in [real-motion.md](real-motion.md).
+
 `AnalyzeClips.js` gives legacy Euler range tables. Use `check_decode.py` for rotation-aware local seam and sample measurements. Neither tool sees world-space contacts or proves successful playback. Use live observations for those claims.
 
 ## Video of a clip for Lepy (scripts/video)

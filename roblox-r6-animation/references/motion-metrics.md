@@ -71,6 +71,29 @@ Readings: no professional one-shot has a still frame. Their parts rest 16 to 50%
 
 Readings: every pro strike turns the torso 77 to 120 degrees in a third to a half of a second. The striking arm of a piston punch barely turns (8 to 13 degrees) because the torso whip does the reach; a hook or an uppercut swings the arm 68 to 104 degrees. The Stand floats, so a grounded body with planted feet turns less (the example cross needed a torso drop for a 56 degree turn, SKILL.md "Rigid legs"); compare with a pro clip of the same kind and support, and report the difference.
 
+## Spacing shape of the professional clips
+
+`python3 scripts/beats.py references/decodes/TW*.txt references/decodes/Barrage.txt --local` (added 2026-09-26): each arm's tip in torso space, split into moves (above a fifth of its peak speed and 1.5 studs/s) and holds. "To fastest" and "to stop" are the frames from the start of a move to its fastest frame and from there to its end; the medians are shown.
+
+| Clip | Arm | Moves | Move frames | To fastest | To stop | Peak (studs/s) | Hold frames |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Barrage | Right Arm | 5 | 3 | 1 | 1 | 8.8 | 3 |
+| Barrage | Left Arm | 8 | 4 | 2 | 1 | 16.1 | 0 |
+| TWHeavyPunch | Right Arm | 2 | 7.5 | 3 | 3.5 | 27.4 | 6 |
+| TWHeavyPunch | Left Arm | 2 | 5 | 1.5 | 2.5 | 22.7 | 7 |
+| TWLeftPunch | Right Arm | 2 | 8.5 | 4.5 | 3 | 18.1 | 0 |
+| TWLeftPunch | Left Arm | 2 | 7.5 | 3.5 | 3 | 12.1 | 0 |
+| TWLeftStab | Right Arm | 1 | 15 | 5 | 9 | 9.5 | 0 |
+| TWLeftStab | Left Arm | 1 | 10 | 5 | 4 | 24.6 | 0 |
+| TWLeftUpperCut | Right Arm | 2 | 9 | 3.5 | 4.5 | 16.7 | 0 |
+| TWLeftUpperCut | Left Arm | 2 | 6.5 | 2.5 | 3 | 19.8 | 0 |
+| TWRightKick | Right Arm | 2 | 5.5 | 2.5 | 2 | 5.5 | 2 |
+| TWRightKick | Left Arm | 1 | 7 | 3 | 3 | 16.0 | 0 |
+| TWRightPunch | Right Arm | 2 | 7.5 | 2 | 4.5 | 5.7 | 2 |
+| TWRightPunch | Left Arm | 1 | 10 | 3 | 6 | 8.1 | 0 |
+
+Readings: a pro strike moves in 5 to 10 frames (the stab's slow arm 15), reaches its fastest frame after 1.5 to 5 and stops 2 to 9 frames later; the barrage beats are 3 to 4 frames. Real motion capture moves 2 to 3 times slower (real-motion.md, mocap-timing.md). Compare a new clip's `beats.py` table with this one next to the motion checks.
+
 ## Earlier Claude clips
 
 Authored in `Clips.lua` with the legacy per-key eases (`cubic` departures, `back` arrivals, `sine` creep holds, keys shared across joints).

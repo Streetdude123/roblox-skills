@@ -86,6 +86,7 @@ The studied reference moves between keys in 0.03 to 0.15 s (2 to 9 frames at 60:
 - The hold is a moving hold: a second key 5 to 15% further along with `auto` tangents. Never a frozen pose, never a slow ease back toward rest.
 - Snap from extreme to extreme. The reference never spends a slow segment between two extremes; its slow parts are the drifting holds and the slow out after a whip.
 - In a gameplay one-shot the checks still apply (still 5% or less, because the holds drift). A cinematic sequence with long holds may pass contrast 10; report it and say why.
+- Real people are slower than keyed game strikes: measured real punches take 9 to 17 frames from the low point to full reach (boxers 8 to 11) and return in 8 to 27 (boxers 15 to 30); the pro stand strikes take 3 to 6. Real fists are fastest 3 to 6 frames before full reach and hold 3 to 6 frames there (mocap-timing.md). Keep the real order and the hold; compress the strike on purpose.
 
 ## Anticipation in stages
 
@@ -108,6 +109,7 @@ Things do not stop all at once: the part that drives moves first and the parts i
 - Keep hard contacts synchronised: the striking fist and the torso land on the contact frame; a two-handed grip never separates because of a lag.
 - Break the three times apart: when a part starts, when it arrives and when it settles. They do not need the same offset.
 - Measured overlap in the stand set: the arms trail the torso 5 to 8 frames in the barrage and the heavy punch; the head trails 2 to 6 frames in the idles.
+- Measured on 376 real punches (mocap-timing.md): the hips reach their fastest turn about 6 frames before the fist, the shoulders about 3. On kicks the shoulders reach their fastest turn about 17 frames before the foot's fastest point.
 - A part that acts on purpose does not trail either: a hand pulled back to guard during a punch was carried 1.95 studs out to the side by the torso's turn when it wore a 2 frame lag.
 - A head that holds the eyes on a target leads, it does not trail: it counters the torso twist on the torso's own frames (measured: head -49 against torso +48 on the same five frames of the stand's right punch). A head that lagged four frames in the example cross pointed 40 degrees off the target at the contact.
 
@@ -173,15 +175,15 @@ Guilty Gear Xrd keyed its 3D characters without in-betweens and removed frames o
 
 ## Jumps, entrances and landings
 
-- **Takeoff**: a crouch, then the launch in about 4 frames (the studied hop and launch). A big launch can stretch the legs into a smear.
+- **Takeoff**: a crouch, then the launch in about 4 frames (the studied hop and launch). Real small jumps (mocap-timing.md): 19 frames down into a crouch 0.38 studs deep, 15 frames from the lowest point to takeoff, 15 frames in the air. A big launch can stretch the legs into a smear.
 - **Air**: the body travels on an arc and slows near the top. Ease the height only; keep the travel even. The studied golem hangs 0.3 s at the top of a hop before it lunges.
-- **Landing**: the contact with the legs spread and the torso still moving down, then the compression (the lowest point) 3 to 6 frames later (the studied golem), then a skid and a recovery for a heavy body or a quick recoil for a light one. The body settles on an arc, not straight down. R6 compresses by dropping the torso over planted feet (`Feet.post`).
+- **Landing**: the contact with the legs spread and the torso still moving down, then the compression (the lowest point) 3 to 6 frames later (the studied golem; real small jumps take 12 frames and sink as deep as the takeoff crouch, then stand in 10), then a skid and a recovery for a heavy body or a quick recoil for a light one. The body settles on an arc, not straight down. R6 compresses by dropping the torso over planted feet (`Feet.post`).
 - **Superhero landing** (measured): a fall of 0.1 s, the contact with radial lines, one knee and one fist down held 0.9 s with only the head rising, a push up of 0.15 s, the body straight after 0.3 s more.
 - **Entrances and exits** for a camera: [cinematic-shots.md](cinematic-shots.md).
 
 ## Weight by character
 
-Write each character's weight before keying: stance depth, skid length, recovery time, time in the air. The same move then changes most after the contact; the snap into the contact stays fast for every body.
+Write each character's weight before keying: stance depth, skid length, recovery time, time in the air. The same move then changes most after the contact; the snap into the contact stays fast for every body. For walks and runs, mocap-timing.md measures 15 styles (angry, giant, happy, proud, old, tired, thug and more): steps, bob, lean, sway, twist and arm swing that give a character its personality.
 
 | | Heavy (the studied golem) | Light (the studied noob) |
 | --- | --- | --- |

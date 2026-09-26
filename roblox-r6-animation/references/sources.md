@@ -59,6 +59,23 @@ The Moon Animator video was read frame by frame from the user's file (all unique
 | [Easy Allies forum summary of the Guilty Gear Xrd GDC talk (Junya Motomura)](https://forums.easyallies.com/topic/4187/how-the-3d-anime-style-is-made-explained-by-junya-motomura-guilty-gear-xrd-technical-director-more) | 3D characters keyed without in-betweens and with frames removed to look like 2D anime. Read as a search summary; the talk itself was not watched this revision. |
 | [CGSpectrum, The animation secrets of Spider-Man: Into the Spider-Verse](https://www.cgspectrum.com/blog/spider-man-into-the-spider-verse-how-they-got-that-mind-blowing-look) and [Smear frame](https://en.wikipedia.org/wiki/Smear_frame) | Smears in 3D: stretched geometry, extra limbs and speed lines on fast frames. Read as search summaries. |
 
+## Motion capture, stylization research and game feel (2026-09-26)
+
+The captures were downloaded, retargeted and measured in this session (mocap-timing.md, real-motion.md); the datasets are not copied into the repository. The papers were read as text extracted from their PDFs. The Game Developer and Japan Powered articles were read through web fetches.
+
+| Source | Supports |
+| --- | --- |
+| [Bandai Namco Research Motion Dataset](https://github.com/BandaiNamcoResearchInc/Bandai-Namco-Research-Motiondataset) (Kobayashi et al. 2023, CC BY-NC 4.0) | Punch, kick and slash timing; walk, run and dash in 15 styles performed by professional actors. |
+| [Ubisoft La Forge LaFAN1](https://github.com/ubisoft/ubisoft-laforge-animation-dataset) (Harvey et al. 2020, CC BY-NC-ND 4.0) | Fight strike timing, 64 jumps. |
+| [CMU Graphics Lab Motion Capture Database](http://mocap.cs.cmu.edu/) | Boxing (167 strikes), kicks, the checked takes for R6 base clips. |
+| [Wang, Drucker, Agrawala and Cohen, The Cartoon Animation Filter, SIGGRAPH 2006](https://grail.cs.washington.edu/wp-content/uploads/2015/08/wang-2006-tca.pdf) | Anticipation and follow-through from subtracting a smoothed second derivative; applied per degree of freedom on motion capture. `stylize.py --cartoon`. |
+| [White, Loken and van de Panne, Slow In and Slow Out Cartoon Animation Filter, SIGGRAPH 2006 sketch](https://www.cs.ubc.ca/~van/papers/2006-siggraph-slowin.pdf) | A time warp whose slope reaches zero at the extremes of the motion. `stylize.py --siso`. |
+| [Game Developer, Anatomy of an Enemy Attack in Dark Souls 3](https://www.gamedeveloper.com/game-platforms/anatomy-of-an-enemy-attack-in-dark-souls-3) | Reaction time and minimum telegraph and end pose durations. |
+| [Game Developer, Improving the Combat Impact of Action Games](https://www.gamedeveloper.com/audio/improving-the-combat-impact-of-action-games) | Combo impact timing; two impacts closer than about 5 frames at 30 fps read as one. |
+| [Japan Powered, Dan Da Dan's Sakuga](https://www.japanpowered.com/anime-articles/dan-da-dan-sakuga) | Hard keys with few soft in-betweens, held follow-through frames, lengthened limbs. |
+
+Not reached: YouTube refused caption downloads from the cloud session's IP after the first two videos, so GDC talk transcripts (for example the God of War 2018 animation talks) were not read.
+
 ## Evidence boundaries
 
 - The rotation, contact-solve, and loop-measurement procedures are derived for this skill's Poser convention. They are not quoted tutorial recipes.
