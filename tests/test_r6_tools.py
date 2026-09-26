@@ -428,3 +428,14 @@ def test_m1_string_keeps_the_feet_planted_through_the_blends(tmp_path):
     (tmp_path / 'm.txt').write_text(res['M1']['decode'])
     for r in fc.feet(rr.read_decode(tmp_path / 'm.txt')).values():
         assert r['slide'] <= 0.03 and r['gap'] <= 0.05
+
+
+def test_feet_check_judges_an_in_place_step_in_the_world(tmp_path):
+    frames = []
+    for i in range(31):
+        z = 0.02 * i
+        frames.append({'Torso': (0, 0, 0, 0, 0, 0), 'Right Leg': (-math.degrees(math.asin(z / 2)), 0, 0), 'Left Leg': (-math.degrees(math.asin(z / 2)), 0, 0)})
+    clip = rr.read_decode(write_decode(tmp_path / 'w.txt', 'W', frames))
+    still = fc.feet(clip)['Right Leg']['slide']
+    moving = fc.feet(clip, travel=1.2)['Right Leg']['slide']
+    assert still > 0.3 and moving < still

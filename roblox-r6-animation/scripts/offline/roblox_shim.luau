@@ -346,6 +346,19 @@ local function signal()
 	return sig
 end
 
+local function value(kind)
+	return function(...)
+		return {kind = kind, ...}
+	end
+end
+local Color3 = {new = value("Color3"), fromRGB = value("Color3"), fromHSV = value("Color3"), fromHex = value("Color3")}
+local NumberSequence = {new = value("NumberSequence")}
+local ColorSequence = {new = value("ColorSequence")}
+local NumberSequenceKeypoint = {new = value("NumberSequenceKeypoint")}
+local ColorSequenceKeypoint = {new = value("ColorSequenceKeypoint")}
+local NumberRange = {new = value("NumberRange")}
+local TweenInfo = {new = value("TweenInfo")}
+
 local now = 0
 local fakeOs = setmetatable({clock = function()
 	return now
@@ -417,6 +430,13 @@ return {
 	Instance = {new = newInstance},
 	task = task,
 	os = fakeOs,
+	Color3 = Color3,
+	NumberSequence = NumberSequence,
+	ColorSequence = ColorSequence,
+	NumberSequenceKeypoint = NumberSequenceKeypoint,
+	ColorSequenceKeypoint = ColorSequenceKeypoint,
+	NumberRange = NumberRange,
+	TweenInfo = TweenInfo,
 	setClock = function(t)
 		now = t
 	end,

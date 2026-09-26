@@ -17,7 +17,7 @@ def yaw_of(r):
     return math.degrees(math.atan2(-f[0], -f[2]))
 
 
-def feet(clip, fps=60.0, planted=0.06):
+def feet(clip, fps=60.0, planted=0.06, travel=0.0):
     out = {leg: {'low': math.inf, 'high': -math.inf, 'slide': 0.0, 'gap': 0.0, 'twist': 0.0} for leg in LEGS}
     anchor = {}
     for t in rr.frame_times(clip, fps, 0.0, None):
@@ -28,7 +28,7 @@ def feet(clip, fps=60.0, planted=0.06):
             o = out[leg]
             h = min(float((p + r @ c)[1]) for c in CORNERS)
             o['low'], o['high'] = min(o['low'], h), max(o['high'], h)
-            sole = p + r @ np.array([0, -1.0, 0])
+            sole = p + r @ np.array([0, -1.0, 0]) - np.array([0, 0, travel * t])
             if h < planted:
                 anchor.setdefault(leg, sole)
                 o['slide'] = max(o['slide'], float(math.hypot(sole[0] - anchor[leg][0], sole[2] - anchor[leg][2])))
@@ -48,10 +48,11 @@ def text(name, res):
 def main():
     ap = argparse.ArgumentParser(description='planted feet check on R6 decode text: lowest sole corner, slide while planted, hip gap, toe twist')
     ap.add_argument('decodes', nargs='+')
+    ap.add_argument('--travel', type=float, default=0.0, help='studs a second the root moves forward in the game (a walk or run cycle played in place)')
     a = ap.parse_args()
     for p in a.decodes:
         clip = rr.read_decode(p)
-        print(text(clip['name'], feet(clip)))
+        print(text(clip['name'], feet(clip, travel=a.travel)))
 
 
 if __name__ == '__main__':

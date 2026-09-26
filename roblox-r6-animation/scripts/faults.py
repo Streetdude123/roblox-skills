@@ -52,7 +52,7 @@ def speeds(world, fps, win=2):
     return out
 
 
-def find(path, fps=60.0, pop=90.0, twin=8.0, loop=None, feet=True, flat=55.0, twist=60.0, strike=None, view='rear34'):
+def find(path, fps=60.0, pop=90.0, twin=8.0, loop=None, feet=True, flat=55.0, twist=60.0, strike=None, view='rear34', travel=0.0):
     clip = rr.read_decode(path)
     head = Path(path).read_text(encoding='utf-8').splitlines()[0]
     if loop is None:
@@ -150,7 +150,7 @@ def find(path, fps=60.0, pop=90.0, twin=8.0, loop=None, feet=True, flat=55.0, tw
             add('flat leg', a, b, f'{leg} lies {max(tilt[a:b + 1]):.0f} deg from vertical while planted: bring the foot under the hip (fine for a kneel)')
         for a, b in runs([p and t <= flat and tw > twist for p, t, tw in zip(planted, tilt, turn)], 2):
             add('leg twist', a, b, f'{leg} toe is {max(turn[a:b + 1]):.0f} deg off the torso heading while planted: pivot the foot with the hips')
-    res = fc.feet(clip, fps)
+    res = fc.feet(clip, fps, travel=travel)
     for leg, r in res.items():
         if min(lowest[leg]) > 0.3:
             continue
@@ -171,9 +171,10 @@ def main():
     ap.add_argument('--float', action='store_true', help='a stand or any rig whose feet do not touch the floor: skip the foot checks')
     ap.add_argument('--strike', type=float, help='seconds of the strike or contact; default the fastest whole-body moment')
     ap.add_argument('--view', default='rear34', help='camera for the staging checks: rear34 (the player), side, front34 and the other r6_render views')
+    ap.add_argument('--travel', type=float, default=0.0, help='studs a second the root moves forward in the game (a walk or run cycle played in place)')
     a = ap.parse_args()
     for p in a.decodes:
-        name, found = find(p, pop=a.pop, twin=a.twin, feet=not a.float, flat=a.flat, twist=a.twist, strike=a.strike, view=a.view)
+        name, found = find(p, pop=a.pop, twin=a.twin, feet=not a.float, flat=a.flat, twist=a.twist, strike=a.strike, view=a.view, travel=a.travel)
         print(f'{name}: {len(found)} found')
         for f in found:
             span = f"{f['from']:.2f}" if f['from'] == f['to'] else f"{f['from']:.2f}-{f['to']:.2f}"

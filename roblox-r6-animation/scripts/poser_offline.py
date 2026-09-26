@@ -8,13 +8,37 @@ import tempfile
 
 HERE = Path(__file__).resolve().parent
 SHIM = HERE / 'offline' / 'roblox_shim.luau'
-GLOBALS = ('Vector3', 'CFrame', 'typeof', 'game', 'Enum', 'Instance', 'task', 'os')
-NEED = re.compile(r'require\(\s*script\.Parent\.(\w+)\s*\)')
+GLOBALS = ('Vector3', 'CFrame', 'typeof', 'game', 'Enum', 'Instance', 'task', 'os', 'Color3', 'NumberSequence', 'ColorSequence', 'NumberSequenceKeypoint', 'ColorSequenceKeypoint', 'NumberRange', 'TweenInfo')
+NEED = re.compile(r'require\(\s*(?:script\.Parent|script\.Parent\.Parent|root)\.(\w+)\s*\)')
 
 HEAD = '''
+local function stub(name)
+	return setmetatable({Name = name, Loop = false}, {__index = function(_, k)
+		if k == "GetKeyframes" or k == "GetChildren" or k == "GetDescendants" then
+			return function()
+				return {}
+			end
+		elseif k == "GetAttribute" or k == "FindFirstChild" then
+			return function() end
+		elseif k == "IsA" then
+			return function()
+				return false
+			end
+		end
+		return stub(k)
+	end})
+end
+local top = setmetatable({}, {__index = function(_, k)
+	if mods[k] then
+		return k
+	elseif k == "GetAttribute" or k == "FindFirstChild" then
+		return function() end
+	end
+	return stub(k)
+end})
 local folder = setmetatable({}, {__index = function(_, k)
 	if k == "Parent" then
-		return shim.Instance.new("Folder")
+		return top
 	end
 	return k
 end})
@@ -125,22 +149,22 @@ print("@@end")
 '''
 
 
-def modules(path, found=None):
+def modules(path, found=None, dirs=()):
     found = found if found is not None else {}
     path = Path(path).resolve()
     found[path.stem] = path
     for name in NEED.findall(path.read_text()):
         if name in found:
             continue
-        for d in (path.parent, HERE):
+        for d in (path.parent, HERE, *map(Path, dirs)):
             p = d / f'{name}.lua'
             if p.exists():
-                modules(p, found)
+                modules(p, found, dirs)
                 break
         else:
             raise SystemExit(f'{path.name} requires {name} and no {name}.lua was found')
     if 'Poser' not in found:
-        modules(HERE / 'Poser.lua', found)
+        modules(HERE / 'Poser.lua', found, dirs)
     return found
 
 
@@ -173,8 +197,8 @@ def lua_value(v):
     return repr(v)
 
 
-def entry(main, only=(), fps=60, steps=None, length=0.0, name='Runtime'):
-    mods = modules(main)
+def entry(main, only=(), fps=60, steps=None, length=0.0, name='Runtime', dirs=()):
+    mods = modules(main, dirs=dirs)
     names = ', '.join(GLOBALS)
     take = ', '.join(f'shim.{g}' for g in GLOBALS)
     out = ['local shim = (function()', SHIM.read_text(), 'end)()', 'local mods = {}']
@@ -223,10 +247,10 @@ def parse(text):
     return clips
 
 
-def run(main, only=(), fps=60, luau=None, steps=None, length=0.0, name='Runtime'):
+def run(main, only=(), fps=60, luau=None, steps=None, length=0.0, name='Runtime', dirs=()):
     with tempfile.TemporaryDirectory() as tmp:
         src = Path(tmp) / 'entry.luau'
-        src.write_text(entry(main, only, fps, steps, length, name))
+        src.write_text(entry(main, only, fps, steps, length, name, dirs))
         res = subprocess.run([luau_path(luau), str(src)], capture_output=True, text=True)
     if res.returncode != 0:
         raise SystemExit(res.stdout[-2000:] + res.stderr[-2000:])
@@ -243,18 +267,19 @@ def main():
     ap.add_argument('--runtime', help='play the clips through Rig:play on a stock R6 motor set, e.g. "0 play Guard; 0.5 play Cross then Guard; 0.79 hold 0.08"')
     ap.add_argument('--length', type=float, default=3.0, help='seconds the runtime scenario runs')
     ap.add_argument('--name', default='Runtime', help='name of the runtime decode')
+    ap.add_argument('--path', action='append', default=[], help='another folder to find required modules in (a project Config, say); place assets become empty stubs')
     a = ap.parse_args()
     if a.out:
         Path(a.out).mkdir(parents=True, exist_ok=True)
     if a.runtime:
-        res = run(a.module, fps=a.fps, luau=a.luau, steps=scenario(a.runtime), length=a.length, name=a.name)
+        res = run(a.module, fps=a.fps, luau=a.luau, steps=scenario(a.runtime), length=a.length, name=a.name, dirs=a.path)
         for e in res.get('events', []):
             print(e)
         if a.out:
             (Path(a.out) / f'{a.name}.txt').write_text(res[a.name]['decode'])
         return
     only = [c for c in a.clip.split(',') if c]
-    clips = run(a.module, only, a.fps, a.luau)
+    clips = run(a.module, only, a.fps, a.luau, dirs=a.path)
     for k, r in clips.items():
         c = r['check']
         print(f"{k} len {c['len']:.2f} frozen {c['frozen']:.1f}% still {c['still']:.1f}% longest {c['longest']:.2f}s rest {c['rest']:.1f}% "

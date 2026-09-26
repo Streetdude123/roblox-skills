@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 - Project clip modules offline, feet on travelling cycles (user-authorized)
+
+- `roblox-r6-animation`: `poser_offline.py --path <folder>` finds modules a project clip module requires from outside the scripts folder (`require(root.Config)`) and stubs place assets; the shim gains Color3, sequence, range and TweenInfo values. It reproduced the Studio legacy numbers of the DIO clips in `Clips.lua` (`pipeline.md`). `feet_check.py` and `faults.py` take `--travel <studs/s>` so the stance foot of a cycle played in place is judged in the world. One test.
+
 ## 2026-09-26 - The M1 string flows from end poses (user-authorized)
 
 - `roblox-r6-animation`: the M1 hits now start from the previous hit's end pose, as `SKILL.md` "Combo flow" asks (the project feedback of 2026-09-22), so the alternation gives each hit its load; the cross lost a torso load key that only added a stop. `principles.md` records the chain and its runtime timing; `SKILL.md` names `ExampleMoves.lua` as a worked example and gives the toe twist rule the measured numbers (examples 5 to 59, a broken draft 97 to 111, flagged over 60) instead of "about 45".
