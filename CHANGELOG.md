@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 — Parry signals, Bull Leap rebuild, smooth walks, clean ragdoll (user-authorized)
+
+- roblox-vfx-craft: attack tells (white, amber, red), parry vs block by value, wall stop for forced motion; his feedback logged.
+- roblox-r6-animation: Bull Leap wind-up rebuild, smooth-max walk height (no snap), per-style walks, ragdoll settle and per-part push; his feedback logged.
+
 ## 2026-09-25 (later) — Water Mage block rebuilt with the water rules (user-authorized)
 
 - `roblox-vfx-craft`: `references/water.md` section 8 (centre attachments for facing sprites, rim attachments for edge spray, the Glass lens trap, white stacking, the blotchy dark partner, rim-first hit reactions for the player camera, the take camera that turns the body, the cost). `SKILL.md` feedback log and `references/taste.md` log his sentences.
