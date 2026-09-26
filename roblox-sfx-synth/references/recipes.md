@@ -1,7 +1,5 @@
 # Preset recipes
 
-The synth presets are the last resort. Find real recordings first (see SKILL.md). The presets measured dull against real references; the fixes that worked in the lab are in `layering.md`.
-
 Times are seconds from the start of the file. `glide(a, b, len, bend)` is an exponential pitch
 move; a `bend` under 1 moves fast early, over 1 moves late. `env(len, attack, hold, decay)` falls
 60 dB over `decay`. `drive(x, amt)` is tanh saturation; 2 to 3.5 adds crunch and loudness.

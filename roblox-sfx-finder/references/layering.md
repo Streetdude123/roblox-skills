@@ -53,7 +53,7 @@ Save the recipe at the root of the search folder. `build.py` reads every `candid
 ```
 
 **Layer keys:**
-- `file` or `synth` (a preset name from `sfx.py`), plus `seed` for a synth layer.
+- `file` or `synth` (a preset name from `roblox-sfx-synth/scripts/sfx.py`), plus `seed` for a synth layer.
 - `at` (s), `gain_db`, `start` and `end` (s, for cutting the source), `reverse`.
 - `pitch` (semitones, varispeed, so length changes with pitch).
 - `hp` and `lp` (Hz).

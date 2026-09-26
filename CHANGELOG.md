@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 (final) - Finder split into its own skill (user-authorized)
+
+- New skill `roblox-sfx-finder`: `find.py`, `build.py`, `Audition.lua` and the references `sources.md`, `frieren.md`, `layering.md` moved here from `roblox-sfx-synth`, with its own `check.py` (reads any format) and `requirements.txt`. `build.py` loads synth presets from `roblox-sfx-synth` only for `synth` layers.
+- `roblox-sfx-synth` restored to synthesis only (`SKILL.md`, `recipes.md`, `check.py`, `requirements.txt` as first added).
+
 ## 2026-09-26 (latest) - roblox-sfx-synth finds real sounds first (user-authorized)
 
 - `roblox-sfx-synth`: `scripts/find.py` searches BigSoundBank, freesound (CC0), Mixkit, 効果音ラボ and Kenney, downloads, measures and ranks results with licenses, and searches the Roblox Creator Store partner library (ProSoundEffects, APMOfficial). `scripts/build.py` layers found recordings and synth presets from a JSON recipe through pedalboard and writes credits. `scripts/check.py` reads any audio format. `scripts/Audition.lua` measures store IDs in Studio (untested). New references `sources.md`, `frieren.md`, `layering.md`. `SKILL.md` rewritten find-first, synthesis last; the user's feedback logged.

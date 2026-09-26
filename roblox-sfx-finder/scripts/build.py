@@ -1,6 +1,8 @@
 import argparse
 import json
 import subprocess
+import sys
+import wave
 from pathlib import Path
 
 import imageio_ffmpeg
@@ -8,10 +10,35 @@ import numpy as np
 from pedalboard import Pedalboard, Reverb, Compressor, Limiter, Distortion, HighpassFilter, LowpassFilter, Delay, Chorus
 from scipy import signal
 
-import sfx
-
 RATE = 44100
 FF = imageio_ffmpeg.get_ffmpeg_exe()
+SYNTH = Path(__file__).resolve().parents[2] / "roblox-sfx-synth" / "scripts"
+
+
+def highpass(x, cut):
+    return signal.sosfilt(signal.butter(2, cut, "highpass", fs=RATE, output="sos"), x)
+
+
+def lowpass(x, cut):
+    return signal.sosfilt(signal.butter(2, min(cut, RATE * 0.45), "lowpass", fs=RATE, output="sos"), x)
+
+
+def drive(x, amt):
+    return np.tanh(amt * x) / np.tanh(amt)
+
+
+def save(path, x):
+    with wave.open(str(path), "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(RATE)
+        w.writeframes((np.clip(x, -1, 1) * 32767).astype("<i2").tobytes())
+
+
+def synth(name, seed):
+    sys.path.append(str(SYNTH))
+    import sfx
+    return sfx.PRESETS[name][1](np.random.default_rng(seed))
 
 
 def load(path):
@@ -41,7 +68,7 @@ def fade(x, a, b):
 
 def layer(L, rng, jitter, base):
     if "synth" in L:
-        x = sfx.PRESETS[L["synth"]][1](np.random.default_rng(L.get("seed", 1)))
+        x = synth(L["synth"], L.get("seed", 1))
     else:
         x = load(base / L["file"])
     start = int(L.get("start", 0) * RATE)
@@ -51,13 +78,13 @@ def layer(L, rng, jitter, base):
         x = x[::-1].copy()
     x = speed(x, L.get("pitch", 0) + rng.uniform(-jitter, jitter))
     if "hp" in L:
-        x = sfx.highpass(x, L["hp"])
+        x = highpass(x, L["hp"])
     if "lp" in L:
-        x = sfx.lowpass(x, L["lp"])
+        x = lowpass(x, L["lp"])
     if "shift" in L:
         x = x + L.get("shift_mix", 0.5) * fshift(x, L["shift"])
     if "drive" in L:
-        x = sfx.drive(x / (np.max(np.abs(x)) + 1e-12), L["drive"])
+        x = drive(x / (np.max(np.abs(x)) + 1e-12), L["drive"])
     x = fade(x, L.get("fade_in", 0.0), L.get("fade_out", 0.01))
     x = x / (np.max(np.abs(x)) + 1e-12)
     return x * 10 ** (L.get("gain_db", 0) / 20)
@@ -87,7 +114,7 @@ def render(recipe, seed, base):
     board = Pedalboard([FX[f["type"]](f) for f in recipe.get("fx", [])])
     out = board(out.astype(np.float32), RATE).astype(float)
     out = speed(out, rng.uniform(-1, 1) * recipe.get("pitch_jitter", 0.0))
-    out = sfx.highpass(out, 25)
+    out = highpass(out, 25)
     e = np.abs(out)
     keep = np.nonzero(e > e.max() * 10 ** (recipe.get("trim_db", -60) / 20))[0]
     out = fade(out[: keep[-1] + 1].copy(), 0, 0.02)
@@ -123,7 +150,7 @@ def main():
             manifest[Path(it["wav"]).stem] = it
     for v in range(args.variants):
         path = out / f"{recipe['name']}_{args.seed + v}.wav"
-        sfx.save(path, render(recipe, args.seed + v, base))
+        save(path, render(recipe, args.seed + v, base))
         print(path)
     (out / f"{recipe['name']}_credits.json").write_text(json.dumps(credits(recipe, manifest), ensure_ascii=False, indent=1))
 
