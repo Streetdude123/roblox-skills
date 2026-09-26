@@ -348,6 +348,27 @@ def test_example_moves_pass_offline(tmp_path):
     assert -0.05 <= min(fist) and max(fist) <= 0.1
 
 
+
+@pytest.mark.skipif(not LUAU, reason='needs the luau cli (set LUAU or put luau on PATH)')
+def test_frieren_clips_stay_calm_offline(tmp_path):
+    clips = po.run(SCRIPTS / 'ExampleFrieren.lua', luau=LUAU)
+    for name, c in clips.items():
+        assert c['check']['frozen'] == 0
+        path = tmp_path / f'{name}.txt'
+        path.write_text(c['decode'])
+        for r in fc.feet(rr.read_decode(path)).values():
+            assert abs(r['low']) <= 0.03 and r['slide'] <= 0.05 and r['gap'] <= 0.12
+    z = rr.read_decode(tmp_path / 'Zoltraak.txt')
+
+    def turn(j):
+        start = rr.sample(z['joints'][j], 0)[0]
+        return max(fl.angle(start, rr.sample(z['joints'][j], i / 60)[0]) for i in range(int(z['len'] * 60)))
+    assert turn('Torso') <= 20 and turn('Left Arm') <= 20 and turn('Right Arm') >= 80
+    f = rr.read_decode(tmp_path / 'Flowers.txt')
+    for i in range(48, 111):
+        w = rr.world_parts(f, i / 60)
+        assert np.linalg.norm(rr.tip_point(w, 'Right Arm') - rr.tip_point(w, 'Left Arm')) <= 1.0
+
 def kinds(path, **kw):
     return {f['kind'] for f in fl.find(path, **kw)[1]}
 

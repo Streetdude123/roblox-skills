@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 - Frieren as the default animation style (user-authorized)
+
+- `roblox-r6-animation`: new `references/study-frieren.md` from 19 Sakugabooru clips sheeted frame by frame and the Sakuga Blog and SHINSEIKI articles: the drawing timing of acting and action cuts (acting holds 31 to 63% of screen time, median holds 0.33 to 1.23 s), six rules, the Zoltraak finisher beat by beat, and the R6 translation. New `scripts/ExampleFrieren.lua` (a calm idle, a Zoltraak cast, a barrier raise, hold and hit, a flower conjure) built and measured offline, chained through the runtime. `SKILL.md` makes Frieren the default style and keeps the Moon study for fight mechanics; `motion-metrics.md`, the README, `LoadTest.lua` and one test follow. Not played in Studio.
+
 ## 2026-09-26 - A hit flinch for the victim (user-authorized)
 
 - `roblox-r6-animation`: `scripts/ExampleMoves.lua` adds `HitFlinch`, the victim's reaction to a front hit keyed on the beats of the project's hurt clip (snap, stagger, catch step, overshoot, base); its offline numbers sit close to that clip's Studio numbers. `principles.md` (game feel: the victim), `motion-metrics.md` (its row; the examples' spacing against the pro table), `SKILL.md` and the README follow.

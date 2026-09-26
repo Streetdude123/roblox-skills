@@ -47,7 +47,8 @@ Package layout:
   professional and earlier Claude numbers, R6 transform and contact math, the
   Poser runtime contract, diagnosis, sources, decoded reference clips,
   project review history, the frame-by-frame reference study method, the
-  measured study of the target Moon Animator fight, cinematic shots, the
+  measured study of the default Frieren style, the measured study of the
+  Moon Animator fight (the fight mechanics), cinematic shots, the
   real-motion pipeline, and real human timing measured from motion capture.
 - `templates/clip-plan.md` - brief, beat table, motion layers, measurements,
   review record.
@@ -56,7 +57,8 @@ Package layout:
   `Feet.lua` (planted R6 legs), `ExampleClips.lua` (a guard and a right cross
   built on the method), `ExampleMoves.lua` (a throw, a heavy landing, a superhero landing, a
   leap strike, a four-hit M1 string and a hit flinch), `ExampleSword.lua`
-  (a sword draw), `EditStrip.lua` (Edit-mode pose strips and the foot
+  (a sword draw), `ExampleFrieren.lua` (the default style: a calm idle, a
+  Zoltraak cast, a barrier raise, hold and hit, a flower conjure), `EditStrip.lua` (Edit-mode pose strips and the foot
   check), `LoadTest.lua` (fresh module copies from `serve.js`),
   `motion_check.js` (the metrics on decode text, with range and sweep),
   `video/ref_sheets.py` (frame-by-frame sheets, cuts and holds of a
