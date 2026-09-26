@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 - A hit flinch for the victim (user-authorized)
+
+- `roblox-r6-animation`: `scripts/ExampleMoves.lua` adds `HitFlinch`, the victim's reaction to a front hit keyed on the beats of the project's hurt clip (snap, stagger, catch step, overshoot, base); its offline numbers sit close to that clip's Studio numbers. `principles.md` (game feel: the victim), `motion-metrics.md` (its row; the examples' spacing against the pro table), `SKILL.md` and the README follow.
+
 ## 2026-09-26 - Smear frames, pose estimation tested (user-authorized)
 
 - `roblox-r6-animation`: `faults.py --smears` lists the frames where a hand, a foot or a sword tip moves more than a limb's width in one frame, with the tip path, for the smear effects (the pro stand strikes move their fists 1.1 to 2.4 studs a frame on their strike frames). `principles.md`, `SKILL.md` and `quality-review.md` follow. `reference-study.md` records that MediaPipe's pose model found no R6 body on 6 of 7 reference frames, so Roblox references are rotoscoped by eye, and how to render a key from the reference's camera offline. One test.

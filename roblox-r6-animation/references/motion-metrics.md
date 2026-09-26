@@ -139,6 +139,11 @@ The spline removes about a quarter to a third of the parked time and roughly hal
 | HeroLand (1.6 s, `ExampleMoves.lua`) | 0 | 0 | 77.7 | 1.35 | 1.25 | 43.2 | 1.5 | planted corners -0.01 to 0.01, slide 0.02, hip gap 0.00, fist -0.03 to 0.07 over the floor in the hold; the kneeling leg's twist reads 74 and does not apply |
 | LeapStrike (1.3 s, `ExampleMoves.lua`) | 0 | 0 | 50.8 | 2.18 | 3.08 | 5.4 | 13.5 | planted corners -0.01 to 0.01, slide 0.03, hip gap 0.00; `faults.py --strike 0.7` finds nothing |
 | SwordDraw (0.92 s, `ExampleSword.lua`) | 0 | 1.8 | 43.4 | 2.17 | 3.26 | 8.8 | 4.1 | corners -0.01 to 0.01, slide 0.01, hip gap 0.00; `faults.py --strike 0.15` finds nothing; lowest blade tip 0.12 |
+| M1Jab (0.42 s, `ExampleMoves.lua`) | 0 | 0 | 21.6 | 0.40 | 4.76 | 3.8 | 1.6 | slide 0.01, hip gap 0.00, toe twist 31 right, 56 left |
+| M1Cross (0.42 s) | 0 | 0 | 26.5 | 1.98 | 4.76 | 2.7 | 1.5 | slide 0.01, hip gap 0.00, toe twist 42 right, 40 left |
+| M1Hook (0.45 s) | 0 | 0 | 32.7 | 1.85 | 4.44 | 5.4 | 2.2 | slide 0.01, hip gap 0.00, toe twist 33 right, 59 left |
+| M1Upper (0.67 s) | 0 | 0 | 35.3 | 2.49 | 2.98 | 7.1 | 0.6 | slide 0.01, hip gap 0.00, toe twist 44 right, 47 left |
+| HitFlinch (0.62 s, `ExampleMoves.lua`) | 0 | 2.6 | 30.8 | 1.34 | 4.84 | 3.5 | 7.0 | planted corners -0.01 to 0.01 (the catch step lifts 0.23), slide 0.02, hip gap 0.00; `faults.py` finds nothing |
 | Throw (1.45 s, `ExampleMoves.lua`) | 0 | 0 | 49.2 | 2.07 | 3.45 | 8.0 | 0.9 | planted corners -0.01 to 0.01 (the stepping foot lifts 0.29), slide 0.01, hip gap 0.04, toe twist 37 right, 42 left |
 
 Measured 2026-09-26 offline (`poser_offline.py`, `feet_check.py` on the decode, which rounds to 0.01 stud). The first numbers (Studio, rest 38.1, contrast 6.0, spread 0.7, Guard contrast 1.2, corners 0.00) came before the `Feet.lua` toe-turn fix: the turn axis pointed down the leg and turned every toe the wrong way (toe twist 127 and 143 degrees on the Cross). The fixed feet change the leg motion, so rest, contrast and spread moved.
@@ -152,6 +157,8 @@ HeavyLand took five rounds. Draft 1 keyed the arms for an upright body; under th
 HeroLand took four rounds. Draft 1 left the fist 0.4 to 0.5 above the floor (hips 0.55 up), kept the back foot 1.8 behind after the body stood, and held a dead pose (still 12.4%, contrast 63). Draft 2 lowered the hips to 0.42 with a 40 degree lean and stepped the back foot in during the rise; the fist touched but lifted to 0.21 on every breath. Draft 3 moved the breath into the height and a small roll with the lean held and gave the end a drifting stance (still 0). Draft 4 lifted the back foot as it swings out. Its rest is 77.7% because the 0.9 s hold is the reference's own; frozen and still are the checks that apply to a hold.
 
 LeapStrike took four rounds, read with `faults.py` and sheets that follow the torso up. Draft 1: the legs hung limp on the rise, the torso rose above the legs' reach while the feet were still planted (hip gap 0.12), and at the landing the back leg lay 61 degrees from vertical and both feet slid 0.15. Draft 2 trailed the legs then tucked them, took the feet off a frame earlier and set the landing feet closer; the arms then swung 190 degrees in 5 frames (a 95 degree pop) and the contact frame opened the front hip 0.12. Draft 3 spread the swing over 12 frames and lowered the torso at the contact: nothing found. Draft 4 gave the hang and the end more drift (still 5.1 to 0). Its spread is 13.5 frames because the takeoff and the strike are separate peaks.
+
+The example strikes' spacing sits inside the pro ranges of the table above (`beats.py --local`, the striking arm): the M1 hits, the throw and the cross move 3 to 8 frames, reach their fastest in 0.5 to 3.5 and stop in 1.5 to 3, and peak at 14 to 24 studs/s.
 
 A two-frame whip sets each joint's peak so high that every drifting hold counts as rest (under a tenth of that peak), so the target snap-and-hold style lands near the 45% line (the throw at 49.2%). Report rest next to the beat chart (`beats.py`) instead of slowing the snap to pass the number.
 
