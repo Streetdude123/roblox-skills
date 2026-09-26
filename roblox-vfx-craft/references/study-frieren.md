@@ -171,7 +171,16 @@ Cost of the first casts, with the idle at a median of 16.5 ms:
 | Barrier with six hits | 1305, 630 | 17.4, 21.3, 24 ms |
 | Flowers (the first build) | 4481, 2 (2348 parts) | 17.0, 29.5, 106 ms |
 
-The flower fade was the only real cost. For 1 s, 110 flowers each started 21 transparency tweens (2310 tweens) and moved by `PivotTo` every frame, and the frames reached 106 ms. The loop now moves every flower part with one `workspace:BulkMoveTo` call per frame and fades the transparency in the same loop; this loop is not measured yet. Studio then held 3.9 GB of private memory on the 6 GB machine. Later casts stalled 0.1 to 1.7 s at random times with a clean idle, so those numbers are paging, not the effects.
+The flower fade was the only real cost. For 1 s, 110 flowers each started 21 transparency tweens (2310 tweens) and moved by `PivotTo` every frame, and the frames reached 106 ms. The loop now moves every flower part with one `workspace:BulkMoveTo` call per frame and fades the transparency in the same loop. It runs clean: each flower fades over 0.8 s from 9.9 s, 23 are left at 11.0 s, and the folder is empty at 11.5 s. Its frame cost is not measured yet. Studio then held 3.9 GB of private memory on the 6 GB machine. Later casts stalled 0.1 to 1.7 s at random times with a clean idle, so those numbers are paging, not the effects.
+
+Captures from the player camera (12.5 studs behind, 4.7 up), in slow motion with `TimeScale` 20 to 40 and the call waiting until just before each beat (a capture arrives about 4.5 s after the call returns):
+
+- **The circle** fills about 12% of the frame width at full spin, and the head and the torso hide about 40% of it. The white rings and the band read against the sky and a dark block.
+- **The beam does not read from behind.** It points straight away from the camera, so it projects to a short streak behind the head and the circle; only a glint in the circle centre and the hit show. From the side it reads as a pale light tube: the white core reads, the lilac glow reads grey-white on the day lighting, the ink edge is a faint grey band, and the green fringe does not show.
+- **The flash** holds 0.08 s at 0.1 transparency and fades over 0.2 s: about 80% white over the whole frame for 0.28 s. It hides the release it marks.
+- **The barrier panel** shows over the head and the shoulders from behind; from the front it is a curved panel of thick glowing white hex outlines (the pale cyan edge reads white under bloom) with an almost invisible fill. A side hit cluster faces sideways and reads as a thin vertical strip from behind.
+- **The flower field** reads as clumps of pale periwinkle flowers round the caster, sparse next to the dense carpet of the reference.
+- The grey cel smoke and the single black rocks at a hit read as meant.
 
 ## Where this meets his earlier rules
 
