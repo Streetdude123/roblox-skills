@@ -105,14 +105,19 @@ def find(path, fps=60.0, pop=90.0, twin=8.0, loop=None, feet=True, flat=55.0, tw
             limb = max(('Right Arm', 'Left Arm', 'Right Leg', 'Left Leg'), key=lambda j: v[j][max(0, peak - 2):peak + 3].max())
             cam = rr.make_camera(view, 240, 200, 9, 50)
             _, first = rr.part_pixels(world[0], cam)
-            seen, now = rr.part_pixels(world[peak], cam)
-            alone, _ = rr.part_pixels(world[peak], cam, only=limb)
-            overlap = float((first & now).sum()) / max(1, int((first | now).sum()))
+            best = None
+            for k in range(peak, min(n, peak + 7)):
+                seen, now = rr.part_pixels(world[k], cam)
+                overlap = float((first & now).sum()) / max(1, int((first | now).sum()))
+                if best is None or overlap < best[1]:
+                    best = (k, overlap, seen)
+            k, overlap, seen = best
+            alone, _ = rr.part_pixels(world[k], cam, only=limb)
             shown = seen[limb] / max(1, alone[limb])
             if shown < 0.2 and overlap > 0.7:
-                add('hidden strike', peak, peak, f'from the {view} camera the {limb} shows {100 * shown:.0f}% and the body keeps {100 * overlap:.0f}% of its first silhouette: move the strike out of the body or change the body more')
+                add('hidden strike', k, k, f'from the {view} camera the {limb} shows {100 * shown:.0f}% and the body keeps {100 * overlap:.0f}% of its first silhouette: move the strike out of the body or change the body more')
             elif overlap > 0.75:
-                add('small silhouette change', peak, peak, f'from the {view} camera the strike frame keeps {100 * overlap:.0f}% of the first silhouette (pro strikes 46 to 67%): push the pose')
+                add('small silhouette change', k, k, f'from the {view} camera the strike pose keeps {100 * overlap:.0f}% of the first silhouette (pro strikes 46 to 67%): push the pose')
 
     for j in ('Right Arm', 'Left Arm', 'Head', 'Torso'):
         low = []

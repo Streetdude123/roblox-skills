@@ -46,7 +46,7 @@ Few poses, each one readable from the player's camera (or the shot's camera in a
 
 ### 3. The motion pass (this is where clips come alive)
 
-Author with `curve = "spline"` and give every clip these layers. Field reference: pipeline.md; worked example: `scripts/ExampleClips.lua`.
+Author with `curve = "spline"` and give every clip these layers. Field reference: pipeline.md; worked examples: `scripts/ExampleClips.lua` (a guard and a cross) and `scripts/ExampleMoves.lua` (the target style and a chained M1 string, each with its rounds in motion-metrics.md).
 
 - **Snap and hold.** Move from extreme to extreme fast (2 to 9 frames in the studied reference), then hold the extreme as a moving hold (0.17 to 0.9 s there). A fast extreme that shows for one frame reads weak: hold it 2 to 4 frames or push it further.
 - **Spline through breakdowns.** Keys default to `auto`: speed flows through a breakdown and stops only where the channel turns around. Put `e = "flat"` only on a real stop. Keep a named ease (`quart`, `back`, ...) only for a shape the spline cannot give, such as a hard snap into a pose.
@@ -103,7 +103,7 @@ Give each joint one writer. Avoid TweenService on animated joints.
 - **Hip rule.** A leg key's translation is the gap at the hip: the hip pivots at the leg's outer top corner. Put a stance into hip angles or `Feet.post`, never into leg slides; a leg pushed up into the torso is hidden and allowed. Keep any downward gap under 0.12. "it can be a TINY little bit off the body but not like that" (2026-09-22).
 - **Waist rule.** The torso turns about its centre, so a lean swings the hips. Add the waist offset so the body bends at the hips.
 - **Rigid legs.** Turning the torso turns the hips around the feet. A 56 degree turn from a guard to a punch kept both feet planted only with the torso dropped 0.36 (a search in the example); plan the drop with the turn, and use `Feet.gap` to see what a pose needs.
-- **Toe yaw.** `Feet.stand` turned toes the wrong way until 2026-09-22 (the left idle toe ended 98 degrees off its target and nothing flagged it). The foot checks now print `twist` (a planted leg against the torso); keep it under about 45 degrees and pivot the feet with the hips.
+- **Toe yaw.** `Feet.stand` turned toes the wrong way until 2026-09-22 (the left idle toe ended 98 degrees off its target and nothing flagged it). The foot checks now print `twist` (a planted leg against the torso). The example clips read 5 to 59 degrees and a throw draft that read 97 to 111 looked broken; `faults.py` flags a planted toe over 60. Pivot the feet with the hips rather than turning the torso over fixed feet.
 - **Fist grip.** A held weapon's handle runs within about 25 degrees of square to the forearm or the block arm looks pierced ("no one holds a sword like that", 2026-09-22). The solver penalises it and logs `gripErr`; pick arm directions and blades that are square before solving (weapons.md).
 - **Combo flow.** Each swing starts from the last swing's end pose and carries the blade on the way it was going; the end of one swing is the load of the next ("it should naturally flow from the end positions of the m1s", 2026-09-22). Plan the chain as one path before keying (weapons.md).
 - **Hand-over twitch.** The Animator zeroes `Motor6D.Transform` before PreSimulation, so a blend that starts inside a step must come from the rig's last written pose (Poser does this now). Check every move's end into the idle with a per-frame part record in Play; an Edit-mode step cannot show it.

@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 - The M1 string flows from end poses (user-authorized)
+
+- `roblox-r6-animation`: the M1 hits now start from the previous hit's end pose, as `SKILL.md` "Combo flow" asks (the project feedback of 2026-09-22), so the alternation gives each hit its load; the cross lost a torso load key that only added a stop. `principles.md` records the chain and its runtime timing; `SKILL.md` names `ExampleMoves.lua` as a worked example and gives the toe twist rule the measured numbers (examples 5 to 59, a broken draft 97 to 111, flagged over 60) instead of "about 45".
+
 ## 2026-09-26 - A four-hit M1 string, staging checks, planted feet through blends (user-authorized)
 
 - `roblox-r6-animation`: `scripts/ExampleMoves.lua` adds `M1Jab`, `M1Cross`, `M1Hook` and `M1Upper` on the example guard's stance, checked per clip and as a string through the offline runtime with hitstops. `faults.py` adds "hidden strike" and "small silhouette change" from the player camera (`r6_render.part_pixels` counts each part's visible pixels), calibrated on the pro stand strikes; they reworked the jab and the hook. `Poser.lua`: when the outgoing and incoming clips share one post function, the post pass runs again on the blended torso, so the feet stay planted through the blend (0.07 to 0.01 on the string); other clips blend as before. `poser_offline.py --runtime` finds a named clip in any loaded module. `principles.md` (staging for the player camera, the M1 string), `r6-mechanics.md`, `quality-review.md`, `pipeline.md`, `SKILL.md`, the README and tests follow. Not played in Studio.

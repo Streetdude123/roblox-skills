@@ -422,9 +422,9 @@ def test_faults_finds_a_strike_the_player_camera_cannot_see(tmp_path):
 
 @pytest.mark.skipif(not LUAU, reason='needs the luau cli (set LUAU or put luau on PATH)')
 def test_m1_string_keeps_the_feet_planted_through_the_blends(tmp_path):
-    steps = po.scenario('0 play Guard fade=0; 0.3 play M1Jab; 0.4 hold 0.06; 0.56 play M1Cross; 0.68 hold 0.06; 0.86 play M1Hook; 0.99 hold 0.06; 1.18 play M1Upper then Guard; 1.38 hold 0.1')
-    res = po.run(SCRIPTS / 'ExampleMoves.lua', luau=LUAU, steps=steps, length=2.4, name='M1')
-    assert '1.967 done M1Upper, play Guard' in res['events']
+    steps = po.scenario('0 play Guard fade=0; 0.3 play M1Jab; 0.4 hold 0.06; 0.56 play M1Cross; 0.65 hold 0.06; 0.81 play M1Hook; 0.91 hold 0.06; 1.07 play M1Upper then Guard; 1.24 hold 0.1')
+    res = po.run(SCRIPTS / 'ExampleMoves.lua', luau=LUAU, steps=steps, length=2.2, name='M1')
+    assert '1.850 done M1Upper, play Guard' in res['events']
     (tmp_path / 'm.txt').write_text(res['M1']['decode'])
     for r in fc.feet(rr.read_decode(tmp_path / 'm.txt')).values():
         assert r['slide'] <= 0.03 and r['gap'] <= 0.05
