@@ -11,6 +11,8 @@ Tools (Python 3 with `pip install numpy pillow`, plus `imageio-ffmpeg` for video
 | `scripts/beats.py` | Measures each hand, foot and the head: moves, holds, frames to the fastest point, frames to the stop, peak speed, drift in holds. |
 | `scripts/mocap_study.py` | Measures strikes, jumps and walk styles on the capture itself (mocap-timing.md holds the results). |
 | `scripts/stylize.py` | Pushes dense motion toward the keyed style: exaggeration, the cartoon animation filter, a speed time warp, slow in and slow out at the extremes. |
+| `scripts/poser_offline.py` | Runs a Poser clip module with the real `Poser.lua` on the Luau command line tool: `Poser.check` for every clip and its `Poser.dump` decode text (pipeline.md, "Source transfer and review tools"). |
+| `scripts/feet_check.py` | The `_G.feet` numbers on decode text: lowest sole corner, slide while planted, hip gap, toe twist against the torso. |
 
 ## 1. Get the motion
 
@@ -92,6 +94,6 @@ The stylized clip is a base, not the finished animation. Then, in this order:
 1. Replace the start and end with the project's guard and chain poses.
 2. Push the key poses for the camera (principles.md), compress the strike toward the keyed range (mocap-timing.md: keyed strikes are two to three times faster than real ones), keep a hold at the contact.
 3. Add the smears on the fastest frames and the hitstop at the contact.
-4. In Studio: `Feet.post` for planted feet, `Poser.check`, `_G.feet`, a recorded take read frame by frame (reference-study.md).
+4. `Feet.post` for planted feet, then `Poser.check` and the foot check: offline with `poser_offline.py` and `feet_check.py`, or in Studio with `_G.feet`. Then a recorded take in Studio read frame by frame (reference-study.md).
 
 The Lua clip has keys on the extremes plus enough in-betweens to stay within 1.5 degrees and 0.03 studs of the source (`--tol`); raise the tolerance for fewer keys to edit by hand.

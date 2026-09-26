@@ -1,6 +1,8 @@
 import importlib.util
 import math
+import os
 from pathlib import Path
+import shutil
 import sys
 
 import pytest
@@ -25,6 +27,8 @@ rr = load('r6_render')
 bt = load('bvh_to_r6')
 beats = load('beats')
 sty = load('stylize')
+fc = load('feet_check')
+po = load('poser_offline')
 
 JOINTS = ('Torso', 'Head', 'Right Arm', 'Left Arm', 'Right Leg', 'Left Leg')
 
@@ -278,3 +282,46 @@ def test_neutral_stylize_changes_nothing():
     for n in JOINTS:
         a, b = tracks[n][0], same[n][0]
         assert np.allclose(np.abs(np.sum(a * b, axis=1)), 1, atol=1e-9)
+
+
+def test_feet_check_passes_a_neutral_stand(tmp_path):
+    clip = rr.read_decode(write_decode(tmp_path / 's.txt', 'S', [{}, {}, {}]))
+    for r in fc.feet(clip).values():
+        assert abs(r['low']) < 1e-9 and abs(r['high']) < 1e-9
+        assert r['slide'] < 1e-9 and r['gap'] < 1e-9 and r['twist'] < 1e-9
+
+
+def test_feet_check_sees_a_sinking_twisted_leg(tmp_path):
+    clip = rr.read_decode(write_decode(tmp_path / 'k.txt', 'K', [{'Right Leg': (0, 40, 10)}] * 2))
+    r = fc.feet(clip)['Right Leg']
+    assert r['low'] < -0.1 and 35 < r['twist'] < 45 and r['gap'] < 1e-9
+
+
+def test_poser_offline_wraps_every_required_module():
+    src = po.entry(SCRIPTS / 'ExampleClips.lua')
+    for name in ('ExampleClips', 'Feet', 'Poser', 'Tw'):
+        assert f'mods["{name}"] = function(script, require)' in src
+    assert 'local MAIN = "ExampleClips"' in src
+
+
+def test_poser_offline_reads_checks_and_decodes():
+    out = po.parse('@@check A len=0.500 frozen=0.00 still=1.00 longest=0.017 rest=20.00 stops=1.000 unison=0.000 contrast=3.000 spread=0.500\n'
+                   '@@dump A\n#A len=0.500 loop=false frames=1 prio=Action\nA|Torso|0.000|0.0|0.0|0.0|0.00|0.00|0.00|Linear|In\n@@end\n')
+    assert out['A']['check']['contrast'] == 3.0
+    assert out['A']['decode'].startswith('#A len=0.500')
+
+
+LUAU = os.environ.get('LUAU') or shutil.which('luau')
+
+
+@pytest.mark.skipif(not LUAU, reason='needs the luau cli (set LUAU or put luau on PATH)')
+def test_example_clips_pass_offline(tmp_path):
+    clips = po.run(SCRIPTS / 'ExampleClips.lua', luau=LUAU)
+    c = clips['Cross']['check']
+    assert c['frozen'] == 0 and c['still'] == 0 and c['rest'] <= 45 and 2 <= c['contrast'] <= 10
+    assert clips['Guard']['check']['frozen'] == 0
+    for name in ('Cross', 'Guard'):
+        path = tmp_path / f'{name}.txt'
+        path.write_text(clips[name]['decode'])
+        for r in fc.feet(rr.read_decode(path)).values():
+            assert abs(r['low']) <= 0.03 and r['slide'] <= 0.05 and r['gap'] <= 0.12

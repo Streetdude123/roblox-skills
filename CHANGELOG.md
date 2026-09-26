@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 (later) - Poser and the foot check without Studio (user-authorized)
+
+- `roblox-r6-animation`: new `scripts/poser_offline.py` and `scripts/offline/roblox_shim.luau` run a clip module with the real `Poser.lua`, `Tw.lua` and `Feet.lua` on the Luau command line tool and print `Poser.check` and `Poser.dump` for every clip. New `scripts/feet_check.py` ports `_G.feet` (lowest corner, planted slide, hip gap, toe twist) to decode text. Checked against the recorded Studio numbers (`pipeline.md`). `motion-metrics.md` updates the example clip numbers, which were recorded before the `Feet.lua` toe-turn fix. `SKILL.md`, `real-motion.md` and the README follow; new tests in `tests/test_r6_tools.py` (the Luau one skips without `luau`).
+
 ## 2026-09-26 - Real motion, an R6 preview without Studio, measured human timing (user-authorized)
 
 - `roblox-r6-animation`: new `scripts/r6_render.py` (the stock R6 box figure from decode text: sheets from any view, onion skins, a one-dot-per-frame path of a hand or foot, MP4), `scripts/bvh_to_r6.py` (BVH and CMU ASF/AMC motion capture to R6 decode text and a spline Poser clip with reduced keys), `scripts/beats.py` (moves and holds of the tips), `scripts/mocap_study.py` (strike, jump and gait timing on captures) and `scripts/stylize.py` (exaggeration on rotation vectors, the cartoon animation filter of Wang et al. 2006, a speed time warp, slow in and slow out after White et al. 2006). New `references/real-motion.md` (datasets and licences, the checked CMU takes, the retarget and its limits, the preview, the stylize step with measured results) and `references/mocap-timing.md` (423 strikes, 64 jumps, 15 walk and run styles at R6 scale, game feel numbers). `principles.md`, `motion-metrics.md` (the pros' spacing shape), `pipeline.md`, `sources.md`, `SKILL.md` and `templates/clip-plan.md` follow. `requirements-dev.txt` adds numpy and pillow for the new tests.

@@ -62,12 +62,15 @@ Package layout:
   without Studio), `bvh_to_r6.py` (motion capture to R6 decode and Poser clip),
   `beats.py` (moves and holds of the hands, feet and head), `mocap_study.py`
   (strike, jump and gait timing on captures), `stylize.py` (exaggeration, the
-  cartoon animation filter, snap, slow in and slow out), the DIO project clips,
+  cartoon animation filter, snap, slow in and slow out), `poser_offline.py`
+  (`Poser.check` and `Poser.dump` on the Luau command line tool, no Studio),
+  `feet_check.py` (the foot check on decode text), the DIO project clips,
   capture, decode and bake helpers, and `check_decode.py`.
 
 Legacy Poser clips play exactly as before. The Python decode checker, the
-Node motion checker and the Python preview, retarget, beat and stylize tools
-are covered by the repository tests; Roblox runtime,
+Node motion checker, the Python preview, retarget, beat, stylize and foot
+tools and the offline Poser runner (when `luau` is on PATH or in `LUAU`) are
+covered by the repository tests; Roblox runtime,
 visual quality and replication still require Studio verification.
 
 ### `roblox-vfx-craft`

@@ -133,8 +133,10 @@ The spline removes about a quarter to a third of the parked time and roughly hal
 
 | Clip | frozen% | still% | rest% | stops/s | unison/s | contrast | spread | feet |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Cross (0.72 s) | 0 | 0 | 38.1 | 2.1 | 4.2 | 6.0 | 0.7 | corners 0.00, slide 0.00, hip gap 0.00 |
-| Guard (3.2 s loop) | 0 | 100 | 0 | 0 | 0 | 1.2 | 0 | corners 0.00, slide 0.00, hip gap 0.00 |
+| Cross (0.72 s) | 0 | 0 | 40.0 | 2.08 | 4.17 | 6.6 | 0.5 | corners -0.01 to 0.01, slide 0.01, hip gap 0.00, toe twist 30 right, 51 left |
+| Guard (3.2 s loop) | 0 | 100 | 0 | 0 | 0 | 1.4 | 0 | corners -0.01 to 0.01, slide 0.01, hip gap 0.00, toe twist 5 right, 31 left |
+
+Measured 2026-09-26 offline (`poser_offline.py`, `feet_check.py` on the decode, which rounds to 0.01 stud). The first numbers (Studio, rest 38.1, contrast 6.0, spread 0.7, Guard contrast 1.2, corners 0.00) came before the `Feet.lua` toe-turn fix: the turn axis pointed down the leg and turned every toe the wrong way (toe twist 127 and 143 degrees on the Cross). The fixed feet change the leg motion, so rest, contrast and spread moved.
 
 The Cross took five measured rounds. The first draft slid its feet 0.84 and 0.94 studs and sank them 0.26 because the torso turned 60 degrees over rigid legs; the post pass fixed the slide, the waist offset kept the hips over the stance, and a search over turn, drop and stance width found the 34 degree contact turn with a 0.36 drop that keeps every hip closed. Then the numbers showed the face 40 degrees off the target at the contact (a lagged head on a follow spring: now it counters the torso on its frames and stays within 3 degrees), the torso 7 degrees short of its contact key (a lead spring: now its overshoot is keyed), and the lead hand at waist height 1.9 studs out to the side (the lagged lead arm carried by the turn and an Euler path around the outside: now no lag, a crossed breakdown and a chin cover 0.5 stud from the chin). Final checks by forward kinematics: the fist at the contact is 2.95 studs ahead of the root and 0.79 right of centre, the face stays within 5 degrees of the target from 0.12 to 0.5 s, the lead hand never goes wider than 1.0 stud (its guard line is 0.76).
 
@@ -166,5 +168,7 @@ print(P.check(clip).text)
 -- the foot check and strips: run scripts/EditStrip.lua once, then
 print(_G.feet(clip))
 ```
+
+Without Studio: `python3 scripts/poser_offline.py <clip module> out` prints `Poser.check` for every clip with the real Poser on the Luau command line tool and writes the decode text; `python3 scripts/feet_check.py out/<clip>.txt` gives the foot check (pipeline.md, "Source transfer and review tools").
 
 For a decoded professional clip or a baked sequence: `node scripts/motion_check.js clip.txt`. `Poser.dump(clip, 60, name)` writes a Poser clip in the same format so both can be compared in one table.

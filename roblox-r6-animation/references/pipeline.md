@@ -134,6 +134,16 @@ For an inspected stock arm, `root.CFrame:VectorToObjectSpace(-arm.CFrame.UpVecto
 
 Without Studio, decode text is enough to look and measure: `scripts/r6_render.py` draws the stock R6 box figure with the same C0 and C1 offsets and the same pose convention as Poser (a part = its parent x C0 position x pose x its offset), so `Poser.dump` output, `ReadClips.lua` decodes and the motion capture retarget all render the same way; `scripts/beats.py` measures moves and holds of the tips. They need Python 3 with numpy and pillow. The workflow and its limits are in [real-motion.md](real-motion.md).
 
+Poser itself also runs without Studio. `scripts/poser_offline.py` runs a clip module (`ExampleClips.lua` or any ModuleScript source that returns a table of clips) with the real `Poser.lua`, `Tw.lua`, `Feet.lua` and whatever else it requires, on the Luau command line tool with a Roblox API stand-in (`scripts/offline/roblox_shim.luau`: Vector3, CFrame, `typeof`, stub services). It prints `Poser.check` for every clip and writes `Poser.dump` decode text, which `r6_render.py`, `beats.py`, `motion_check.js` and `scripts/feet_check.py` (the `_G.feet` numbers on decode text) then read. Get `luau` from the Luau releases page (github.com/luau-lang/luau/releases, `luau-ubuntu.zip`, `luau-macos.zip` or `luau-windows.zip`) and pass `--luau` or put it on PATH.
+
+```sh
+python3 scripts/poser_offline.py scripts/ExampleClips.lua out --luau ./luau
+python3 scripts/feet_check.py out/Cross.txt
+python3 scripts/r6_render.py out/Cross.txt sheets --view rear34,side --every 2 --trail "Right Arm"
+```
+
+Checked on 2026-09-26: the Luau `math.noise` gives the Roblox value (0.5098056793212891 at 1.25, 5.75), so the life layer matches; rounding every CFrame and Vector3 to 32-bit floats, as Roblox stores them, changed no number. With the `Feet.lua` of the commit that recorded the Studio numbers, the offline Cross gives frozen 0, still 0, rest 38.9 (Studio 38.1), stops 2.08 (2.1), unison 4.17 (4.2), contrast 5.9 (6.0), spread 0.7 (0.7) and the Guard contrast 1.2 (1.2). The rest differs by about one joint frame; the cause was not found. The foot check on decode text reads within 0.01 stud of Studio's (the decode rounds to 0.1 degree and 0.01 stud). The runtime (`Rig:play`, the inertial blend, Motor6D writes, replication) does not run offline; play it in Studio.
+
 `AnalyzeClips.js` gives legacy Euler range tables. Use `check_decode.py` for rotation-aware local seam and sample measurements. Neither tool sees world-space contacts or proves successful playback. Use live observations for those claims.
 
 ## Video of a clip for Lepy (scripts/video)
