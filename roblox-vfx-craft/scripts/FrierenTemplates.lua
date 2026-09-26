@@ -9,12 +9,10 @@ local TEX = {
 	glow = "rbxassetid://12082081459",
 	star = "rbxassetid://1084970835",
 	spark = "rbxassetid://8037777212",
-	specs = "rbxassetid://9997556038",
 	shards = "rbxassetid://10439119562",
 	rocks = "rbxassetid://12111686783",
 	smoke = "rbxassetid://10180479311",
 	shock = "rbxassetid://16477162837",
-	ring = "rbxassetid://1084982817",
 }
 
 local function folder(parent, name)
@@ -127,17 +125,17 @@ local function spoke(host, name, a, r0, r1, width, color, fade, order)
 		Color = ColorSequence.new(color),
 		Transparency = NumberSequence.new(fade),
 		LightEmission = 1,
-		ZOffset = 1,
+		ZOffset = 0.02,
 		Enabled = false,
 	})
 	b:SetAttribute("Order", order)
 end
 
-ring(circle, "Outer", 3, 16, 0.1, P.white, 0, 2, true, 0)
+ring(circle, "Outer", 3, 16, 0.1, P.white, 0, 0.04, true, 0)
 ring(circle, "Band", 2.78, 16, 0.44, P.lavender, 0.72, 0, false, 0.1)
-ring(circle, "Inner", 2.55, 16, 0.07, P.lilac, 0.05, 2, true, 0.2)
-ring(circle, "Mid", 1.35, 12, 0.06, P.white, 0, 2, true, 0.35)
-ring(circle, "Core", 0.45, 8, 0.05, P.white, 0, 2, true, 0.5)
+ring(circle, "Inner", 2.55, 16, 0.07, P.lilac, 0.05, 0.04, true, 0.2)
+ring(circle, "Mid", 1.35, 12, 0.06, P.white, 0, 0.04, true, 0.35)
+ring(circle, "Core", 0.45, 8, 0.05, P.white, 0, 0.04, true, 0.5)
 for i = 0, 7 do
 	spoke(circle, "Spoke" .. i, (i + 0.5) * math.pi / 4, 0.45, 2.55, 0.04, P.lilac, 0.15, 0.4 + i * 0.02)
 end
@@ -147,7 +145,7 @@ for i = 0, 35 do
 end
 for k = 0, 7 do
 	local a = k * math.pi / 4
-	ring(circle, "Knot" .. k .. "_", 0.28, 6, 0.04, P.lilac, 0.1, 1, true, 0.55 + 0.05 * k, Vector3.new(math.cos(a), math.sin(a), 0) * 1.95)
+	ring(circle, "Knot" .. k .. "_", 0.28, 6, 0.04, P.lilac, 0.1, 0.02, true, 0.55 + 0.05 * k, Vector3.new(math.cos(a), math.sin(a), 0) * 1.95)
 end
 emitter(circle, "Flash", {
 	Texture = TEX.glow,
@@ -158,7 +156,7 @@ emitter(circle, "Flash", {
 	Speed = NumberRange.new(0),
 	LockedToPart = true,
 	LightEmission = 1,
-	ZOffset = 3,
+	ZOffset = 0.06,
 })
 emitter(circle, "Glint", {
 	Texture = TEX.star,
@@ -169,7 +167,7 @@ emitter(circle, "Glint", {
 	Speed = NumberRange.new(0),
 	LockedToPart = true,
 	LightEmission = 1,
-	ZOffset = 4,
+	ZOffset = 0.08,
 })
 emitter(circle, "Gust", {
 	Texture = TEX.spark,
@@ -185,20 +183,22 @@ emitter(circle, "Gust", {
 	LightEmission = 1,
 })
 emitter(circle, "Hoops", {
-	Texture = TEX.ring,
+	Texture = TEX.shock,
+	FlipbookLayout = Enum.ParticleFlipbookLayout.Grid4x4,
+	FlipbookMode = Enum.ParticleFlipbookMode.OneShot,
 	Color = ColorSequence.new(P.white, P.lilac),
-	Size = seq({{0, 1.4}, {1, 3.2}}),
-	Transparency = seq({{0, 0.2}, {1, 1}}),
-	Lifetime = NumberRange.new(0.35),
+	Size = seq({{0, 2.2}, {1, 3.6}}),
+	Transparency = seq({{0, 0.1}, {0.5, 0.5}, {1, 1}}),
+	Lifetime = NumberRange.new(0.5),
 	Speed = NumberRange.new(8, 20),
 	EmissionDirection = Enum.NormalId.Front,
 	Orientation = Enum.ParticleOrientation.VelocityPerpendicular,
 	LightEmission = 1,
 })
 emitter(circle, "Specks", {
-	Texture = TEX.specs,
+	Texture = TEX.glow,
 	Color = ColorSequence.new(P.white, P.lavender),
-	Size = seq({{0, 0.12}, {1, 0}}),
+	Size = seq({{0, 0.3}, {1, 0}}),
 	Lifetime = NumberRange.new(0.4, 0.7),
 	Speed = NumberRange.new(2, 5),
 	SpreadAngle = Vector2.new(180, 180),
@@ -226,10 +226,10 @@ local function layer(name, width, color, t, le, z)
 	return b
 end
 layer("Edge", 1.9, P.ink, seq({{0, 0.9}, {0.03, 0.35}, {0.94, 0.35}, {1, 1}}), 0, 0)
-layer("Fringe", 1.55, P.fringe, seq({{0, 0.9}, {0.03, 0.55}, {0.94, 0.55}, {1, 1}}), 1, 1)
-layer("Glow", 1.25, P.lilac, seq({{0, 0.8}, {0.03, 0.25}, {0.94, 0.25}, {1, 0.9}}), 1, 2)
-layer("Core", 0.55, P.white, fade, 1, 3)
-layer("Line", 0.07, P.white, NumberSequence.new(0), 1, 4)
+layer("Fringe", 1.55, P.fringe, seq({{0, 0.9}, {0.03, 0.55}, {0.94, 0.55}, {1, 1}}), 1, 0.02)
+layer("Glow", 1.25, P.lilac, seq({{0, 0.8}, {0.03, 0.25}, {0.94, 0.25}, {1, 0.9}}), 1, 0.04)
+layer("Core", 0.55, P.white, fade, 1, 0.06)
+layer("Line", 0.07, P.white, NumberSequence.new(0), 1, 0.08)
 emitter(ray, "Streaks", {
 	Texture = TEX.spark,
 	Color = ColorSequence.new(P.white, P.lilac),
@@ -252,7 +252,7 @@ emitter(hit, "Flash", {
 	Lifetime = NumberRange.new(0.1),
 	Speed = NumberRange.new(0),
 	LightEmission = 1,
-	ZOffset = 2,
+	ZOffset = 0.04,
 })
 emitter(hit, "Glint", {
 	Texture = TEX.star,
@@ -261,14 +261,16 @@ emitter(hit, "Glint", {
 	Lifetime = NumberRange.new(0.18),
 	Speed = NumberRange.new(0),
 	LightEmission = 1,
-	ZOffset = 3,
+	ZOffset = 0.06,
 })
 emitter(hit, "Ring", {
 	Texture = TEX.shock,
+	FlipbookLayout = Enum.ParticleFlipbookLayout.Grid4x4,
+	FlipbookMode = Enum.ParticleFlipbookMode.OneShot,
 	Color = ColorSequence.new(P.white),
-	Size = seq({{0, 0.5}, {1, 9}}),
-	Transparency = seq({{0, 0}, {0.6, 0.4}, {1, 1}}),
-	Lifetime = NumberRange.new(0.22),
+	Size = seq({{0, 5}, {1, 9}}),
+	Transparency = seq({{0, 0}, {0.5, 0.4}, {1, 1}}),
+	Lifetime = NumberRange.new(0.4),
 	Speed = NumberRange.new(0),
 	LightEmission = 1,
 })
@@ -299,6 +301,9 @@ emitter(hit, "Smoke", {
 })
 emitter(hit, "Debris", {
 	Texture = TEX.rocks,
+	FlipbookLayout = Enum.ParticleFlipbookLayout.Grid2x2,
+	FlipbookFramerate = NumberRange.new(0),
+	FlipbookStartRandom = true,
 	Color = ColorSequence.new(P.ink),
 	Size = seq({{0, 0.55}, {1, 0.4}}),
 	Lifetime = NumberRange.new(0.8, 1.2),
@@ -327,16 +332,16 @@ for i = 1, 12 do
 		Color = ColorSequence.new(P.white),
 		Transparency = NumberSequence.new(0),
 		LightEmission = 1,
-		ZOffset = 3,
+		ZOffset = 0.06,
 		Enabled = false,
 	})
 	b:SetAttribute("Width", 0.16)
 end
 
 local small = carrier("SmallCircle")
-ring(small, "Outer", 1.1, 12, 0.06, P.white, 0, 2, true, 0)
-ring(small, "Inner", 0.85, 12, 0.04, P.lilac, 0.05, 2, true, 0.25)
-ring(small, "Core", 0.3, 6, 0.04, P.white, 0, 2, true, 0.5)
+ring(small, "Outer", 1.1, 12, 0.06, P.white, 0, 0.04, true, 0)
+ring(small, "Inner", 0.85, 12, 0.04, P.lilac, 0.05, 0.04, true, 0.25)
+ring(small, "Core", 0.3, 6, 0.04, P.white, 0, 0.04, true, 0.5)
 for i = 0, 5 do
 	spoke(small, "Spoke" .. i, (i + 0.5) * math.pi / 3, 0.3, 0.85, 0.03, P.lilac, 0.15, 0.4 + i * 0.03)
 end
@@ -351,7 +356,7 @@ emitter(small, "Flash", {
 	Speed = NumberRange.new(0),
 	LockedToPart = true,
 	LightEmission = 1,
-	ZOffset = 3,
+	ZOffset = 0.06,
 })
 emitter(small, "Glint", {
 	Texture = TEX.star,
@@ -361,12 +366,12 @@ emitter(small, "Glint", {
 	Speed = NumberRange.new(0),
 	LockedToPart = true,
 	LightEmission = 1,
-	ZOffset = 4,
+	ZOffset = 0.08,
 })
 
 local bolt = carrier("Bolt")
 local head, tail = att(bolt, "Head", CFrame.new()), att(bolt, "Tail", CFrame.new(0, 0, 5))
-for _, l in ipairs({{"Shell", 1.1, P.lilac, 0.35, 0}, {"Body", 0.7, P.white, 0, 1}}) do
+for _, l in ipairs({{"Shell", 1.1, P.lilac, 0.35, 0}, {"Body", 0.7, P.white, 0, 0.02}}) do
 	local b = beam(bolt, l[1], head, tail, {
 		Width0 = l[2],
 		Width1 = 0,
@@ -388,7 +393,7 @@ emitter(bolt, "Glow", {
 	Speed = NumberRange.new(0),
 	LockedToPart = true,
 	LightEmission = 1,
-	ZOffset = 2,
+	ZOffset = 0.04,
 })
 emitter(bolt, "Dashes", {
 	Texture = TEX.spark,
@@ -442,9 +447,9 @@ end
 
 local updraft = carrier("Updraft", Vector3.new(4, 0.4, 4))
 emitter(updraft, "Motes", {
-	Texture = TEX.specs,
+	Texture = TEX.glow,
 	Color = ColorSequence.new(P.white, P.lilac),
-	Size = seq({{0, 0.1}, {1, 0.04}}),
+	Size = seq({{0, 0.25}, {1, 0.1}}),
 	Transparency = seq({{0, 1}, {0.2, 0.1}, {1, 1}}),
 	Lifetime = NumberRange.new(1.2, 1.8),
 	Speed = NumberRange.new(1.5, 3),
@@ -495,7 +500,7 @@ for i = 0, 5 do
 		Color = ColorSequence.new(P.edge),
 		Transparency = NumberSequence.new(0),
 		LightEmission = 1,
-		ZOffset = 2,
+		ZOffset = 0.04,
 		Enabled = false,
 	})
 	e:SetAttribute("Width", 0.06)
@@ -507,7 +512,7 @@ for i = 0, 5 do
 		Color = ColorSequence.new(P.edge),
 		Transparency = NumberSequence.new(0.72),
 		LightEmission = 1,
-		ZOffset = 1,
+		ZOffset = 0.02,
 		Enabled = false,
 	})
 	g:SetAttribute("Width", 0.22)
@@ -537,7 +542,7 @@ emitter(cell, "Flash", {
 	Speed = NumberRange.new(0),
 	LockedToPart = true,
 	LightEmission = 1,
-	ZOffset = 3,
+	ZOffset = 0.06,
 })
 emitter(cell, "Glint", {
 	Texture = TEX.star,
@@ -547,14 +552,16 @@ emitter(cell, "Glint", {
 	Speed = NumberRange.new(0),
 	LockedToPart = true,
 	LightEmission = 1,
-	ZOffset = 4,
+	ZOffset = 0.08,
 })
 emitter(cell, "Rings", {
-	Texture = TEX.ring,
+	Texture = TEX.shock,
+	FlipbookLayout = Enum.ParticleFlipbookLayout.Grid4x4,
+	FlipbookMode = Enum.ParticleFlipbookMode.OneShot,
 	Color = ColorSequence.new(P.edge),
-	Size = seq({{0, 0.3}, {1, 0.12}}),
-	Transparency = seq({{0, 0}, {0.6, 0.2}, {1, 1}}),
-	Lifetime = NumberRange.new(0.35, 0.55),
+	Size = seq({{0, 0.5}, {1, 0.7}}),
+	Transparency = seq({{0, 0}, {0.5, 0.2}, {1, 1}}),
+	Lifetime = NumberRange.new(0.6, 0.9),
 	Speed = NumberRange.new(2, 5),
 	SpreadAngle = Vector2.new(180, 180),
 	Drag = 4,
@@ -584,7 +591,7 @@ emitter(cup, "Core", {
 	Speed = NumberRange.new(0),
 	LockedToPart = true,
 	LightEmission = 1,
-	ZOffset = 1,
+	ZOffset = 0.02,
 })
 emitter(cup, "Glints", {
 	Texture = TEX.star,
@@ -595,7 +602,7 @@ emitter(cup, "Glints", {
 	SpreadAngle = Vector2.new(180, 180),
 	Rotation = NumberRange.new(0, 90),
 	LightEmission = 1,
-	ZOffset = 2,
+	ZOffset = 0.04,
 })
 emitter(cup, "Lines", {
 	Texture = TEX.spark,
@@ -611,9 +618,9 @@ emitter(cup, "Lines", {
 	LightEmission = 1,
 })
 emitter(cup, "Motes", {
-	Texture = TEX.specs,
+	Texture = TEX.glow,
 	Color = ColorSequence.new(P.mint, P.sage),
-	Size = seq({{0, 0.09}, {1, 0.03}}),
+	Size = seq({{0, 0.22}, {1, 0.08}}),
 	Lifetime = NumberRange.new(1, 1.6),
 	Speed = NumberRange.new(0.5, 1.5),
 	EmissionDirection = Enum.NormalId.Top,
@@ -625,7 +632,7 @@ new("PointLight", cup, {Name = "Light", Color = P.mint, Brightness = 0, Range = 
 
 local rise = carrier("Rise")
 local low, high = att(rise, "Low", CFrame.new()), att(rise, "High", CFrame.new(0, 60, 0))
-for _, l in ipairs({{"Pillar", 0.4, 0.06, 0.05, 1}, {"Halo", 1.6, 0.3, 0.75, 0}}) do
+for _, l in ipairs({{"Pillar", 0.4, 0.06, 0.05, 0.02}, {"Halo", 1.6, 0.3, 0.75, 0}}) do
 	local b = beam(rise, l[1], low, high, {
 		Width0 = l[2],
 		Width1 = l[3],
@@ -646,15 +653,15 @@ emitter(rise, "Glint", {
 	Lifetime = NumberRange.new(0.25),
 	Speed = NumberRange.new(0),
 	LightEmission = 1,
-	ZOffset = 3,
+	ZOffset = 0.06,
 })
 
 local bloom = carrier("Bloom", Vector3.new(32, 1, 32))
 local pop = att(bloom, "Pop", CFrame.new())
 emitter(pop, "Specks", {
-	Texture = TEX.specs,
+	Texture = TEX.glow,
 	Color = ColorSequence.new(P.petal, P.mint),
-	Size = seq({{0, 0.1}, {1, 0.03}}),
+	Size = seq({{0, 0.25}, {1, 0.08}}),
 	Lifetime = NumberRange.new(0.8, 1.4),
 	Speed = NumberRange.new(0.5, 2),
 	EmissionDirection = Enum.NormalId.Top,
@@ -671,9 +678,9 @@ emitter(pop, "Glint", {
 	LightEmission = 1,
 })
 emitter(bloom, "Drift", {
-	Texture = TEX.specs,
+	Texture = TEX.glow,
 	Color = ColorSequence.new(P.petal, P.white),
-	Size = seq({{0, 0.08}, {1, 0.05}}),
+	Size = seq({{0, 0.2}, {1, 0.12}}),
 	Transparency = seq({{0, 1}, {0.2, 0.2}, {1, 1}}),
 	Lifetime = NumberRange.new(2, 3),
 	Speed = NumberRange.new(0.4, 1.2),

@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 - Frieren in Studio: flat beams, ZOffset, textures, sync and cost (user-authorized)
+
+- `roblox-vfx-craft`: the Frieren effects and clips were installed and run in Studio for the first time. `FrierenTemplates.lua`: `ZOffset` values cut from 0 to 4 studs to 0 to 0.08 (the layers split apart off the screen centre), the disc texture swapped for the `shock` ring sheet as a OneShot flipbook, the rock sheet played as one random frame, and the invisible `specs` dots swapped for `glow`. `FrierenVfx.lua`: the flower field moves with one `BulkMoveTo` a frame and fades without tweens (the fade cost 106 ms frames). New `scripts/FrierenClient.lua` (keys, test attributes, CalmIdle and CalmWalk). `study-frieren.md` gains "Checked in Studio" (event times, cost table, texture findings); `verification.md` gains the decal texture check, the ZOffset rule and the paging check.
+- `roblox-r6-animation`: `study-frieren.md` records that the Studio numbers match the offline ones.
+
 ## 2026-09-26 - Frieren second pass: more footage, a volley, a walk, a dodge (user-authorized)
 
 - Both Frieren studies gain 14 more sheeted cuts (the episode 2 flower field, Fern's practice Zoltraak and cast wind, the episode 6 walk and dragon fight, Fern's episode 9 volley, the episode 10 mana release, episode 12): drawing timing, the weighty walk (two steps, then a 2.2 s hold), the release wind, the volley timing, the flower field palette.

@@ -28,7 +28,19 @@ Claude cannot watch the effect play. Everything below is how to see it anyway.
 - Two captures of a strip or a scene: three quarter from behind for anything the player sees from the
   default camera (stands, auras on the back), front three quarter for what an enemy sees.
 
+- Read every texture before judging its particles: put the id on a Decal on a 5 x 5 part in front of a dark and a
+  light backdrop and capture it. A sprite sheet (a grid of frames), a filled disc where a ring was meant, a black
+  square background or one tiny dot in a corner cell shows at once. A frozen particle gallery cannot show this well,
+  because the particles move before the freeze.
+- `ZOffset` on a Beam or a ParticleEmitter moves the drawing that many studs toward the camera. Layers with offsets of
+  1 to 4 split apart when they are off the screen centre. Keep offsets at 0.1 or less and use them only to order
+  layers.
+
 ## Profiling a cast
+
+- Check that Studio does not page before you trust a hitch. Studio at 3.9 GB private with a 377 MB working set (and
+  Memory Compression at 739 MB) stalled 0.1 to 1.7 s at random times, while a 2 s idle just before read clean. A
+  stall that does not repeat at the same effect time is the machine.
 
 - Connect `RunService.RenderStepped` and keep the worst `dt` per 0.05 s slot from the cast; print once.
   Wrap suspicious calls with `os.clock` marks printed on one line and read them with the console tool.

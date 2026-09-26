@@ -153,7 +153,7 @@ Second round (the fight register and a walk, same checks):
 - **LeanDodge** (clear 0.1): the calm answer to a hit: the feet stay, the torso leans 14 degrees aside and drops 0.16 in 0.1 s, the head stays level on the target, the arms open for balance, and the body returns over 0.46 s.
 - Runtime: CalmIdle, ZoltraakVolley then CalmIdle, LeanDodge then CalmIdle: slide 0.01, hip gap 0.00.
 
-Unverified: the clips have not been played in Studio or seen next to the effects; the box preview is not the game.
+Checked in Studio on 2026-09-26 (a clean R6 StarterCharacter, `Poser.check` and `_G.feet` in Edit, the runtime in Play): every number above is the same in Studio, the planted soles slide 0.00, and CalmWalk slides 0.04 with its travel. In Play the clip clock and the effect schedule agree within two frames (the Zoltraak arm reaches the aim at 0.60 and kicks at 1.37; the volley bolts leave on the kick peaks). The effects half of that check is in `roblox-vfx-craft/references/study-frieren.md`, "Checked in Studio". Not yet judged: the look next to the reference frames.
 
 ## What changes from the Moon target
 

@@ -472,9 +472,15 @@ function Frieren.flowers(char)
 		end
 	end
 
+	local shape = {}
+	for _, p in ipairs(Vfx.Flower:GetChildren()) do
+		shape[p.Name] = p.CFrame
+	end
+
 	local growing, petals = {}, {}
 	local bloom = RunService.RenderStepped:Connect(function()
 		local now = os.clock()
+		local moved, cfs = {}, {}
 		for p, s in pairs(petals) do
 			local age = (now - s.t0) / Tw.S()
 			if age > s.life then
@@ -495,14 +501,24 @@ function Frieren.flowers(char)
 				local s = 1.70158
 				y = -0.9 + 0.9 * (1 + (s + 1) * (u - 1) ^ 3 + s * (u - 1) ^ 2)
 			end
-			f:PivotTo(g[1] * CFrame.new(0, y, 0))
-			if u >= 1 then
+			if g[4] and u >= 1 then
 				growing[f] = nil
-				if g[4] then
-					f:Destroy()
+				f:Destroy()
+			else
+				local base = g[1] * CFrame.new(0, y, 0)
+				for _, p in ipairs(g[5]) do
+					table.insert(moved, p)
+					table.insert(cfs, base * shape[p.Name])
+					if g[4] then
+						p.Transparency = u * u
+					end
+				end
+				if u >= 1 then
+					growing[f] = nil
 				end
 			end
 		end
+		workspace:BulkMoveTo(moved, cfs, Enum.BulkMoveMode.FireCFrameChanged)
 	end)
 
 	at(bloomAt, function()
@@ -513,16 +529,13 @@ function Frieren.flowers(char)
 			at(s[2] / F.Speed, function()
 				local base = CFrame.new(s[1]) * CFrame.Angles(0, s[3], 0)
 				local f = spawn("Flower", base * CFrame.new(0, -0.9, 0))
-				growing[f] = {base, os.clock(), 0.3}
+				growing[f] = {base, os.clock(), 0.3, false, f:GetChildren()}
 				if n % 3 == 0 then
 					pop.WorldPosition = s[1] + Vector3.new(0, 0.7, 0)
 					emit(pop, {Specks = 3, Glint = 1})
 				end
 				at(F.Life, function()
-					for _, p in ipairs(f:GetChildren()) do
-						Tw.play(p, {Transparency = 1}, 0.8, QUAD, IN)
-					end
-					growing[f] = {base, os.clock(), 0.8, true}
+					growing[f] = {base, os.clock(), 0.8, true, f:GetChildren()}
 				end)
 			end)
 		end

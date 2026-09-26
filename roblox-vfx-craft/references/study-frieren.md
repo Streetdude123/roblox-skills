@@ -128,12 +128,50 @@ Flowers stand on the floor under each spot (a raycast), at least 1.1 studs apart
 
 Checked without Studio (a scratch harness that runs the builder and the runtime in the Luau command line tool against the Roblox API dump: every class, property name, value type and enum item, sequence keypoint rules, tweenable types, a clock that drives `task`, tweens and `RenderStepped`): the builder makes the tree above; the four effects run to the end with no error, also under a TimeScale of 4, with two casts overlapping, with 14 hits from every side (one straight down, which first gave a NaN axis and is fixed), with a drop straight after the raise, and with no floor under the flowers; every instance is cleaned up (0 left in `FrierenFx`); the circle reaches radius 3 facing the aim; the beam line stops at a wall; barrier corners sit 3.28 from the centre with 0.7 edges; flowers reach their floor height. Peaks: Zoltraak 459 instances and 187 beams, the volley 810 instances and 302 beams, the barrier with two hits 696 instances and 336 beams (14 hits in 0.7 s: 882 beams), the flower field 4481 instances (2310 flower parts and the petals). A box preview of the geometry from the player camera set the circle radius (3, not 2.2: at 2.2 the body hid half of it) and the barrier lift (1.2: at 0.5 the panel was behind the body).
 
-Not checked (Studio needed):
+Not checked offline (the Studio results are in the next section):
 
 - The width axis of the flat beams (`FaceCamera = false`): the band ring and the hex fill assume the width runs along each attachment's Y axis, as the torrent joints did (water.md). If they show edge-on, swap the attachments' X and Y.
 - That an untextured beam draws as a solid strip, and how each pack texture looks at these sizes.
 - The frame cost: 336 beams on the barrier, 5 volley circles and 2310 flower parts are guesses at a budget; profile the first cast. Each barrier cell carries 6 rim beams; dropping them halves the barrier's beams if it is too heavy. The flower fade tweens 21 parts per clump, about 2000 tweens over one second.
 - The flash and the white core on his day lighting.
+
+## Checked in Studio (2026-09-26)
+
+Place: an empty baseplate with a clean grey R6 StarterCharacter (his pick for readable captures). Install as above, plus `Tw`, `Poser`, `Feet`, `ExampleClips` and `ExampleFrieren` in `ReplicatedStorage.Anim.Modules` (the animation skill's pipeline.md) and `scripts/FrierenClient.lua` in StarterPlayerScripts. The client plays CalmIdle and CalmWalk instead of the default idle and walk (the walk clip speed is the ground speed divided by the clip's `travel`). His keys: 1 Zoltraak, 2 Volley, 3 Flowers, Q LeanDodge, hold F for the barrier. Test hooks: the player attributes `Cast` (a move name, `Barrier` or `Drop`) and `BarrierHit` (a world point). A cast roots the body and turns it to the camera heading (his casting rule). All modules were installed with no comments.
+
+- **The engine adds `Animate`.** A StarterCharacter without an `Animate` script still spawns with the default one, which plays its idle track under Poser. The client destroys it and stops its tracks on spawn.
+- **Flat beams lie flat.** The band ring and the hex fill (`FaceCamera = false`) put their width on each attachment's Y axis. No swap was needed.
+- **`ZOffset` is a real shift toward the camera, not only a sort key.** With the first values (0 to 4 studs), the layers split apart when the circle was off the screen centre. At 13 studs, the white rings (2) drew 18% larger than the band (0) and to one side of it, and each hex cell showed two ghost outlines. The offsets are now 0 to 0.08 (0.02 for each step of the old order). The order holds and no split shows.
+- **Untextured beams draw as solid strips** at every width used.
+- **Three textures were sheets or discs.** Each id was put on a 5 x 5 decal in front of a dark and a light backdrop:
+  - `ring` 1084982817 is a filled disc, so the hoops and the cell fragments drew discs. They now use the `shock` sheet 16477162837 (4 x 4, rings in the first 8 frames) as a OneShot flipbook.
+  - `rocks` 12111686783 is a 2 x 2 sheet, so each debris particle drew four rocks. It is now `Grid2x2` with `FlipbookStartRandom` and a frame rate of 0 (one random rock for each particle).
+  - `specs` 9997556038 is a 4 x 4 sheet with one dot in the first cell. At 0.04 to 0.12 studs that dot is smaller than a pixel and off centre, so every mote, speck and drift particle was invisible. They now use `glow` at 2.5 times the old sizes.
+  - `glow`, `spark` (a thin four-point glint), `shards` and `smoke` (one puff) are single sprites. `star` has a black square background and is used only at LightEmission 1.
+- **The clips match the offline numbers.** `Poser.check` and `_G.feet` in Studio give the offline table exactly (for example Zoltraak still 43.4%, rest 49.7%, contrast 10.7). The planted soles slide 0.00, the hip gap is 0.01 or less, and CalmWalk slides 0.04 with its travel included.
+
+The schedules, first casts at normal speed (the effects land one to two frames after the schedule):
+
+| Move | Clip | Effect |
+| --- | --- | --- |
+| Zoltraak | arm on the aim 0.60 (key 0.62), kick peak 1.37 (key 1.36), lowering from 2.20 | pillars 0.42, circle 0.68, firing line 1.32, beam, flash and hit 1.46, circle gone 2.45 |
+| Volley | shots keyed 0.35 + 0.18 k, kick peaks 0.05 later | circles 0.17, 0.34, 0.52, 0.72, 0.89; bolts 0.39, 0.57, 0.75, 0.94, 1.11 (on the kick peaks); hits 0.16 to 0.19 s later |
+| Barrier | raise 0.30 | 19 panel cells from 0.34; a hit from the side, behind or above forms about 5 cells where it lands |
+| Flowers | gather 0.75, release 1.9, bloom 2.25 | cup 0.77, rise 1.92, field 2.27, first flowers 2.56 |
+
+A barrier hit from the front lands on the raise panel and only flashes it (by design).
+
+Cost of the first casts, with the idle at a median of 16.5 ms:
+
+| Effect | Peak instances, beams | Median, p95, worst frame |
+| --- | --- | --- |
+| Zoltraak | 459, 187 | 16.5, 20.8, 71 ms |
+| Volley | 810, 302 | 17.2, 20.3, 31 ms |
+| Barrier raise | 551, 266 | 16.6, 18.1, 20 ms |
+| Barrier with six hits | 1305, 630 | 17.4, 21.3, 24 ms |
+| Flowers (the first build) | 4481, 2 (2348 parts) | 17.0, 29.5, 106 ms |
+
+The flower fade was the only real cost. For 1 s, 110 flowers each started 21 transparency tweens (2310 tweens) and moved by `PivotTo` every frame, and the frames reached 106 ms. The loop now moves every flower part with one `workspace:BulkMoveTo` call per frame and fades the transparency in the same loop; this loop is not measured yet. Studio then held 3.9 GB of private memory on the 6 GB machine. Later casts stalled 0.1 to 1.7 s at random times with a clean idle, so those numbers are paging, not the effects.
 
 ## Where this meets his earlier rules
 
