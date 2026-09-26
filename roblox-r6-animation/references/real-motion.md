@@ -53,7 +53,7 @@ How each R6 part is made (the rig math is in `r6_render.py`, the same C0 and C1 
 - **Root**: travel goes into the Torso's `p`, so a step or a lunge moves the body.
 - The first frame is turned to face -Z; the floor is the lowest toe; the scale puts the standing hips at 2 studs.
 
-Limits to fix by hand: R6 has no elbow, so the bend itself never shows; the slide carries the reach instead (measured on the CMU jab: the R6 fist peaks at 11.7 studs/s against 13.0 on the real wrist). When the shoulders twist against planted feet, R6 legs swing with the torso: plant them with `Feet.post` in Studio.
+Limits to fix by hand: a leg or arm near 90 degrees of lift can flip its roll between frames (the CMU front kick turned the right leg 172 degrees in one frame and back 0.15 s later; `faults.py` flags it as a pop; rekey the roll by hand). R6 has no elbow, so the bend itself never shows; the slide carries the reach instead (measured on the CMU jab: the R6 fist peaks at 11.7 studs/s against 13.0 on the real wrist). When the shoulders twist against planted feet, R6 legs swing with the torso: plant them with `Feet.post` in Studio.
 
 ## 3. Look at it
 

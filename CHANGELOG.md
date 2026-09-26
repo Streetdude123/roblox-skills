@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 (late night) - A fault finder for decode text (user-authorized)
+
+- `roblox-r6-animation`: new `scripts/faults.py` flags twinning arms, dead arms under a lean, neutral mid-clip poses, one-frame pops over 90 degrees, parts through the floor, flat or twisted planted legs, hip gaps, foot slides and parts that are fastest away from the strike, each with its time span and a first repair. Thresholds come from the pro decodes (all pass with `--float`) and from faults found by eye in the example drafts; it also found a bracing arm 0.14 under the floor that the review missed and a 172 degree roll flip in the retargeted CMU kick. `quality-review.md` holds the rules and their calibration; `SKILL.md` step 4, `pipeline.md`, `real-motion.md` and the README follow; five new tests. `principles.md` and `motion-metrics.md` correct the throw's fifth round: its wind-up outran the whip only in joint speed, not in world speed.
+
 ## 2026-09-26 (night) - Heavy and superhero landings built offline (user-authorized)
 
 - `roblox-r6-animation`: `scripts/ExampleThrow.lua` becomes `scripts/ExampleMoves.lua` and adds `HeavyLand` (a 1.1 stud drop, a 0.3 s skid with the torso pitching forward, an overshoot at the stop, a 0.6 s recovery in a crouch) and `HeroLand` (one knee and one fist down, the fist within 0.07 of the floor through a 0.9 s hold, the push up), both on the measured beats of the target Moon Animator study and built in offline rounds. `r6-mechanics.md` adds world pitch = own lift + torso lift for limbs, the leg angle under a leaned torso with `Feet.post`, the floor reach of an arm and the kneel; `principles.md` and `motion-metrics.md` record the clips, their numbers and the rounds. `LoadTest.lua`, `SKILL.md`, the README and the offline test follow. Not played in Studio.

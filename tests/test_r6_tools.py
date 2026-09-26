@@ -29,6 +29,7 @@ beats = load('beats')
 sty = load('stylize')
 fc = load('feet_check')
 po = load('poser_offline')
+fl = load('faults')
 
 JOINTS = ('Torso', 'Head', 'Right Arm', 'Left Arm', 'Right Leg', 'Left Leg')
 
@@ -37,8 +38,8 @@ def write_decode(path, name, frames):
     lines = [f'#{name} len={(len(frames) - 1) / 60:.3f} loop=false frames={len(frames)} prio=Action']
     for i, pose in enumerate(frames):
         for j in JOINTS:
-            l, t, s = pose.get(j, (0, 0, 0))
-            lines.append(f'{name}|{j}|{i / 60:.3f}|{l:.1f}|{t:.1f}|{s:.1f}|0.00|0.00|0.00|Linear|In')
+            l, t, s, x, y, z = (tuple(pose.get(j, (0, 0, 0))) + (0, 0, 0))[:6]
+            lines.append(f'{name}|{j}|{i / 60:.3f}|{l:.1f}|{t:.1f}|{s:.1f}|{x:.2f}|{y:.2f}|{z:.2f}|Linear|In')
     path.write_text('\n'.join(lines) + '\n')
     return path
 
@@ -345,3 +346,41 @@ def test_example_moves_pass_offline(tmp_path):
     hero = rr.read_decode(tmp_path / 'HeroLand.txt')
     fist = [rr.tip_point(rr.world_parts(hero, i / 60), 'Right Arm')[1] for i in range(4, 58)]
     assert -0.05 <= min(fist) and max(fist) <= 0.1
+
+
+def kinds(path, **kw):
+    return {f['kind'] for f in fl.find(path, **kw)[1]}
+
+
+def test_faults_finds_twinning_a_pop_and_a_neutral_pose(tmp_path):
+    frames = [{'Right Arm': (60, 0, 20), 'Left Arm': (60, 0, -20), 'Torso': (-10, 20, 0)}] * 30
+    frames += [{'Right Arm': (180, 0, 0), 'Torso': (-10, 20, 0)}]
+    frames += [{}] * 20 + [{'Torso': (-10, 20, 0)}] * 10
+    found = kinds(write_decode(tmp_path / 'f.txt', 'F', frames))
+    assert {'twinning', 'pop', 'neutral pose'} <= found
+
+
+def test_faults_finds_a_dead_arm_under_a_lean(tmp_path):
+    frames = [{'Torso': (-30, 0, 0), 'Right Arm': (30, 0, 0), 'Left Arm': (70, 0, 10)}] * 40
+    assert 'dead arm' in kinds(write_decode(tmp_path / 'd.txt', 'D', frames), feet=False)
+
+
+def test_faults_finds_a_hand_through_the_floor(tmp_path):
+    frames = [{'Torso': (0, 0, 0, 0, -2.3, 0), 'Right Arm': (10, 0, 5), 'Left Arm': (40, 0, -10)}] * 10
+    assert 'through the floor' in kinds(write_decode(tmp_path / 'g.txt', 'G', frames), feet=False)
+
+
+def test_faults_finds_a_wind_up_that_outruns_the_strike(tmp_path):
+    frames = []
+    for i in range(60):
+        wind = 90 * min(1, max(0, (i - 5) / 5))
+        snap = min(1, max(0, (i - 40) / 3))
+        frames.append({'Right Arm': (wind, 0, 0), 'Torso': (-10, 10 * snap, 0), 'Left Arm': (20 + 90 * snap, 0, -10)})
+    path = write_decode(tmp_path / 'w.txt', 'W', frames)
+    found = fl.find(path, feet=False)[1]
+    assert any(f['kind'] == 'outruns the strike' and 'Right Arm' in f['text'] for f in found)
+
+
+def test_faults_passes_the_pro_stand_strikes():
+    for p in sorted((ROOT / 'roblox-r6-animation/references/decodes').glob('*.txt')):
+        assert fl.find(p, feet=False)[1] == [], p.name

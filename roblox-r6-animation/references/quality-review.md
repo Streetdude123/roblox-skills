@@ -42,6 +42,21 @@ Use stepped poses for the first check and real-time playback for timing. Use slo
 
 - Motion quality: `Poser.check(clip).text` in Studio or `node scripts/motion_check.js clip.txt` on a decode. Ranges and definitions: [motion-metrics.md](motion-metrics.md). Compare with a professional clip of the same kind, not only with the targets.
 - Planted feet: `_G.feet(clip)` from `scripts/EditStrip.lua` (lowest sole corner, slide of the sole centre while planted, hip gap).
+- Common faults: `python3 scripts/faults.py <decode>`. Each flag gives the time span and a first repair:
+
+| Flag | Rule | Calibration |
+| --- | --- | --- |
+| twinning | both arms within 8 degrees of each other's mirror image for 0.25 s, both 25 degrees or more from hanging | the first landing draft's recovery (0.53 to 1.40 s) and a later draft's end stance with the arms crossed in front |
+| dead arm | an arm within 15 degrees of straight down and under 20 degrees a second for 0.4 s while the torso leans 15 degrees or more | the synthetic test only; the first landing draft's lifeless arms pointed 20 to 30 degrees back, not down, and were caught as twinning instead |
+| neutral pose | every joint within 12 degrees of the default stand for 3 frames away from the clip's first and last 0.1 s | the reference study: no key is neutral |
+| pop | a part turns more than 90 degrees in one frame | the pro heavy punch turns an arm 67 to 70 degrees in a frame and passes; the throw's whip (113) is flagged because it needs a smear |
+| through the floor | a corner of an arm, the head or the torso more than 0.05 below the floor | a landing draft's bracing arm went 0.14 under |
+| flat leg | a planted leg more than 55 degrees from vertical | the pro landing angles its legs 25 to 40 degrees back; the first two landing drafts (57 to 68) read flat; a kneel is flat on purpose |
+| leg twist | a planted toe more than 60 degrees off the torso's heading | the examples read 5 to 51; the first throw draft 97 to 111 |
+| hip gap, foot slide | the foot check over 0.12 and 0.05 | SKILL.md |
+| outruns the strike | an arm, the head or the torso has its fastest world speed more than 6 frames from the strike and more than 0.9 of its speed at the strike | the seven pro stand clips pass; raw motion capture flags recoveries and hooks where the fastest whole-body moment is not the strike, so name it with `--strike` |
+
+The seven pro stand clips and the stand's idle in `references/decodes` pass with `--float`; the example clips pass except the flags kept on purpose.
 
 - Plant drift: maximum horizontal distance from the chosen world contact target during its contact interval.
 - Floor error: signed height of the selected support point and the lowest sole corner relative to the actual floor.
