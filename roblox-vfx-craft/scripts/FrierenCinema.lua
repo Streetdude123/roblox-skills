@@ -792,93 +792,141 @@ function Cinema.zoltraak(char, finish, body)
 end
 
 function Cinema.volley(char, finish, body, clip)
-	body:play(clip, {fadeIn = 0.2})
-	local shotTimes = clip.shots
 	local hrp = char.HumanoidRootPart
-	local look = (hrp.CFrame.LookVector * V(1, 0, 1)).Unit
-	local right = look:Cross(Vector3.yAxis)
-	local origin = CFrame.lookAt(hrp.Position, hrp.Position + look)
-	local start = os.clock()
-	local function clock()
-		return (os.clock() - start) / Tw.S()
-	end
-	local at = kit.at
+	local sun = Lighting:GetSunDirection()
+	local look = V(sun.X, 0, sun.Z).Unit
+	hrp.CFrame = CFrame.lookAt(hrp.Position, hrp.Position + look)
+	local origin = hrp.CFrame
 	local function P(x, y, z)
 		return origin:PointToWorldSpace(V(x, y, z))
 	end
-	local floorY = kit.ground(P(0, 0, -48), char).Y
-	local H = 6.2
-	local land = V(P(0, 0, -48).X, floorY + H, P(0, 0, -48).Z)
-	local from = P(0, 30, -170)
+	local floor = kit.ground(hrp.Position, char)
+	local tl = timeline({{8.12, 8.42, 0.25}, {9.55, 9.78, 0.4}})
+	stage()
+	tl.drive(body, clip, {fadeIn = 0.15})
 
-	local drag = dragon(CFrame.lookAt(from, V(hrp.Position.X, from.Y, hrp.Position.Z)))
+	local from, ctrl, hover = P(-150, 9, -80), P(-50, 7, -46), P(0, 14, -34)
+	local landFloor = kit.ground(P(0, 0, -46), char)
+	local drag = dragon(CFrame.lookAt(from, ctrl), tl)
 	drag.play("Fly", 0)
-	at(1.4, function()
-		drag.play("Land", 0.3, "Idle")
+	drag.wings(true)
+	tl.at(1.9, function()
+		drag.play("Hover", 0.5)
 	end)
-	at(3.1, function()
-		drag.play("Roar", 0.3, "Idle")
+	tl.at(2.75, function()
+		drag.play("AirRoar", 0.3, "Hover")
 	end)
-	at(5.0, function()
-		drag.play("Hit", 0.1)
+	tl.at(8.3, function()
+		drag.play("AirHit", 0.05)
 	end)
-	at(6.2, function()
-		drag.play("Roar", 0.3, "Idle")
-	end)
-	at(8.4, function()
-		drag.play("Hit", 0.06)
-	end)
-	at(9.5, function()
-		drag.play("Down", 0.2)
+	tl.at(8.8, function()
+		drag.play("Down", 0.3)
 	end)
 
-	local shove = 0
+	local face = V(hrp.Position.X - hover.X, 0, hrp.Position.Z - hover.Z).Unit
+	local shove, sink, shake = 0, 0, 0
+	local blown
 	local path = RunService.RenderStepped:Connect(function()
-		local t = clock()
-		local pos = land + look * shove
-		if t < 2.8 then
-			pos = from:Lerp(land, 1 - (1 - t / 2.8) ^ 2.2)
-		elseif t < 3.4 then
-			pos = land - V(0, math.sin(math.pi * (t - 2.8) / 0.6), 0)
-		elseif t >= 8.4 and t < 9.5 then
-			pos = land + look * (shove + 8 * (1 - (1 - math.min(1, (t - 8.4) / 0.5)) ^ 2))
-		elseif t >= 9.5 then
-			local u = math.min(1, (t - 9.5) / 0.8)
-			pos = land + look * (shove + 8 + 2 * u) - V(0, 2.7 * u * u, 0)
+		local t = tl.t
+		if t < 2.7 then
+			local s = 1 - (1 - t / 2.7) ^ 2.2
+			local q = 1 - s
+			local pos = from * q * q + ctrl * 2 * q * s + hover * s * s
+			local vel = (ctrl - from) * 2 * q + (hover - ctrl) * 2 * s
+			local w = smooth((t - 1.8) / 0.9)
+			local dir = (vel * V(1, 0.3, 1)).Unit:Lerp(face, w)
+			drag.cf = CFrame.lookAt(pos, pos + dir) * CFrame.Angles(0, 0, math.sin(t * 2.2) * 0.3 * (1 - w))
+			return
 		end
-		drag.cf = CFrame.lookAt(pos, V(hrp.Position.X, pos.Y, hrp.Position.Z))
+		shake = math.max(0, shake - 0.08)
+		local pos = hover - face * shove + V(0, 0.8 * math.sin(2 * math.pi * t) - sink, 0) + V(math.noise(t * 12, 1.5), math.noise(t * 12, 2.5), 0) * shake
+		if t >= 8.3 then
+			blown = blown or pos
+			local u = math.min(1, (t - 8.3) / 0.4)
+			pos = blown - face * 8 * EASE.out(u) + V(0, 2 * u, 0)
+			if t >= 8.7 then
+				local f = math.min(1, (t - 8.7) / 0.9)
+				local top = blown - face * 8 + V(0, 2, 0)
+				local low = V(landFloor.X, landFloor.Y + 6.2, landFloor.Z) - face * (shove + 11)
+				pos = top:Lerp(V(low.X, top.Y, low.Z), f) - V(0, (top.Y - low.Y) * f * f, 0)
+			end
+			if t >= 9.6 then
+				pos -= V(0, 2.4 * math.min(1, (t - 9.6) / 0.3), 0)
+			end
+		end
+		drag.cf = CFrame.lookAt(pos, pos + face)
 	end)
 
+	local function flat()
+		local p = drag.cf.Position
+		local f = drag.cf.LookVector * V(1, 0, 1)
+		return CFrame.lookAt(p, p + f.Unit)
+	end
+	local function above(p)
+		return V(p.X, math.max(p.Y, floor.Y + 3.6), p.Z)
+	end
+	local function side()
+		return above(flat() * V(24, -3, -8))
+	end
+	local function nose()
+		return flat() * V(0, 1, -12)
+	end
+	local function back()
+		return flat() * V(14, 14, 4)
+	end
+	local function her()
+		return hrp.Position + V(0, 0.5, 0)
+	end
 	local shots = {
-		{t = 0, len = 2.9, a = {V(5, 2, 12), V(0, 12, -60), 55}, b = {V(4, 2, 10), V(0, 7, -50), 52}},
-		{t = 2.9, len = 0.9, a = {V(7, 3.5, -3), V(0, 4, -2), 42}, b = {V(6, 3.8, -5), V(0, 4.2, -2), 43}},
-		{t = 3.8, len = 2, a = {V(6, 8.5, 11), V(0, 9, -45), 50}, b = {V(5.5, 9, 9.5), V(0, 10, -45), 48}},
-		{t = 5.8, len = 1.8, a = {V(40, 12, -20), V(0, 6, -26), 52}, b = {V(37, 12.5, -23), V(0, 6, -27), 50}},
-		{t = 7.6, len = 0.9, a = {V(12, 5, -6), V(0, 6, -22), 46}, b = {V(11, 5, -7), V(0, 6, -22), 44}},
-		{t = 8.45, len = 1.9, a = {V(60, 9, -30), V(0, 5, -50), 56}, b = {V(56, 10, -32), V(0, 4, -52), 54}},
-		{t = 10.35, len = 2.3, a = {V(-6, 2, 14), V(0, 4, -52), 50}, b = {V(-5, 2.3, 12), V(0, 4, -52), 48}},
+		{t = 0, len = 1.75, a = {side, nose, 56, -3}, b = {side, nose, 52, 2}, drift = 0.3},
+		{t = 1.75, len = 1, a = {V(3.4, 1.2, 6.5), V(-6, 8, -40), 50}, b = {V(2.9, 1.3, 5.2), V(0, 11, -34), 46}},
+		{t = 2.75, len = 1.2, a = {V(-40, 8, -8), V(0, 11, -24), 50}, b = {V(-38, 9, -11), V(0, 11.5, -25), 48, 2}},
+		{t = 3.95, len = 1, a = {back, her, 55}, b = {back, her, 52, -2}, drift = 0.2},
+		{t = 4.95, len = 1.1, a = {V(-22, 6, -44), drag.chest, 52}, b = {V(-14, 9, -58), drag.chest, 50, 3}},
+		{t = 6.05, len = 0.95, a = {V(-3.6, 1.6, -4), V(0, 1.4, 0), 42}, b = {V(-3.1, 1.8, -3.5), V(0, 1.5, 0), 40, 2}},
+		{t = 7.0, len = 0.7, a = {V(-4, 0.8, -26), drag.chest, 60}, b = {V(-3.5, 0.6, -27), drag.chest, 58}},
+		{t = 7.7, len = 0.6, a = {V(-7, 1.8, -2), V(0.4, 1.8, -2), 44}, b = {V(-6.3, 1.9, -2.6), V(0.4, 1.8, -2), 40}, drift = 0.04},
+		{t = 8.45, len = 1.45, a = {V(30, 6, -14), drag.chest, 58, 3}, b = {V(28, 5, -17), drag.chest, 56}},
+		{t = 9.9, len = 2.7, a = {V(3.5, 0.6, 7.5), V(0, 2, -40), 48}, b = {V(5.5, 4.5, 15), V(0, 3, -48), 54}, ease = "out"},
 	}
-	film(origin, shots, clock)
+	screen().Fade.BackgroundTransparency = 0
+	shoot(origin, shots)
+	bars(true, 0.8)
+	fade(0, 0.8)
 
+	for i = 0, 7 do
+		tl.at(0.3 + i * 0.3, function()
+			local p = kit.ground(drag.cf.Position, char)
+			dustWave(p, 7, 6)
+		end)
+	end
 	local sigil, sigilConn, sigilClose
-	local small, main = {}, nil
-	at(2.0, function()
+	tl.at(2.0, function()
 		sigil, sigilConn, sigilClose = kit.floorCircle(char, 1.2, 0.5)
 		kit.rates(sigil, {Rise = 40, Lines = 16})
-		kick(0.12)
+		local w = kit.spawn("Wave", CFrame.new(floor + V(0, 0.3, 0)))
+		kit.emit(w, {Ring = 1, Thin = 1})
+		cleanup(w, 2)
+		kick(0.15)
 	end)
-	at(2.4, function()
-		main = {circle(kit.gem(char) + look * 1.6, look, 0.8, 1.2)}
+	tl.at(2.8, function()
+		drag.wings(false)
 	end)
-	at(3.0, function()
+	local small, main = {}, nil
+	tl.at(2.4, function()
+		local g = kit.gem(char)
+		local dir = (hover - g).Unit
+		main = {circle(g + dir * 1.6, dir, 0.8, 1.2)}
+	end)
+	tl.at(3.0, function()
 		local chest = drag.chest()
 		local toward = (V(hrp.Position.X, chest.Y, hrp.Position.Z) - chest).Unit
-		local side = toward:Cross(Vector3.yAxis)
+		local across = toward:Cross(Vector3.yAxis)
 		for i = 0, 11 do
-			at(0.075 * i, function()
+			later(0.075 * i, function()
 				local a = math.rad(-70 + 140 * i / 11) + (math.random() - 0.5) * 0.2
-				local dir = toward * math.cos(a) + side * math.sin(a)
-				local p = chest + dir * (13 + math.random() * 4) + V(0, -1 + i % 4 * 3.5 + math.random() * 2, 0)
+				local dir = toward * math.cos(a) + across * math.sin(a)
+				local p = chest + dir * (13 + math.random() * 4) + V(0, -3 + i % 4 * 3 + math.random() * 2, 0)
 				local c = kit.spawn("SmallCircle", CFrame.lookAt(p, chest) * CFrame.Angles(0, 0, math.random() * 6.28))
 				local conn, _, close = kit.grow(c, 1.1 + math.random() * 0.5, 0.25, 0.1, 4)
 				kit.emit(c, {Flash = 1, Glint = 1})
@@ -886,77 +934,115 @@ function Cinema.volley(char, finish, body, clip)
 			end)
 		end
 	end)
-	at(2.8, function()
-		blast(V(land.X, floorY, land.Z), {Smoke = 30, Ring = 1, Ring2 = 1, Rocks = 10}, 0, 4)
-		kick(0.35)
-	end)
-	at(3.82, function()
+	tl.at(3.3, function()
 		blast(drag.mouth(), {Ring = 1, Ring2 = 2}, 0, 2)
+		for i = 1, 3 do
+			later(0.22 * i, function()
+				blast(drag.mouth(), {Ring2 = 1}, 0, 1.5)
+			end)
+		end
+		gale(P(0, 1, -10), -look, {Streaks = 90, Dust = 26, Bits = 24}, 0.8)
 		kick(0.4)
+		view.floor = 0.22
 	end)
-	at(6.92, function()
-		blast(drag.mouth(), {Ring = 1, Ring2 = 1}, 0, 2)
-		kick(0.3)
+	tl.at(3.95, function()
+		view.floor = 0
 	end)
 
-	local bolts = {}
+	local bolts, hits = {}, 0
 	local fly = RunService.RenderStepped:Connect(function(dt)
 		for b, s in pairs(bolts) do
 			local target = drag.chest() + s.off
 			local dir = (target - s.pos).Unit
-			local step = s.speed * dt / Tw.S()
+			local step = s.speed * dt / Tw.S() * tl.rate
 			if (target - s.pos).Magnitude <= step then
 				bolts[b] = nil
 				if s.big then
-					blast(target, {Flash = 1, Star = 1, Ring = 1, Sparks = 18, Smoke = 4, Glint = 1}, 2, 2.5)
+					blast(target, {Flash = 1, Glint = 1}, 4, 1)
 				else
 					local h = kit.spawn("Hit", CFrame.new(target))
 					kit.emit(h, {Glint = 1, Ring = 1, Star = 1, Sparks = 12, Smoke = 3, Debris = 2})
-					Debris:AddItem(h, 1.3 * Tw.S())
+					cleanup(h, 1.3)
+					hits += 1
+					shove = math.min(6, shove + 0.28)
+					sink = math.min(2.5, sink + 0.1)
+					shake = 0.6
+					if hits % 3 == 0 then
+						drag.play("AirHit", 0.05, "Hover")
+						kick(0.12)
+					else
+						kick(0.05)
+					end
 				end
-				kick(s.big and 0.8 or 0.09)
-				shove = math.min(7, shove + 0.3)
 				kit.rates(b, {Glow = 0, Dashes = 0, Rings = 0})
 				for beam in pairs(kit.beams(b)) do
 					kit.hide(beam, 0.06)
 				end
-				Debris:AddItem(b, 0.3 * Tw.S())
+				cleanup(b, 0.3)
 			else
 				s.pos += dir * step
 				b.CFrame = CFrame.lookAt(s.pos, s.pos + dir)
 			end
 		end
 	end)
-	local function fire(from, big)
-		local b = kit.spawn("Bolt", CFrame.lookAt(from, from + look))
+	local function fire(at, big)
+		local target = drag.chest()
+		local b = kit.spawn("Bolt", CFrame.lookAt(at, target))
 		if big then
 			for beam, w in pairs(kit.beams(b)) do
 				beam.Width0 = w[1] * 2.6
 			end
 		end
 		kit.rates(b, {Glow = 60, Dashes = 50, Rings = big and 90 or 40})
-		bolts[b] = {pos = from, speed = big and 260 or 110, big = big, off = V(math.random() * 8 - 4, math.random() * 5 - 2, math.random() * 4 - 2)}
+		bolts[b] = {pos = at, speed = big and 300 or 110, big = big, off = big and V(0, 0, 0) or V(math.random() * 8 - 4, math.random() * 5 - 2, math.random() * 4 - 2)}
 	end
-	for i, t in ipairs(shotTimes) do
-		at(t, function()
+	for i, t in ipairs(clip.shots) do
+		tl.at(t, function()
 			local c = small[(i - 1) % #small + 1]
 			kit.emit(c[1], {Star = 1, Shock = 1})
 			fire(c[4], false)
 		end)
 	end
-	at(8.2, function()
+	local charge
+	tl.at(7.6, function()
+		local p = main[1].Position
+		charge = kit.spawn("Charge", CFrame.lookAt(p, drag.chest()))
+		kit.rates(charge, {Gather = 120, Arcs = 20, Core = 18})
+		Tw.play(charge.Light, {Brightness = 1.2}, 0.6, QUAD, IN)
+		kit.emit(main[1], {Gust = 30, Hoops = 3})
+	end)
+	tl.at(8.2, function()
 		kit.emit(main[1], {Flash = 1, Star = 1, Shock = 2, Streak = 1, Gust = 40, Hoops = 4})
+		kit.rates(charge, {Gather = 0, Arcs = 0, Core = 0})
+		Tw.play(charge.Light, {Brightness = 0}, 0.4, QUAD, IN)
 		fire(main[1].Position, true)
-		kick(0.3)
+		gale(P(0, 1, -3), -look, {Streaks = 140, Dust = 24}, 0.4)
+		kick(0.35)
 	end)
-	at(8.3, function()
-		frames({char, drag.model}, {{"white", 0.05}, {"black", 0.05}, {"lilac", 0.04}})
+	tl.at(8.3, function()
+		task.spawn(frames, {char, drag.model}, {{"white", 0.05}, {"black", 0.05}, {"lilac", 0.04}})
 	end)
-	at(8.45, function()
+	tl.at(8.45, function()
 		whiteout(1, 0.1, 0.5)
+		grade({Exposure = 0.8}, 0.05)
+		later(0.12, function()
+			grade({Exposure = 0}, 0.8)
+		end)
+		kick(0.8)
 		blast(drag.chest(), {Flash = 1, Star = 1, Spikes = 1, Ring = 1, Ring2 = 1, Sparks = 60, Smoke = 24, Glint = 1, Rocks = 12}, 9, 4)
+		for i = 1, 8 do
+			later(0.1 * i, function()
+				blast(drag.chest(), {Sparks = 8, Smoke = 3}, 0, 2)
+			end)
+		end
 	end)
-	at(9.6, function()
+	tl.at(9.6, function()
+		local g = kit.ground(drag.chest(), char)
+		blast(g + V(0, 1, 0), {Flash = 1, Ring = 1, Smoke = 40, Rocks = 16, Sparks = 20}, 4, 6)
+		dustWave(g, 24, 24)
+		kick(0.8)
+	end)
+	tl.at(10.2, function()
 		for _, c in ipairs(small) do
 			c[3](0.3)
 		end
@@ -964,19 +1050,22 @@ function Cinema.volley(char, finish, body, clip)
 		sigilClose(0.5)
 		kit.rates(sigil, {Rise = 0, Lines = 0})
 	end)
-	at(10.3, function()
-		local p = drag.chest()
-		blast(V(p.X, floorY, p.Z), {Flash = 1, Ring = 1, Ring2 = 1, Smoke = 40, Rocks = 40, Sparks = 20}, 4, 6)
-		kick(0.8)
-	end)
-	at(11.8, function()
+	for i = 0, 4 do
+		tl.at(10.3 + i * 0.3, function()
+			blast(drag.chest() + V(0, 3, 0), {Smoke = 3, Sparks = 4}, 0, 3)
+		end)
+	end
+	tl.at(11.8, function()
 		fade(1, 0.8)
 	end)
-	at(12.6, function()
-		local list = {path, fly, drag.clear, sigilConn, sigil, main[2], main[1]}
+	tl.at(12.6, function()
+		local list = {path, fly, drag.clear, sigilConn, sigil, main[2], main[1], charge}
 		for _, c in ipairs(small) do
 			table.insert(list, c[2])
 			table.insert(list, c[1])
+		end
+		for b in pairs(bolts) do
+			table.insert(list, b)
 		end
 		handback(char, list, finish)
 	end)

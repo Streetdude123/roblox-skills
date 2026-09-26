@@ -664,83 +664,162 @@ end
 
 local BARRAGE = {}
 for i = 0, 23 do
-	table.insert(BARRAGE, 3.8 + i * 0.17)
+	table.insert(BARRAGE, 4.0 + i * 0.155)
 end
 
-local function barrageArm()
-	local keys = {
-		K(0, S.rArm),
-		K(1.6, add(S.rArm, {3, 0, 0})),
-		K(2.0, {60, 0, -5}),
-		K(2.22, add(AIM, {6, 0, 0}), V3(0, 0.05, -0.06)),
-		K(2.36, AIM, V3(0, 0.05, -0.1)),
-		K(3.7, add(AIM, {1, 0, -1}), V3(0, 0.05, -0.12)),
-	}
-	for i, t in ipairs(BARRAGE) do
-		table.insert(keys, K(t + 0.045, add(AIM, {4.5 + i % 3, 0, 0}), V3(0, 0.06, -0.05)))
-		table.insert(keys, K(t + 0.12, add(AIM, {1, 0, 0}), V3(0, 0.05, -0.1)))
-	end
-	table.insert(keys, K(8.1, add(AIM, {-2, 0, 0}), V3(0, 0.05, -0.14)))
-	table.insert(keys, K(8.26, add(AIM, {10, 0, 0}), V3(0, 0.07, 0)))
-	table.insert(keys, K(8.7, AIM, V3(0, 0.05, -0.08)))
-	table.insert(keys, K(10.4, add(AIM, {1, 0, 0}), V3(0, 0.05, -0.1)))
-	table.insert(keys, K(11.2, {58, 0, -6}))
-	table.insert(keys, K(12.0, {40, 0, -5}))
-	table.insert(keys, K(13, S.rArm))
-	return keys
+local function sway(t)
+	return 16 + 6 * math.sin(2 * math.pi * (t - 4.0) / 1.86)
 end
+
+local UP = -0.35
+
+local function volleyKeys()
+	local torso = {
+		T(0, S.torso, V3(0, 0, 0)),
+		T(0.9, {-1, 7, 0}, V3(0, 0, 0)),
+		T(1.3, {-2, 12, 1}, V3(0, -0.03, 0.03)),
+		T(1.55, {-4, -8, -1}, V3(0.02, -0.1, 0.14)),
+		T(1.85, {3, 2, 0}, V3(0, -0.02, 0.12)),
+		T(2.3, {-5, 17, -1}, V3(0, -0.12, 0.08)),
+		T(2.62, {-4, 22, -2}, V3(0, -0.1, 0.08)),
+		T(3.3, {-3, 14, 0}, V3(0, -0.11, 0.08)),
+		T(3.75, {-5, 10, 1}, V3(0, -0.12, 0.08)),
+	}
+	local head = {
+		K(0, S.head),
+		K(0.6, {-2, 4, 0}),
+		K(0.95, {6, 14, 0}),
+		K(1.35, {9, 4, 0}),
+		K(1.6, {12, 10, 1}),
+		K(2.3, {16, -12, 0}),
+		K(2.7, {18, -16, -1}),
+		K(3.35, {16, -6, 0}),
+		K(3.75, {15, -8, 0}),
+	}
+	local rArm = {
+		K(0, S.rArm),
+		K(1.0, add(S.rArm, {-3, 0, 0})),
+		K(1.55, {-30, 0, 16}),
+		K(1.9, {150, 0, 10}),
+		K(2.3, aimAt(17, UP, {7, 0, 0}), V3(0, 0.05, -0.06)),
+		K(2.45, aimAt(18, UP), V3(0, 0.05, -0.1)),
+		K(3.0, aimAt(21, UP, {2, 0, 0}), V3(0, 0.05, -0.11)),
+		K(3.7, aimAt(11, UP, {-2, 0, 0}), V3(0, 0.05, -0.08)),
+	}
+	local lArm = {
+		K(0, S.lArm),
+		K(1.0, add(S.lArm, {2, 0, -2})),
+		K(1.55, {48, 0, -14}),
+		K(1.9, {20, 0, -30}),
+		K(2.35, {34, 0, -20}),
+		K(2.95, aimAt(22, -0.25, {0, 0, 26})),
+		K(3.85, aimAt(10, -0.25, {4, 0, -28})),
+	}
+	for j, t in ipairs(BARRAGE) do
+		local yaw = sway(t)
+		local side = 26 - 52 * ((j - 1) % 12) / 11
+		table.insert(rArm, K(t + 0.035, aimAt(yaw, UP, {5 + j % 3, 0, 0}), V3(0, 0.06, -0.04)))
+		table.insert(rArm, K(t + 0.13, aimAt(yaw, UP), V3(0, 0.05, -0.1)))
+		table.insert(lArm, K(t - 0.02, aimAt(yaw, -0.25, {0, 0, side}), V3(0, 0.04, -0.06)))
+		table.insert(lArm, K(t + 0.06, aimAt(yaw, -0.25, {7, 0, side - 3}), V3(0, 0.05, -0.1)))
+		if j % 2 == 1 then
+			local drop = j < 10 and 0.13 or 0.16
+			local z = j < 10 and 0.06 or -0.12
+			table.insert(torso, T(t + 0.05, {-6 - j % 4, yaw, (j % 4 - 1.5) * 0.8}, V3(0, -drop, z)))
+			table.insert(head, K(t + 0.08, {14 + j % 3, -yaw * 0.7 + side * 0.2, 0}))
+		end
+	end
+	for _, k in ipairs({
+		T(7.8, {-6, 20, -2}, V3(0, -0.16, -0.1)),
+		T(7.97, {-2, -10, -2}, V3(0.02, -0.14, 0.02)),
+		T(8.18, {-12, 22, 1}, V3(0, -0.3, -0.36)),
+		T(8.36, {6, 18, 2}, V3(0, -0.24, 0.02)),
+		T(8.8, {-3, 17, 0}, V3(0, -0.26, -0.08)),
+		T(9.55, {-4, 15, -1}, V3(0, -0.26, -0.08)),
+		T(9.7, {-7, 15, 0}, V3(0, -0.32, -0.08)),
+		T(10.3, {-2, 12, 0}, V3(0, -0.2, -0.1)),
+		T(10.95, {-1, 8, 0}, V3(0.01, -0.1, -0.05)),
+		T(11.4, {-1, 5, 0}, V3(0, -0.03, 0)),
+		T(13, S.torso, V3(0, 0, 0)),
+	}) do
+		table.insert(torso, k)
+	end
+	for _, k in ipairs({
+		K(7.8, {14, -14, 0}),
+		K(7.97, {10, 6, 0}),
+		K(8.18, {12, -16, 0}),
+		K(8.36, {18, -14, -3}),
+		K(8.9, {6, -12, 0}),
+		K(9.55, {-2, -10, 0}),
+		K(9.7, {-6, -9, 2}),
+		K(10.4, {-3, -8, 1}),
+		K(11.4, {-4, -4, 1}),
+		K(13, S.head),
+	}) do
+		table.insert(head, k)
+	end
+	for _, k in ipairs({
+		K(7.8, aimAt(20, UP, {-2, 0, 0}), V3(0, 0.05, -0.12)),
+		K(7.97, {40, 0, 34}, V3(0, 0.04, 0.05)),
+		K(8.18, aimAt(22, -0.3, {3, 0, 0}), V3(0, 0.06, -0.24)),
+		K(8.36, aimAt(18, -0.3, {14, 0, 0}), V3(0, 0.07, 0)),
+		K(8.8, aimAt(17, -0.2, {1, 0, 0}), V3(0, 0.05, -0.1)),
+		K(9.6, aimAt(15, 0.05, {-4, 0, 0}), V3(0, 0.05, -0.1)),
+		K(10.3, {70, 0, -4}),
+		K(10.75, {-10, 0, 20}),
+		K(11.1, {150, 0, 8}),
+		K(11.45, {60, 0, -6}),
+		K(12.2, {38, 0, -5}),
+		K(13, S.rArm),
+	}) do
+		table.insert(rArm, k)
+	end
+	for _, k in ipairs({
+		K(7.8, aimAt(20, -0.25, {2, 0, -24})),
+		K(7.97, {70, 0, 20}),
+		K(8.18, {-18, 0, -32}),
+		K(8.36, {10, 0, -38}),
+		K(8.9, {34, 0, -16}),
+		K(9.7, {40, 0, -10}),
+		K(10.75, {46, 0, 8}),
+		K(11.45, {30, 0, 16}),
+		K(13, S.lArm),
+	}) do
+		table.insert(lArm, k)
+	end
+	for _, list in ipairs({torso, head, rArm, lArm}) do
+		table.sort(list, function(a, b)
+			return a.t < b.t
+		end)
+	end
+	return torso, head, rArm, lArm
+end
+
+local vTorso, vHead, vRight, vLeft = volleyKeys()
 
 Example.VolleyCine = {
 	name = "VolleyCine",
 	length = 13,
 	curve = "spline",
-	events = {notice = 0.8, raise = 2.0, circles = 2.4, fire = 3.8, big = 8.2, frames = 8.3, whiteout = 8.45, fall = 8.6, crash = 10.2, lower = 10.5, fade = 11.8, done = 12.6},
+	events = {notice = 0.95, raise = 1.9, circles = 3.0, fire = 4.0, big = 8.2, frames = 8.3, whiteout = 8.45, crash = 9.6, fade = 11.8, done = 12.6},
 	shots = BARRAGE,
 	joints = {
-		Torso = {
-			T(0, S.torso, V3(0, 0, 0)),
-			T(1.2, {-3, 5, 0}, V3(0, 0, 0.01)),
-			T(2.2, {-3, 15, -2}, V3(0, -0.01, -0.03)),
-			T(3.7, {-4, 16, -2}, V3(0, -0.02, -0.04)),
-			T(7.8, {-4, 16, -2}, V3(0, -0.02, -0.05)),
-			T(8.1, {-5, 17, -2}, V3(0, -0.03, -0.06)),
-			T(8.26, {1, 13, -1}, V3(0, 0, 0.05)),
-			T(8.7, {-1, 14, -1}, V3(0, 0, 0.01)),
-			T(10.4, {-2, 15, -2}, V3(0, -0.01, -0.02)),
-			T(11.4, {-1, 8, -1}, V3(0, 0, 0)),
-			T(13, S.torso, V3(0, 0, 0)),
-		},
-		Head = {
-			K(0, S.head),
-			K(0.8, {4, -4, 0}),
-			K(1.5, {9, -8, 0}),
-			K(2.3, {6, -12, 0}),
-			K(7.8, {6, -13, 0}),
-			K(8.26, {8, -12, -1}),
-			K(8.9, {5, -13, 0}),
-			K(9.6, {1, -11, 0}),
-			K(10.4, {-2, -10, 0}),
-			K(11.6, {-3, -6, 1}),
-			K(13, S.head),
-		},
-		["Right Arm"] = barrageArm(),
-		["Left Arm"] = {
-			K(0, S.lArm),
-			K(2.2, {24, 0, 13}),
-			K(8.1, {26, 0, 15}),
-			K(8.26, {21, 0, 11}),
-			K(10.4, {24, 0, 13}),
-			K(13, S.lArm),
-		},
+		Torso = vTorso,
+		Head = vHead,
+		["Right Arm"] = vRight,
+		["Left Arm"] = vLeft,
 		["Right Leg"] = {K(0)},
 		["Left Leg"] = {K(0)},
 		Grip = {K(0)},
 	},
-	lag = {["Left Arm"] = 0.08},
+	lag = {Head = 0.03},
 	springs = {["Left Arm"] = "follow"},
-	life = 1.3,
-	lifeRate = 0.5,
-	post = stand,
+	life = 1.1,
+	lifeRate = 0.6,
+	post = staff(Feet.post({
+		r = foot({{0, 0.5, 0.12, -6}, {1.3, 0.5, 0.12, -6}, {1.55, 0.6, 0.6, -14, 0.25}, {10.6, 0.6, 0.6, -14}, {11.0, 0.5, 0.12, -6, 0.25}}),
+		l = foot({{0, -0.5, -0.1, 8}, {5.4, -0.5, -0.1, 8}, {5.7, -0.55, -0.55, 12, 0.3}, {7.95, -0.55, -0.55, 12}, {8.18, -0.6, -1.0, 14, 0.3}, {10.9, -0.6, -1.0, 14}, {11.3, -0.5, -0.1, 8, 0.3}}),
+	})),
 }
 
 Example.FlowersCine = {

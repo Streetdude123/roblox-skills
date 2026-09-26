@@ -307,6 +307,39 @@ P.rest = merge(P.down, {
 	shoulder = {38, 0, 24},
 })
 
+P.hover = merge(P.flare, {
+	_root = {20, 0, 0},
+	hip = {35, 0, 6},
+	knee = {-40, 0, 0},
+	ankle = {35, 0, 0},
+	neck = {-1.5, 0, 0},
+	head = {8, 0, 0},
+	tail = {1.4, 0, 0.4},
+})
+
+P.hoverDown = merge(P.brake, {
+	_root = {16, 0, 0},
+	hip = {40, 0, 6},
+	knee = {-45, 0, 0},
+	ankle = {40, 0, 0},
+	neck = {-1, 0, 0},
+	head = {5, 0, 0},
+	tail = {1.8, 0, -0.4},
+})
+
+P.airHit = merge(P.hit, {
+	_root = {30, 0, -10},
+	hip = {60, 0, 10},
+	knee = {-30, 0, 0},
+	ankle = {45, 0, 0},
+})
+
+local AIR_LEGS = {_root = {18, 0, 0}, hip = {35, 0, 6}, knee = {-40, 0, 0}, ankle = {35, 0, 0}}
+
+P.airCoil = merge(P.coil, AIR_LEGS)
+P.airRoar = merge(merge(P.roar, AIR_LEGS), {shoulder = {-34, 0, 12}})
+P.airRoarHold = merge(merge(P.roarHold, AIR_LEGS), {shoulder = {-28, 0, 14}})
+
 Dragon.poses = P
 Dragon.expand = expand
 
@@ -340,6 +373,23 @@ Dragon.Hit = clip("DragonHit", 1.1, false, {
 	{0.45, P.stagger},
 	{1.1, merge(P.stagger, {knee = {-50, 0, 0}, _root = {2, 0, 10}})},
 })
+
+Dragon.Hover = clip("DragonHover", 1.0, true, {{0, P.hover}, {0.42, P.hoverDown}, {1.0, P.hover}})
+
+Dragon.AirHit = clip("DragonAirHit", 0.55, false, {
+	{0, P.hover},
+	{0.07, P.airHit},
+	{0.3, merge(P.airHit, {_root = {26, 0, -5}, neck = {-4, 0, 1.5}})},
+	{0.55, P.hover},
+})
+
+Dragon.AirRoar = clip("DragonAirRoar", 1.9, false, {
+	{0, P.hover},
+	{0.35, P.airCoil},
+	{0.55, P.airRoar},
+	{1.4, P.airRoarHold},
+	{1.9, P.hover},
+}, {events = {roar = 0.55}, life = {spine_04 = 1, neck_06 = 1.4, head = 2.2, tail_10 = 1.5, tail_20 = 2}, lifeRate = 1.6})
 
 Dragon.Down = clip("DragonDown", 1.8, false, {
 	{0, merge(P.stagger, {knee = {-50, 0, 0}, _root = {2, 0, 10}})},
