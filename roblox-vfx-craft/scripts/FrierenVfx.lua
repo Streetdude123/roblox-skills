@@ -17,13 +17,19 @@ local Frieren = {}
 local OUT, IN = Enum.EasingDirection.Out, Enum.EasingDirection.In
 local QUAD, BACK = Enum.EasingStyle.Quad, Enum.EasingStyle.Back
 
-local function at(t, fn)
-	task.delay(t * Tw.S(), fn)
+local source, queue
+local offset = 0
+
+local function now()
+	return source and source() or os.clock() / Tw.S() + offset
 end
 
-local source
-local function now()
-	return source and source() or os.clock() / Tw.S()
+local function at(t, fn)
+	if queue then
+		queue(t, fn)
+	else
+		task.delay(t * Tw.S(), fn)
+	end
 end
 
 local function spawn(name, cf)
@@ -548,18 +554,20 @@ function Frieren.flowers(char, opts)
 	local hrp = char.HumanoidRootPart
 	local rarm, larm = char["Right Arm"], char["Left Arm"]
 	local gather, release, bloomAt = 0.75, 0.75 + F.Gather, 0.75 + F.Gather + 0.35
+	local k = F.Scale or 1
+	local space = F.Space or 3.2
 
 	updraft(char, {Motes = 10, Streaks = 3, Glints = 2}, release + 0.5)
 
 	local cup, follow, charge
 	at(gather, function()
-		cup = spawn("Cup", CFrame.new((tip(rarm) + tip(larm)) / 2))
+		cup = spawn("Cup", CFrame.new((tip(rarm) + tip(larm)) / 2 + Vector3.new(0, 0.15 + (F.CupLift or 0), 0)))
 		charge = spawn("Charge", cup.CFrame)
-		rates(cup, {Core = 24, Glints = 8, Lines = 10, Motes = 16})
-		rates(charge, {Gather = 40, Arcs = 6, Core = 14})
-		Tw.play(cup.Light, {Brightness = 4}, F.Gather, QUAD, OUT)
+		rates(cup, {Core = F.Core or 24, Glints = 8, Lines = 10, Motes = 16})
+		rates(charge, {Gather = 40, Arcs = 6, Core = F.Core and F.Core * 0.6 or 14})
+		Tw.play(cup.Light, {Brightness = F.Light or 4}, F.Gather, QUAD, OUT)
 		follow = RunService.RenderStepped:Connect(function()
-			cup.CFrame = CFrame.new((tip(rarm) + tip(larm)) / 2 + Vector3.new(0, 0.15, 0))
+			cup.CFrame = CFrame.new((tip(rarm) + tip(larm)) / 2 + Vector3.new(0, 0.15 + (F.CupLift or 0), 0))
 			charge.CFrame = cup.CFrame
 		end)
 	end)
@@ -582,17 +590,23 @@ function Frieren.flowers(char, opts)
 		follow:Disconnect()
 		rates(cup, {Core = 0, Glints = 0, Lines = 0, Motes = 0})
 		rates(charge, {Gather = 0, Arcs = 0, Core = 0})
-		Debris:AddItem(charge, 1 * Tw.S())
+		at(1, function()
+			charge:Destroy()
+		end)
 		kick(0.2)
 		Tw.play(cup.Light, {Brightness = 0}, 0.4, QUAD, IN)
-		Debris:AddItem(cup, 1.8 * Tw.S())
+		at(1.8, function()
+			cup:Destroy()
+		end)
 		local rise = spawn("Rise", cup.CFrame)
 		emit(rise, {Glint = 1})
 		for b, w in pairs(beams(rise)) do
 			show(b, w, 0.15)
 			hide(b, 0.5, 0.6)
 		end
-		Debris:AddItem(rise, 1.4 * Tw.S())
+		at(1.4, function()
+			rise:Destroy()
+		end)
 	end)
 
 	local floor = hrp.Position.Y - 3
@@ -603,7 +617,7 @@ function Frieren.flowers(char, opts)
 		local x, z = hrp.Position.X + math.cos(a) * r, hrp.Position.Z + math.sin(a) * r
 		local free = true
 		for _, s in ipairs(spots) do
-			if (s[1].X - x) ^ 2 + (s[1].Z - z) ^ 2 < 3.2 then
+			if (s[1].X - x) ^ 2 + (s[1].Z - z) ^ 2 < space then
 				free = false
 				break
 			end
@@ -619,32 +633,33 @@ function Frieren.flowers(char, opts)
 
 	local shape = {}
 	for _, p in ipairs(Vfx.Flower:GetChildren()) do
-		shape[p.Name] = p.CFrame
+		shape[p.Name] = p.CFrame.Rotation + p.CFrame.Position * k
 	end
 
 	local growing, petals = {}, {}
 	local bloom = RunService.RenderStepped:Connect(function()
-		local now = os.clock()
+		local t = now()
+		local eye = workspace.CurrentCamera.CFrame.Position
 		local moved, cfs = {}, {}
 		for p, s in pairs(petals) do
-			local age = (now - s.t0) / Tw.S()
+			local age = t - s.t0
 			if age > s.life then
 				petals[p] = nil
 				p:Destroy()
 			else
 				local sway = Vector3.new(math.sin(age * s.w) * 0.6, 0, math.cos(age * s.w * 0.7) * 0.4)
 				p.CFrame = CFrame.new(s.pos + s.vel * age + sway) * CFrame.Angles(age * s.spin.X, age * s.spin.Y, age * s.spin.Z)
-				p.Transparency = math.clamp((age - s.life + 0.5) / 0.5, 0, 1)
+				p.Transparency = math.max(math.clamp((age - s.life + 0.5) / 0.5, 0, 1), 1 - math.clamp(((p.Position - eye).Magnitude - 3) / 3, 0, 1))
 			end
 		end
 		for f, g in pairs(growing) do
-			local u = math.min(1, (now - g[2]) / (g[3] * Tw.S()))
+			local u = math.min(1, (t - g[2]) / g[3])
 			local y
 			if g[4] then
-				y = -0.5 * u * u
+				y = -0.5 * k * u * u
 			else
 				local s = 1.70158
-				y = -1.5 + 1.5 * (1 + (s + 1) * (u - 1) ^ 3 + s * (u - 1) ^ 2)
+				y = (-1.5 + 1.5 * (1 + (s + 1) * (u - 1) ^ 3 + s * (u - 1) ^ 2)) * k
 			end
 			if g[4] and u >= 1 then
 				growing[f] = nil
@@ -674,17 +689,22 @@ function Frieren.flowers(char, opts)
 		at(0.25, function()
 			emit(wave, {Thin = 1})
 		end)
-		Debris:AddItem(wave, 2 * Tw.S())
+		at(2, function()
+			wave:Destroy()
+		end)
 		local pop = field.Pop
 		for n, s in ipairs(spots) do
 			at(s[2] / F.Speed, function()
 				local base = CFrame.new(s[1]) * CFrame.Angles(0, s[3], 0)
-				local f = spawn("Flower", base * CFrame.new(0, -1.5, 0))
-				growing[f] = {base, os.clock(), 0.3, false, f:GetChildren()}
-				pop.WorldPosition = s[1] + Vector3.new(0, 1.2, 0)
+				local f = spawn("Flower", base * CFrame.new(0, -1.5 * k, 0))
+				if k ~= 1 then
+					f:ScaleTo(f:GetScale() * k)
+				end
+				growing[f] = {base, now(), 0.3, false, f:GetChildren()}
+				pop.WorldPosition = s[1] + Vector3.new(0, 1.2 * k, 0)
 				emit(pop, {Specks = n % 2 == 0 and 3 or 0, Glint = 1})
 				at(F.Life, function()
-					growing[f] = {base, os.clock(), 0.8, true, f:GetChildren()}
+					growing[f] = {base, now(), 0.8, true, f:GetChildren()}
 				end)
 			end)
 		end
@@ -695,7 +715,7 @@ function Frieren.flowers(char, opts)
 				local pos = Vector3.new(hrp.Position.X + math.cos(a) * r, floor + 0.4 + math.random() * 3, hrp.Position.Z + math.sin(a) * r)
 				local p = spawn("Petal", CFrame.new(pos))
 				petals[p] = {
-					t0 = os.clock(),
+					t0 = now(),
 					pos = pos,
 					vel = Vector3.new(2.6 + math.random() * 1.4, 0.3 + math.random() * 0.6, 1.1 + math.random() * 0.9),
 					w = 2 + math.random() * 2,
@@ -735,8 +755,17 @@ Frieren.kit = {
 	flash = flash,
 	fx = fx,
 	now = now,
-	clock = function(f)
-		source = f
+	clock = function(f, q)
+		local base = now()
+		if f then
+			source = function()
+				return base + f()
+			end
+		else
+			source = nil
+			offset = base - os.clock() / Tw.S()
+		end
+		queue = q
 	end,
 }
 

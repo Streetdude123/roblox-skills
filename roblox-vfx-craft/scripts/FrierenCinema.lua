@@ -119,7 +119,7 @@ local function timeline(warps)
 		tl.added:Disconnect()
 		current = nil
 		for _, e in ipairs(tl.events) do
-			e[2]()
+			task.delay(math.max(0, e[1] - tl.t) * Tw.S(), e[2])
 		end
 		tl.events = {}
 		for rg in pairs(tl.rigs) do
@@ -136,7 +136,7 @@ local function timeline(warps)
 	current = tl
 	kit.clock(function()
 		return tl.t
-	end)
+	end, tl.after)
 	return tl
 end
 
@@ -195,21 +195,6 @@ local function shoot(origin, shots)
 		Focus.FocusDistance = shot.focus or d
 		Focus.InFocusRadius = shot.depth or math.max(3, d * 0.4)
 	end)
-end
-
-local function film(origin, shots, clock)
-	current = {t = 0, rate = 1, after = function(dt, fn)
-		kit.at(dt, fn)
-	end}
-	local conn
-	conn = RunService.RenderStepped:Connect(function()
-		if not current or current.after == nil then
-			conn:Disconnect()
-			return
-		end
-		current.t = clock()
-	end)
-	shoot(origin, shots)
 end
 
 local function screen()
@@ -1072,33 +1057,39 @@ function Cinema.volley(char, finish, body, clip)
 end
 
 function Cinema.flowers(char, finish, body, clip)
-	body:play(clip, {fadeIn = 0.2})
 	local hrp = char.HumanoidRootPart
 	local sun = Lighting:GetSunDirection()
 	local look = V(sun.X, 0, sun.Z).Unit
 	hrp.CFrame = CFrame.lookAt(hrp.Position, hrp.Position + look)
 	local origin = hrp.CFrame
-	local start = os.clock()
-	local function clock()
-		return (os.clock() - start) / Tw.S()
+	local function P(x, y, z)
+		return origin:PointToWorldSpace(V(x, y, z))
 	end
-	local at = kit.at
-	local floorY = kit.ground(hrp.Position, char).Y
-
-	local shots = {
-		{t = 0, len = 2, a = {V(-7, 1.5, 12), V(0, 3, -30), 55}, b = {V(-5, 1.8, 10), V(0, 3, -30), 52}},
-		{t = 2, len = 1, a = {V(4, 1.2, -2), V(0.8, -0.8, -1.2), 42}, b = {V(3.6, 1.3, -2.4), V(0.8, -0.6, -1.2), 40}},
-		{t = 3, len = 3.4, a = {V(0.6, 2.2, -4.2), V(0, 1, -0.8), 38}, b = {V(0.3, 2, -3.4), V(0, 1.1, -0.8), 34}},
-		{t = 6.4, len = 0.6, a = {V(2, -1.4, -3.5), V(0, 20, -2), 62}, b = {V(2, -1.2, -3.2), V(0, 24, -2), 62}},
-		{t = 7, len = 3, a = {V(0, 30, 18), V(0, -2, -6), 60}, b = {V(0, 38, 24), V(0, -2, -8), 62}},
-		{t = 10, len = 2, a = {V(3, -1.8, 6), V(0, -0.5, -12), 50}, b = {V(2.5, -1.7, 4.6), V(0, -0.4, -12), 48}},
-		{t = 12, len = 1.4, a = {V(-12, 1, 20), V(0, 0, -40), 55}, b = {V(-11, 1.4, 18), V(0, 0, -40), 54}},
-	}
-	film(origin, shots, clock)
+	local floor = kit.ground(hrp.Position, char)
+	local tl = timeline({{6.55, 6.85, 0.35}})
+	stage()
+	tl.drive(body, clip, {fadeIn = 0.15})
 
 	local staff = char.Staff
 	local grip = char["Right Arm"].Grip
-	at(2.0, function()
+	local shots = {
+		{t = 0, len = 1.9, a = {V(-5, 0.8, 9), V(1, 3, -40), 46}, b = {V(-4.2, 2.2, 7.6), V(1, 3.5, -40), 44}},
+		{t = 1.9, len = 0.8, a = {V(8.5, 1.4, -3), V(0.8, 0.2, -0.5), 42}, b = {V(8, 1.5, -3.4), V(0.8, 0.3, -0.5), 40}, drift = 0.05},
+		{t = 2.7, len = 2.2, a = {V(0.8, 0.1, -5.2), V(0, 0.5, -0.8), 38}, b = {V(0.6, 0.2, -4.6), V(0, 0.55, -0.8), 34}, drift = 0.05},
+		{t = 4.9, len = 0.8, a = {V(-4.5, 0.8, -1.2), V(0, 0.4, -0.8), 38}, b = {V(-4.2, 0.9, -1.6), V(0, 0.45, -0.8), 36, 2}, drift = 0.05},
+		{t = 5.7, len = 0.9, a = {V(2.2, -0.4, -7.5), V(0, 1.8, 0), 46}, b = {V(1.8, -0.2, -6.5), V(0, 2.6, 0), 50}},
+		{t = 6.6, len = 0.6, a = {V(0.8, 0.4, -3.5), V(0, 10, -2), 62}, b = {V(0.8, 0.4, -3.5), V(0, 14, -2), 64}},
+		{t = 7.2, len = 2.4, a = {V(-6, 8, 6), V(0, -2, -2), 55}, b = {V(-14, 26, 20), V(0, -3, -6), 60}, ease = "out"},
+		{t = 9.6, len = 1.8, a = {V(4, 0.8, 12), V(0, 1.5, -30), 42}, b = {V(3.4, 1, 10), V(0, 1.8, -30), 40}},
+		{t = 11.4, len = 2.6, a = {V(-7, 1.5, -6), V(0, 1.6, 0), 40}, b = {V(-3.4, 2.1, -8.2), V(0, 1.8, 0), 36}},
+	}
+	screen().Fade.BackgroundTransparency = 0
+	shoot(origin, shots)
+	bars(true, 0.8)
+	fade(0, 0.9)
+
+	local draft = kit.updraft(char, {Motes = 8, Streaks = 2, Glints = 2}, 12)
+	tl.at(2.0, function()
 		local g = staff.Grip.Position
 		grip.Enabled = false
 		for _, p in ipairs(staff:GetDescendants()) do
@@ -1106,19 +1097,41 @@ function Cinema.flowers(char, finish, body, clip)
 				p.Anchored = true
 			end
 		end
-		staff:PivotTo(CFrame.new(g.X, floorY + 1.6, g.Z) * CFrame.Angles(0, math.atan2(-look.X, -look.Z), math.rad(-6)))
-		blast(V(g.X, floorY, g.Z), {Smoke = 4}, 0, 2)
+		staff:PivotTo(CFrame.new(g.X, floor.Y + 1.6, g.Z) * CFrame.Angles(0, math.atan2(-look.X, -look.Z), math.rad(-6)))
+		local base = V(g.X, floor.Y, g.Z)
+		blast(base + V(0, 0.5, 0), {Glint = 1}, 2, 2)
+		local w = kit.spawn("Wave", CFrame.new(base + V(0, 0.3, 0)))
+		kit.emit(w, {Thin = 1, Star = 1})
+		cleanup(w, 2)
+		kick(0.15)
 	end)
-	at(2.85, function()
-		Vfx.flowers(char, {Gather = 3.0, Radius = 36, Near = 2.5, Speed = 11, Count = 240, Life = 9, Petals = 160})
+	tl.at(2.85, function()
+		Vfx.flowers(char, {Gather = 3.0, Radius = 42, Near = 2.5, Speed = 11, Count = 220, Life = 9, Petals = 220, Scale = 2.6, Space = 16, Light = 1.2, Core = 8, CupLift = 0.7})
 	end)
-	at(6.6, function()
+	tl.at(3.6, function()
+		kit.rates(draft, {Motes = 26, Streaks = 6, Glints = 5})
+		grade({Exposure = -0.25, Saturation = saved.saturation - 0.1}, 2)
+	end)
+	tl.at(6.6, function()
 		whiteout(0.6, 0.1, 0.8)
+		grade({Exposure = 0.5, Saturation = saved.saturation + 0.1}, 0.08)
+		later(0.2, function()
+			grade({Exposure = 0.05}, 1.5)
+		end)
+		blast(P(0, 30, -2), {Flash = 1, Star = 1, Glint = 1, Ring2 = 1}, 0, 3)
+		later(0.3, function()
+			blast(P(0, 34, -3), {Star = 1, Ring2 = 1}, 0, 3)
+		end)
+		kick(0.3)
+		kit.rates(draft, {Motes = 40, Streaks = 10, Glints = 8})
 	end)
-	at(12.6, function()
+	tl.at(8.2, function()
+		kit.rates(draft, {Motes = 14, Streaks = 3, Glints = 4})
+	end)
+	tl.at(12.6, function()
 		fade(1, 0.8)
 	end)
-	at(13.4, function()
+	tl.at(13.4, function()
 		for _, p in ipairs(staff:GetDescendants()) do
 			if p:IsA("BasePart") then
 				p.Anchored = false
