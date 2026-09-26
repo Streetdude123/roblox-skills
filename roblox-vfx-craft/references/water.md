@@ -133,6 +133,42 @@ The official tutorial builds water only from Beams and ParticleEmitters. Its num
   hit comes from behind and counts as a "drop" (the hit lands). Keep the camera behind the caster for guard tests.
 - Cost: holding the new block cost median 21.7 to 21.9 ms, p95 about 25, on an 18.7 to 19.0 ms idle (about 3 ms).
 
+## 9. What the Dragon Form rebuild proved (2026-09-26)
+
+A 20 s worn form (wings, horns, claw, tail, lance, body wraps) seen from the player camera the whole time.
+
+- A Glass membrane on a mesh wing reads as glossy white plastic under the sky (the refraction goes white). `ForceField`
+  material on the same mesh (colour 30, 130, 255, transparency 0) reads as translucent water with a bright rim. Add two
+  `Texture` overlays on the Front and Back faces (the waterfall texture 12781828706 tinted 40, 160, 255 at 0.3 and the sheen
+  streaks 10365550877 at 0.55), scrolled each frame through `OffsetStudsU/V`: the ripples stay clipped to the silhouette.
+- Map a mesh before placing effects on it: a 5 x 5 grid of coloured Neon markers over the part and one front capture give the
+  local coordinates of the root, the leading edge, the tip and the rib ends. Bright bone lines are curved FaceCamera beams
+  between attachments on those points (layers Base, Flow, Sheen, Core); drips hang on the rib ends and the scallops.
+- A ForceField part stays faintly visible near transparency 1. Parent the worn model out of the workspace while it is hidden.
+- Sprite traps: 15011478368 is a foam RING flipbook (white "o" rings when it floats in the air; keep it flat on the ground);
+  16924362907 is a 4 x 4 POP flipbook (without the flipbook settings it draws the whole 16-bubble sheet); floating bubbles
+  are 110703113355989 (Grid4x4, OneShot); the crescent 16924704235 reads as a white hook or smoke curl when it floats alone.
+- Horns from an accessory mesh: find where its base is before scaling. HornsAncient (521793597) has its curled base at the
+  front; mesh scale (0.95, 1.7, 1.9) at head offset (0, 0.6, 0.34) tilted -22 degrees puts the base in the temples. A
+  uniform 1.9 scale put both horns beside the head.
+- A water tail = the torrent chain on a follow chain: each node eases toward its parent plus the rest segment (rate 24 at
+  the root to 9 at the tip) and keeps its length. A verlet chain with velocity carry folded into loops on a fast turn; the
+  follow chain measured a 23 degree maximum bend between segments. Give the rest shape a sideways curl, or from behind it
+  reads as a pole. Two small ForceField wing meshes at the tip make a fluke.
+- He rejected full-body coverage twice: FaceCamera beams laid over each limb showed hard rectangle edges, and scrolling
+  `Texture` overlays on every limb face "covered the whole body" and cost 8 ms a frame (60 textures). What he picked:
+  wraps on chosen areas (forearms, shoulders, chest and collar) that leave the body as trailing ribbons.
+- Trailing ribbon = a static helix of beams on the limb (a carrier part welded to it) whose last attachment carries
+  `Trail` (rest direction in torso space), `Width`, `Nodes`, `Seg` and `Wave`; at run time a template part with 9 attachments
+  and 8 x 3 wired beams continues it: node 0 on that attachment with its tangent, the rest on a follow chain toward the rest
+  direction plus a sideways and a vertical wave, width swelling like a flag (1 + 0.9 sin(0.8 pi x)) (1 - 0.6 x), alpha
+  fading by x cubed. From behind, a ribbon that trails straight back points at the lens: give the rest direction a strong
+  sideways part.
+- Coils with more than about 0.7 turns per limb read as stacked rings; 0.55 to 0.6 turns read as a current along the limb.
+- Cost on his machine: beams cost about 1.5 ms a frame per 100 at `Segments` 10. Scale `Segments` with length (3 to 10),
+  drop the torrent's `Core` and `H3` strokes on a thin tail, and use three plain beams for a short jet. The final form:
+  hover median 20.5 ms, moving 22.3 ms, on a 16.6 ms idle.
+
 ## Sources
 
 - VFX Apprentice, "How to Make Water VFX and Use Properties of Water for Stylized VFX" and "How to Draw
