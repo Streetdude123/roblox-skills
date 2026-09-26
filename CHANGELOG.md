@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 (later) — R6 two-handed lance, whole-body spin, skewer throw, kit piece colours (user-authorized)
+
+- roblox-r6-animation: `references/weapons.md` gains the measured R6 two-handed spear rules (chest-centre rear hand, shaft 25 to 45 degrees across the chest, side-on torso, per-frame front-hand solve, the shaft slide); `references/project-style.md` logs his sentences and the lance combo, spin and skewer numbers and traps.
+- roblox-vfx-craft: `references/water.md` section 10 (Toolbox kit pieces in the form moves, recolour near-black meshes on water, a small see-through whirl, rise geysers from the floor); `SKILL.md` feedback log entry.
+
 ## 2026-09-26 — Parry signals, Bull Leap rebuild, smooth walks, clean ragdoll (user-authorized)
 
 - roblox-vfx-craft: attack tells (white, amber, red), parry vs block by value, wall stop for forced motion; his feedback logged.
