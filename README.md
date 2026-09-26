@@ -88,6 +88,27 @@ Package layout:
 The Lua scripts run inside Roblox Studio through an execute-Luau bridge; they
 are not covered by the Python test suite.
 
+### `roblox-sfx-synth`
+
+Creates original anime style sound effects from code: hits and punches,
+whooshes and slashes, charge ups, aura loops, summons, time stops and UI blips.
+Voice lines are not made here. The agent cannot hear, so each sound is checked
+by its numbers and a spectrogram image before the user listens.
+
+Package layout:
+
+- `SKILL.md` - the workflow, the layer model, the rules, the numbers measured
+  on the presets, reading the spectrogram, the Roblox upload limits and the
+  feedback log.
+- `references/recipes.md` - each preset's layers and the numbers to change.
+- `scripts/sfx.py` - the numpy/scipy synth and 16 presets; writes 44.1 kHz
+  mono WAV files.
+- `scripts/check.py` - peak, RMS, envelope, band energy, loop seam and a
+  spectrogram PNG.
+
+Needs `pip install -r roblox-sfx-synth/requirements.txt`. The scripts are not
+covered by the test suite.
+
 ## Using these skills in a new chat
 
 1. Make the relevant skill folder and project instructions available to the agent.

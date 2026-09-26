@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 (later) - New skill roblox-sfx-synth (user-authorized)
+
+- `roblox-sfx-synth`: a numpy/scipy synth (`scripts/sfx.py`) with 16 anime SFX presets (hits, whooshes, charge/aura/summon, UI), a checker (`scripts/check.py`) for peak, RMS, envelope, band energy, loop seam and a spectrogram PNG, `SKILL.md` with the workflow, rules and measured numbers, and `references/recipes.md`.
+
 ## 2026-09-26 — Parry signals, Bull Leap rebuild, smooth walks, clean ragdoll (user-authorized)
 
 - roblox-vfx-craft: attack tells (white, amber, red), parry vs block by value, wall stop for forced motion; his feedback logged.
