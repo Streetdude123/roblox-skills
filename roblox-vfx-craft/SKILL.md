@@ -37,12 +37,16 @@ Rules that follow from the ladder:
 2. **Write the palette and the schedule.** A `Config.Palette` (one dominant hue, one accent, a pale
    core, a dark rim), a `Config.Sparkle` list, and one `T` table of beat times that the clip, the effects,
    the camera and the sound all key off. Name the hero element of every phase. See `references/cinematic.md`.
+   Give every beat an intensity from 0 to 10 and read the curve before building: one spike on a damaging
+   move (`references/principles.md` section 5).
 3. **Block in the timing in grey first** with carriers and plain textures until the gather, the overload and
    the dissipation read (`references/principles.md`), then **build phase by phase** with the modules in
    `scripts/` (`references/modules.md`): each phase is one function that spawns into a `workspace` model,
    and `cleanup` destroys the model.
 4. **Verify in Studio** at QualityLevel 21 with a slowed `TimeScale`, phase attributes and captures
    that move the camera each time; profile the first cast for frame hitches. See `references/verification.md`.
+   Before a take goes to Lepy, run the review pass in `references/principles.md` section 8 (greyscale,
+   squint, onion skin, intensity, hitbox, colour).
 5. **Mix the sound** last, from a recording when he sends one. See `references/sound.md`.
 6. **Log his sentence** in `references/taste.md` and update the numbers here.
 
@@ -70,7 +74,17 @@ Rules that follow from the ladder:
   come from its identity (The World: time, clockwork, gold and lavender menace, stopped-time ripples),
   not from the generic sparkle set.
 
-## Principles from the style guides (short form; `references/principles.md` has the sources)
+## Principles from the style guides (short form; `references/principles.md` has the method and the sources)
+
+The six principles of the VFX Apprentice playlist (2026-09-26):
+- Gameplay first: the effect's primary edge matches the hitbox in the server code; spend brightness and contrast on rare, decisive moves (a game changer warns early, M1s stay small because many players cast them at once); anything that stays after the hit looks inert; the brightest point moves from the cause to the result.
+- Shape: each sprite carries one simple shape and together they build one silhouette; bold, crisp shapes at the leading edge and soft, dim ones in the trail; sharp first and soft after reads as a punch then a dissipation; a few big, some medium, many small pieces.
+- Value: check a greyscale capture before colour; the highest contrast sits only at the focal point (the head of a projectile, the edge of an area); three value steps (core, body, dark rim); count the additive layers over the core so it does not blow out to white.
+- Colour: at least two hues per palette with changes in hue and saturation; a small hue drift (red toward pink and orange) at near-constant saturation and value; a complementary accent is desaturated, transparent or small; about 60/30/10; energy is near white at the core and most saturated at the fringe (concentric layers stand in for a gradient map).
+- Timing: one intensity curve per effect; the main action inside the first quarter of each burst's life; the threat lives in the speed of the secondary elements (fast and roiling is danger, slow and drifting is friendly, pulses faster than a heartbeat read aggressive); layer starts staggered by 2 to 3 frames; when a pass feels weak, rebuild the curve instead of speeding it up.
+- Composition: one focal point per stage in the player's camera; symmetrical for slams and clashes, asymmetrical for dashes and projectiles; the effect follows the pose's line of action; show a pattern and break it at the focal point.
+
+The older short form (2026-09-22):
 
 - Readability first: every phase names ONE hero element that gets the brightest value, the most saturated colour and the largest size; secondaries sit a step down (`Kit.scale` 0.5 to 0.8, `LightEmission` 0.6 to 0.8). The hit point shows a flash and a ring; sparks and smoke leave it so the body stays visible.
 - Scale of importance: size, brightness, duration, camera and sound all scale with the move's tier (light hit 1 to 3 studs 0.3 s; heavy 3 to 6 studs 0.6 s with a kick; special 6 to 15 studs 1 to 2 s with a build-up; ultimate 50 to 300 studs in waves). A summon that looks like an ultimate makes the ultimate small.
@@ -801,6 +815,17 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   rocks in the floor's material. Verified from a side camera with 0 dropped frames: the column rises out of the rock ring and ends at
   the target's feet. A 14 s take after many Play sessions paged (112 dropped, a 677 ms gap); stopping and starting Play gave back
   about 100 MB and a clean 13 s take. Video water_geyser_rocks.mp4.
+- 2026-09-26: the VFX Apprentice playlist "Artistic Principles of VFX" with "these are VFX principles, right now your VFX is
+  pretty good but it can be improved if you know these principles, please analyze and research on VFX, don't just use these
+  videos just research you have to make AMAZING stunning beautiful VFX". All seven videos were read from their full captions
+  (YouTube blocked the video download, so the slides were not seen), then the Riot style guide summaries, VFX Apprentice
+  articles, realtimevfx breakdowns, the Guilty Gear Xrd GDC handout, anime framerate writing and the Creator Hub reference.
+  `references/principles.md` is rewritten around the six principles with the old rules kept. Biggest additions: the primary
+  edge sized to the hitbox, the brightness budget by move category, inert leftovers, one intensity curve per effect, the main
+  action in the first quarter of a burst, threat told by the speed of the secondary elements, three value steps and an additive
+  layer count at the core, concentric layers in place of a gradient map, the small hue drift, 60/30/10, line of action and
+  balance in the player camera, anime holds and stepped fades, and a review pass (greyscale, squint, onion skin commands).
+  Nothing was built or tested in Studio in this pass; the numbers marked "estimate" there wait for a take.
 
 ## Reference index
 
@@ -810,7 +835,7 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
 - [cinematic.md](references/cinematic.md) - the schedule pattern, clip drive, camera language, phases of the ultimate, the summon's phases.
 - [sound.md](references/sound.md) - the mix, Mirelo clips, measuring a recording, dead private audio.
 - [verification.md](references/verification.md) - quality level, capture cache, occluded Studio, phase polling, frame profiling.
-- [principles.md](references/principles.md) - the style guide and tutorial principles (readability, scale of importance, value and colour, shapes, timing, block-ins, juice) translated to Roblox properties and numbers, with sources.
+- [principles.md](references/principles.md) - the six artistic principles (gameplay, shape, value, colour, timing, composition) from the VFX Apprentice playlist and the style guides, plus juice, engine facts, block-ins and the review pass before a take, translated to Roblox properties and numbers, with sources.
 - [water.md](references/water.md) - water constructs: the four water properties, edge break-up, line/fill/shadow/foam layers, the Creator Hub waterfall numbers, mesh VFX practice, and what the Judgement's Hammer rebuild proved (framing for the player camera, a hand mesh, fractional torrent textures, camera-facing swing trails), with sources.
 
 ## Scripts

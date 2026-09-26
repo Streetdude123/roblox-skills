@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 - VFX principles from the VFX Apprentice playlist (user-authorized)
+
+- `roblox-vfx-craft`: `references/principles.md` rewritten around the six artistic principles of the VFX Apprentice playlist "Artistic Principles of VFX" (gameplay, shape, value, colour, timing, composition), read from the full captions of all seven videos, plus research past the playlist (Riot style guide summaries, VFX Apprentice articles, realtimevfx breakdowns, the Guilty Gear Xrd GDC handout, anime framerate writing, the Creator Hub reference). The earlier rules are kept. New: hitbox-sized primary edges, the brightness budget by move category, inert leftovers, intensity curves, the first-quarter rule, threat by secondary speed, value steps and additive stacking, gradient map substitutes, hue drift, 60/30/10, balance and line of action, anime holds and stepped fades, engine facts, and a review pass with tested ffmpeg commands. `SKILL.md` (workflow steps 2 and 4, the principles short form, the feedback log, the reference index) and `references/taste.md` updated.
+
 ## 2026-09-25 (later) — Water Mage block rebuilt with the water rules (user-authorized)
 
 - `roblox-vfx-craft`: `references/water.md` section 8 (centre attachments for facing sprites, rim attachments for edge spray, the Glass lens trap, white stacking, the blotchy dark partner, rim-first hit reactions for the player camera, the take camera that turns the body, the cost). `SKILL.md` feedback log and `references/taste.md` log his sentences.

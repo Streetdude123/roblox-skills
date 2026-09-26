@@ -279,3 +279,9 @@ more than a second.
   visible source in the ground: the rocks tell where the force comes from. A small cracked ring rises at the load (`Burst.bowl`
   radius 2.6, 7 rocks, a floor-coloured puff), then a wider ring bursts at the eruption (radius 4.6, 12 rocks, 8 flying debris,
   a puff) and stays after the column collapses.
+- "these are VFX principles, right now your VFX is pretty good but it can be improved if you know these principles, please analyze
+  and research on VFX, don't just use these videos just research you have to make AMAZING stunning beautiful VFX" (2026-09-26, with
+  the VFX Apprentice playlist "Artistic Principles of VFX"). The six principles (gameplay, shape, value, colour, timing,
+  composition) are the bar every effect is judged against, and research goes past the sources Lepy sends ("don't just use these
+  videos just research"). "Pretty good" is still below AMAZING. The principles are in principles.md; its review pass runs before
+  a take goes out.
