@@ -151,6 +151,9 @@ The spline removes about a quarter to a third of the parked time and roughly hal
 | BarrierHold (3.2 s loop) | 0 | 100 | 0 | 0 | 0 | 1.4 | 0 | slide 0.01, hip gap 0.00 |
 | BarrierHit (0.45 s, calm) | 0 | 21.4 | 37.5 | 1.11 | 0 | 5.1 | 0.5 | slide 0.01, hip gap 0.00; `faults.py` finds nothing |
 | Flowers (3.6 s, calm) | 0 | 15.2 | 49.5 | 0.99 | 0.54 | 7.7 | 9.5 | slide 0.01, hip gap 0.01; cupped hands 0.83 to 0.85 apart through the gather |
+| ZoltraakVolley (1.9 s, `ExampleFrieren.lua`) | 0 | 7.5 | 60.0 | 1.31 | 1.01 | 12.3 | 1.2 | slide 0.01, hip gap 0.00 |
+| CalmWalk (1.1 s loop, travel 2.4) | 0 | 0 | 4.1 | 0 | 0 | 1.2 | 16.5 | slide 0.04 and 0.05 with `--travel 2.4`, hip gap 0.00 |
+| LeanDodge (0.8 s) | 0 | 16.3 | 37.4 | 1.46 | 2.50 | 5.5 | 0.8 | slide 0.01, hip gap 0.00; `faults.py` finds nothing |
 
 Measured 2026-09-26 offline (`poser_offline.py`, `feet_check.py` on the decode, which rounds to 0.01 stud). The calm-register rows (study-frieren.md) are not held to the one-shot fight targets for still, rest and contrast: their holds follow the reference's hold share and their power is in the effect. The first numbers (Studio, rest 38.1, contrast 6.0, spread 0.7, Guard contrast 1.2, corners 0.00) came before the `Feet.lua` toe-turn fix: the turn axis pointed down the leg and turned every toe the wrong way (toe twist 127 and 143 degrees on the Cross). The fixed feet change the leg motion, so rest, contrast and spread moved.
 

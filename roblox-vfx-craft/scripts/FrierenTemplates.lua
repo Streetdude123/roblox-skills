@@ -86,17 +86,18 @@ end
 
 local circle = carrier("Circle")
 
-local function ring(name, r, n, width, color, fade, z, faceCamera, order)
+local function ring(host, name, r, n, width, color, fade, z, faceCamera, order, centre)
 	local list = {}
+	centre = centre or Vector3.zero
 	for i = 0, n - 1 do
 		local a = 2 * math.pi * i / n
 		local radial = Vector3.new(math.cos(a), math.sin(a), 0)
 		local along = Vector3.new(-math.sin(a), math.cos(a), 0)
-		list[i] = att(circle, name .. "A" .. i, flat(radial * r, along, radial))
+		list[i] = att(host, name .. "A" .. i, flat(centre + radial * r, along, radial))
 	end
 	local curve = 4 / 3 * math.tan(math.pi / (2 * n)) * r
 	for i = 0, n - 1 do
-		local b = beam(circle, name .. i, list[i], list[(i + 1) % n], {
+		local b = beam(host, name .. i, list[i], list[(i + 1) % n], {
 			Width0 = width,
 			Width1 = width,
 			CurveSize0 = curve,
@@ -113,12 +114,12 @@ local function ring(name, r, n, width, color, fade, z, faceCamera, order)
 	end
 end
 
-local function spoke(name, a, r0, r1, width, color, fade, order)
+local function spoke(host, name, a, r0, r1, width, color, fade, order)
 	local radial = Vector3.new(math.cos(a), math.sin(a), 0)
 	local side = Vector3.new(-math.sin(a), math.cos(a), 0)
-	local p0 = att(circle, name .. "A", flat(radial * r0, radial, side))
-	local p1 = att(circle, name .. "B", flat(radial * r1, radial, side))
-	local b = beam(circle, name, p0, p1, {
+	local p0 = att(host, name .. "A", flat(radial * r0, radial, side))
+	local p1 = att(host, name .. "B", flat(radial * r1, radial, side))
+	local b = beam(host, name, p0, p1, {
 		Width0 = width,
 		Width1 = width,
 		Segments = 1,
@@ -132,45 +133,21 @@ local function spoke(name, a, r0, r1, width, color, fade, order)
 	b:SetAttribute("Order", order)
 end
 
-ring("Outer", 3, 16, 0.1, P.white, 0, 2, true, 0)
-ring("Band", 2.78, 16, 0.44, P.lavender, 0.72, 0, false, 0.1)
-ring("Inner", 2.55, 16, 0.07, P.lilac, 0.05, 2, true, 0.2)
-ring("Mid", 1.35, 12, 0.06, P.white, 0, 2, true, 0.35)
-ring("Core", 0.45, 8, 0.05, P.white, 0, 2, true, 0.5)
+ring(circle, "Outer", 3, 16, 0.1, P.white, 0, 2, true, 0)
+ring(circle, "Band", 2.78, 16, 0.44, P.lavender, 0.72, 0, false, 0.1)
+ring(circle, "Inner", 2.55, 16, 0.07, P.lilac, 0.05, 2, true, 0.2)
+ring(circle, "Mid", 1.35, 12, 0.06, P.white, 0, 2, true, 0.35)
+ring(circle, "Core", 0.45, 8, 0.05, P.white, 0, 2, true, 0.5)
 for i = 0, 7 do
-	spoke("Spoke" .. i, (i + 0.5) * math.pi / 4, 0.45, 2.55, 0.04, P.lilac, 0.15, 0.4 + i * 0.02)
+	spoke(circle, "Spoke" .. i, (i + 0.5) * math.pi / 4, 0.45, 2.55, 0.04, P.lilac, 0.15, 0.4 + i * 0.02)
 end
 local runes = {0.18, 0.3, 0.12, 0.24, 0.3, 0.1}
 for i = 0, 35 do
-	spoke("Rune" .. i, i * math.pi / 18, 2.61, 2.61 + runes[i % #runes + 1], 0.05, P.white, 0.1, 0.3 + 0.4 * i / 36)
+	spoke(circle, "Rune" .. i, i * math.pi / 18, 2.61, 2.61 + runes[i % #runes + 1], 0.05, P.white, 0.1, 0.3 + 0.4 * i / 36)
 end
 for k = 0, 7 do
 	local a = k * math.pi / 4
-	local c = Vector3.new(math.cos(a), math.sin(a), 0) * 1.95
-	local list = {}
-	for i = 0, 5 do
-		local u = 2 * math.pi * i / 6
-		local radial = Vector3.new(math.cos(u), math.sin(u), 0)
-		local along = Vector3.new(-math.sin(u), math.cos(u), 0)
-		list[i] = att(circle, "Knot" .. k .. "A" .. i, flat(c + radial * 0.28, along, radial))
-	end
-	local curve = 4 / 3 * math.tan(math.pi / 12) * 0.28
-	for i = 0, 5 do
-		local b = beam(circle, "Knot" .. k .. "_" .. i, list[i], list[(i + 1) % 6], {
-			Width0 = 0.04,
-			Width1 = 0.04,
-			CurveSize0 = curve,
-			CurveSize1 = curve,
-			Segments = 3,
-			FaceCamera = true,
-			Color = ColorSequence.new(P.lilac),
-			Transparency = NumberSequence.new(0.1),
-			LightEmission = 1,
-			ZOffset = 1,
-			Enabled = false,
-		})
-		b:SetAttribute("Order", 0.55 + 0.05 * k)
-	end
+	ring(circle, "Knot" .. k .. "_", 0.28, 6, 0.04, P.lilac, 0.1, 1, true, 0.55 + 0.05 * k, Vector3.new(math.cos(a), math.sin(a), 0) * 1.95)
 end
 emitter(circle, "Flash", {
 	Texture = TEX.glow,
@@ -193,6 +170,30 @@ emitter(circle, "Glint", {
 	LockedToPart = true,
 	LightEmission = 1,
 	ZOffset = 4,
+})
+emitter(circle, "Gust", {
+	Texture = TEX.spark,
+	Color = ColorSequence.new(P.white),
+	Size = seq({{0, 0.12}, {1, 0.05}}),
+	Squash = seq({{0, 2.5}, {1, 2.5}}),
+	Transparency = seq({{0, 0.1}, {1, 1}}),
+	Lifetime = NumberRange.new(0.2, 0.3),
+	Speed = NumberRange.new(40, 60),
+	SpreadAngle = Vector2.new(25, 25),
+	EmissionDirection = Enum.NormalId.Back,
+	Orientation = Enum.ParticleOrientation.VelocityParallel,
+	LightEmission = 1,
+})
+emitter(circle, "Hoops", {
+	Texture = TEX.ring,
+	Color = ColorSequence.new(P.white, P.lilac),
+	Size = seq({{0, 1.4}, {1, 3.2}}),
+	Transparency = seq({{0, 0.2}, {1, 1}}),
+	Lifetime = NumberRange.new(0.35),
+	Speed = NumberRange.new(8, 20),
+	EmissionDirection = Enum.NormalId.Front,
+	Orientation = Enum.ParticleOrientation.VelocityPerpendicular,
+	LightEmission = 1,
 })
 emitter(circle, "Specks", {
 	Texture = TEX.specs,
@@ -310,6 +311,98 @@ emitter(hit, "Debris", {
 	LightEmission = 0,
 })
 new("PointLight", hit, {Name = "Light", Color = P.lilac, Brightness = 0, Range = 14, Shadows = false})
+
+local burst = carrier("Burst")
+for i = 1, 12 do
+	local y = 1 - 2 * (i - 0.5) / 12
+	local r = math.sqrt(1 - y * y)
+	local a = i * 2.39996
+	local dir = Vector3.new(math.cos(a) * r, y, math.sin(a) * r)
+	local len = 1.6 + (i % 4) * 0.5
+	local b = beam(burst, "Spike" .. i, att(burst, "In" .. i, CFrame.new(dir * 0.3)), att(burst, "Out" .. i, CFrame.new(dir * len)), {
+		Width0 = 0.16,
+		Width1 = 0,
+		Segments = 1,
+		FaceCamera = true,
+		Color = ColorSequence.new(P.white),
+		Transparency = NumberSequence.new(0),
+		LightEmission = 1,
+		ZOffset = 3,
+		Enabled = false,
+	})
+	b:SetAttribute("Width", 0.16)
+end
+
+local small = carrier("SmallCircle")
+ring(small, "Outer", 1.1, 12, 0.06, P.white, 0, 2, true, 0)
+ring(small, "Inner", 0.85, 12, 0.04, P.lilac, 0.05, 2, true, 0.25)
+ring(small, "Core", 0.3, 6, 0.04, P.white, 0, 2, true, 0.5)
+for i = 0, 5 do
+	spoke(small, "Spoke" .. i, (i + 0.5) * math.pi / 3, 0.3, 0.85, 0.03, P.lilac, 0.15, 0.4 + i * 0.03)
+end
+for i = 0, 15 do
+	spoke(small, "Rune" .. i, i * math.pi / 8, 0.9, 0.9 + runes[i % #runes + 1] * 0.5, 0.035, P.white, 0.1, 0.3 + 0.4 * i / 16)
+end
+emitter(small, "Flash", {
+	Texture = TEX.glow,
+	Color = ColorSequence.new(P.white, P.lilac),
+	Size = seq({{0, 1}, {0.3, 3}, {1, 0}}),
+	Lifetime = NumberRange.new(0.1),
+	Speed = NumberRange.new(0),
+	LockedToPart = true,
+	LightEmission = 1,
+	ZOffset = 3,
+})
+emitter(small, "Glint", {
+	Texture = TEX.star,
+	Color = ColorSequence.new(P.white),
+	Size = seq({{0, 0}, {0.2, 1.6}, {1, 0}}),
+	Lifetime = NumberRange.new(0.14),
+	Speed = NumberRange.new(0),
+	LockedToPart = true,
+	LightEmission = 1,
+	ZOffset = 4,
+})
+
+local bolt = carrier("Bolt")
+local head, tail = att(bolt, "Head", CFrame.new()), att(bolt, "Tail", CFrame.new(0, 0, 5))
+for _, l in ipairs({{"Shell", 1.1, P.lilac, 0.35, 0}, {"Body", 0.7, P.white, 0, 1}}) do
+	local b = beam(bolt, l[1], head, tail, {
+		Width0 = l[2],
+		Width1 = 0,
+		Segments = 1,
+		FaceCamera = true,
+		Color = ColorSequence.new(l[3]),
+		Transparency = seq({{0, l[4]}, {0.7, (1 + l[4]) / 2}, {1, 1}}),
+		LightEmission = 1,
+		ZOffset = l[5],
+	})
+	b:SetAttribute("Width", l[2])
+end
+emitter(bolt, "Glow", {
+	Texture = TEX.glow,
+	Color = ColorSequence.new(P.white, P.lilac),
+	Size = seq({{0, 1.3}, {1, 1}}),
+	Transparency = seq({{0, 0.1}, {1, 1}}),
+	Lifetime = NumberRange.new(0.08),
+	Speed = NumberRange.new(0),
+	LockedToPart = true,
+	LightEmission = 1,
+	ZOffset = 2,
+})
+emitter(bolt, "Dashes", {
+	Texture = TEX.spark,
+	Color = ColorSequence.new(P.white),
+	Size = seq({{0, 0.08}, {1, 0.03}}),
+	Squash = seq({{0, 2.5}, {1, 2.5}}),
+	Transparency = seq({{0, 0.2}, {1, 1}}),
+	Lifetime = NumberRange.new(0.12, 0.2),
+	Speed = NumberRange.new(4, 10),
+	SpreadAngle = Vector2.new(30, 30),
+	EmissionDirection = Enum.NormalId.Back,
+	Orientation = Enum.ParticleOrientation.VelocityParallel,
+	LightEmission = 1,
+})
 
 local pillars = carrier("Pillars")
 local spots = {{0.3, 2.2, 7}, {1.1, 3.1, 5}, {1.9, 1.7, 9}, {2.6, 2.8, 6}, {3.3, 3.4, 8}, {4.0, 2.0, 4.5}, {4.7, 3.0, 7.5}, {5.5, 2.4, 6}, {6.0, 3.6, 5}, {2.2, 1.6, 8.5}}
@@ -619,12 +712,25 @@ for k, b in ipairs({{0, 0, 0.7, 0}, {0.35, 0.2, 0.5, 1.2}, {-0.25, 0.3, 0.6, 2.5
 	stems[k] = stem
 	for i = 0, 4 do
 		local a = turn + i * 2 * math.pi / 5
-		piece("Petal" .. k .. i, Vector3.new(0.3, 0.05, 0.16), CFrame.new(x, h + 0.02, z) * CFrame.Angles(0, a, 0) * CFrame.new(0.13, 0, 0) * CFrame.Angles(0, 0, math.rad(22)), P.petal, true)
+		piece("Petal" .. k .. i, Vector3.new(0.28, 0.05, 0.22), CFrame.new(x, h + 0.02, z) * CFrame.Angles(0, a, 0) * CFrame.new(0.12, 0, 0) * CFrame.Angles(0, 0, math.rad(20)), P.petal, true)
 	end
 	piece("Heart" .. k, Vector3.new(0.1, 0.1, 0.1), CFrame.new(x, h + 0.04, z), P.heart, true)
 end
 flower.PrimaryPart = stems[1]
 flower.WorldPivot = CFrame.new()
+
+local petal = new("Part", vfx, {
+	Name = "Petal",
+	Anchored = true,
+	CanCollide = false,
+	CanQuery = false,
+	CanTouch = false,
+	CastShadow = false,
+	Material = Enum.Material.SmoothPlastic,
+	Color = P.drift,
+	Size = Vector3.new(0.34, 0.03, 0.22),
+})
+new("SpecialMesh", petal, {MeshType = Enum.MeshType.Sphere})
 
 local gui = StarterGui:FindFirstChild("FrierenFlash")
 if gui then

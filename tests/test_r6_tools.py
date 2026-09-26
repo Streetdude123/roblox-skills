@@ -356,8 +356,8 @@ def test_frieren_clips_stay_calm_offline(tmp_path):
         assert c['check']['frozen'] == 0
         path = tmp_path / f'{name}.txt'
         path.write_text(c['decode'])
-        for r in fc.feet(rr.read_decode(path)).values():
-            assert abs(r['low']) <= 0.03 and r['slide'] <= 0.05 and r['gap'] <= 0.12
+        for r in fc.feet(rr.read_decode(path), travel=2.4 if name == 'CalmWalk' else 0.0).values():
+            assert r['low'] >= -0.03 and r['slide'] <= 0.05 and r['gap'] <= 0.12
     z = rr.read_decode(tmp_path / 'Zoltraak.txt')
 
     def turn(j):

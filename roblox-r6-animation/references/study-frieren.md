@@ -28,6 +28,11 @@ Clips from Sakugabooru (`https://www.sakugabooru.com/post.json?tags=sousou_no_fr
 | 248169, 251830 | Tatsuzou Nishita, Toru Iwazawa, character acting and fighting | action timing |
 | 251534 | Vercreek | beams, debris, the effect-lit silhouettes |
 | 249521 | Kouki Fujimoto | light lines, hex panels, cel smoke |
+| 238364, 238344, 238347, 238348 | episode 2 | the flower field, Fern's practice Zoltraak, the release wind, the walk through flowers |
+| 239499, 250896 | episode 6, Toru Iwazawa | the walk up to the dragon, the dragon fight |
+| 241286, 241279 | episode 9, Kouki Fujimoto | Fern's volley |
+| 241864 | episode 10, Tatsuzou Nishita | Frieren's mana release |
+| 243008 | episode 12 | Stark against the wolves |
 
 Articles (read through a page fetch; the quotes are as the fetch returned them):
 
@@ -52,6 +57,22 @@ Articles (read through a page fetch; the quotes are as the fetch returned them):
 | 248169 | action and acting | 70.0 | 14.8 | 4.1 | 11.1 | | | |
 | 251830 | action | 40.5 | 9.9 | 17.4 | 32.2 | | | |
 
+A second pass (2026-09-26) sheeted 14 more cuts:
+
+| Clip | Kind | Ones | Twos | Threes | 4+ | Hold median | Hold p90 | Longest |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 238364 | ep 2 flower field and acting | 19.7 | 14.8 | 49.1 | 16.4 | 0.17 s | 1.17 s | 2.75 s |
+| 238344 | ep 2 Fern practising Zoltraak, hair in the wind | 10.2 | 32.3 | 46.4 | 11.1 | 2.63 s | 3.13 s | 3.25 s |
+| 238348 | ep 2 walk through flowers | 0 | 0 | 55.6 | 44.4 | 3.00 s | | 3.00 s |
+| 239499 | ep 6 the walk up to the dragon | 25.6 | 4.3 | 50.2 | 19.9 | 0.58 s | 2.06 s | 2.75 s |
+| 250896 | ep 6 the dragon fight | 54.3 | 36.3 | 5.2 | 4.2 | 0.17 s | 0.78 s | 2.09 s |
+| 241286 | ep 9 Fern against Lügner | 41.0 | 25.1 | 10.7 | 23.2 | 0.48 s | 2.57 s | 3.88 s |
+| 241279 | ep 9 Fern's volley | 45.6 | 32.2 | 4.3 | 18.0 | 0.25 s | 0.71 s | 0.83 s |
+| 243008 | ep 12 Stark against the wolves | 32.8 | 36.1 | 12.7 | 18.4 | 0.50 s | 2.13 s | 2.50 s |
+| 241864 | ep 10 Frieren's mana release | 91.8 | 3.1 | 1.0 | 4.0 | | | |
+
+The walks and the practice cut sit on threes (46 to 56%); the fights move to ones and twos (twos 25 to 36%) but keep holds of 0.25 to 0.5 s; 241864 reads as ones because the camera and the effects never stop, while the face in it holds.
+
 Camera moves and effects count as new drawings, so the ones in the action rows are partly camera. The acting rows are the point: 31 to 63% of acting screen time is a held drawing, a typical hold lasts 0.3 to 1.2 s, and the movement between holds is mostly on twos and threes. In a held drawing the hair and the effects often keep moving under the 1.2 threshold.
 
 ## The style in six rules
@@ -62,6 +83,13 @@ Camera moves and effects count as new drawings, so the ones in the action rows a
 4. **The effect carries the power.** In the finisher the only body action is the staff raise (0.21 s); the circle, the firing line, the impact frames and the white-out do the rest. In the barrier clip (262048) the body does not react at all: the cells form where the hits land.
 5. **Weight and scale in fights.** "Weighty walk builds up tension", then the scale is betrayed by a spectacular set piece.
 6. **Light tells the beat.** Scenes take the spell's colour and characters drop to silhouettes (251534: blue-black figures under the red beam; violet and red scenes in episode 25); that part lives in the VFX study.
+
+### What the second pass showed
+
+- **The weighty walk** (239499, 8.8 to 11.8 s): two steps about 0.4 s apart, then the feet plant and the body holds 2.2 s facing the dragon. The tension is the stop, not the walk.
+- **The release throws the hair** (238347, 16 to 21 s): at Fern's cast the circle stands behind her, leaves fly past, the hair is thrown straight back, then a white-out. The body holds.
+- **Fern's volley** (241286, 2.03 to 3.95 s at 12 fps): the staff holds still; circles appear round it one after another (3 within 0.34 s of the first, 5 by 0.92 s); a fat white bolt leaves each circle; 4 bolts are in the air at once by 1.0 s; no visible recoil.
+- **Hair on threes over a still body** (238344, 7 to 14 s): Fern from behind, the body still, only the hair moving.
 
 ## The cast beat, measured
 
@@ -111,6 +139,19 @@ Six clips on one calm stand (upright, feet 0.2 apart in depth, the right arm rel
 - **Barrier** (raise 0.3): the reference shows no gesture, so the raise is small: the right hand comes forward and down (the staff line) in 0.18 s. The cells are the read. The hit reaction is 5 degrees on the hand and 3 on the torso, back in 0.45 s.
 - **Flowers** (gather 0.75, release 1.9, bloom 2.25): the head looks down first (0.15), the hands cup in 0.5 s, the gather hold rises 4 degrees and 0.06 studs while the head follows the light, the release opens the hands outward over 0.4 s, the head lifts with the light, then turns across the field. Rounds: the first cup (44 and 56 degrees forward, 40 and 34 in) left the hands 1.67 apart at hip height; a search over arm angles (FK on the renderer) found 62/-80 and 68/92, 0.83 apart at the navel, which is the highest a straight R6 arm reaches the centre line; the gather drift first opened the hands to 1.15 until the drift also turned them in (4 and 10 degrees). The first release (open hands in front) twinned for 0.4 s; the release now spreads the arms outward with the left arriving 0.06 s later.
 - Runtime (`poser_offline.py --runtime`): CalmIdle, BarrierRaise then BarrierHold, a BarrierHit at 2.0 back into BarrierHold, and CalmIdle again; CalmIdle, Zoltraak, CalmIdle, Flowers, CalmIdle. Feet slide 0.01, hip gap 0.00 to 0.01 across both chains.
+
+Second round (the fight register and a walk, same checks):
+
+| Clip | frozen% | still% | longest still | rest% | contrast | range torso, rArm, lArm | feet |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| ZoltraakVolley (1.9 s) | 0 | 7.5 | 0.10 s | 60.0 | 12.3 | 13, 107, 10 | slide 0.01, gap 0.00 |
+| CalmWalk (1.1 s loop, travel 2.4 studs/s) | 0 | 0 | loop | 4.1 | 1.2 | 6, 24, 24 | slide 0.04 and 0.05 at travel 2.4, sole lifts 0.23 |
+| LeanDodge (0.8 s) | 0 | 16.3 | 0.13 s | 37.4 | 5.5 | 16, 28, 26 | slide 0.01, gap 0.00; `faults.py` finds nothing |
+
+- **ZoltraakVolley** (events circle 0.15 and shots at 0.35, 0.53, 0.71, 0.89 and 1.07, the schedule of `FrierenVfx.volley`): the arm snaps onto the aim in 0.15 s with an 8 degree overshoot and settles by 0.24 s; each shot kicks it 5.5 to 7.5 degrees up for 0.05 s; the torso and the free arm hold; the arm lowers from 1.3 s. The first raise at 0.1 s flagged as the fastest thing in the clip by far (1937 against 101), so it was slowed to 0.15 s.
+- **CalmWalk**: small steps for a slow, even walk (the ep 2 walk sits on threes): 60% stance, feet 0.42 from the centre with the toes 4 degrees out, 0.22 lift, arms 12 degrees each way, a 3 degree shoulder counter-turn with the head countering it, the hips dropped by exactly the reach each planted foot needs (up to 0.16). Round 1 slid the feet 0.13 and 0.14: the swing foot reached the floor at zero speed in root space, which is moving at the travel speed in the world; the swing now keeps the world speed at zero at both ends (the root-space speed equals the travel there). It is keyed for 2.4 studs/s; a faster WalkSpeed needs the clip sped up by the same ratio or longer steps.
+- **LeanDodge** (clear 0.1): the calm answer to a hit: the feet stay, the torso leans 14 degrees aside and drops 0.16 in 0.1 s, the head stays level on the target, the arms open for balance, and the body returns over 0.46 s.
+- Runtime: CalmIdle, ZoltraakVolley then CalmIdle, LeanDodge then CalmIdle: slide 0.01, hip gap 0.00.
 
 Unverified: the clips have not been played in Studio or seen next to the effects; the box preview is not the game.
 

@@ -12,8 +12,9 @@ Config.Palette = {
 	shade = Color3.fromRGB(127, 158, 159),
 	mint = Color3.fromRGB(232, 239, 235),
 	sage = Color3.fromRGB(176, 189, 155),
-	petal = Color3.fromRGB(128, 170, 240),
-	heart = Color3.fromRGB(246, 240, 205),
+	petal = Color3.fromRGB(168, 177, 229),
+	heart = Color3.fromRGB(209, 194, 216),
+	drift = Color3.fromRGB(125, 152, 214),
 	stem = Color3.fromRGB(96, 140, 88),
 	smoke = Color3.fromRGB(196, 196, 206),
 	smokeDark = Color3.fromRGB(128, 126, 142),
@@ -29,6 +30,16 @@ Config.Zoltraak = {
 	Range = 120,
 	Width = 1,
 	Flash = true,
+}
+
+Config.Volley = {
+	Count = 5,
+	Gap = 0.18,
+	Delay = 0.2,
+	Speed = 160,
+	Range = 120,
+	Spread = 1.6,
+	Ahead = 1.2,
 }
 
 Config.Barrier = {
@@ -47,6 +58,7 @@ Config.Flowers = {
 	Near = 2.5,
 	Speed = 14,
 	Count = 110,
+	Petals = 36,
 	Life = 7,
 }
 

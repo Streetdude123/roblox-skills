@@ -86,6 +86,56 @@ local function tip(arm)
 	return (arm.CFrame * CFrame.new(0, -1, 0)).Position
 end
 
+local function grow(c, k, dur, draw, fast)
+	local base = c.CFrame
+	local parts = beams(c)
+	local spots = {}
+	for _, a in ipairs(c:GetChildren()) do
+		if a:IsA("Attachment") then
+			spots[a] = a.Position
+		end
+	end
+	local start = os.clock()
+	local spin, done = 0, false
+	local conn = RunService.RenderStepped:Connect(function(dt)
+		local e = (os.clock() - start) / Tw.S()
+		local u = math.min(1, e / dur)
+		local ease = 1 - (1 - u) ^ 4
+		spin += dt / Tw.S() * (1.2 + fast * (1 - ease))
+		c.CFrame = base * CFrame.Angles(0, 0, spin)
+		if done then
+			return
+		end
+		local s = k * (0.35 + 0.65 * ease)
+		for a, p in pairs(spots) do
+			a.Position = p * s
+		end
+		for b, w in pairs(parts) do
+			if b.Enabled or b:GetAttribute("Order") <= e / draw then
+				b.Enabled = true
+				b.Width0, b.Width1 = w[1] * s, w[2] * s
+				b.CurveSize0, b.CurveSize1 = w[3] * s, w[4] * s
+			end
+		end
+		done = u >= 1
+	end)
+	return conn, parts
+end
+
+local function spikes(pos, k)
+	local s = spawn("Burst", CFrame.new(pos) * CFrame.Angles(math.random() * 6.28, math.random() * 6.28, 0))
+	for _, a in ipairs(s:GetChildren()) do
+		if a:IsA("Attachment") then
+			a.Position *= k
+		end
+	end
+	for b, w in pairs(beams(s)) do
+		show(b, {w[1] * k, 0}, 0.03)
+		hide(b, 0.12, 0.05)
+	end
+	Debris:AddItem(s, 0.4 * Tw.S())
+end
+
 local function updraft(char, list, stop)
 	local d = spawn("Updraft", char.HumanoidRootPart.CFrame * CFrame.new(0, -2.8, 0))
 	rates(d, list)
@@ -124,38 +174,7 @@ function Frieren.zoltraak(char)
 		local center = tip(char["Right Arm"]) + look * Z.Ahead
 		base = CFrame.lookAt(center, center + look)
 		circle = spawn("Circle", base)
-		parts = beams(circle)
-		local spots = {}
-		for _, a in ipairs(circle:GetChildren()) do
-			if a:IsA("Attachment") then
-				spots[a] = a.Position
-			end
-		end
-		local k = Z.Radius / 3
-		local start = os.clock()
-		local spin, grown = 0, false
-		conn = RunService.RenderStepped:Connect(function(dt)
-			local e = (os.clock() - start) / Tw.S()
-			local u = math.min(1, e / Z.Circle)
-			local ease = 1 - (1 - u) ^ 4
-			spin += dt / Tw.S() * (1.2 + 5 * (1 - ease))
-			circle.CFrame = base * CFrame.Angles(0, 0, spin)
-			if grown then
-				return
-			end
-			local s = k * (0.35 + 0.65 * ease)
-			for a, p in pairs(spots) do
-				a.Position = p * s
-			end
-			for b, w in pairs(parts) do
-				if b.Enabled or b:GetAttribute("Order") <= e / 0.3 then
-					b.Enabled = true
-					b.Width0, b.Width1 = w[1] * s, w[2] * s
-					b.CurveSize0, b.CurveSize1 = w[3] * s, w[4] * s
-				end
-			end
-			grown = u >= 1
-		end)
+		conn, parts = grow(circle, Z.Radius / 3, Z.Circle, 0.3, 5)
 	end)
 
 	at(fire, function()
@@ -172,7 +191,7 @@ function Frieren.zoltraak(char)
 
 		at(Z.Line, function()
 			hide(line.Line, 0.05)
-			emit(circle, {Flash = 1, Glint = 1, Specks = 24})
+			emit(circle, {Flash = 1, Glint = 1, Specks = 24, Gust = 30, Hoops = 3})
 			if Z.Flash then
 				flash()
 			end
@@ -192,6 +211,7 @@ function Frieren.zoltraak(char)
 			if hit then
 				emit(h, {Debris = 12})
 			end
+			spikes(finish, 1.4)
 			h.Light.Brightness = 3
 			Tw.play(h.Light, {Brightness = 0}, Z.Hold + 0.3, QUAD, IN)
 			for i = 1, math.floor(Z.Hold / 0.12) do
@@ -216,6 +236,72 @@ function Frieren.zoltraak(char)
 	return stop + 0.35
 end
 
+function Frieren.volley(char)
+	local V = Config.Volley
+	local hrp = char.HumanoidRootPart
+	local look = (hrp.CFrame.LookVector * Vector3.new(1, 0, 1)).Unit
+	local right = look:Cross(Vector3.yAxis)
+	local bolts = {}
+	local fly = RunService.RenderStepped:Connect(function(dt)
+		for b, s in pairs(bolts) do
+			local step = look * V.Speed * dt / Tw.S()
+			local hit = ray(s.pos, step, char)
+			if hit or (s.pos - s.from).Magnitude > V.Range then
+				bolts[b] = nil
+				local spot = hit and hit.Position or s.pos
+				local h = spawn("Hit", CFrame.new(spot))
+				emit(h, {Flash = 1, Glint = 1, Ring = 1, Sparks = 10, Smoke = hit and 4 or 0, Debris = hit and 5 or 0})
+				h.Light.Brightness = 2
+				Tw.play(h.Light, {Brightness = 0}, 0.3, QUAD, IN)
+				Debris:AddItem(h, 1.3 * Tw.S())
+				spikes(spot, 0.8)
+				rates(b, {Glow = 0, Dashes = 0})
+				for beam in pairs(beams(b)) do
+					hide(beam, 0.06)
+				end
+				Debris:AddItem(b, 0.3 * Tw.S())
+			else
+				s.pos += step
+				b.CFrame = CFrame.lookAt(s.pos, s.pos + look)
+			end
+		end
+	end)
+
+	local start = 0.15
+	local last = start + (V.Count - 1) * V.Gap + V.Delay
+	for k = 0, V.Count - 1 do
+		at(start + k * V.Gap, function()
+			local off = Vector3.zero
+			if k > 0 then
+				local a = (k - 1) * 2 * math.pi / (V.Count - 1) + math.pi / 2
+				off = (right * math.cos(a) + Vector3.yAxis * math.sin(a)) * V.Spread
+			end
+			local center = tip(char["Right Arm"]) + look * V.Ahead + off
+			local c = spawn("SmallCircle", CFrame.lookAt(center, center + look))
+			local conn, parts = grow(c, 1, 0.18, 0.1, 4)
+			at(V.Delay, function()
+				emit(c, {Flash = 1, Glint = 1})
+				local b = spawn("Bolt", CFrame.lookAt(center, center + look))
+				rates(b, {Glow = 60, Dashes = 40})
+				bolts[b] = {pos = center, from = center}
+			end)
+			at(last - start - k * V.Gap + 0.35, function()
+				for b in pairs(parts) do
+					hide(b, 0.25)
+				end
+				at(0.3, function()
+					conn:Disconnect()
+					c:Destroy()
+				end)
+			end)
+		end)
+	end
+	at(last + V.Range / V.Speed + 0.2, function()
+		fly:Disconnect()
+	end)
+	return last + V.Range / V.Speed + 0.2
+end
+
 function Frieren.barrier(char)
 	local B = Config.Barrier
 	local hrp = char.HumanoidRootPart
@@ -228,7 +314,7 @@ function Frieren.barrier(char)
 	end)
 
 	local function place(dir, q, r)
-		local right = Vector3.yAxis:Cross(dir).Unit
+		local right = (math.abs(dir.Y) > 0.95 and Vector3.zAxis or Vector3.yAxis):Cross(dir).Unit
 		local up = dir:Cross(right)
 		local s = B.Cell * B.Gap
 		local x = 1.5 * s * q
@@ -386,9 +472,20 @@ function Frieren.flowers(char)
 		end
 	end
 
-	local growing = {}
-	local grow = RunService.RenderStepped:Connect(function()
+	local growing, petals = {}, {}
+	local bloom = RunService.RenderStepped:Connect(function()
 		local now = os.clock()
+		for p, s in pairs(petals) do
+			local age = (now - s.t0) / Tw.S()
+			if age > s.life then
+				petals[p] = nil
+				p:Destroy()
+			else
+				local sway = Vector3.new(math.sin(age * s.w) * 0.6, 0, math.cos(age * s.w * 0.7) * 0.4)
+				p.CFrame = CFrame.new(s.pos + s.vel * age + sway) * CFrame.Angles(age * s.spin.X, age * s.spin.Y, age * s.spin.Z)
+				p.Transparency = math.clamp((age - s.life + 0.5) / 0.5, 0, 1)
+			end
+		end
 		for f, g in pairs(growing) do
 			local u = math.min(1, (now - g[2]) / (g[3] * Tw.S()))
 			local y
@@ -429,12 +526,28 @@ function Frieren.flowers(char)
 				end)
 			end)
 		end
+		for _ = 1, F.Petals do
+			at(math.random() * 2, function()
+				local r = F.Radius * math.sqrt(math.random())
+				local a = math.random() * 2 * math.pi
+				local pos = Vector3.new(hrp.Position.X + math.cos(a) * r, floor + 0.4 + math.random() * 3, hrp.Position.Z + math.sin(a) * r)
+				local p = spawn("Petal", CFrame.new(pos))
+				petals[p] = {
+					t0 = os.clock(),
+					pos = pos,
+					vel = Vector3.new(1.8 + math.random(), 0.2 + math.random() * 0.4, 0.8 + math.random() * 0.6),
+					w = 2 + math.random() * 2,
+					spin = Vector3.new(math.random() * 4 - 2, math.random() * 4 - 2, math.random() * 4 - 2),
+					life = 2.5 + math.random() * 1.5,
+				}
+			end)
+		end
 		local last = F.Radius / F.Speed + F.Life + 1
 		at(last - 1.5, function()
 			rates(field, {Drift = 0})
 		end)
 		at(last, function()
-			grow:Disconnect()
+			bloom:Disconnect()
 			field:Destroy()
 		end)
 	end)

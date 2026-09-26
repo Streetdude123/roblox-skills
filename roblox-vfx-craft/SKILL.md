@@ -822,7 +822,7 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
 - [sound.md](references/sound.md) - the mix, Mirelo clips, measuring a recording, dead private audio.
 - [verification.md](references/verification.md) - quality level, capture cache, occluded Studio, phase polling, frame profiling.
 - [principles.md](references/principles.md) - the style guide and tutorial principles (readability, scale of importance, value and colour, shapes, timing, block-ins, juice) translated to Roblox properties and numbers, with sources.
-- [study-frieren.md](references/study-frieren.md) - the default look: Frieren's effect language in eight rules, the Zoltraak and barrier timings measured frame by frame, the palettes, the three builds (Zoltraak, barrier, light and flowers) with their schedules, and what is still unverified.
+- [study-frieren.md](references/study-frieren.md) - the default look: Frieren's effect language in eight rules, the Zoltraak, volley and barrier timings measured frame by frame, the palettes (the flower field included), the builds (Zoltraak, volley, barrier, light and flowers) with their schedules, and what is still unverified.
 - [water.md](references/water.md) - water constructs: the four water properties, edge break-up, line/fill/shadow/foam layers, the Creator Hub waterfall numbers, mesh VFX practice, and what the Judgement's Hammer rebuild proved (framing for the player camera, a hand mesh, fractional torrent textures, camera-facing swing trails), with sources.
 
 ## Scripts
@@ -835,4 +835,4 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
 - `scripts/RebuildStandPlace.lua` + `scripts/rebuild/` - rebuild the whole DIO place from a fresh baseplate that holds his packs, the old Stand model and the free model.
 - `scripts/RoadRoller.lua` - the second cinematic piece (the road roller: a procedural root and roller on one beat table, the land, the rush on the deck, the boom, the fade; the server side is `startRoadRoller` and `blast` in `MovesServer.lua`).
 - `scripts/ScanPack.lua`, `scripts/MeshGallery.lua`, `scripts/BlankDeadSounds.lua` - the pack intake tools.
-- `scripts/FrierenTemplates.lua`, `scripts/FrierenVfx.lua`, `scripts/Config.frieren.lua` - the Frieren effects: the Edit-mode builder of the template tree, the client runtime (`zoltraak`, `barrier` with `hit` and `drop`, `flowers`) and the palette and timings.
+- `scripts/FrierenTemplates.lua`, `scripts/FrierenVfx.lua`, `scripts/Config.frieren.lua` - the Frieren effects: the Edit-mode builder of the template tree, the client runtime (`zoltraak`, `volley`, `barrier` with `hit` and `drop`, `flowers`) and the palette and timings.

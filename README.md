@@ -58,7 +58,8 @@ Package layout:
   built on the method), `ExampleMoves.lua` (a throw, a heavy landing, a superhero landing, a
   leap strike, a four-hit M1 string and a hit flinch), `ExampleSword.lua`
   (a sword draw), `ExampleFrieren.lua` (the default style: a calm idle, a
-  Zoltraak cast, a barrier raise, hold and hit, a flower conjure), `EditStrip.lua` (Edit-mode pose strips and the foot
+  Zoltraak cast, a barrier raise, hold and hit, a flower conjure, a Zoltraak
+  volley, a calm walk, a lean dodge), `EditStrip.lua` (Edit-mode pose strips and the foot
   check), `LoadTest.lua` (fresh module copies from `serve.js`),
   `motion_check.js` (the metrics on decode text, with range and sweep),
   `video/ref_sheets.py` (frame-by-frame sheets, cuts and holds of a
@@ -101,7 +102,8 @@ Package layout:
   `ScreenFx.lua`, `ImpactFrames.lua`, `SpeedLines.lua`, the two worked
   examples `SummonVfx.lua` and `UltimateVfx.lua` with their client, server and
   config files, the Frieren effects (`FrierenTemplates.lua`, `FrierenVfx.lua`,
-  `Config.frieren.lua`: a Zoltraak beam, a hex barrier, light and flowers),
+  `Config.frieren.lua`: a Zoltraak beam, a Zoltraak volley, a hex barrier,
+  light and flowers),
   and the intake tools `ScanPack.lua`, `MeshGallery.lua` and
   `BlankDeadSounds.lua`.
 

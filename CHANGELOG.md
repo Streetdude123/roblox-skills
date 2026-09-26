@@ -5,6 +5,12 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 - Frieren second pass: more footage, a volley, a walk, a dodge (user-authorized)
+
+- Both Frieren studies gain 14 more sheeted cuts (the episode 2 flower field, Fern's practice Zoltraak and cast wind, the episode 6 walk and dragon fight, Fern's episode 9 volley, the episode 10 mana release, episode 12): drawing timing, the weighty walk (two steps, then a 2.2 s hold), the release wind, the volley timing, the flower field palette.
+- `roblox-vfx-craft`: `FrierenVfx.volley` (small circles one after another, fat comet bolts that fly and ray-check, small hits); white spike bursts at hits, a release gust and rings along the Zoltraak beam, 36 drifting petals over the flower field, the flower palette measured; a straight-down barrier hit no longer builds a NaN axis. Offline: no errors under overlap, TimeScale 4, hits from every side, an instant drop and no floor.
+- `roblox-r6-animation`: `ExampleFrieren.lua` adds `ZoltraakVolley`, `CalmWalk` (keyed for 2.4 studs/s, feet slide 0.04 to 0.05 with the travel) and `LeanDodge`; `motion-metrics.md`, the README and the test follow.
+
 ## 2026-09-26 - Frieren effects (user-authorized)
 
 - `roblox-vfx-craft`: new `references/study-frieren.md` (the effect language in eight rules, the Zoltraak and barrier timings measured frame by frame, palettes by k-means, the builds and what is unverified). New `scripts/FrierenTemplates.lua` builds the templates as a real instance tree (537 instances) and a flash ScreenGui; `scripts/FrierenVfx.lua` runs a Zoltraak beam, a hex barrier with hits and a drop, and light with a flower field on the schedule of the `ExampleFrieren.lua` clips; `scripts/Config.frieren.lua` holds the palette and timings. Run offline against the Roblox API dump with no errors and full cleanup; not seen in Studio. `SKILL.md` (a default look, the log, the index, the scripts), `taste.md` and the README follow.
