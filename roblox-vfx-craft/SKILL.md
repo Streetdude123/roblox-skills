@@ -827,6 +827,12 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   will bloom out wit beautiful vfx" and "And make all these moves cinematic cutscenes too, 12-15 second cutscenes". His picks:
   separate cinematic keys (the gameplay moves stay), cutscenes for Zoltraak, the volley and the flowers (not the barrier), a free
   model monster as the opponent, and impact frames, a white-out and a fade to black at the end (no letterbox bars).
+- 2026-09-26 (later): "zoltraak circle is supposed to look like this" with a line drawing of the circle (a rune band, an eight-fold
+  inner pattern with orbs, leaf shapes and a centre star). A circle built from beam rings and ticks cannot reach that detail; the
+  drawing itself became the texture (`scripts/circle_texture.py`: cut the disc, lines to white on alpha, a blurred glow copy, the
+  outer band and the inner pattern as separate textures), uploaded with his permission. Each layer is one flat Beam across the
+  circle (`FaceCamera` off, `TextureMode.Stretch`, `TextureLength` 1), the band turning against the core. When he gives a
+  drawing of a magic circle or a glyph, use the drawing as the texture.
 
 ## Reference index
 

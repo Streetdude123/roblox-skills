@@ -93,26 +93,32 @@ end
 local function grow(c, k, dur, draw, fast)
 	local base = c.CFrame
 	local parts = beams(c)
-	local spots = {}
+	local spots, turn = {}, {}
 	for _, a in ipairs(c:GetChildren()) do
 		if a:IsA("Attachment") then
-			spots[a] = a.Position
+			spots[a] = a.CFrame
+		end
+	end
+	for b in pairs(parts) do
+		local t = b:GetAttribute("Spin")
+		if t then
+			turn[b.Attachment0], turn[b.Attachment1] = t, t
 		end
 	end
 	local start = os.clock()
-	local spin, done = 0, false
+	local spin, shut = 0, nil
 	local conn = RunService.RenderStepped:Connect(function(dt)
 		local e = (os.clock() - start) / Tw.S()
-		local u = math.min(1, e / dur)
-		local ease = 1 - (1 - u) ^ 4
+		local ease = 1 - (1 - math.min(1, e / dur)) ^ 4
 		spin += dt / Tw.S() * (1.2 + fast * (1 - ease))
 		c.CFrame = base * CFrame.Angles(0, 0, spin)
-		if done then
-			return
-		end
 		local s = k * (0.35 + 0.65 * ease)
-		for a, p in pairs(spots) do
-			a.Position = p * s
+		if shut then
+			local v = math.min(1, (os.clock() - shut[1]) / (shut[2] * Tw.S()))
+			s *= 1 - v * v
+		end
+		for a, cf in pairs(spots) do
+			a.CFrame = CFrame.Angles(0, 0, (turn[a] or 0) * spin) * (cf.Rotation + cf.Position * s)
 		end
 		for b, w in pairs(parts) do
 			if b.Enabled or b:GetAttribute("Order") <= e / draw then
@@ -121,9 +127,11 @@ local function grow(c, k, dur, draw, fast)
 				b.CurveSize0, b.CurveSize1 = w[3] * s, w[4] * s
 			end
 		end
-		done = u >= 1
 	end)
-	return conn, parts
+	local function close(t)
+		shut = {os.clock(), t}
+	end
+	return conn, parts, close
 end
 
 local function spikes(pos, k)
@@ -173,12 +181,12 @@ function Frieren.zoltraak(char)
 		Debris:AddItem(p, 1.2 * Tw.S())
 	end)
 
-	local circle, base, parts, conn
+	local circle, base, conn, close
 	at(0.65, function()
 		local center = gem(char) + look * Z.Ahead
 		base = CFrame.lookAt(center, center + look)
 		circle = spawn("Circle", base)
-		conn, parts = grow(circle, Z.Radius / 3, Z.Circle, 0.3, 5)
+		conn, _, close = grow(circle, Z.Radius / 3, Z.Circle, 0.3, 5)
 	end)
 
 	at(fire, function()
@@ -232,9 +240,7 @@ function Frieren.zoltraak(char)
 	end)
 
 	at(stop, function()
-		for b in pairs(parts) do
-			hide(b, 0.3)
-		end
+		close(0.3)
 		at(0.35, function()
 			conn:Disconnect()
 			circle:Destroy()
@@ -286,7 +292,7 @@ function Frieren.volley(char)
 			end
 			local center = gem(char) + look * V.Ahead + off
 			local c = spawn("SmallCircle", CFrame.lookAt(center, center + look))
-			local conn, parts = grow(c, 1, 0.18, 0.1, 4)
+			local conn, _, close = grow(c, 1, 0.18, 0.1, 4)
 			at(V.Delay, function()
 				emit(c, {Flash = 1, Glint = 1})
 				local b = spawn("Bolt", CFrame.lookAt(center, center + look))
@@ -294,9 +300,7 @@ function Frieren.volley(char)
 				bolts[b] = {pos = center, from = center}
 			end)
 			at(last - start - k * V.Gap + 0.35, function()
-				for b in pairs(parts) do
-					hide(b, 0.25)
-				end
+				close(0.25)
 				at(0.3, function()
 					conn:Disconnect()
 					c:Destroy()

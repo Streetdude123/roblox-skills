@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 - The Zoltraak circle from his drawing (user-authorized)
+
+- `roblox-vfx-craft`: new `scripts/circle_texture.py` turns a line drawing of a magic circle into glow, band and core textures; `FrierenTemplates.lua` draws the `Circle` and `SmallCircle` as textured flat beams (19 beams instead of 160); `FrierenVfx.grow` counter-rotates the band and closes the circle into its centre. `SKILL.md` log and `study-frieren.md` follow.
+
 ## 2026-09-26 - Frieren first review: staff, calm walk at 6, flash, beam rings (user-authorized)
 
 - `roblox-vfx-craft`: the release flash is under 0.1 s; a ring stream along the Zoltraak beam and a larger release burst; new `scripts/FrierenStaff.lua` (the staff asset from a free model); the circles start at the staff gem; `FrierenClient.lua` attaches the staff. `SKILL.md` log and `study-frieren.md` follow.

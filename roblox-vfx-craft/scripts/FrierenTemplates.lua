@@ -13,6 +13,9 @@ local TEX = {
 	rocks = "rbxassetid://12111686783",
 	smoke = "rbxassetid://10180479311",
 	shock = "rbxassetid://16477162837",
+	circleGlow = "rbxassetid://135349041132558",
+	circleBand = "rbxassetid://92707612794775",
+	circleCore = "rbxassetid://83546864948047",
 }
 
 local function folder(parent, name)
@@ -112,41 +115,32 @@ local function ring(host, name, r, n, width, color, fade, z, faceCamera, order, 
 	end
 end
 
-local function spoke(host, name, a, r0, r1, width, color, fade, order)
-	local radial = Vector3.new(math.cos(a), math.sin(a), 0)
-	local side = Vector3.new(-math.sin(a), math.cos(a), 0)
-	local p0 = att(host, name .. "A", flat(radial * r0, radial, side))
-	local p1 = att(host, name .. "B", flat(radial * r1, radial, side))
-	local b = beam(host, name, p0, p1, {
-		Width0 = width,
-		Width1 = width,
+local function disc(host, name, r, tex, color, fade, z, order, spin)
+	local a0 = att(host, name .. "A", flat(Vector3.new(-r, 0, 0), Vector3.xAxis, Vector3.yAxis))
+	local a1 = att(host, name .. "B", flat(Vector3.new(r, 0, 0), Vector3.xAxis, Vector3.yAxis))
+	local b = beam(host, name, a0, a1, {
+		Width0 = 2 * r,
+		Width1 = 2 * r,
 		Segments = 1,
-		FaceCamera = true,
+		FaceCamera = false,
+		Texture = tex,
+		TextureMode = Enum.TextureMode.Stretch,
+		TextureLength = 1,
+		TextureSpeed = 0,
 		Color = ColorSequence.new(color),
 		Transparency = NumberSequence.new(fade),
 		LightEmission = 1,
-		ZOffset = 0.02,
+		ZOffset = z,
 		Enabled = false,
 	})
 	b:SetAttribute("Order", order)
+	b:SetAttribute("Spin", spin)
 end
 
-ring(circle, "Outer", 3, 16, 0.1, P.white, 0, 0.04, true, 0)
-ring(circle, "Band", 2.78, 16, 0.44, P.lavender, 0.72, 0, false, 0.1)
-ring(circle, "Inner", 2.55, 16, 0.07, P.lilac, 0.05, 0.04, true, 0.2)
-ring(circle, "Mid", 1.35, 12, 0.06, P.white, 0, 0.04, true, 0.35)
-ring(circle, "Core", 0.45, 8, 0.05, P.white, 0, 0.04, true, 0.5)
-for i = 0, 7 do
-	spoke(circle, "Spoke" .. i, (i + 0.5) * math.pi / 4, 0.45, 2.55, 0.04, P.lilac, 0.15, 0.4 + i * 0.02)
-end
-local runes = {0.18, 0.3, 0.12, 0.24, 0.3, 0.1}
-for i = 0, 35 do
-	spoke(circle, "Rune" .. i, i * math.pi / 18, 2.61, 2.61 + runes[i % #runes + 1], 0.05, P.white, 0.1, 0.3 + 0.4 * i / 36)
-end
-for k = 0, 7 do
-	local a = k * math.pi / 4
-	ring(circle, "Knot" .. k .. "_", 0.28, 6, 0.04, P.lilac, 0.1, 0.02, true, 0.55 + 0.05 * k, Vector3.new(math.cos(a), math.sin(a), 0) * 1.95)
-end
+ring(circle, "Outer", 3.08, 16, 0.07, P.white, 0, 0.06, true, 0)
+disc(circle, "Glow", 3.1, TEX.circleGlow, P.lavender, 0.45, 0, 0, 0)
+disc(circle, "Band", 3, TEX.circleBand, P.white, 0, 0.04, 0.05, -1.5)
+disc(circle, "Core", 3, TEX.circleCore, P.lilac, 0, 0.02, 0.15, 0)
 emitter(circle, "Flash", {
 	Texture = TEX.glow,
 	Color = ColorSequence.new(P.white, P.lilac),
@@ -352,15 +346,10 @@ for i = 1, 12 do
 end
 
 local small = carrier("SmallCircle")
-ring(small, "Outer", 1.1, 12, 0.06, P.white, 0, 0.04, true, 0)
-ring(small, "Inner", 0.85, 12, 0.04, P.lilac, 0.05, 0.04, true, 0.25)
-ring(small, "Core", 0.3, 6, 0.04, P.white, 0, 0.04, true, 0.5)
-for i = 0, 5 do
-	spoke(small, "Spoke" .. i, (i + 0.5) * math.pi / 3, 0.3, 0.85, 0.03, P.lilac, 0.15, 0.4 + i * 0.03)
-end
-for i = 0, 15 do
-	spoke(small, "Rune" .. i, i * math.pi / 8, 0.9, 0.9 + runes[i % #runes + 1] * 0.5, 0.035, P.white, 0.1, 0.3 + 0.4 * i / 16)
-end
+ring(small, "Outer", 1.12, 12, 0.05, P.white, 0, 0.06, true, 0)
+disc(small, "Glow", 1.15, TEX.circleGlow, P.lavender, 0.45, 0, 0, 0)
+disc(small, "Band", 1.1, TEX.circleBand, P.white, 0, 0.04, 0.05, -1.5)
+disc(small, "Core", 1.1, TEX.circleCore, P.lilac, 0, 0.02, 0.15, 0)
 emitter(small, "Flash", {
 	Texture = TEX.glow,
 	Color = ColorSequence.new(P.white, P.lilac),
