@@ -21,6 +21,11 @@ local function at(t, fn)
 	task.delay(t * Tw.S(), fn)
 end
 
+local source
+local function now()
+	return source and source() or os.clock() / Tw.S()
+end
+
 local function spawn(name, cf)
 	local c = Vfx[name]:Clone()
 	if c:IsA("Model") then
@@ -125,16 +130,19 @@ local function grow(c, k, dur, draw, fast)
 			turn[b.Attachment0], turn[b.Attachment1] = t, t
 		end
 	end
-	local start = os.clock()
+	local start = now()
+	local last = start
 	local spin, shut = 0, nil
-	local conn = RunService.RenderStepped:Connect(function(dt)
-		local e = (os.clock() - start) / Tw.S()
+	local conn = RunService.RenderStepped:Connect(function()
+		local t = now()
+		local e = t - start
 		local ease = 1 - (1 - math.min(1, e / dur)) ^ 4
-		spin += dt / Tw.S() * (1.2 + fast * (1 - ease))
+		spin += (t - last) * (1.2 + fast * (1 - ease))
+		last = t
 		c.CFrame = base * CFrame.Angles(0, 0, spin)
 		local s = k * (0.35 + 0.65 * ease)
 		if shut then
-			local v = math.min(1, (os.clock() - shut[1]) / (shut[2] * Tw.S()))
+			local v = math.min(1, (t - shut[1]) / shut[2])
 			s *= 1 - v * v
 		end
 		for a, cf in pairs(spots) do
@@ -148,8 +156,8 @@ local function grow(c, k, dur, draw, fast)
 			end
 		end
 	end)
-	local function close(t)
-		shut = {os.clock(), t}
+	local function close(len)
+		shut = {now(), len}
 	end
 	return conn, parts, close
 end
@@ -535,8 +543,8 @@ function Frieren.barrier(char)
 	return shield
 end
 
-function Frieren.flowers(char)
-	local F = Config.Flowers
+function Frieren.flowers(char, opts)
+	local F = setmetatable(opts or {}, {__index = Config.Flowers})
 	local hrp = char.HumanoidRootPart
 	local rarm, larm = char["Right Arm"], char["Left Arm"]
 	local gather, release, bloomAt = 0.75, 0.75 + F.Gather, 0.75 + F.Gather + 0.35
@@ -708,5 +716,28 @@ function Frieren.flowers(char)
 
 	return bloomAt + F.Radius / F.Speed + F.Life + 1
 end
+
+Frieren.kit = {
+	at = at,
+	spawn = spawn,
+	beams = beams,
+	show = show,
+	hide = hide,
+	rates = rates,
+	emit = emit,
+	ray = ray,
+	ground = ground,
+	floorCircle = floorCircle,
+	grow = grow,
+	gem = gem,
+	spikes = spikes,
+	updraft = updraft,
+	flash = flash,
+	fx = fx,
+	now = now,
+	clock = function(f)
+		source = f
+	end,
+}
 
 return Frieren

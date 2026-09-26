@@ -346,7 +346,7 @@ end
 
 local small = carrier("SmallCircle")
 ring(small, "Outer", 1.12, 12, 0.05, P.white, 0, 0.06, true, 0)
-disc(small, "Glow", 1.15, TEX.circleGlow, P.lavender, 0.45, 0, 0, 0)
+disc(small, "Glow", 1.15, TEX.circleGlow, P.lavender, 0.62, 0, 0, 0)
 disc(small, "Band", 1.1, TEX.circleBand, P.white, 0, 0.04, 0.05, -1.5)
 disc(small, "Core", 1.1, TEX.circleCore, P.lilac, 0, 0.02, 0.15, 0)
 emitter(small, "Flash", {
@@ -1019,6 +1019,157 @@ emitter(wave, "Star", {
 	ZOffset = 0.1,
 })
 
+local maw = carrier("Maw", Vector3.new(5, 5, 5))
+emitter(maw, "Core", {
+	Texture = TEX.glow,
+	Color = S(P.ember, P.maw),
+	Size = seq({{0, 1.5}, {0.5, 4}, {1, 2.5}}),
+	Transparency = seq({{0, 0.2}, {1, 1}}),
+	Lifetime = R(0.18),
+	Speed = R(0),
+	LockedToPart = true,
+	LightEmission = 1,
+	ZOffset = 0.1,
+})
+emitter(maw, "Gather", {
+	Texture = TEX.line,
+	Color = S(P.ember, P.maw),
+	Size = seq({{0, 1.1}, {1, 0.3}}),
+	Transparency = seq({{0, 1}, {0.3, 0.1}, {1, 0}}),
+	Lifetime = R(0.25, 0.4),
+	Speed = R(12, 20),
+	Shape = Enum.ParticleEmitterShape.Sphere,
+	ShapeStyle = Enum.ParticleEmitterShapeStyle.Surface,
+	ShapeInOut = Enum.ParticleEmitterShapeInOut.Inward,
+	Orientation = Enum.ParticleOrientation.VelocityParallel,
+	LightEmission = 1,
+})
+emitter(maw, "Embers", {
+	Texture = TEX.spark,
+	Color = S(P.ember, P.maw),
+	Size = seq({{0, 0.35}, {1, 0.05}}),
+	Lifetime = R(0.6, 1.1),
+	Speed = R(4, 10),
+	SpreadAngle = Vector2.new(180, 180),
+	Acceleration = Vector3.new(0, 8, 0),
+	Drag = 1.5,
+	LightEmission = 1,
+})
+emitter(maw, "Smoke", {
+	Texture = TEX.puff,
+	Color = S(P.soot, P.smokeDark),
+	Size = seq({{0, 1.5}, {1, 5}}),
+	Transparency = seq({{0, 0.4}, {1, 1}}),
+	Lifetime = R(0.8, 1.3),
+	Speed = R(2, 5),
+	SpreadAngle = Vector2.new(180, 180),
+	Acceleration = Vector3.new(0, 5, 0),
+	Rotation = R(0, 360),
+	RotSpeed = R(-60, 60),
+	LightEmission = 0,
+})
+emitter(maw, "Burst", {
+	Texture = TEX.starBurst,
+	Color = S(P.ember, P.maw),
+	Size = seq({{0, 2}, {0.25, 12}, {1, 14}}),
+	Transparency = seq({{0, 0}, {1, 1}}),
+	Lifetime = R(0.3),
+	Speed = R(0),
+	Rotation = R(0, 360),
+	LightEmission = 1,
+	ZOffset = 0.1,
+})
+new("PointLight", maw, {Name = "Light", Color = P.ember, Brightness = 0, Range = 24, Shadows = false})
+
+local gale = carrier("Gale", Vector3.new(26, 12, 1))
+emitter(gale, "Streaks", {
+	Texture = TEX.line,
+	Color = S(P.white, P.lilac),
+	Size = seq({{0, 1.6}, {1, 0.7}}),
+	Transparency = seq({{0, 1}, {0.2, 0.45}, {1, 1}}),
+	Lifetime = R(0.35, 0.55),
+	Speed = R(70, 100),
+	EmissionDirection = Enum.NormalId.Back,
+	SpreadAngle = Vector2.new(4, 4),
+	Orientation = Enum.ParticleOrientation.VelocityParallel,
+	LightEmission = 0.6,
+})
+emitter(gale, "Dust", {
+	Texture = TEX.puff,
+	Color = S(P.dust),
+	Size = seq({{0, 2}, {1, 7}}),
+	Transparency = seq({{0, 0.55}, {1, 1}}),
+	Lifetime = R(0.7, 1.1),
+	Speed = R(28, 44),
+	EmissionDirection = Enum.NormalId.Back,
+	SpreadAngle = Vector2.new(10, 6),
+	Rotation = R(0, 360),
+	RotSpeed = R(-90, 90),
+	Drag = 1,
+	LightEmission = 0,
+})
+emitter(gale, "Bits", {
+	Texture = TEX.spark,
+	Color = S(P.stem, P.dust),
+	Size = seq({{0, 0.25}, {1, 0.2}}),
+	Squash = seq({{0, -1}, {1, -1}}),
+	Lifetime = R(0.5, 0.9),
+	Speed = R(40, 65),
+	EmissionDirection = Enum.NormalId.Back,
+	SpreadAngle = Vector2.new(12, 10),
+	Rotation = R(0, 360),
+	RotSpeed = R(-400, 400),
+	LightEmission = 0,
+})
+
+local dustWave = carrier("DustWave")
+emitter(dustWave, "Dust", {
+	Texture = TEX.puff,
+	Color = S(P.dust, P.dustDark),
+	Size = seq({{0, 3}, {0.4, 7}, {1, 10}}),
+	Transparency = seq({{0, 0.4}, {0.6, 0.55}, {1, 1}}),
+	Lifetime = R(1.1, 1.6),
+	Speed = R(24, 42),
+	EmissionDirection = Enum.NormalId.Front,
+	SpreadAngle = Vector2.new(14, 8),
+	Rotation = R(0, 360),
+	RotSpeed = R(-50, 50),
+	Drag = 2.2,
+	Acceleration = Vector3.new(0, 2, 0),
+	LightEmission = 0,
+})
+emitter(dustWave, "Grit", {
+	Texture = TEX.rock,
+	Color = S(P.dustDark),
+	Size = seq({{0, 0.5}, {1, 0.35}}),
+	Lifetime = R(0.8, 1.2),
+	Speed = R(22, 40),
+	EmissionDirection = Enum.NormalId.Front,
+	SpreadAngle = Vector2.new(20, 30),
+	Acceleration = Vector3.new(0, -60, 0),
+	Rotation = R(0, 360),
+	RotSpeed = R(-300, 300),
+	LightEmission = 0,
+})
+
+local wingTrail = carrier("WingTrail")
+local wa = att(wingTrail, "A", CFrame.new(0, 0.35, 0))
+local wb = att(wingTrail, "B", CFrame.new(0, -0.35, 0))
+new("Trail", wingTrail, {
+	Name = "Trail",
+	Attachment0 = wa,
+	Attachment1 = wb,
+	Color = S(P.white, P.lilac),
+	Transparency = seq({{0, 0.35}, {1, 1}}),
+	WidthScale = seq({{0, 1}, {1, 0.2}}),
+	Lifetime = 0.45,
+	MinLength = 0.05,
+	FaceCamera = true,
+	LightEmission = 0.5,
+	LightInfluence = 0,
+	Enabled = false,
+})
+
 local flower = new("Model", vfx, {Name = "Flower"})
 local function piece(name, size, cf, color, sphere)
 	local p = new("Part", flower, {
@@ -1073,5 +1224,23 @@ if gui then
 end
 gui = new("ScreenGui", StarterGui, {Name = "FrierenFlash", IgnoreGuiInset = true, DisplayOrder = 70, ResetOnSpawn = false})
 new("Frame", gui, {Name = "White", Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.new(1, 1, 1), BackgroundTransparency = 1, BorderSizePixel = 0})
+
+local cine = StarterGui:FindFirstChild("FrierenCinema")
+if cine then
+	cine:Destroy()
+end
+cine = new("ScreenGui", StarterGui, {Name = "FrierenCinema", IgnoreGuiInset = true, DisplayOrder = 80, ResetOnSpawn = false})
+new("Frame", cine, {Name = "White", Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.new(1, 1, 1), BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 2})
+local impact = new("Frame", cine, {Name = "Impact", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, BorderSizePixel = 0, Visible = false, ZIndex = 3})
+new("Frame", impact, {Name = "Bg", Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.new(1, 1, 1), BorderSizePixel = 0, ZIndex = 3})
+new("ViewportFrame", impact, {Name = "View", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, BorderSizePixel = 0, Ambient = Color3.new(1, 1, 1), LightColor = Color3.new(0, 0, 0), ZIndex = 4})
+new("Frame", cine, {Name = "Fade", Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 5})
+local vignette = new("CanvasGroup", cine, {Name = "Vignette", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, GroupTransparency = 1, ZIndex = 1})
+for _, side in ipairs({{"Left", UDim2.fromScale(0.26, 1), UDim2.fromScale(0, 0), 0}, {"Right", UDim2.fromScale(0.26, 1), UDim2.fromScale(0.74, 0), 180}, {"Top", UDim2.fromScale(1, 0.34), UDim2.fromScale(0, 0), 90}, {"Bottom", UDim2.fromScale(1, 0.34), UDim2.fromScale(0, 0.66), 270}}) do
+	local f = new("Frame", vignette, {Name = side[1], Size = side[2], Position = side[3], BackgroundColor3 = Color3.fromRGB(10, 6, 14), BorderSizePixel = 0})
+	new("UIGradient", f, {Rotation = side[4], Transparency = seq({{0, 0.2}, {0.45, 0.72}, {1, 1}})})
+end
+new("Frame", cine, {Name = "Top", Size = UDim2.fromScale(1, 0), BackgroundColor3 = Color3.new(0, 0, 0), BorderSizePixel = 0, ZIndex = 4})
+new("Frame", cine, {Name = "Bottom", Size = UDim2.fromScale(1, 0), Position = UDim2.fromScale(0, 1), AnchorPoint = Vector2.new(0, 1), BackgroundColor3 = Color3.new(0, 0, 0), BorderSizePixel = 0, ZIndex = 4})
 
 return #vfx:GetDescendants() .. " instances in Frieren.Assets.Vfx"

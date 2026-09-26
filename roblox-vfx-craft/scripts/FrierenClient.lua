@@ -6,6 +6,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Poser = require(ReplicatedStorage.Anim.Modules.Poser)
 local Clips = require(ReplicatedStorage.Anim.Modules.ExampleFrieren)
 local Vfx = require(ReplicatedStorage.Frieren.Modules.FrierenVfx)
+local Cinema = require(ReplicatedStorage.Frieren.Modules.FrierenCinema)
 
 local player = Players.LocalPlayer
 local Assets = ReplicatedStorage.Frieren.Assets
@@ -23,11 +24,20 @@ local moves = {
 	Dodge = {Clips.LeanDodge},
 }
 
+local cines = {
+	CineZoltraak = {Clips.ZoltraakCine, Cinema.zoltraak},
+	CineVolley = {Clips.VolleyCine, Cinema.volley},
+	CineFlowers = {Clips.FlowersCine, Cinema.flowers},
+}
+
 local keys = {
 	[Enum.KeyCode.One] = "Zoltraak",
 	[Enum.KeyCode.Two] = "Volley",
 	[Enum.KeyCode.Three] = "Flowers",
 	[Enum.KeyCode.Q] = "Dodge",
+	[Enum.KeyCode.Z] = "CineZoltraak",
+	[Enum.KeyCode.X] = "CineVolley",
+	[Enum.KeyCode.C] = "CineFlowers",
 }
 
 local function free()
@@ -62,6 +72,16 @@ local function cast(name)
 	end
 end
 
+local function cinema(name)
+	if not free() then
+		return
+	end
+	local c = cines[name]
+	lock()
+	state = name
+	c[2](char, rest, rig, c[1])
+end
+
 local function hold()
 	rig:play(Clips.BarrierHold, {fadeIn = 0.1})
 end
@@ -87,6 +107,31 @@ local function block(point)
 	rig:play(Clips.BarrierHit, {fadeIn = 0.03, onDone = hold})
 end
 
+local function dress(c)
+	for _, piece in ipairs(Assets.Outfit:GetChildren()) do
+		if piece:IsA("Accessory") then
+			local acc = piece:Clone()
+			local h = acc.Handle
+			local a = h:FindFirstChildOfClass("Attachment")
+			local weld = Instance.new("Weld")
+			weld.Part0 = c.Head
+			weld.Part1 = h
+			weld.C0 = c.Head[a.Name].CFrame
+			weld.C1 = a.CFrame
+			weld.Parent = h
+			acc.Parent = c
+		else
+			local old = c:FindFirstChildOfClass(piece.ClassName)
+			if old then
+				old:Destroy()
+			end
+			piece:Clone().Parent = c
+		end
+	end
+	c.Head.Transparency = 1
+	c.Head.face.Transparency = 1
+end
+
 local function spawned(c)
 	char = c
 	hum = c:WaitForChild("Humanoid")
@@ -103,6 +148,7 @@ local function spawned(c)
 	grip.C0 = GRIP
 	grip.Parent = c["Right Arm"]
 	staff.Parent = c
+	dress(c)
 	rig = Poser.attach(c)
 	shield = nil
 	state = "idle"
@@ -130,8 +176,11 @@ UserInputService.InputBegan:Connect(function(input, typing)
 	if typing then
 		return
 	end
-	if keys[input.KeyCode] then
-		cast(keys[input.KeyCode])
+	local name = keys[input.KeyCode]
+	if cines[name] then
+		cinema(name)
+	elseif name then
+		cast(name)
 	elseif input.KeyCode == Enum.KeyCode.F then
 		raise()
 	end
@@ -151,6 +200,8 @@ player:GetAttributeChangedSignal("Cast"):Connect(function()
 		drop()
 	elseif moves[name] then
 		cast(name)
+	elseif cines[name] then
+		cinema(name)
 	end
 end)
 

@@ -19,6 +19,11 @@ Config.Palette = {
 	smoke = Color3.fromRGB(196, 196, 206),
 	smokeDark = Color3.fromRGB(128, 126, 142),
 	spark = Color3.fromRGB(255, 244, 200),
+	ember = Color3.fromRGB(255, 176, 96),
+	maw = Color3.fromRGB(232, 72, 52),
+	soot = Color3.fromRGB(46, 36, 40),
+	dust = Color3.fromRGB(206, 186, 166),
+	dustDark = Color3.fromRGB(122, 104, 92),
 }
 
 Config.Zoltraak = {

@@ -851,6 +851,18 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   `require` and a module that touches `MarketplaceService`. Keyword-stuffed names ("Dragon Wings Classic Dragon Rigged Magic
   Detailed") were the tell every time; they were deleted unread. "Anime VFX Pack" (13295712552) was clean (preview loops only) and gave
   the textures; its pieces are listed in study-frieren.md.
+- 2026-09-26 (later): "the barrage needs to  surround the dragon on it's front side, they all won't be the same rotation and height".
+  The volley cutscene first put 12 small circles in a ring of radius 2.6 round the staff gem, all facing the same way; from the
+  camera behind her they overlapped into one white blot. Now each circle stands 13 to 17 studs from the dragon's chest on an arc of
+  140 degrees across its front, at four height steps with a random lift, faces the chest, and has its own roll. The bolts fly in from
+  every side. The main circle stays at the gem for the big last bolt.
+- 2026-09-26 (later): "make sure you send a video when it's done" and "like when you finished all the moves and everything". One
+  video at the end of the whole pass, sent to him, not one per move.
+- 2026-09-26 (later): "i'd like if the person was more dynamic and interactive, their animations is kind of boring, remember they
+  are the one casting the spell." and "also this is NOT impressive enough, below average cinematic, it needs to be super cinematic and
+  dramatic and needs to be your BEST WORK possible, good enouhg to showcase and go on my portfolio", with "/roblox-r6-animation use these
+  skills". The first cutscenes had a still caster, slow drifting shots with no cuts on the beats, no bars, no speed ramp, no sound and
+  VFX that washed the frame white.
 
 ## Reference index
 
