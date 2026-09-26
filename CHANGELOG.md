@@ -15,6 +15,19 @@ needs.
 - roblox-r6-animation: `references/weapons.md` gains the measured R6 two-handed spear rules (chest-centre rear hand, shaft 25 to 45 degrees across the chest, side-on torso, per-frame front-hand solve, the shaft slide); `references/project-style.md` logs his sentences and the lance combo, spin and skewer numbers and traps.
 - roblox-vfx-craft: `references/water.md` section 10 (Toolbox kit pieces in the form moves, recolour near-black meshes on water, a small see-through whirl, rise geysers from the floor); `SKILL.md` feedback log entry.
 
+## 2026-09-26 (final) - Finder split into its own skill (user-authorized)
+
+- New skill `roblox-sfx-finder`: `find.py`, `build.py`, `Audition.lua` and the references `sources.md`, `frieren.md`, `layering.md` moved here from `roblox-sfx-synth`, with its own `check.py` (reads any format) and `requirements.txt`. `build.py` loads synth presets from `roblox-sfx-synth` only for `synth` layers.
+- `roblox-sfx-synth` restored to synthesis only (`SKILL.md`, `recipes.md`, `check.py`, `requirements.txt` as first added).
+
+## 2026-09-26 (latest) - roblox-sfx-synth finds real sounds first (user-authorized)
+
+- `roblox-sfx-synth`: `scripts/find.py` searches BigSoundBank, freesound (CC0), Mixkit, 効果音ラボ and Kenney, downloads, measures and ranks results with licenses, and searches the Roblox Creator Store partner library (ProSoundEffects, APMOfficial). `scripts/build.py` layers found recordings and synth presets from a JSON recipe through pedalboard and writes credits. `scripts/check.py` reads any audio format. `scripts/Audition.lua` measures store IDs in Studio (untested). New references `sources.md`, `frieren.md`, `layering.md`. `SKILL.md` rewritten find-first, synthesis last; the user's feedback logged.
+
+## 2026-09-26 (later) - New skill roblox-sfx-synth (user-authorized)
+
+- `roblox-sfx-synth`: a numpy/scipy synth (`scripts/sfx.py`) with 16 anime SFX presets (hits, whooshes, charge/aura/summon, UI), a checker (`scripts/check.py`) for peak, RMS, envelope, band energy, loop seam and a spectrogram PNG, `SKILL.md` with the workflow, rules and measured numbers, and `references/recipes.md`.
+
 ## 2026-09-26 — Parry signals, Bull Leap rebuild, smooth walks, clean ragdoll (user-authorized)
 
 - roblox-vfx-craft: attack tells (white, amber, red), parry vs block by value, wall stop for forced motion; his feedback logged.

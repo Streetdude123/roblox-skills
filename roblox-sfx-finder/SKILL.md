@@ -1,0 +1,88 @@
+---
+name: roblox-sfx-finder
+description: Get realistic sound effects for Roblox games by finding them on the internet first - search free-to-use libraries (BigSoundBank, freesound CC0, Mixkit, 効果音ラボ, Kenney) with scripts/find.py, measure and rank the downloads, search the Roblox Creator Store's licensed partner library (ProSoundEffects, APMOfficial) for ready asset IDs, then trim, pitch and layer real recordings into anime and Frieren-style SFX with scripts/build.py and pedalboard, with license credits for every file. Synthesis (the roblox-sfx-synth skill) is the last resort. Use whenever a Roblox sound effect must be found, chosen, built, fixed or judged. Voice lines are not made here; they come from the user's own recordings.
+---
+
+# Roblox SFX finder
+
+The user wants realistic sound. The all-synth presets from `roblox-sfx-synth` came out "super super mid", and measurement confirmed why: 16–25 dB too little presence and top end, and tails 2–10 times too short. So this skill searches the internet for real recordings, and when one sound is not enough, it layers several real recordings. Synthesis (`roblox-sfx-synth`) is only for a gap no real sound fills. Voice lines come from the user's own recordings.
+
+The agent cannot hear. It ranks by metadata and measurements, looks at the spectrograms, then sends the top picks to the user. The user's ears decide.
+
+## Setup
+
+```sh
+pip install -r roblox-sfx-finder/requirements.txt
+cd roblox-sfx-finder/scripts
+python3 find.py web "sword clash" --ja "剣" --out sfx_find/sword_clash
+python3 find.py roblox "sword clash"
+python3 build.py sfx_find/barrier_block.json --out sfx_find/built --variants 4
+python3 check.py sfx_find/built/*.wav --png
+```
+
+## Workflow
+
+1. **Brief.** Name the sound, its rung on the tone ladder in `roblox-vfx-craft/SKILL.md` (summon, move or ultimate), its length, and its parts (cast, travel, impact, residue). For magic in the Frieren style, read `references/frieren.md` first: attack magic is built from weapons, metal, glass and missile sounds, not sparkles.
+2. **Search the web** once for each part. Use an English query, plus a Japanese query for 効果音ラボ (`--ja`). The command is `find.py web`. It downloads each result, converts it to 44.1 kHz WAV and measures it. It then writes `candidates.md` (ranked table with licenses), `candidates.json` and `sheet.png` (spectrograms of the top 9 in table order: 3 per row, left to right).
+3. **Search the Roblox store** with `find.py roblox`. Licensed partners are listed first. A partner sound that fits as it is needs no upload: use its ID. Store sounds cannot be downloaded, so they cannot be layered. If Studio is connected, run `scripts/Audition.lua` on the picked IDs.
+4. **Pick with evidence.** Look for:
+   - title words that match the query;
+   - `top Hz` of 16000 or more (full band; below about 12 kHz means dull or low quality);
+   - a noise `floor dB` of -55 or lower;
+   - no clipped samples;
+   - a body length that fits the rung.
+
+   Read `sheet.png`: a hit needs a bright full-height column at the start.
+5. **Layer when one sound is not enough.** Write a recipe (format in `references/layering.md`) at the root of the search folder and run `build.py`. It writes the WAV variants and a `_credits.json` with the source, author, license and page of every layer.
+6. **Check** the result with `check.py --png` against the reference ranges in `references/layering.md`.
+7. **Send** the files, or the store IDs, to the user with a one-line description of each. Log what they say in the feedback log below.
+8. **Hand off.** The user uploads the built WAVs; the agent cannot upload assets. Uploads that contain Mixkit or 効果音ラボ material stay private (redistribution is forbidden). Store IDs go straight into `Sound.SoundId` or `AudioPlayer.Asset`. Mix in game with the rules in `roblox-vfx-craft/references/sound.md`.
+9. **Synthesize only as a last resort.** Use the `roblox-sfx-synth` skill, or a `synth` layer in a recipe, which loads a preset from `../roblox-sfx-synth/scripts/sfx.py`. Follow the fallback section of `references/layering.md`.
+
+## Rules
+
+- **Licenses:** CC0, or a site license that allows commercial game use with no attribution. Never NC, never attribution-required, never community store uploads of unverified ownership unless the user says so. The license list and evidence are in `references/sources.md`.
+- **Real sources:** magic is more convincing when "rooted in reality". Build it from real metal, glass, air, cloth, bells, rockets and explosions. Transform them with pitch, frequency shift and drive.
+- **Pitch down to make things bigger:** a sword clash at -14 semitones becomes a metal door. Recordings with lots of high-frequency content pitch down best.
+- **Anime processing:** distortion on hard transients, a frequency shifter mixed in parallel on metal, a short echo train for barrier hits.
+- **Limits:** 3 to 5 layers per sound, each with its own job and frequency range. The body carries weight on phones (200 Hz–1 kHz).
+- **Frieren subtraction:** keep charge-ups almost silent and let the hit carry the moment.
+- **Variants:** render 4 to 6 variants with `pitch_jitter` 0.8–1.5 semitones for any sound that repeats.
+
+## Measured on this setup
+
+- One `find.py web` query with 5 results per source took about 27 s for 20 downloads. Rows measured for "sword clash": BigSoundBank FLAC top 10–17 kHz; freesound hq previews top 17.7–20.2 kHz; Mixkit WAV top 19.4–21.8 kHz; 効果音ラボ MP3 top 18.7–19.0 kHz.
+- Roblox partner results per single word, ProSoundEffects: magic 829, sword 728, glass 1000+, explosion 328, punch 541, whoosh 1000+, cloth 840, bell 608, energy 789.
+- Built from real layers: `barrier_block` 1.9 s, centroid 5720 Hz; `heavy_hit` 5 s, centroid 698 Hz. Not yet judged by ear.
+- `Audition.lua` has not been run yet. It uses `AudioPlayer:GetWaveformAsync` and `AudioAnalyzer` PeakLevel and RmsLevel; check its output the first time it runs in Studio.
+
+## Reading the spectrogram
+
+`check.py --png` and `sheet.png` show a peak envelope strip on top and a log-frequency spectrogram (40 Hz to 22 kHz, 80 dB range) below it. Look for:
+- a bright full-height column: a crisp transient;
+- dense horizontal lines: metal or glass partials;
+- a diagonal: a pitch sweep;
+- energy only in the bottom fifth: a dull sound that phones will not play.
+
+## Feedback log
+
+- 2026-09-26: "like anime sound effects, voicelines will come frol my own records, i just want you to be able to CREATE your own sound effects". This led to the synth and its 16 presets.
+- 2026-09-26: "your sound effects are super super mid and they aren't anything special". This led to the research and the measurement. Presets vs 32 CC0 references: centroid 89–169 Hz vs 800–7500 Hz, top end 16–25 dB down, tails 2–10 times short.
+- 2026-09-26: "i want these to sound realistic ... utilize the internet to get super realistic sounds ... making your own sfx is last resort, the skill will just go through the internet and find the perfect aound effects for your needs". This led to `find.py`, `build.py` and the find-first workflow.
+
+  The user chose: search both the web and the Roblox store; licenses CC0 plus free site licenses with no attribution; layering and processing allowed.
+- 2026-09-26: "Actually no keep them seperate, two separate repos" (meaning two skill folders in this repo). The finder became `roblox-sfx-finder`, and `roblox-sfx-synth` went back to synthesis only.
+
+## References
+
+- [sources.md](references/sources.md): every source, its license with evidence, how it is accessed, what was excluded and why.
+- [frieren.md](references/frieren.md): the Frieren team, evidence, sound brief and search terms.
+- [layering.md](references/layering.md): principles, measured reference ranges, the recipe format, built sounds, and the synthesis fallback.
+- `roblox-sfx-synth` skill: the synth presets (last resort).
+
+## Scripts
+
+- `scripts/find.py`: `web` search, download, measure and rank; `roblox` store search.
+- `scripts/build.py`: layers found files and synth presets from a JSON recipe through pedalboard, and writes credits.
+- `scripts/check.py`: measures any audio file; `--png` writes a spectrogram.
+- `scripts/Audition.lua`: measures Creator Store IDs in Studio (untested).
