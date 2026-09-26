@@ -52,6 +52,20 @@ def speeds(world, fps, win=2):
     return out
 
 
+def smears(path, fps=60.0, width=1.0):
+    clip = rr.read_decode(path)
+    times = rr.frame_times(clip, fps, 0.0, None)
+    world = [rr.world_parts(clip, t) for t in times]
+    out = []
+    for j in ['Right Arm', 'Left Arm', 'Right Leg', 'Left Leg'] + [k for k in rr.PROPS if k in world[0]]:
+        tips = np.array([rr.tip_point(w, j) for w in world])
+        step = np.linalg.norm(np.diff(tips, axis=0), axis=1)
+        for a, b in runs(step > width, 1):
+            out.append({'part': j, 'from': round(times[a], 3), 'to': round(times[b + 1], 3), 'jump': round(float(step[a:b + 1].max()), 2),
+                        'path': [[round(float(v), 2) for v in tips[i]] for i in range(a, b + 2)]})
+    return sorted(out, key=lambda e: (e['from'], e['part']))
+
+
 def find(path, fps=60.0, pop=90.0, twin=8.0, loop=None, feet=True, flat=55.0, twist=60.0, strike=None, view='rear34', travel=0.0):
     clip = rr.read_decode(path)
     head = Path(path).read_text(encoding='utf-8').splitlines()[0]
@@ -173,6 +187,7 @@ def main():
     ap.add_argument('--strike', type=float, help='seconds of the strike or contact; default the fastest whole-body moment')
     ap.add_argument('--view', default='rear34', help='camera for the staging checks: rear34 (the player), side, front34 and the other r6_render views')
     ap.add_argument('--travel', type=float, default=0.0, help='studs a second the root moves forward in the game (a walk or run cycle played in place)')
+    ap.add_argument('--smears', type=float, nargs='?', const=1.0, help='also list the frames where a tip jumps more than this many studs (default 1, a limb\'s width): each needs a smear, with the tip path in world space')
     a = ap.parse_args()
     for p in a.decodes:
         name, found = find(p, pop=a.pop, twin=a.twin, feet=not a.float, flat=a.flat, twist=a.twist, strike=a.strike, view=a.view, travel=a.travel)
@@ -180,6 +195,9 @@ def main():
         for f in found:
             span = f"{f['from']:.2f}" if f['from'] == f['to'] else f"{f['from']:.2f}-{f['to']:.2f}"
             print(f"  {span:>11}  {f['kind']:18} {f['text']}")
+        if a.smears:
+            for m in smears(p, width=a.smears):
+                print(f"  {m['from']:.2f}-{m['to']:.2f}  smear              {m['part']} tip jumps up to {m['jump']} studs a frame; path {m['path']}")
 
 
 if __name__ == '__main__':

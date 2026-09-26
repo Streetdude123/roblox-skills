@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 - Smear frames, pose estimation tested (user-authorized)
+
+- `roblox-r6-animation`: `faults.py --smears` lists the frames where a hand, a foot or a sword tip moves more than a limb's width in one frame, with the tip path, for the smear effects (the pro stand strikes move their fists 1.1 to 2.4 studs a frame on their strike frames). `principles.md`, `SKILL.md` and `quality-review.md` follow. `reference-study.md` records that MediaPipe's pose model found no R6 body on 6 of 7 reference frames, so Roblox references are rotoscoped by eye, and how to render a key from the reference's camera offline. One test.
+
 ## 2026-09-26 - Swords offline and a sword draw (user-authorized)
 
 - `roblox-r6-animation`: `r6_render.py` draws a `Sword` joint with `WeaponRig`'s grip geometry (its tip matched `Rig.handle` to four decimals) and traces it with `--trail Sword`; `faults.py` checks props for pops and the floor and no longer counts the head in "outruns the strike" (a head that holds the eyes on the target barely moves at the strike). `poser_offline.py` answers `FindFirstChild`, so `WeaponRig.lua` runs offline. New `scripts/ExampleSword.lua`: the studied sword draw from `Rig.body` solves in three rounds. `LoadTest.lua` loads `WeaponRig` and the example; `weapons.md`, `motion-metrics.md`, `quality-review.md`, `SKILL.md`, the README and tests follow. Not played in Studio.

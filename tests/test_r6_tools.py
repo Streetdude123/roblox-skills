@@ -465,3 +465,11 @@ return {Grip = {name = "Grip", length = 0.05, joints = {Torso = {K(torso)}, ["Ri
     draw = po.run(SCRIPTS / 'ExampleSword.lua', luau=LUAU)['SwordDraw']
     (tmp_path / 'd.txt').write_text(draw['decode'])
     assert fl.find(tmp_path / 'd.txt', strike=0.15)[1] == []
+
+
+def test_smears_lists_a_one_frame_arm_swing(tmp_path):
+    frames = [{'Right Arm': (0, 0, 0)}] * 5 + [{'Right Arm': (90, 0, 0)}] * 5
+    found = fl.smears(write_decode(tmp_path / 's.txt', 'S', frames))
+    assert [m['part'] for m in found] == ['Right Arm']
+    assert found[0]['jump'] > 1.5 and len(found[0]['path']) >= 2
+    assert fl.find(tmp_path / 's.txt', feet=False)[1] == [] or all(f['kind'] != 'needs a smear' for f in fl.find(tmp_path / 's.txt', feet=False)[1])

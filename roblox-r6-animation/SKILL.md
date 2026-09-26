@@ -56,7 +56,7 @@ Author with `curve = "spline"` and give every clip these layers. Field reference
 - **Life.** `life = 0.6` to `1.5` degrees of slow drift on the upper body so no hold ever freezes; idles also get a breath.
 - **Planted feet.** `post = Feet.post({r = {x, z, yaw}, l = {x, z, yaw}})` solves both legs after the torso, springs included, so the soles stay on their floor targets while the torso turns, leans and lunges. A foot target may be a function of time for steps and heel pivots. Lean the torso from the waist (`waist` in ExampleClips) so a forward lean does not swing the hips back.
 - **Moving holds.** A hold keeps travelling 5 to 15% further in the direction of the move over its frames, with `auto` keys so it glides in and out. Never key a hold as two equal poses.
-- **Smears.** Where a limb, a blade or the body jumps more than its own width in one frame, put a smear on that frame: a swoosh, a stretch, streaks in the body colours, or multiples (principles.md, "Smears and multiples").
+- **Smears.** Where a limb, a blade or the body jumps more than its own width in one frame, put a smear on that frame: a swoosh, a stretch, streaks in the body colours, or multiples (principles.md, "Smears and multiples"). `faults.py --smears` lists those frames and the tip paths.
 - **Recoveries.** For a move the player can chain or cancel, stay in the over-extended follow-through pose 6 to 12 frames while it drifts, then pop back in 8 to 15 frames with the striking limb first and the torso and head 1 to 3 frames behind. A long return (the sword kit takes 30 frames after a hit) suits a finisher; keep it one continuous deceleration with the parts offset, never a creep of a degree or two.
 
 ### 4. Measure before you look

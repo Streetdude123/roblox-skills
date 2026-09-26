@@ -171,6 +171,8 @@ When a limb, a blade or the whole body travels more than about its own width bet
 
 Build each smear as a real instance tree on the client: a Folder in `workspace` per play; each smear a Part or a MeshPart with `Anchored` true and `CanCollide`, `CanQuery`, `CanTouch` and `CastShadow` false. At runtime read the moving part's `CFrame` every frame; when its tip moves more than its width in one frame, place the smear between the previous and the current frame, then destroy it after its frames. The VFX skill builds blade swooshes from slash plates and Trails. This skill has not yet built or captured a body smear in Studio: capture the first one frame by frame and log what it shows.
 
+`python3 scripts/faults.py <decode> --smears` lists the frames where a hand, a foot or a `Sword` tip moves more than 1 stud (a limb's width) in one frame, with the tip's path in world space, so the smear is placed before the game runs. Measured on 2026-09-26: the pro stand strikes move their fists 1.1 to 2.4 studs a frame on 2 to 5 strike frames (the barrage on every punch); the example throw's whip moves the hand 3.9, the leap strike's dive 1.9 to 2.2, the sword draw's tip up to 6.4.
+
 ## Limited timing for anime hits
 
 Guilty Gear Xrd keyed its 3D characters without in-betweens and removed frames on purpose to look like 2D anime (for example 4 frames held at the chest, 2 for the transition, 4 for the punch; sources.md). In Poser that is `e = "step"` on the keys of the strike beats. Use it only when the requested style is limited anime animation; the studied Moon Animator reference and the pro stand set move on every frame of their capture. The checks count a stepped hold of 4 frames or more as a stop; state that the style is stepped when you report the numbers.

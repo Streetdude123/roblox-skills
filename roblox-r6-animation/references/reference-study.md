@@ -36,6 +36,8 @@ Read every sheet; a sheet shows 48 unique frames. Then make zoom sheets (`--from
 - Take the timing from the reference beat table, not from the generic table in principles.md.
 - Pose each key to match the reference frame: block it, render a strip ghost (`_G.editStrip`) from the same angle as the reference shot, and compare the two images side by side. Fix the torso first, then the stance, then the arms, then the head.
 - Then push the pose 10 to 20% past the reference, as principles.md says.
+- Without Studio, render the key from the reference's camera with `scripts/r6_render.py --times <t> --yaw <deg> --pitch <deg> --dist <studs>` and put it next to the reference frame.
+- Rotoscope a Roblox reference by eye. A human pose estimator does not see R6 bodies: MediaPipe's Pose Landmarker (full model, tested 2026-09-26) found no pose on 6 of 7 frames of the Moon Animator reference and put a collapsed skeleton on the golem in the seventh. For a human reference (a fight scene, a sports clip) motion capture of the action is the tested route (real-motion.md).
 - R6 has no elbows or knees: match the direction of the whole limb, and use the slide (piston) for a bend.
 - Study a reference; do not publish someone else's animation as your own.
 
