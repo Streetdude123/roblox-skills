@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 (latest) - roblox-sfx-synth finds real sounds first (user-authorized)
+
+- `roblox-sfx-synth`: `scripts/find.py` searches BigSoundBank, freesound (CC0), Mixkit, 効果音ラボ and Kenney, downloads, measures and ranks results with licenses, and searches the Roblox Creator Store partner library (ProSoundEffects, APMOfficial). `scripts/build.py` layers found recordings and synth presets from a JSON recipe through pedalboard and writes credits. `scripts/check.py` reads any audio format. `scripts/Audition.lua` measures store IDs in Studio (untested). New references `sources.md`, `frieren.md`, `layering.md`. `SKILL.md` rewritten find-first, synthesis last; the user's feedback logged.
+
 ## 2026-09-26 (later) - New skill roblox-sfx-synth (user-authorized)
 
 - `roblox-sfx-synth`: a numpy/scipy synth (`scripts/sfx.py`) with 16 anime SFX presets (hits, whooshes, charge/aura/summon, UI), a checker (`scripts/check.py`) for peak, RMS, envelope, band energy, loop seam and a spectrogram PNG, `SKILL.md` with the workflow, rules and measured numbers, and `references/recipes.md`.

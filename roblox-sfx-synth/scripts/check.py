@@ -1,9 +1,10 @@
 import argparse
 import struct
-import wave
+import subprocess
 import zlib
 from pathlib import Path
 
+import imageio_ffmpeg
 import numpy as np
 from scipy import signal
 
@@ -11,12 +12,9 @@ BANDS = [("sub", 20, 80), ("low", 80, 300), ("mid", 300, 2000), ("high", 2000, 8
 COLORS = np.array([[0, 0, 0], [40, 10, 90], [170, 30, 110], [250, 120, 30], [255, 240, 150]], float)
 
 
-def load(path):
-    with wave.open(str(path), "rb") as w:
-        rate = w.getframerate()
-        ch = w.getnchannels()
-        x = np.frombuffer(w.readframes(w.getnframes()), "<i2").astype(float) / 32768
-    return x.reshape(-1, ch).mean(axis=1), rate
+def load(path, rate=44100):
+    raw = subprocess.run([imageio_ffmpeg.get_ffmpeg_exe(), "-v", "quiet", "-i", str(path), "-ac", "1", "-ar", str(rate), "-f", "f32le", "-"], capture_output=True).stdout
+    return np.frombuffer(raw, np.float32).astype(float), rate
 
 
 def db(v):

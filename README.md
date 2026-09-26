@@ -90,21 +90,27 @@ are not covered by the Python test suite.
 
 ### `roblox-sfx-synth`
 
-Creates original anime style sound effects from code: hits and punches,
-whooshes and slashes, charge ups, aura loops, summons, time stops and UI blips.
-Voice lines are not made here. The agent cannot hear, so each sound is checked
-by its numbers and a spectrogram image before the user listens.
+Gets realistic sound effects by finding them on the internet first. It searches
+free-to-use libraries (BigSoundBank, freesound CC0, Mixkit, 効果音ラボ, Kenney),
+downloads, measures and ranks the results, and searches the Roblox Creator
+Store's licensed partner library (ProSoundEffects, APMOfficial) for ready asset
+IDs. It then trims, pitches and layers real recordings into anime and
+Frieren-style SFX, with license credits for every file. Synthesis is the last
+resort. Voice lines are not made here.
 
 Package layout:
 
-- `SKILL.md` - the workflow, the layer model, the rules, the numbers measured
-  on the presets, reading the spectrogram, the Roblox upload limits and the
-  feedback log.
-- `references/recipes.md` - each preset's layers and the numbers to change.
-- `scripts/sfx.py` - the numpy/scipy synth and 16 presets; writes 44.1 kHz
-  mono WAV files.
-- `scripts/check.py` - peak, RMS, envelope, band energy, loop seam and a
-  spectrogram PNG.
+- `SKILL.md` - the find-first workflow, picking rules, measured numbers, the
+  spectrogram guide and the feedback log.
+- `references/` - `sources.md` (sources, licenses with evidence, exclusions),
+  `frieren.md` (team, evidence, sound brief, search terms), `layering.md`
+  (principles, reference ranges, recipe format, synthesis fallback),
+  `recipes.md` (synth presets).
+- `scripts/` - `find.py` (web and Roblox store search, download, measure,
+  rank), `build.py` (layer recordings and presets from a JSON recipe through
+  pedalboard, write credits), `check.py` (measure any audio file, spectrogram
+  PNG), `sfx.py` (synth presets), `Audition.lua` (measure store IDs in Studio,
+  untested).
 
 Needs `pip install -r roblox-sfx-synth/requirements.txt`. The scripts are not
 covered by the test suite.
