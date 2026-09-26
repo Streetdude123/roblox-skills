@@ -54,7 +54,8 @@ Package layout:
 - `scripts/` - `Poser.lua` (runtime with `curve = "spline"`, `lag`,
   `springs`, `life`, `post`, the inertial blend, `check`, `dump`, `bake`),
   `Feet.lua` (planted R6 legs), `ExampleClips.lua` (a guard and a right cross
-  built on the method), `ExampleMoves.lua` (a throw, a heavy landing and a superhero landing in the target style), `EditStrip.lua` (Edit-mode pose strips and the foot
+  built on the method), `ExampleMoves.lua` (a throw, a heavy landing, a superhero landing and a
+  leap strike in the target style), `EditStrip.lua` (Edit-mode pose strips and the foot
   check), `LoadTest.lua` (fresh module copies from `serve.js`),
   `motion_check.js` (the metrics on decode text, with range and sweep),
   `video/ref_sheets.py` (frame-by-frame sheets, cuts and holds of a

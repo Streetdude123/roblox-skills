@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 - A leap strike built offline (user-authorized)
+
+- `roblox-r6-animation`: `scripts/ExampleMoves.lua` adds `LeapStrike`, the study's hop, hang and lunge as an in-place leap attack with the feet solver off in the air, built in four rounds with `faults.py`. `r6_render.py --follow` now also rises with a torso above standing height. `r6-mechanics.md` (airborne legs with `Feet.post`), `principles.md`, `motion-metrics.md`, `real-motion.md`, `SKILL.md` and the README follow. Not played in Studio.
+
 ## 2026-09-26 (late night) - A fault finder for decode text (user-authorized)
 
 - `roblox-r6-animation`: new `scripts/faults.py` flags twinning arms, dead arms under a lean, neutral mid-clip poses, one-frame pops over 90 degrees, parts through the floor, flat or twisted planted legs, hip gaps, foot slides and parts that are fastest away from the strike, each with its time span and a first repair. Thresholds come from the pro decodes (all pass with `--float`) and from faults found by eye in the example drafts; it also found a bracing arm 0.14 under the floor that the review missed and a 172 degree roll flip in the retargeted CMU kick. `quality-review.md` holds the rules and their calibration; `SKILL.md` step 4, `pipeline.md`, `real-motion.md` and the README follow; five new tests. `principles.md` and `motion-metrics.md` correct the throw's fifth round: its wind-up outran the whip only in joint speed, not in world speed.

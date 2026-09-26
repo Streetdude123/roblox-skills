@@ -298,7 +298,7 @@ def main():
     ap.add_argument('--onion', type=int, default=0, help='ghost this many earlier frames behind each cell')
     ap.add_argument('--trail', help='part whose tip is traced one dot per frame, e.g. "Right Arm"')
     ap.add_argument('--video', action='store_true')
-    ap.add_argument('--follow', action='store_true', help='keep the camera on the torso when the clip travels')
+    ap.add_argument('--follow', action='store_true', help='keep the camera on the torso when the clip travels or leaves the floor')
     a = ap.parse_args()
 
     clip = read_decode(a.decode)
@@ -314,7 +314,7 @@ def main():
         target = (0, 2.4, 0)
         if a.follow:
             c = world_parts(clip, t)['Torso'][1]
-            target = (c[0], 2.4, c[2])
+            target = (c[0], max(2.4, c[1] - 0.6), c[2])
         return make_camera(view, w, h, a.dist, a.fov, a.yaw, a.pitch, target)
 
     for view in a.view.split(','):

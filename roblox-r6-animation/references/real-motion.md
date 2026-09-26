@@ -62,7 +62,7 @@ python3 scripts/r6_render.py out/Jab.txt sheets --view side,front34,rear34 --eve
 python3 scripts/r6_render.py out/Jab.txt sheets --view rear34 --video
 ```
 
-Views: `side`, `front`, `rear`, `rear34` (the player's camera), `front34`, `top`, `low`, or `--yaw` and `--pitch`. `--follow` keeps a travelling clip in frame. `--onion 4` ghosts the frames before each cell. The trail draws one dot per frame for the tip of a part: uneven gaps are the spacing, the dotted line is the arc. The head and torso fronts are lighter so the facing reads.
+Views: `side`, `front`, `rear`, `rear34` (the player's camera), `front34`, `top`, `low`, or `--yaw` and `--pitch`. `--follow` keeps a travelling clip, or one that leaves the floor, in frame. `--onion 4` ghosts the frames before each cell. The trail draws one dot per frame for the tip of a part: uneven gaps are the spacing, the dotted line is the arc. The head and torso fronts are lighter so the facing reads.
 
 ## 4. Stylize
 
