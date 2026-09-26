@@ -5,6 +5,16 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 (night) — Whole-body turn and flip channels, trail cleanup rule, Dragon Form R and T (user-authorized)
+
+- roblox-r6-animation: `references/pipeline.md` documents the `turn` and `flip` root channels; `references/project-style.md` logs his sentence and the Vortex and Tail numbers.
+- roblox-vfx-craft: `SKILL.md` feedback log (trails off on finish and interrupt, giant constructs to the side of the player camera, multi-hit keys by instance).
+
+## 2026-09-26 (later) — R6 two-handed lance, whole-body spin, skewer throw, kit piece colours (user-authorized)
+
+- roblox-r6-animation: `references/weapons.md` gains the measured R6 two-handed spear rules (chest-centre rear hand, shaft 25 to 45 degrees across the chest, side-on torso, per-frame front-hand solve, the shaft slide); `references/project-style.md` logs his sentences and the lance combo, spin and skewer numbers and traps.
+- roblox-vfx-craft: `references/water.md` section 10 (Toolbox kit pieces in the form moves, recolour near-black meshes on water, a small see-through whirl, rise geysers from the floor); `SKILL.md` feedback log entry.
+
 ## 2026-09-26 (final) - Finder split into its own skill (user-authorized)
 
 - New skill `roblox-sfx-finder`: `find.py`, `build.py`, `Audition.lua` and the references `sources.md`, `frieren.md`, `layering.md` moved here from `roblox-sfx-synth`, with its own `check.py` (reads any format) and `requirements.txt`. `build.py` loads synth presets from `roblox-sfx-synth` only for `synth` layers.

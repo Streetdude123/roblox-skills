@@ -169,6 +169,13 @@ A 20 s worn form (wings, horns, claw, tail, lance, body wraps) seen from the pla
   drop the torrent's `Core` and `H3` strokes on a thin tail, and use three plain beams for a short jet. The final form:
   hover median 20.5 ms, moving 22.3 ms, on a 16.6 ms idle.
 
+## 10. Toolbox kit pieces in the Dragon Form moves (2026-09-26)
+
+- Three free model pieces went into the form variants after a script scan: TideRing (six Shockwave meshes, a flat ring 20.6 studs across, stored standing up, so lay it flat with a 90 degree turn about X), WaterWhirl (four swirl meshes, 17.8 studs tall) and WaterGeyser (67 parts: splayed water columns plus a white splash base, 29.5 studs tall, pivot at the base). The builder copies them to `Assets.Dragon.Pieces`, anchored, no collision, no shadow, transparency at least 0.25 with the value kept in a `Base` attribute for fades, and the join warm-up draws them once.
+- Kit pieces often carry a near-black mesh as a dark rim. On water it reads as black ink strands ("not water"). Recolour any part whose brightest channel is under 0.15 to deep water blue (18, 64, 140).
+- A whirl around a spinning body must stay small and see-through: at scale 0.7 and full opacity it hid the enemy on the lance; scale 0.5 at 0.6 alpha, 0.62 s.
+- Animate a big piece with ScaleTo and PivotTo on one PreRender connection per spawn, keep the part list and base transparencies from the spawn, and destroy the model at the end. A geyser rises from under the floor (pivot at the base) instead of scaling up.
+
 ## Sources
 
 - VFX Apprentice, "How to Make Water VFX and Use Properties of Water for Stylized VFX" and "How to Draw
