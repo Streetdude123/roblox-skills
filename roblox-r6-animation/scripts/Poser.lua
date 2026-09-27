@@ -238,7 +238,7 @@ end
 
 -- clip.life adds a slow drift (two octaves of noise at clip.lifeRate hz, default 0.35) to the rotation channels so a
 -- held pose never freezes: a number spreads that many degrees over the upper body (torso 1, head 1.4, arms 1.2, legs
--- 0 so the feet stay planted), a table gives degrees by joint; noise runs on unwrapped time so a loop has no seam
+-- 0 so the feet stay planted), a table gives degrees by joint; a loop samples the noise on a circle of its own length so a baked loop repeats with no seam
 local LIFE = {Torso = 1, Head = 1.4, ["Right Arm"] = 1.2, ["Left Arm"] = 1.2}
 local SEED = {Torso = 11.3, Head = 23.7, ["Right Arm"] = 37.1, ["Left Arm"] = 41.9, ["Right Leg"] = 53.3, ["Left Leg"] = 67.9}
 
@@ -258,11 +258,22 @@ local function samplePose(clip, name, keys, t, ctx, lifeT)
 	local amp = clip.life and lifeAmp(clip, name) or 0
 	if amp ~= 0 then
 		ch = ch or cfChan(cf)
-		local u = (lifeT or t) * (clip.lifeRate or 0.35)
+		local rate = clip.lifeRate or 0.35
+		local u = (lifeT or t) * rate
 		local seed = SEED[name] or #name * 7.1
+		local ringX, ringY
+		if clip.loop and clip.length then
+			local th = 2 * math.pi * (lifeT or t) / clip.length
+			local rr = clip.length * rate / (2 * math.pi)
+			ringX, ringY = rr * math.cos(th), rr * math.sin(th)
+		end
 		for c = 1, 3 do
 			local s = seed + c * 3.7
-			ch[c] += amp * (math.noise(u, s) + 0.5 * math.noise(u * 2.3, s + 1.9)) * 1.6
+			if ringX then
+				ch[c] += amp * (math.noise(ringX, ringY, s) + 0.5 * math.noise(ringX * 2.3, ringY * 2.3, s + 1.9)) * 1.6
+			else
+				ch[c] += amp * (math.noise(u, s) + 0.5 * math.noise(u * 2.3, s + 1.9)) * 1.6
+			end
 		end
 		cf = chanCF(ch)
 	end
@@ -499,8 +510,9 @@ local function simulate(clip, upto, ctx, visit, ctxAt, real)
 	end
 	for i, t in ipairs(times) do
 		local c = ctxAt and ctxAt(t) or ctx or {}
+		local st = (clip.loop and clip.length and t > clip.length + 1e-6) and t % clip.length or t
 		for name, keys in pairs(clip.joints) do
-			local cf, ch = samplePose(clip, name, keys, t, c)
+			local cf, ch = samplePose(clip, name, keys, st, c, t)
 			local k = springOf(clip, name)
 			if k then
 				ch = ch or cfChan(cf)
@@ -514,7 +526,7 @@ local function simulate(clip, upto, ctx, visit, ctxAt, real)
 			poses[name] = cf
 		end
 		if clip.post then
-			clip.post(poses, t, c)
+			clip.post(poses, st, c)
 		end
 		if visit then
 			visit(t, poses, reals[i])
@@ -751,9 +763,10 @@ end
 
 -- bakes a clip into a keyframesequence at fps so the animation editor can publish it as a real asset
 -- a procedural clip gives ctxAt(t) so the walk phase and speed exist for every sampled frame
-function Poser.bake(clip, rig, fps, name, length)
+function Poser.bake(clip, rig, fps, name, length, warm)
 	Poser.compile(clip)
 	rig:refresh()
+	warm = warm or 0
 	local kfs = Instance.new("KeyframeSequence")
 	kfs.Name = name or clip.name or "Clip"
 	kfs.Loop = clip.loop == true
@@ -771,16 +784,16 @@ function Poser.bake(clip, rig, fps, name, length)
 			root = p0
 		end
 	end
-	local nextT = 0
-	simulate(clip, length, rig.ctx, function(t, poses, rt)
+	local nextT = warm
+	simulate(clip, length + warm, rig.ctx, function(t, poses, rt)
 		-- simulate steps at 60 fps; keep the steps on the bake grid and always the exact end, and a warped clip bakes
 		-- in real seconds so the asset plays at the speed play shows
-		if rt + 1e-6 < nextT and t < length then
+		if rt + 1e-6 < nextT and t < length + warm then
 			return
 		end
 		nextT = rt + 1 / fps
 		local kf = Instance.new("Keyframe")
-		kf.Time = rt
+		kf.Time = rt - warm
 		local made = {}
 		local function poseFor(part)
 			if made[part] then

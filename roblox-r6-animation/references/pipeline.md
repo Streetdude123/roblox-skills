@@ -92,6 +92,8 @@ Roll scaling decomposes orientation into Euler angles and is not general retarge
 
 `Poser.bake` creates real KeyframeSequence, Keyframe, and nested Pose instances from the same simulation as play (lag, life, springs and the post pass included, stepped at 60 fps and kept on the bake grid plus the exact end, so bake at 60 fps or at a rate that divides it). It refuses a length over 60 s: a held clip such as `DioPoint` carries `length = 100000` so it never ends in play, and a bake of it with no explicit length looped for millions of frames, flooded memory and crashed Studio behind a "Save File Failure" dialog on 2026-09-22 (the unsaved place was lost). Pass a bake length for every held clip and bake at most five clips per `execute_luau` call. It samples procedural clips using `ctxAt(t)` when provided. `Bake.lua` is an Edit-mode project helper with configurable root, rig, and clip list; inspect and adapt those inputs first.
 
+`Poser.bake(clip, rig, fps, name, length, warm)` pre-rolls `warm` seconds before the first recorded frame; pass one loop length for a loop with springs so the seam is in the steady cycle (added 2026-09-27). A loop's `simulate` samples wrapped time past its length, and its `life` noise runs on a circle of the loop length, so a baked loop repeats with no jump.
+
 Account for the current baker's behavior before delivering its output:
 
 | Behavior in bundled source | Required delivery check or repair |

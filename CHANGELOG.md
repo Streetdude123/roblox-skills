@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-27 (night) — Custom quadruped rigs, seamless baked loops (user-authorized)
+
+- roblox-r6-animation: new `references/custom-rigs.md` (non-R6 Motor6D rigs: Humanoid R15 + HipHeight setup, the rigid-leg foot solver with the corner raise, ground flow for straight and turning gaits, girdle drop and pitch, gait numbers for walk, half-bound sprint, pivot and crouch, limits of a rigid hind block); new `scripts/QuadRig.lua` and `scripts/QuadClips.lua` (the tested Verix example); `scripts/Poser.lua` loops sample wrapped time, `life` noise runs on a circle of the loop length, `bake` takes a warm-up pre-roll; `references/pipeline.md` documents the bake warm-up; `references/project-style.md` logs his sentences and the Verix numbers.
+
 ## 2026-09-27 (later) — Replicating a reference image by measurement (user-authorized)
 
 - roblox-vfx-craft: new `references/textures.md` (camera solve, freeze frame, size/shape/colour scoring against the image, traced outline and occupancy, per-direction colour maps, one emitter per ember, painters, engine facts); new `scripts/reference-match/` (compare, shape, cells, embers, outline, colormap, texscore, reach, refcrown2, tracecrack, column); `scripts/PaintTextures.ps1`, `scripts/DrawShapes.ps1`, `scripts/serve_textures.js`; `scripts/Eruption/` (Cast module, click client, relay server, final textures); `references/taste.md` and the `SKILL.md` feedback log carry his sentences.
