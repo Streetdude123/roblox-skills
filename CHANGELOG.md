@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-27 (later) — Replicating a reference image by measurement (user-authorized)
+
+- roblox-vfx-craft: new `references/textures.md` (camera solve, freeze frame, size/shape/colour scoring against the image, traced outline and occupancy, per-direction colour maps, one emitter per ember, painters, engine facts); new `scripts/reference-match/` (compare, shape, cells, embers, outline, colormap, texscore, reach, refcrown2, tracecrack, column); `scripts/PaintTextures.ps1`, `scripts/DrawShapes.ps1`, `scripts/serve_textures.js`; `scripts/Eruption/` (Cast module, click client, relay server, final textures); `references/taste.md` and the `SKILL.md` feedback log carry his sentences.
+
 ## 2026-09-27 — Tools held by the engine grip, two-handed mop scrub (user-authorized)
 
 - roblox-r6-animation: `references/weapons.md` gains "A tool held by the engine grip" (blend the RightGrip weld C1 during a clip, why a square fist cannot mop, the two-handed long-handle pose family, the gimbal carry key, breakdowns that keep a floor contact out of the floor, the hand-back to a running Animator, replication); `references/project-style.md` logs his sentences and the mop scrub numbers; `references/pipeline.md` notes the source-server ports other sessions hold.

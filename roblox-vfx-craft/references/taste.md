@@ -235,6 +235,45 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
   body's facing. Aiming at the point the camera centre ray hits sends every shot into the floor, because his camera looks
   down at the body.
 
+## Replicating a reference image (2026-09-27, pink ground spike eruption)
+
+- "Using VFX packs or online resources on the internet for custom images for VFX, replicate this exact VFX with nearly 100 PERCENT
+  accuracy please" (a still of a magenta spike shooting out of a dark concrete floor). His picks: click on the ground, a quick burst of
+  about 1 s with the crack staying a little longer, the dark scene matched (floor, light, vignette), visuals only.
+- "search up vfx in the toolbox and click on every vfx pack that has a high rating use that" and "only look at the first page by the
+  way". The first page of the Toolbox search "vfx"; ratings come from `apis.roblox.com/toolbox-service/v1/items/details?assetIds=`
+  (upVotes, downVotes); nine packs had 95% or more with 40 or more votes. Scan them one at a time (6 GB machine), delete each after
+  noting the texture ids that fit.
+- "look's nothing like the reference??" He watches Studio while I build: an unfinished frame is judged as the result. Say what is
+  still missing before he sees it, and get the hero layer on screen first.
+- "Remember you'll have to either learn how to make your own VFX textures with super high quality or learn the internet for searching
+  exact textures needed, vfx packs can't help you for lots of these custom textures". The pack pieces only approximated the shapes;
+  the build started to match the image only after I painted the hero textures myself (the crown of motion-blurred wedges, the
+  streaky spire, the torn crack ring) and compared each paint against a crop of the reference. The method and the engine facts are in
+  `references/textures.md`.
+- He then sent a zip of textures that ChatGPT had picked (Kenney's CC0 particle pack with a read-me). Most overlapped with the painted
+  set; the tall ragged flame (02_beam_fringe) was new and became the white-hot flame at the spike base. Judge a supplied texture by
+  what it adds to the reference, and say plainly which pieces were not used.
+- "you're close, sparks need to be closer ... and the jagged outter ring outaide the beam is too symmetrical"; he picked the
+  asymmetric crack variant ("that bottom right one looks aamzing"). A crack ring is uneven: pieces of different sizes, irregular
+  gaps, an off-round outline, zigzag strokes.
+- "atlest 95% accuracy please", "yes compare them side to side, notice the exact differenr, then fix your textures accordingly",
+  and later "Please please make sure you get 98% correlafion in SIZE and SHAPE" + "AND COLOR". He wants numbers, not impressions:
+  capture the Play frame from a camera solved to the reference framing, score it against the image (outline overlap, mask and
+  colour correlation, per-region colour statistics), fix the largest measured error, repeat.
+- "fix the flame vfx in the middle, the top matches the shape but the base needs some work" and "Make the flame thinner": the core
+  is a straight column (measure its width in pixels at several heights), not a cone, and never ends in a wide white oval.
+- "the inner bright white pink burst needs to match the shape of thw flame though and be jagged, assymetrical, unpredictable like
+  fire": no round glows in the centre; a flickering flipbook of jagged tongues.
+- "i personally think your vfx is too soft ... rarely any stuff inbthe VFX reference is soft": hard 1 to 2 px edges, streaks inside
+  each shape, sharp tips, dark gaps between shapes; soft glows only where the reference glows.
+- "Embers need to vary in size. Strength, and brightness" and "Can you match the exact position, sizes, and brightness of the embers
+  in the reference": extract every ember from the image (connected components: centre, axis, length, brightness), solve a start
+  point, direction and speed per ember so it lands on its pixel at the reference moment, one fixed emitter per ember.
+- "you're missing all those color variatiions for the outee spikes ring, look at the dark pink in the center and expands to a
+  lighter pink": sample the colour by distance from the base (and by sector) and bake that ramp; the root is deep magenta pink,
+  not pale.
+
 ## Related feedback on animation
 
 His animation feedback lives in the `roblox-r6-animation` skill. The one that crosses over: the
