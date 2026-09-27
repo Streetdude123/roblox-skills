@@ -132,3 +132,16 @@ Learned 2026-09-23 on the Asta ultimate (raise the sword two-handed, it grows to
 - Solve the front hand onto the shaft every frame (reach sphere against the shaft line, clamp the grip point 1.2 to 3.4 studs ahead of the rear hand). Fall back to a free arm channel with a weight when the pose cannot reach.
 - The arms cannot extend a thrust. Slide the shaft through the hands (up to about 1 stud along the blade) and lunge the torso and the root instead.
 - From the player camera a thrust from the chest centre hides behind the body. Judge it from the side, and let the VFX carry it in the player view.
+
+## A tool held by the engine grip (mop, 2026-09-27)
+
+Learned on the Targaot janitor mop, a `Tool` whose `RightGrip` weld the engine makes on equip (C0 `CF(0, -1, 0) * Rx(-90)` on the right arm, C1 = `Tool.Grip`).
+
+- **The grip is not a Poser joint.** Keep the tool and blend the weld instead: every client that plays the clip writes `RightGrip.C1 = Tool.Grip:Lerp(actionGrip, w(t))` each frame (w up over 0.02 to 0.13 s, down over 1.03 to 1.17 s) and puts `Tool.Grip` back at the end. The carry grip stays for walking.
+- **A square fist cannot mop.** With the handle square to the arm, a head on the floor ahead needs the arm raised forward-up; with the arm down-forward a square handle points sideways or up. The mop grip runs about 20 degrees off the arm line with the fist 0.6 up the handle (`CF(0, 0.6, 0) * Rz(-20) * Rx(-70)`); the part of the handle above the fist hides inside the arm block.
+- **Two hands on a long handle.** A search over torso, arm and grip found the reachable family: the right fist at the chest centre (arm about `{15, 87, -90}`), the torso leaning 22 to 26 forward and turned right 15 to 43, the mop head 3 to 3.6 studs ahead and left of centre. The left hand is a post pass that aims the left arm at a handle point 1.2 below the right fist every frame (slide up to 0.3), blended in over 0.18 s and out over 0.2 s; a 0.11 s blend read as a snap (16 degrees a frame).
+- **The body drives the stroke.** The solved arm keys change by only a few degrees; the torso twist carries the mop head across 1.6 studs. Solve each key for the head on its floor target with the torso twist and drop free by a few units and the hip gap in the cost.
+- **Gimbal at the carry pose.** The carry arm `{90, 0, 0}` equals `{90, t, -t}` for any t; write it on the stroke keys' branch (`{90, 88, -88}`) or the spline spins the arm the long way.
+- **Keep the head out of the floor between keys.** Straight from the carry pose to the first floor key the mop dug 0.69 under the floor. Breakdowns at 0.08 and 1.08 s, solved with the grip weight of that time, seeded from the slerp midpoint of the neighbour keys with a penalty on the real rotation from it, keep it above the floor. Measure the lowest head corner every frame.
+- **Hand back to a running Animator.** When the default Animate still plays under the clip, `Rig:stop` fades to identity and the Animator's pose then pops in. Copy `rig.last`, `stop(0)`, then for 0.15 s write `from:Lerp(motor.Transform, w)` in PreSimulation (the Animator's pose of that frame). Measured in Play: no joint spike at the end.
+- **Replication.** Transforms are local, so the server fires a remote with the character and every other client plays the same clip on it.

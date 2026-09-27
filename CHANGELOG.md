@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-27 — Tools held by the engine grip, two-handed mop scrub (user-authorized)
+
+- roblox-r6-animation: `references/weapons.md` gains "A tool held by the engine grip" (blend the RightGrip weld C1 during a clip, why a square fist cannot mop, the two-handed long-handle pose family, the gimbal carry key, breakdowns that keep a floor contact out of the floor, the hand-back to a running Animator, replication); `references/project-style.md` logs his sentences and the mop scrub numbers; `references/pipeline.md` notes the source-server ports other sessions hold.
+
 ## 2026-09-26 (night) — Whole-body turn and flip channels, trail cleanup rule, Dragon Form R and T (user-authorized)
 
 - roblox-r6-animation: `references/pipeline.md` documents the `turn` and `flip` root channels; `references/project-style.md` logs his sentence and the Vortex and Tail numbers.
