@@ -286,6 +286,11 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
   together. Bake a strong hue ramp along each spike (pale pink at the root, hot magenta 255,70,210 in the inner circle, coral-orange
   255,125,95 in the outer ring, deep red 205,64,64 at the tips) and use only a mild corrective tint (255,160,210, Brightness 1.1,
   LightEmission 0.6), because the glow alone lifts green about 1.6 times and turns both ends pastel.
+- "Now all the spikes need a tiny dark outline, the bottom of the spike in the perspective of thw image ... needs to be a hotter
+  pink than the rest of thw circle" (with the area circled on a capture). The outline goes on the silhouette of the whole burst,
+  not on each painted stroke (per-stroke edges made every thin stroke stripy): after painting, darken to maroon every opaque pixel
+  within 3 texture px (about 1.5 screen px) of transparency. The lower front of the circle (below the base in screen space, inner
+  60% of the spike length) blends to a warm hot pink (255, 40, 115), and the base fire and floor ring follow it.
 
 ## Related feedback on animation
 
