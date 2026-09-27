@@ -1,0 +1,34 @@
+{
+ "layers": [
+  {
+   "file": "growl/wav/mixkit_1956.wav",
+   "start": 0.5,
+   "gain_db": 0,
+   "fade_in": 0.05
+  },
+  {
+   "file": "roar/wav/lab_dragon-cry2.wav",
+   "start": 0.23,
+   "gain_db": -6,
+   "pitch": -5,
+   "fade_in": 0.05
+  },
+  {
+   "file": "growl/wav/mixkit_1956.wav",
+   "start": 0.625,
+   "gain_db": -6,
+   "pitch": -6,
+   "lp": 500,
+   "fade_in": 0.05
+  }
+ ],
+ "fx": [
+  {
+   "type": "reverb",
+   "room": 0.4,
+   "wet": 0.12
+  }
+ ],
+ "tail": 0.8,
+ "name": "Growl"
+}

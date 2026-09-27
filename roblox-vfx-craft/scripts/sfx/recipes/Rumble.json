@@ -1,0 +1,22 @@
+{
+ "name": "Rumble",
+ "layers": [
+  {
+   "file": "rumble/wav/freesound_199803.wav",
+   "end": 3.5,
+   "gain_db": 0,
+   "fade_in": 0.05,
+   "fade_out": 1.5
+  },
+  {
+   "file": "rumble/wav/mixkit_1296.wav",
+   "start": 1,
+   "end": 4.5,
+   "gain_db": -6,
+   "lp": 800,
+   "fade_out": 1.5
+  }
+ ],
+ "fx": [],
+ "tail": 0.3
+}

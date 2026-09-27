@@ -1,0 +1,32 @@
+{
+ "layers": [
+  {
+   "file": "rocket/wav/freesound_521377.wav",
+   "end": 0.9,
+   "gain_db": 0,
+   "fade_out": 0.4
+  },
+  {
+   "file": "shot/wav/freesound_450853.wav",
+   "end": 0.8,
+   "gain_db": -3,
+   "fade_out": 0.4
+  },
+  {
+   "file": "rocket/wav/lab_missile1.wav",
+   "end": 0.5,
+   "gain_db": -5,
+   "fade_out": 0.2
+  }
+ ],
+ "fx": [
+  {
+   "type": "reverb",
+   "room": 0.3,
+   "wet": 0.1
+  }
+ ],
+ "pitch_jitter": 1.5,
+ "tail": 0.3,
+ "name": "Shot"
+}

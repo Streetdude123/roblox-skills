@@ -1,0 +1,39 @@
+{
+ "layers": [
+  {
+   "file": "rocket/wav/lab_missile1.wav",
+   "gain_db": 0,
+   "drive": 1.5
+  },
+  {
+   "file": "explosion/wav/kenney_sci-fi-sounds_explosionCrunch_000.wav",
+   "gain_db": -2,
+   "drive": 2
+  },
+  {
+   "file": "impact/wav/lab_sword-clash3.wav",
+   "gain_db": -6,
+   "hp": 1500
+  },
+  {
+   "file": "rocket/wav/freesound_857959.wav",
+   "gain_db": -10,
+   "fade_in": 0.05
+  },
+  {
+   "file": "explosion/wav/lab_bomb2.wav",
+   "gain_db": -6,
+   "pitch": -7,
+   "lp": 250
+  }
+ ],
+ "fx": [
+  {
+   "type": "reverb",
+   "room": 0.5,
+   "wet": 0.15
+  }
+ ],
+ "tail": 1.5,
+ "name": "Blast"
+}

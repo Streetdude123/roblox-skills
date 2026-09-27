@@ -1,0 +1,39 @@
+{
+ "layers": [
+  {
+   "file": "jet/wav/mixkit_3170.wav",
+   "start": 2.0,
+   "end": 5.5,
+   "pitch": -4,
+   "gain_db": 0,
+   "fade_in": 0.3,
+   "fade_out": 1.0
+  },
+  {
+   "file": "jet/wav/mixkit_1576.wav",
+   "start": 2.1,
+   "end": 5.5,
+   "pitch": -6,
+   "gain_db": -6,
+   "lp": 3000,
+   "fade_in": 0.3,
+   "fade_out": 1.0
+  },
+  {
+   "file": "wings/wav/lab_dragon-wing1.wav",
+   "at": 0.35,
+   "start": 0.3,
+   "pitch": -4,
+   "gain_db": -5
+  }
+ ],
+ "fx": [
+  {
+   "type": "reverb",
+   "room": 0.3,
+   "wet": 0.08
+  }
+ ],
+ "tail": 0.5,
+ "name": "Flyby"
+}

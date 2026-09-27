@@ -1,0 +1,41 @@
+{
+ "layers": [
+  {
+   "file": "roar/wav/mixkit_16.wav",
+   "start": 1.3,
+   "gain_db": 0,
+   "fade_in": 0.08
+  },
+  {
+   "file": "roar/wav/lab_dragon-cry1.wav",
+   "start": 0.58,
+   "gain_db": -4,
+   "pitch": -3,
+   "fade_in": 0.08
+  },
+  {
+   "file": "roar/wav/mixkit_16.wav",
+   "start": 1.51,
+   "gain_db": -6,
+   "pitch": -7,
+   "lp": 400,
+   "fade_in": 0.08
+  },
+  {
+   "file": "roar/wav/freesound_320345.wav",
+   "start": 2.7,
+   "gain_db": -9,
+   "hp": 2000,
+   "fade_in": 0.08
+  }
+ ],
+ "fx": [
+  {
+   "type": "reverb",
+   "room": 0.6,
+   "wet": 0.2
+  }
+ ],
+ "tail": 1.5,
+ "name": "Roar"
+}

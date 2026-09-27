@@ -1,0 +1,29 @@
+{
+ "layers": [
+  {
+   "file": "wind/wav/lab_gust-wind1.wav",
+   "gain_db": 0,
+   "fade_out": 1.0
+  },
+  {
+   "file": "wind/wav/mixkit_1474.wav",
+   "start": 0.2,
+   "gain_db": -4,
+   "pitch": -3
+  },
+  {
+   "file": "whoosh/wav/lab_punch-slow2.wav",
+   "gain_db": -8,
+   "pitch": -5
+  }
+ ],
+ "fx": [
+  {
+   "type": "reverb",
+   "room": 0.4,
+   "wet": 0.1
+  }
+ ],
+ "tail": 0.5,
+ "name": "Gale"
+}

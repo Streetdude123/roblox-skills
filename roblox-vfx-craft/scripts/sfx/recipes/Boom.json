@@ -1,0 +1,33 @@
+{
+ "layers": [
+  {
+   "file": "explosion/wav/lab_bomb1.wav",
+   "gain_db": 0
+  },
+  {
+   "file": "explosion/wav/kenney_sci-fi-sounds_explosionCrunch_001.wav",
+   "gain_db": -4,
+   "drive": 1.5
+  },
+  {
+   "file": "explosion/wav/freesound_165910.wav",
+   "start": 0.84,
+   "gain_db": -9
+  },
+  {
+   "file": "explosion/wav/lab_bomb2.wav",
+   "gain_db": -8,
+   "pitch": -5,
+   "lp": 300
+  }
+ ],
+ "fx": [
+  {
+   "type": "reverb",
+   "room": 0.7,
+   "wet": 0.2
+  }
+ ],
+ "tail": 3,
+ "name": "Boom"
+}

@@ -1,0 +1,32 @@
+{
+ "layers": [
+  {
+   "file": "whoosh/wav/lab_punch-slow1.wav",
+   "end": 0.7,
+   "reverse": true,
+   "gain_db": 0,
+   "fade_in": 0.2
+  },
+  {
+   "file": "whoosh/wav/lab_pigeon-take-off1.wav",
+   "at": 0.35,
+   "gain_db": -6,
+   "pitch": 3
+  },
+  {
+   "file": "bell/wav/lab_bell1.wav",
+   "at": 0.3,
+   "pitch": 7,
+   "gain_db": -8
+  }
+ ],
+ "fx": [
+  {
+   "type": "reverb",
+   "room": 0.6,
+   "wet": 0.3
+  }
+ ],
+ "tail": 1.2,
+ "name": "Rise"
+}

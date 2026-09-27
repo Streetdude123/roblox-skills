@@ -1,0 +1,21 @@
+{
+ "layers": [
+  {
+   "file": "debris/wav/mixkit_403.wav",
+   "start": 0.6,
+   "end": 5.2,
+   "gain_db": 0,
+   "fade_out": 1.2
+  },
+  {
+   "file": "debris/wav/mixkit_1562.wav",
+   "start": 1.5,
+   "end": 6,
+   "gain_db": -9,
+   "fade_out": 1.5
+  }
+ ],
+ "fx": [],
+ "tail": 0.5,
+ "name": "Debris"
+}

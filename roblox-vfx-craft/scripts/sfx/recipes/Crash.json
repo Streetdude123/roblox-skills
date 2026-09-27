@@ -1,0 +1,36 @@
+{
+ "layers": [
+  {
+   "file": "impact/wav/freesound_641040.wav",
+   "gain_db": 0,
+   "pitch": -9,
+   "drive": 2
+  },
+  {
+   "file": "explosion/wav/lab_bomb1.wav",
+   "gain_db": -5
+  },
+  {
+   "file": "debris/wav/mixkit_1703.wav",
+   "at": 0.05,
+   "end": 6,
+   "gain_db": -10
+  },
+  {
+   "file": "debris/wav/mixkit_403.wav",
+   "at": 0.3,
+   "start": 0.6,
+   "end": 5.2,
+   "gain_db": -14
+  }
+ ],
+ "fx": [
+  {
+   "type": "reverb",
+   "room": 0.6,
+   "wet": 0.18
+  }
+ ],
+ "tail": 3,
+ "name": "Crash"
+}

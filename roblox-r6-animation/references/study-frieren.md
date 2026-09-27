@@ -155,6 +155,25 @@ Second round (the fight register and a walk, same checks):
 
 Checked in Studio on 2026-09-26 (a clean R6 StarterCharacter, `Poser.check` and `_G.feet` in Edit, the runtime in Play): every number above is the same in Studio, the planted soles slide 0.00, and CalmWalk slides 0.04 with its travel. In Play the clip clock and the effect schedule agree within two frames (the Zoltraak arm reaches the aim at 0.60 and kicks at 1.37; the volley bolts leave on the kick peaks). The effects half of that check is in `roblox-vfx-craft/references/study-frieren.md`, "Checked in Studio". Not yet judged: the look next to the reference frames.
 
+## The caster in a cutscene (2026-09-26)
+
+Lepy on the first cutscene clips: "i'd like if the person was more dynamic and interactive, their animations is kind of boring, remember they are the one casting the spell." The calm register above (one part acts, the rest holds, a 5 to 7 degree release) is right for a gameplay cast and wrong for a 13 to 15 s cinematic: there the caster drives every beat of the spell with the whole body. The three clips in `ExampleFrieren.lua` (`ZoltraakCine`, `VolleyCine`, `FlowersCine`) follow these rules:
+
+- **Every effect beat has a body cause.** The floor circle appears on a stomp (the left foot steps 0.85 forward with a 0.4 lift, the torso drops 0.32 and pitches -16, the staff slams from overhead). The barrel of circles forms on a thrust with a 3 degree staff pulse per circle. The volley's circles bloom while the free hand sweeps from the right circle to the left one; each shot kicks the staff 5 to 7 degrees and the hand flicks 7 degrees. The release recoils the body 8 degrees back and skids both feet 0.5 back.
+- **Reactions to the world.** Head up to the sky 0.2 s before the dragon is seen, a half step back while it lands, a 0.1 dip on the landing tremor, a brace against the roar (lean -12, head turned 26 away, the free forearm up at 112 degrees, the staff arm back and out, the back foot pushed 0.25 back by the wind).
+- **Holds strain.** A hold in a cutscene is a moving hold with a tremor layer: `tremor(list, make, t0, t1, a, b, opts)` removes the keys inside the window and writes alternating keys between the poses `a` and `b` with an amplitude that grows or fades (wind buffets 1.8 to 0.9 degrees every 0.16 s; a charge that builds from 0.6 to 2.4 degrees every 0.1 s; a beam push of 3 to 2 degrees every 0.09 s). Life alone (1.2 degrees) stayed under 12 deg/s and read as still for 1.4 s.
+- **Feet as functions.** `foot(keys)` gives `Feet.post` a target per time: `{t, x, z, yaw, lift}` keys, smoothstep between them, `lift * sin(pi u)` in a step, no lift in a skid. The torso's z follows the feet, and its drop covers the widest foot (a 0.95 forward, 0.7 back stance needs about 0.24).
+- **Aim with the twist.** Staff aims use `aim(torsoYaw, down)` at every key so the staff stays on the target while the torso sways; the head counters the torso yaw (head yaw about -0.7 of it).
+- **R6 cup limit.** Two straight R6 arms meet only at navel height (the earlier search). A kneel put the cupped light 1.5 studs above the floor, inside the 3 stud grass; the gather is now a standing bow with the light floating 0.7 above the hands (`CupLift`).
+
+Measured (`Poser.check`, `_G.feet`; the one-shot ranges do not fit a 15 s cutscene with calm and burst beats, frozen and still runs are what matter):
+
+| Clip | frozen | still | longest still | rest | contrast | feet |
+| --- | --- | --- | --- | --- | --- | --- |
+| ZoltraakCine (15 s) | 0% | 11.4% | 0.77 s (the calm open and the last second under the fade) | 77.1% | 28.3 | gap 0.02, twist 33, slide 0.51 and 0.76 = the planned skids |
+| VolleyCine (13 s) | 0% | 9.8% | 0.82 s (the fade) | 71.6% | 11.2 | slide 0.01, gap 0.00, twist 36 |
+| FlowersCine (14 s) | 0% | 11.3% | 0.27 s | 54.3% | 7.9 | slide 0.03, gap 0.04, twist 39 |
+
 ## What changes from the Moon target
 
 - The Moon study stays the target for fight mechanics: 2 to 9 frame snaps, moving holds of 0.17 to 0.9 s, staged anticipation, smears on the fastest frames.

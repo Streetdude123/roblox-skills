@@ -1,0 +1,23 @@
+{
+ "layers": [
+  {
+   "file": "bell/wav/lab_furin1.wav",
+   "start": 1.2,
+   "gain_db": 0
+  },
+  {
+   "file": "bell/wav/lab_bell1.wav",
+   "gain_db": -8,
+   "pitch": 5
+  }
+ ],
+ "fx": [
+  {
+   "type": "reverb",
+   "room": 0.6,
+   "wet": 0.3
+  }
+ ],
+ "tail": 1.5,
+ "name": "Chime"
+}

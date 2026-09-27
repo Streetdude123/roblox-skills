@@ -1,0 +1,43 @@
+{
+ "layers": [
+  {
+   "file": "fire/wav/bigsoundbank_1341.wav",
+   "start": 4,
+   "end": 7.5,
+   "gain_db": -2,
+   "fade_in": 0.9,
+   "fade_out": 0.6
+  },
+  {
+   "file": "roar/wav/mixkit_2230.wav",
+   "at": 0.25,
+   "gain_db": -3,
+   "fade_in": 0.3
+  },
+  {
+   "file": "fire/wav/bigsoundbank_0987.wav",
+   "start": 5,
+   "end": 8,
+   "gain_db": -9,
+   "fade_in": 0.5,
+   "fade_out": 0.5
+  },
+  {
+   "file": "growl/wav/mixkit_1956.wav",
+   "at": 0.1,
+   "start": 0.3,
+   "pitch": -7,
+   "lp": 600,
+   "gain_db": -6
+  }
+ ],
+ "fx": [
+  {
+   "type": "reverb",
+   "room": 0.4,
+   "wet": 0.12
+  }
+ ],
+ "tail": 0.5,
+ "name": "Breath"
+}

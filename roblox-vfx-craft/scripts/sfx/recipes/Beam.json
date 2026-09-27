@@ -1,0 +1,30 @@
+{
+ "layers": [
+  {
+   "file": "rocket/wav/mixkit_1723.wav",
+   "start": 1.6,
+   "end": 5.0,
+   "gain_db": 0,
+   "fade_in": 0.1,
+   "fade_out": 0.6
+  },
+  {
+   "file": "rocket/wav/mixkit_1720.wav",
+   "start": 2.0,
+   "end": 5.4,
+   "gain_db": -6,
+   "lp": 2500,
+   "fade_out": 0.6
+  },
+  {
+   "file": "rocket/wav/freesound_857959.wav",
+   "start": 0.5,
+   "end": 2.9,
+   "gain_db": -8,
+   "fade_out": 0.5
+  }
+ ],
+ "fx": [],
+ "tail": 0.3,
+ "name": "Beam"
+}

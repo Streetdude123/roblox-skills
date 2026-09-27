@@ -1,0 +1,28 @@
+{
+ "layers": [
+  {
+   "file": "glass/wav/lab_decision16.wav",
+   "end": 0.6,
+   "pitch": 5,
+   "gain_db": 0,
+   "fade_out": 0.3
+  },
+  {
+   "file": "bell/wav/lab_bell1.wav",
+   "end": 1.0,
+   "pitch": 7,
+   "gain_db": -6,
+   "fade_out": 0.5
+  }
+ ],
+ "fx": [
+  {
+   "type": "reverb",
+   "room": 0.4,
+   "wet": 0.2
+  }
+ ],
+ "pitch_jitter": 2,
+ "tail": 0.6,
+ "name": "Pop"
+}

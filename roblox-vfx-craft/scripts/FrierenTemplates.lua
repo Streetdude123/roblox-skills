@@ -1243,4 +1243,58 @@ end
 new("Frame", cine, {Name = "Top", Size = UDim2.fromScale(1, 0), BackgroundColor3 = Color3.new(0, 0, 0), BorderSizePixel = 0, ZIndex = 4})
 new("Frame", cine, {Name = "Bottom", Size = UDim2.fromScale(1, 0), Position = UDim2.fromScale(0, 1), AnchorPoint = Vector2.new(0, 1), BackgroundColor3 = Color3.new(0, 0, 0), BorderSizePixel = 0, ZIndex = 4})
 
+local SoundService = game:GetService("SoundService")
+
+local function group(name, volume)
+	local old = SoundService:FindFirstChild(name)
+	if old then
+		old:Destroy()
+	end
+	local g = new("SoundGroup", SoundService, {Name = name, Volume = volume})
+	new("CompressorSoundEffect", g, {Threshold = -9, Ratio = 12, Attack = 0.001, Release = 0.12, GainMakeup = 0})
+	new("EqualizerSoundEffect", g, {HighGain = 3, MidGain = 0, LowGain = 0})
+	return g
+end
+
+local bed = group("FrierenBed", 1)
+local hits = group("FrierenHits", 1)
+
+local SFX = {
+	Wind = {"", 0.6, bed, true},
+	Gale = {"", 0.9, bed},
+	Rumble = {"", 0.8, bed},
+	Beam = {"", 0.9, bed},
+	Hum = {"", 0.6, bed},
+	Flap = {"", 0.8, hits},
+	Flyby = {"", 0.9, hits},
+	Land = {"", 1, hits},
+	Roar = {"", 1, hits},
+	Growl = {"", 0.9, hits},
+	Breath = {"", 0.9, hits},
+	Swing = {"", 0.8, hits},
+	Stomp = {"", 1, hits},
+	Bell = {"", 0.7, hits},
+	Circle = {"", 0.8, hits},
+	Tick = {"", 0.8, hits},
+	Blast = {"", 1, hits},
+	Boom = {"", 1, hits},
+	Crash = {"", 1, hits},
+	Debris = {"", 0.8, hits},
+	Shot = {"", 0.7, hits},
+	Hit = {"", 0.7, hits},
+	Chime = {"", 0.7, hits},
+	Rise = {"", 0.8, hits},
+	Pop = {"", 0.6, hits},
+}
+
+local sfx = folder(assets, "Sfx")
+sfx:ClearAllChildren()
+for name, s in pairs(SFX) do
+	local ids = string.split(s[1], ",")
+	local sound = new("Sound", sfx, {Name = name, SoundId = ids[1] ~= "" and "rbxassetid://" .. ids[1] or "", Volume = s[2], SoundGroup = s[3], Looped = s[4] or false})
+	if #ids > 1 then
+		sound:SetAttribute("Ids", s[1])
+	end
+end
+
 return #vfx:GetDescendants() .. " instances in Frieren.Assets.Vfx"

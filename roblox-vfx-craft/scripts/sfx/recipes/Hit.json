@@ -1,0 +1,36 @@
+{
+ "layers": [
+  {
+   "file": "metal/wav/kenney_impact-sounds_impactMetal_heavy_000.wav",
+   "gain_db": 0,
+   "pitch": -2
+  },
+  {
+   "file": "metal/wav/lab_sword-slash1.wav",
+   "gain_db": -4,
+   "hp": 800
+  },
+  {
+   "file": "explosion/wav/kenney_sci-fi-sounds_explosionCrunch_002.wav",
+   "end": 0.7,
+   "gain_db": -3,
+   "fade_out": 0.3
+  },
+  {
+   "file": "metal/wav/lab_metal1.wav",
+   "gain_db": -8,
+   "pitch": -3
+  }
+ ],
+ "fx": [
+  {
+   "type": "reverb",
+   "room": 0.35,
+   "wet": 0.12
+  }
+ ],
+ "pitch_jitter": 1.5,
+ "layer_jitter": 1.0,
+ "tail": 0.4,
+ "name": "Hit"
+}

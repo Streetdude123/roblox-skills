@@ -1,0 +1,35 @@
+{
+ "layers": [
+  {
+   "file": "glass/wav/lab_decision16.wav",
+   "gain_db": 0
+  },
+  {
+   "file": "bell/wav/lab_bell1.wav",
+   "gain_db": -6,
+   "pitch": -5
+  },
+  {
+   "file": "impact/wav/lab_sword-clash3.wav",
+   "gain_db": -12,
+   "hp": 3000
+  },
+  {
+   "file": "glass/wav/freesound_125157.wav",
+   "start": 2,
+   "end": 4,
+   "gain_db": -10,
+   "fade_in": 0.02,
+   "fade_out": 1.2
+  }
+ ],
+ "fx": [
+  {
+   "type": "reverb",
+   "room": 0.5,
+   "wet": 0.2
+  }
+ ],
+ "tail": 1.2,
+ "name": "Circle"
+}

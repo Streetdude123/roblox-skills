@@ -1,0 +1,35 @@
+{
+ "layers": [
+  {
+   "file": "impact/wav/freesound_641040.wav",
+   "gain_db": 0,
+   "pitch": -6,
+   "drive": 2
+  },
+  {
+   "file": "explosion/wav/lab_bomb2.wav",
+   "gain_db": -8,
+   "pitch": -3
+  },
+  {
+   "file": "explosion/wav/kenney_sci-fi-sounds_explosionCrunch_003.wav",
+   "gain_db": -8
+  },
+  {
+   "file": "debris/wav/mixkit_403.wav",
+   "at": 0.08,
+   "start": 0.6,
+   "end": 5.2,
+   "gain_db": -14
+  }
+ ],
+ "fx": [
+  {
+   "type": "reverb",
+   "room": 0.5,
+   "wet": 0.15
+  }
+ ],
+ "tail": 2,
+ "name": "Land"
+}

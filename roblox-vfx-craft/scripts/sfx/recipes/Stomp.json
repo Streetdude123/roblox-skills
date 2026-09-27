@@ -1,0 +1,32 @@
+{
+ "layers": [
+  {
+   "file": "impact/wav/freesound_641040.wav",
+   "pitch": -3,
+   "gain_db": 0
+  },
+  {
+   "file": "bell/wav/lab_shrine-bell1.wav",
+   "start": 1.4,
+   "gain_db": -8
+  },
+  {
+   "file": "bell/wav/lab_bell1.wav",
+   "gain_db": -10
+  },
+  {
+   "file": "glass/wav/lab_glass-break3.wav",
+   "gain_db": -14,
+   "hp": 3000
+  }
+ ],
+ "fx": [
+  {
+   "type": "reverb",
+   "room": 0.5,
+   "wet": 0.2
+  }
+ ],
+ "tail": 1.2,
+ "name": "Stomp"
+}

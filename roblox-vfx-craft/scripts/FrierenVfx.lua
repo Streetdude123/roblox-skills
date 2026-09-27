@@ -195,7 +195,9 @@ local function updraft(char, list, stop)
 	at(stop, function()
 		rates(d, {Motes = 0, Streaks = 0, Glints = 0})
 	end)
-	Debris:AddItem(d, (stop + 2) * Tw.S())
+	at(stop + 2, function()
+		d:Destroy()
+	end)
 	return d
 end
 

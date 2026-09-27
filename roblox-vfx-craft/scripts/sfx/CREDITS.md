@@ -1,0 +1,48 @@
+- Sci fi rocket engine | Mixkit | Mixkit Sound Effects Free License | https://mixkit.co/free-sound-effects/rocket/
+- Space rocket full power turbine | Mixkit | Mixkit Sound Effects Free License | https://mixkit.co/free-sound-effects/rocket/
+- Rocket Launch | gracenew | CC0 | https://freesound.org/people/gracenew/sounds/857959/
+- 鈴を鳴らす シャン。残響入り | 効果音ラボ | 効果音ラボ terms (free, games OK, no credit) | https://soundeffect-lab.info/sound/search.php?s=%E9%88%B4
+- ミサイル 小型のものを発射 | 効果音ラボ | 効果音ラボ terms (free, games OK, no credit) | https://soundeffect-lab.info/sound/search.php?s=%E3%83%9F%E3%82%B5%E3%82%A4%E3%83%AB
+- explosion crunch 000 | Kenney | CC0 | https://kenney.nl/assets/sci-fi-sounds
+- 剣で打ち合う3 地面が揺れるほどの衝撃 | 効果音ラボ | 効果音ラボ terms (free, games OK, no credit) | https://soundeffect-lab.info/sound/search.php?s=%E8%A1%9D%E6%92%83
+- 爆発2 ドーン | 効果音ラボ | 効果音ラボ terms (free, games OK, no credit) | https://soundeffect-lab.info/sound/search.php?s=%E7%88%86%E7%99%BA
+- 爆発1 チュドーン | 効果音ラボ | 効果音ラボ terms (free, games OK, no credit) | https://soundeffect-lab.info/sound/search.php?s=%E7%88%86%E7%99%BA
+- explosion crunch 001 | Kenney | CC0 | https://kenney.nl/assets/sci-fi-sounds
+- Explosion 2.wav | Deganoth | CC0 | https://freesound.org/people/Deganoth/sounds/165910/
+- Gasoline Fire (gasoline fire 2) | Joseph Sardin | CC0 (Free and Royalty Free) | https://bigsoundbank.com/gasoline-fire-2-s1341.html
+- Fire breathing dragon | Mixkit | Mixkit Sound Effects Free License | https://mixkit.co/free-sound-effects/dragon/
+- Big Branching Fire (big branching fire 1) | Joseph Sardin | CC0 (Free and Royalty Free) | https://bigsoundbank.com/big-branching-fire-1-s0987.html
+- Monster calm growl | Mixkit | Mixkit Sound Effects Free License | https://mixkit.co/free-sound-effects/monster-growl/
+- 風鈴1 チリンチリンと涼しげな音 | 効果音ラボ | 効果音ラボ terms (free, games OK, no credit) | https://soundeffect-lab.info/sound/search.php?s=%E9%88%B4
+- 決定ボタンを押す16 ガラスの破片のような音 | 効果音ラボ | 効果音ラボ terms (free, games OK, no credit) | https://soundeffect-lab.info/sound/search.php?s=%E3%82%AC%E3%83%A9%E3%82%B9
+- glass-bowl-ring.aif | alienistcog | CC0 | https://freesound.org/people/alienistcog/sounds/125157/
+- GROSS IMPACT | magnuswaker | CC0 | https://freesound.org/people/magnuswaker/sounds/641040/
+- Explosion with rocks debris | Mixkit | Mixkit Sound Effects Free License | https://mixkit.co/free-sound-effects/debris/
+- Stone debris falling | Mixkit | Mixkit Sound Effects Free License | https://mixkit.co/free-sound-effects/debris/
+- Car explosion debris | Mixkit | Mixkit Sound Effects Free License | https://mixkit.co/free-sound-effects/debris/
+- ドラゴンの羽ばたき バサッ | 効果音ラボ | 効果音ラボ terms (free, games OK, no credit) | https://soundeffect-lab.info/sound/search.php?s=%E7%BE%BD%E3%81%B0%E3%81%9F%E3%81%8D
+- cloth flap | ssierra1202 | CC0 | https://freesound.org/people/ssierra1202/sounds/391945/
+- Aircraft flyby | Mixkit | Mixkit Sound Effects Free License | https://mixkit.co/free-sound-effects/flyby/
+- Landing jet flying whoosh | Mixkit | Mixkit Sound Effects Free License | https://mixkit.co/free-sound-effects/jet/
+- 突風が吹く 一陣の風 | 効果音ラボ | 効果音ラボ terms (free, games OK, no credit) | https://soundeffect-lab.info/sound/search.php?s=%E9%A2%A8
+- Transition windy swoosh | Mixkit | Mixkit Sound Effects Free License | https://mixkit.co/free-sound-effects/wind/
+- パンチの風切り音（スローモーション）2 アクションシーンの表現に | 効果音ラボ | 効果音ラボ terms (free, games OK, no credit) | https://soundeffect-lab.info/sound/search.php?s=%E9%A2%A8%E5%88%87%E3%82%8A
+- ドラゴンの鳴き声2 短め。巨大生物感ある響き | 効果音ラボ | 効果音ラボ terms (free, games OK, no credit) | https://soundeffect-lab.info/sound/search.php?s=%E5%92%86%E5%93%AE
+- impact metal heavy 000 | Kenney | CC0 | https://kenney.nl/assets/impact-sounds
+- 剣で斬る1 「ザシン」という金属感ある斬撃音 | 効果音ラボ | 効果音ラボ terms (free, games OK, no credit) | https://soundeffect-lab.info/sound/search.php?s=%E9%87%91%E5%B1%9E
+- explosion crunch 002 | Kenney | CC0 | https://kenney.nl/assets/sci-fi-sounds
+- 金属 柱 | 効果音ラボ | 効果音ラボ terms (free, games OK, no credit) | https://soundeffect-lab.info/sound/search.php?s=%E9%87%91%E5%B1%9E
+- Quiet ringing of glass holding in hand. | fakeplasticman | CC0 | https://freesound.org/people/fakeplasticman/sounds/429678/
+- explosion crunch 003 | Kenney | CC0 | https://kenney.nl/assets/sci-fi-sounds
+- パンチの風切り音（スローモーション）1 映画風 | 効果音ラボ | 効果音ラボ terms (free, games OK, no credit) | https://soundeffect-lab.info/sound/search.php?s=%E9%A2%A8%E5%88%87%E3%82%8A
+- ハトが飛び立つ1 独特の風切り音 | 効果音ラボ | 効果音ラボ terms (free, games OK, no credit) | https://soundeffect-lab.info/sound/search.php?s=%E9%A2%A8%E5%88%87%E3%82%8A
+- Big dragon in the wild roar | Mixkit | Mixkit Sound Effects Free License | https://mixkit.co/free-sound-effects/dragon/
+- ドラゴンの鳴き声1 恐竜や怪獣の声にも使える | 効果音ラボ | 効果音ラボ terms (free, games OK, no credit) | https://soundeffect-lab.info/sound/search.php?s=%E5%92%86%E5%93%AE
+- Dino Hiss Dragon Roar | 999999990 | CC0 | https://freesound.org/people/999999990/sounds/320345/
+- Quake Short.wav | TheMinkman | CC0 | https://freesound.org/people/TheMinkman/sounds/199803/
+- Thunder deep rumble | Mixkit | Mixkit Sound Effects Free License | https://mixkit.co/free-sound-effects/rumble/
+- Rocket Launch | Jarusca | CC0 | https://freesound.org/people/Jarusca/sounds/521377/
+- gun lee enfield 303 rifle clean shot.wav | kyles | CC0 | https://freesound.org/people/kyles/sounds/450853/
+- 神社の鈴を鳴らす カランカラン | 効果音ラボ | 効果音ラボ terms (free, games OK, no credit) | https://soundeffect-lab.info/sound/search.php?s=%E9%88%B4
+- ガラスが割れる3 ワイングラス | 効果音ラボ | 効果音ラボ terms (free, games OK, no credit) | https://soundeffect-lab.info/sound/search.php?s=%E3%82%AC%E3%83%A9%E3%82%B9
+- パンチの素振り3 鋭い風切り音 | 効果音ラボ | 効果音ラボ terms (free, games OK, no credit) | https://soundeffect-lab.info/sound/search.php?s=%E9%A2%A8%E5%88%87%E3%82%8A

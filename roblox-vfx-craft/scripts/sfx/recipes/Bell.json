@@ -1,0 +1,28 @@
+{
+ "layers": [
+  {
+   "file": "bell/wav/lab_bell1.wav",
+   "gain_db": 0
+  },
+  {
+   "file": "bell/wav/lab_bell1.wav",
+   "gain_db": -12,
+   "pitch": 12
+  },
+  {
+   "file": "bell/wav/lab_bell1.wav",
+   "gain_db": -8,
+   "pitch": -12,
+   "fade_out": 0.8
+  }
+ ],
+ "fx": [
+  {
+   "type": "reverb",
+   "room": 0.5,
+   "wet": 0.25
+  }
+ ],
+ "tail": 1.2,
+ "name": "Bell"
+}

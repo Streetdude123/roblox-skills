@@ -1,0 +1,31 @@
+{
+ "layers": [
+  {
+   "file": "glass/wav/freesound_125157.wav",
+   "start": 5,
+   "end": 9,
+   "pitch": -5,
+   "gain_db": 0,
+   "lp": 3000,
+   "fade_in": 0.8,
+   "fade_out": 1.0
+  },
+  {
+   "file": "glass/wav/freesound_429678.wav",
+   "start": 2,
+   "end": 6,
+   "gain_db": -6,
+   "fade_in": 0.8,
+   "fade_out": 1.0
+  }
+ ],
+ "fx": [
+  {
+   "type": "reverb",
+   "room": 0.6,
+   "wet": 0.2
+  }
+ ],
+ "tail": 0.5,
+ "name": "Hum"
+}

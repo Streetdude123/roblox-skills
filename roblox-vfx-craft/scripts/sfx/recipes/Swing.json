@@ -1,0 +1,28 @@
+{
+ "layers": [
+  {
+   "file": "cloth/wav/freesound_391945.wav",
+   "start": 0.08,
+   "gain_db": 0
+  },
+  {
+   "file": "whoosh/wav/lab_punch-real-swing3.wav",
+   "gain_db": -3
+  },
+  {
+   "file": "whoosh/wav/lab_punch-slow2.wav",
+   "gain_db": -10,
+   "pitch": -3
+  }
+ ],
+ "fx": [
+  {
+   "type": "reverb",
+   "room": 0.3,
+   "wet": 0.1
+  }
+ ],
+ "pitch_jitter": 1,
+ "tail": 0.4,
+ "name": "Swing"
+}

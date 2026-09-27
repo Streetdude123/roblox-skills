@@ -1,0 +1,27 @@
+{
+ "layers": [
+  {
+   "file": "glass/wav/lab_glass-break3.wav",
+   "end": 0.3,
+   "pitch": 3,
+   "gain_db": 0,
+   "hp": 2000
+  },
+  {
+   "file": "impact/wav/lab_sword-clash3.wav",
+   "end": 0.4,
+   "gain_db": -6,
+   "hp": 4000,
+   "fade_out": 0.15
+  }
+ ],
+ "fx": [
+  {
+   "type": "reverb",
+   "room": 0.3,
+   "wet": 0.15
+  }
+ ],
+ "tail": 0.5,
+ "name": "Tick"
+}

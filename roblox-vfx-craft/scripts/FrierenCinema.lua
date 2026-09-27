@@ -2,6 +2,7 @@ local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Lighting = game:GetService("Lighting")
 local Debris = game:GetService("Debris")
+local SoundService = game:GetService("SoundService")
 
 local root = script.Parent.Parent
 local Tw = require(script.Parent.Tw)
@@ -93,7 +94,7 @@ local function timeline(warps)
 		if hold and tl.t >= hold then
 			r = 0
 		end
-		tl.t += dt / Tw.S() * r
+		tl.t += math.min(dt, 0.1) / Tw.S() * r
 		if r ~= tl.rate then
 			tl.rate = r
 			for e in pairs(tl.emitters) do
@@ -137,11 +138,50 @@ local function timeline(warps)
 	kit.clock(function()
 		return tl.t
 	end, tl.after)
+	if root:GetAttribute("CineLog") then
+		print(("CINE|%d"):format(DateTime.now().UnixTimestampMillis))
+	end
 	return tl
 end
 
 local function kick(a)
 	view.trauma = math.min(1, view.trauma + a)
+end
+
+local cues = 0
+
+local function sfx(name, volume, pitch)
+	local s = Assets.Sfx[name]:Clone()
+	cues += 1
+	local ids = s:GetAttribute("Ids")
+	if ids then
+		local list = string.split(ids, ",")
+		s.SoundId = "rbxassetid://" .. list[cues % #list + 1]
+	end
+	s.Volume *= volume or 1
+	s.PlaybackSpeed = (pitch or 1) * math.max(current and current.rate or 1, 0.7)
+	s.Parent = SoundService
+	s:Play()
+	s:SetAttribute("Cue", cues)
+	if root:GetAttribute("CineLog") then
+		print(("SFX|%d|%s|%.3f|%.3f|%d"):format(cues, name, s.Volume, s.PlaybackSpeed, DateTime.now().UnixTimestampMillis))
+	end
+	if not s.Looped then
+		later(10, function()
+			s:Destroy()
+		end)
+	end
+	return s
+end
+
+local function hush(s, dur)
+	if root:GetAttribute("CineLog") then
+		print(("FADE|%d|%.3f|%d"):format(s:GetAttribute("Cue"), dur, DateTime.now().UnixTimestampMillis))
+	end
+	Tw.play(s, {Volume = 0}, dur, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
+	later(dur + 0.05, function()
+		s:Destroy()
+	end)
 end
 
 local EASE = {
@@ -604,11 +644,102 @@ function Cinema.zoltraak(char, finish, body)
 	bars(true, 0.8)
 	fade(0, 0.9)
 
-	tl.at(2.2, function()
-		dustWave(landFloor, 8, 12)
+	local wind = sfx("Wind", 0.55)
+	local hum, breath, beamSound, after
+	tl.at(0.6, function()
+		sfx("Roar", 0.22, 0.9)
 	end)
-	tl.at(2.55, function()
-		dustWave(landFloor, 11, 14)
+	for i, t in ipairs({0.45, 1.05, 1.6}) do
+		tl.at(t, function()
+			sfx("Flap", 0.35 + 0.2 * i, 0.85)
+		end)
+	end
+	tl.at(1.7, function()
+		sfx("Flyby", 0.9, 0.8)
+	end)
+	for _, t in ipairs({1.8, 2.05, 2.27}) do
+		tl.at(t, function()
+			sfx("Flap", 1, 0.72)
+		end)
+	end
+	tl.at(2.9, function()
+		sfx("Land", 1.4)
+		sfx("Rumble", 0.8)
+	end)
+	tl.at(3.05, function()
+		sfx("Debris", 0.6)
+	end)
+	tl.at(3.05, function()
+		sfx("Growl", 0.8)
+	end)
+	tl.at(3.38, function()
+		sfx("Roar", 1.6)
+	end)
+	tl.at(4.05, function()
+		sfx("Gale", 1)
+		sfx("Rumble", 0.6)
+	end)
+	tl.at(5.9, function()
+		sfx("Bell", 0.45)
+	end)
+	tl.at(6.45, function()
+		sfx("Swing", 0.9)
+	end)
+	tl.at(6.8, function()
+		sfx("Stomp", 1.3)
+		sfx("Rumble", 0.4)
+	end)
+	tl.at(6.92, function()
+		sfx("Circle", 0.5, 1.2)
+	end)
+	for i, t in ipairs({7.55, 7.7, 7.85}) do
+		tl.at(t, function()
+			sfx("Circle", 0.9, 0.88 + 0.12 * i)
+		end)
+	end
+	tl.at(8.6, function()
+		hum = sfx("Hum", 0.5)
+	end)
+	tl.at(9.25, function()
+		breath = sfx("Breath", 1)
+	end)
+	tl.at(10.0, function()
+		sfx("Tick", 1)
+	end)
+	tl.at(10.14, function()
+		hush(wind, 0.08)
+		hush(hum, 0.08)
+		hush(breath, 0.08)
+	end)
+	tl.at(10.3, function()
+		sfx("Blast", 1.6)
+		beamSound = sfx("Beam", 1.2)
+		sfx("Gale", 0.8)
+	end)
+	for i, t in ipairs({10.35, 10.62, 10.95}) do
+		tl.at(t, function()
+			sfx("Boom", i == 1 and 1.3 or 0.65, i == 2 and 1.1 or i == 3 and 0.9 or 1)
+		end)
+	end
+	tl.at(12.35, function()
+		hush(beamSound, 0.4)
+	end)
+	tl.at(12.6, function()
+		sfx("Crash", 1.5)
+		sfx("Rumble", 1)
+	end)
+	tl.at(12.8, function()
+		after = sfx("Wind", 0.45)
+	end)
+	tl.at(12.9, function()
+		sfx("Debris", 0.7)
+	end)
+	tl.at(14.2, function()
+		hush(after, 0.8)
+	end)
+
+	tl.at(2.45, function()
+		dustWave(landFloor, 12, 8)
 	end)
 	tl.at(2.9, function()
 		drag.wings(false)
@@ -879,6 +1010,83 @@ function Cinema.volley(char, finish, body, clip)
 	bars(true, 0.8)
 	fade(0, 0.8)
 
+	local wind = sfx("Wind", 0.45)
+	local hum, after
+	tl.at(0.2, function()
+		sfx("Flyby", 1, 0.85)
+	end)
+	tl.at(0.55, function()
+		sfx("Growl", 0.9, 0.95)
+	end)
+	tl.at(1.05, function()
+		sfx("Flyby", 1.2, 0.75)
+	end)
+	for i, t in ipairs({0.05, 0.55, 1.05}) do
+		tl.at(t, function()
+			sfx("Flap", 0.5 + 0.15 * i, 0.82)
+		end)
+	end
+	tl.at(1.55, function()
+		sfx("Swing", 1)
+	end)
+	tl.at(2.0, function()
+		sfx("Stomp", 0.8)
+		sfx("Bell", 0.5)
+	end)
+	for _, t in ipairs({1.55, 1.9, 2.25}) do
+		tl.at(t, function()
+			sfx("Flap", 1, 0.7)
+		end)
+	end
+	tl.at(2.4, function()
+		sfx("Circle", 1)
+	end)
+	for i = 0, 11 do
+		tl.at(3.0 + 0.075 * i, function()
+			sfx("Bell", 0.4, 1 + i * 0.05)
+		end)
+	end
+	tl.at(2.6, function()
+		sfx("Roar", 1.4)
+	end)
+	tl.at(3.3, function()
+		sfx("Gale", 0.8)
+	end)
+	tl.at(5.3, function()
+		sfx("Growl", 0.7, 1.1)
+	end)
+	tl.at(7.6, function()
+		hum = sfx("Hum", 0.5)
+	end)
+	tl.at(8.2, function()
+		sfx("Blast", 1.4)
+	end)
+	tl.at(8.3, function()
+		hush(hum, 0.05)
+		hush(wind, 0.05)
+	end)
+	tl.at(8.45, function()
+		sfx("Boom", 1.6)
+		sfx("Gale", 0.8)
+		sfx("Roar", 0.7, 1.15)
+	end)
+	tl.at(8.7, function()
+		sfx("Flyby", 0.8, 0.65)
+	end)
+	tl.at(9.6, function()
+		sfx("Crash", 1.6)
+		sfx("Rumble", 1)
+	end)
+	tl.at(9.9, function()
+		sfx("Debris", 0.7)
+	end)
+	tl.at(10.3, function()
+		after = sfx("Wind", 0.4)
+	end)
+	tl.at(11.8, function()
+		hush(after, 0.8)
+	end)
+
 	for i = 0, 7 do
 		tl.at(0.3 + i * 0.3, function()
 			local p = kit.ground(drag.cf.Position, char)
@@ -947,6 +1155,7 @@ function Cinema.volley(char, finish, body, clip)
 				else
 					local h = kit.spawn("Hit", CFrame.new(target))
 					kit.emit(h, {Glint = 1, Ring = 1, Star = 1, Sparks = 12, Smoke = 3, Debris = 2})
+					sfx("Hit", 0.8, 0.9 + math.random() * 0.2)
 					cleanup(h, 1.3)
 					hits += 1
 					shove = math.min(6, shove + 0.28)
@@ -986,6 +1195,7 @@ function Cinema.volley(char, finish, body, clip)
 			local c = small[(i - 1) % #small + 1]
 			kit.emit(c[1], {Star = 1, Shock = 1})
 			fire(c[4], false)
+			sfx("Shot", 0.9, 0.95 + math.random() * 0.1)
 		end)
 	end
 	local charge
@@ -1087,6 +1297,45 @@ function Cinema.flowers(char, finish, body, clip)
 	shoot(origin, shots)
 	bars(true, 0.8)
 	fade(0, 0.9)
+
+	local wind = sfx("Wind", 0.5)
+	local hum
+	tl.at(1.25, function()
+		sfx("Swing", 0.5)
+	end)
+	tl.at(2.0, function()
+		sfx("Stomp", 0.6)
+		sfx("Bell", 0.6)
+	end)
+	tl.at(3.6, function()
+		sfx("Chime", 0.45)
+		hum = sfx("Hum", 0.35)
+	end)
+	for i, t in ipairs({4.5, 5.3}) do
+		tl.at(t, function()
+			sfx("Bell", 0.35, 1.05 + 0.15 * i)
+		end)
+	end
+	tl.at(6.3, function()
+		sfx("Rise", 0.8)
+	end)
+	tl.at(6.6, function()
+		hush(hum, 0.2)
+		sfx("Chime", 1)
+		sfx("Bell", 0.8, 1.5)
+		sfx("Gale", 0.45, 1.2)
+	end)
+	for i = 0, 15 do
+		tl.at(6.95 + i * 0.22 + math.random() * 0.1, function()
+			sfx("Pop", 0.25 + math.random() * 0.15, 1.15 + math.random() * 0.6)
+		end)
+	end
+	tl.at(10.8, function()
+		sfx("Bell", 0.5, 1.6)
+	end)
+	tl.at(12.6, function()
+		hush(wind, 0.8)
+	end)
 
 	local draft = kit.updraft(char, {Motes = 8, Streaks = 2, Glints = 2}, 12)
 	tl.at(2.0, function()

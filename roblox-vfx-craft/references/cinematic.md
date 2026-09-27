@@ -131,6 +131,28 @@ Slam:
 4. **Dissolve 1.85**: the blade shrinks to normal over 0.5 s inside a burst of its own black flames and embers; an aerial from behind looking down the whole line (origin 120 studs along, angle 8 to 2, dist 175 to 160, height 95 to 85).
 5. **Back 2.4**: fade to black 0.3, default camera, fade in 0.45.
 
+## The Frieren cutscenes (the fourth cinematic set, 2026-09-26)
+
+`scripts/FrierenCinema.lua` holds three 13 to 15 s cutscenes (Zoltraak, Volley, Flowers) on one engine. Lepy's verdict on the first cut was "below average cinematic ... your BEST WORK possible, good enough to showcase and go on my portfolio", so the engine grew these pieces:
+
+- **Timeline.** `timeline(warps)` owns the cutscene clock `tl.t`, advanced each RenderStepped by `dt / TimeScale * rate`. A warp `{t0, t1, rate}` is a speed ramp with smooth 25% ease in and out. Events go through `tl.at(t, fn)` and `tl.after(dt, fn)`; handlers must not yield (`frames` runs in `task.spawn`). `tl.drive(rig, clip, opts)` plays a Poser clip and keeps it on the clock with `setSpeed(rate + drift * 4)`. Every `ParticleEmitter` under the fx folder gets `TimeScale = rate / TimeScale`, so slow motion slows particles too. The VFX kit takes the clock and the queue (`kit.clock(fn, tl.after)`) and reads a continuous `now()`, so circles, flowers and petals follow holds and ramps. At the hand back the pending events go back to `task.delay` so late effects (the flowers) finish in real time.
+- **Hold hook.** A `CineHold` number attribute on the Frieren folder freezes the whole cutscene at that time (rate 0: camera, bodies, particles, kit clock). Captures at exact beats come from it; clear it after tests.
+- **Camera.** Shots `{t, len, a = {pos, look, fov, roll}, b = {...}, ease, drift, focus, depth}` in caster-local space; `pos` and `look` may be functions for tracking (the dragon's flat frame, its chest, its mouth). Each shot starts at its `a`, so a new shot is a hard cut. Shake noise runs on cutscene time. `DepthOfField` focus follows the look distance.
+- **Screen.** Letterbox bars 10%, a `CanvasGroup` vignette of four gradient frames, a black `Fade` (every cutscene starts black and fades in over 0.8 to 0.9 s), a `White` flash, impact frames. The existing `Lighting.Grade` and `DepthOfField` are driven and restored (`stage`, `grade`, `unstage`).
+- **Face the sun.** Each cutscene turns the caster to the sun direction first, so shots behind her look into the sunset and reverse shots light her face.
+
+What the captures taught (all Play mode, QualityLevel 21, frozen with `CineHold`):
+
+- **Tall grass.** The field grass stands about 3 studs. Every camera below caster-local y 0.5 (3.5 above the floor) filled the frame with blades; clamp tracking cameras above the grass and use a low camera only when the blades are a deliberate foreground. Props under 3 studs vanish: the flower spell now scales flowers by 2.6 so they rise above it.
+- **An 80 stud wingspan.** A camera within about 40 studs of the dragon's side got a wing across the frame. Track from its flat (yaw-only) frame, never its banked CFrame (a 20 degree bank swung a 38 stud offset 13 studs up).
+- **Stacked additive circles go white.** Three Zoltraak circles seen down the barrel axis summed into one white disc; 40 degrees off the axis they separate and the pattern reads.
+- **Blown-out caster.** White robes under bloom went white from rising glow motes (50 a second round the body), a charge light of 3 to 6 near the body and a cup light of 4; 14 to 18 motes, lights of 1.2 to 2 fixed it.
+- **Dust.** A blast `Smoke` burst in all directions hid the landing dragon; a ground-hugging radial `DustWave` (one emitter moved round a ring, emitting outward) reads as a landing. Dense dust at the caster's feet read as a boulder.
+- **Wind direction.** A gale blowing straight at the lens reads as rain; film wind across the frame.
+- **Close shots.** Cameras 2 studs from the caster ended inside the hair or the sleeves once the pose moved the head forward; measure the pose (`Head`, arms, the cup point) in the held frame and place the camera from those numbers.
+- **Line of action.** Two consecutive profile shots from opposite sides crossed the line; keep the side.
+- **Cost on his machine.** Field idle 40.8 ms median. Real-time runs: Zoltraak median 50.4 to 50.7 ms, p95 59.2 to 59.6, worst 71 to 123; Volley 50.5 / 60.2 / 78.8; Flowers 48.1 / 61.0 / 70.7. The first run of a session hitched up to 519 ms.
+
 ## Reference material he sent
 
 - A DevForge Studio TikTok for the ultimate: white flash frame, red dome, spiked crown, pillar with
