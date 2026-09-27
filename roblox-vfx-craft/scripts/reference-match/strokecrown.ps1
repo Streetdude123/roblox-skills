@@ -1,4 +1,4 @@
-param([double]$k = 0.502, [double]$baseTy = 547, [string]$name = "strokecrown.png", [double]$step = 1.5, [double]$w0 = 1.6, [double]$occT = 0.45, [double]$tipExp = 0.9, [int]$seed = 7, [double]$fillTo = 0.55, [double]$hazeA = 0.55, [double]$waveDepth = 0, [double]$peakBoost = 0.1, [double]$areaK = 1, [double]$needle = 0.9, [switch]$contrast, [double]$outlineK = 0, [double]$lineW = 1.2, [double]$hotBottom = 0, [double]$edgeK = 0, [int]$edgePx = 3)
+param([double]$k = 0.502, [double]$baseTy = 547, [string]$name = "strokecrown.png", [double]$step = 1.5, [double]$w0 = 1.6, [double]$occT = 0.45, [double]$tipExp = 0.9, [int]$seed = 7, [double]$fillTo = 0.55, [double]$hazeA = 0.55, [double]$waveDepth = 0, [double]$peakBoost = 0.1, [double]$areaK = 1, [double]$needle = 0.9, [switch]$contrast, [double]$outlineK = 0, [double]$lineW = 1.2, [double]$hotBottom = 0, [double]$edgeK = 0, [int]$edgePx = 3, [double]$edgeBottomK = 0, [int]$edgeBottomExtra = 0)
 $dir = $PSScriptRoot
 $sp = Split-Path $dir
 Add-Type -AssemblyName System.Drawing
@@ -10,7 +10,7 @@ using System.Collections.Generic;
 public static class StrokeCrown {
 	static double Smooth(double a, double b, double x) { double t = Math.Max(0, Math.Min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); }
 	public static bool contrast = false;
-	public static double outlineK = 0, lineW = 1.2, hotBottom = 0, edgeK = 0; public static int edgePx = 3;
+	public static double outlineK = 0, lineW = 1.2, hotBottom = 0, edgeK = 0, edgeBottomK = 0; public static int edgePx = 3, edgeBottomExtra = 0;
 	static readonly double[][] CRamp = {
 		new double[] { 0.00, 1.00, 0.85, 0.97 },
 		new double[] { 0.18, 1.00, 0.40, 0.88 },
@@ -162,17 +162,22 @@ public static class StrokeCrown {
 		if (edgeK > 0) {
 			var al = new byte[S * S];
 			for (int y = 0; y < S; y++) for (int x = 0; x < S; x++) al[y * S + x] = ob[y * o.Stride + x * 4 + 3];
-			int R = edgePx;
-			for (int y = R; y < S - R; y++) for (int x = R; x < S - R; x++) {
+			int Rmax = edgePx + edgeBottomExtra;
+			for (int y = Rmax; y < S - Rmax; y++) for (int x = Rmax; x < S - Rmax; x++) {
 				int ai = al[y * S + x]; if (ai < 90) continue;
+				double pdx = x + 0.5 - 512, pdy = y + 0.5 - baseTy;
+				double sn = pdy / Math.Max(1, Math.Sqrt(pdx * pdx + pdy * pdy));
+				double down = Smooth(-0.1, 0.6, sn);
+				int R = edgePx + (int)Math.Round(edgeBottomExtra * down);
 				int mn = 255;
 				for (int yy = -R; yy <= R; yy++) for (int xx = -R; xx <= R; xx++) { if (xx * xx + yy * yy > R * R) continue; int v2 = al[(y + yy) * S + x + xx]; if (v2 < mn) mn = v2; }
 				if (mn > 60) continue;
 				double e = (60 - mn) / 60.0;
 				int kk = y * o.Stride + x * 4;
-				double f = 1 - edgeK * e;
-				ob[kk] = (byte)(ob[kk] * f * 0.8); ob[kk + 1] = (byte)(ob[kk + 1] * f * 0.6); ob[kk + 2] = (byte)(ob[kk + 2] * f);
-				ob[kk + 3] = (byte)Math.Max(ob[kk + 3], (int)(200 * e));
+				double kEdge = edgeK + (edgeBottomK - edgeK) * down;
+				double f = 1 - kEdge * e;
+				ob[kk] = (byte)(ob[kk] * f * (0.8 - 0.25 * down)); ob[kk + 1] = (byte)(ob[kk + 1] * f * (0.6 - 0.3 * down)); ob[kk + 2] = (byte)(ob[kk + 2] * f);
+				ob[kk + 3] = (byte)Math.Max(ob[kk + 3], (int)((200 + 55 * down) * e));
 			}
 		}
 		System.Runtime.InteropServices.Marshal.Copy(ob, 0, o.Scan0, ob.Length);
@@ -198,4 +203,6 @@ for ($q = 0; $q -lt $cmLines.Count; $q++) { $cells = $cmLines[$q] -split ";"; fo
 [StrokeCrown]::hotBottom = $hotBottom
 [StrokeCrown]::edgeK = $edgeK
 [StrokeCrown]::edgePx = $edgePx
+[StrokeCrown]::edgeBottomK = $edgeBottomK
+[StrokeCrown]::edgeBottomExtra = $edgeBottomExtra
 [StrokeCrown]::Paint($ref, (Join-Path $dir $name), $cm, $k, $baseTy, $step, $w0, $occT, $tipExp, $seed)

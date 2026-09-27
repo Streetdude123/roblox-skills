@@ -291,6 +291,8 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
   not on each painted stroke (per-stroke edges made every thin stroke stripy): after painting, darken to maroon every opaque pixel
   within 3 texture px (about 1.5 screen px) of transparency. The lower front of the circle (below the base in screen space, inner
   60% of the spike length) blends to a warm hot pink (255, 40, 115), and the base fire and floor ring follow it.
+- "Darker outline at thw hottom": the silhouette outline grows with the downward direction: at the bottom it is 5 texture px
+  (about 2.5 screen px) at 95% darkness with less green and blue (near-black maroon); at the top it stays 3 px at 75%.
 
 ## Related feedback on animation
 

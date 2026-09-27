@@ -54,6 +54,9 @@ traced. Scripts: `scripts/reference-match/` (measurement), `scripts/PaintTexture
   upper-quartile outline over 11 bins as the base, multiply each stroke length by layered sine noise (5 octaves, random phases,
   `waveDepth` 0.5, `peakBoost` 0.15, per-stroke `needle` 0.3), normalise by the mean square so the area stays, clamp to 95% of
   the texture edge, and cut the haze at 60 to 85% of the local spike length so valleys stay dark. Parameters in `strokecrown.ps1`.
+- **Contrast, outline, hot bottom** (`-contrast -hotBottom 0.9 -edgeK 0.75 -edgePx 3 -edgeBottomK 0.95 -edgeBottomExtra 2`):
+  the hue ramp is baked per spike (the emitter tint only corrects the glow), the outline is a post pass on the finished alpha
+  (silhouette only), and both the hot pink and the outline weight follow the downward direction in screen space.
 
 ## Final scores (Play, Level21, t = 0.14 s, reference camera, spike crown)
 
