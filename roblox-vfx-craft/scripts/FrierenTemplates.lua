@@ -24,6 +24,10 @@ local TEX = {
 	dustRing = "rbxassetid://348103573",
 	rock = "rbxassetid://626588936",
 	line = "rbxassetid://7458821155",
+	beamBody = "rbxassetid://80182245648686",
+	beamCore = "rbxassetid://128087535297878",
+	beamGlow = "rbxassetid://110471653287959",
+	beamDisc = "rbxassetid://104260912979826",
 }
 
 local function folder(parent, name)
@@ -220,26 +224,30 @@ emitter(circle, "Specks", {
 local ray = carrier("Beam")
 local start = att(ray, "Start", CFrame.new())
 local finish = att(ray, "Finish", CFrame.new(0, 0, -10))
-local fade = seq({{0, 0.6}, {0.03, 0}, {0.94, 0}, {1, 0.7}})
-local function layer(name, width, color, t, le, z)
+local fade = seq({{0, 1}, {0.06, 0}, {0.94, 0}, {1, 0.7}})
+local function layer(name, width, color, t, le, z, tex, bright)
 	local b = beam(ray, name, start, finish, {
-		Width0 = width,
+		Width0 = width * 0.6,
 		Width1 = width,
-		Segments = 1,
+		Segments = 12,
 		FaceCamera = true,
 		Color = ColorSequence.new(color),
 		Transparency = t,
 		LightEmission = le,
+		Brightness = bright or 1,
 		ZOffset = z,
+		Texture = tex or "",
+		TextureMode = Enum.TextureMode.Wrap,
+		TextureLength = 10,
+		TextureSpeed = 2.5,
 		Enabled = false,
 	})
 	b:SetAttribute("Width", width)
 	return b
 end
-layer("Edge", 3.4, P.ink, seq({{0, 0.9}, {0.03, 0.35}, {0.94, 0.35}, {1, 1}}), 0, 0)
-layer("Fringe", 2.8, P.fringe, seq({{0, 0.9}, {0.03, 0.55}, {0.94, 0.55}, {1, 1}}), 1, 0.02)
-layer("Glow", 2.2, P.lilac, seq({{0, 0.8}, {0.03, 0.25}, {0.94, 0.25}, {1, 0.9}}), 1, 0.04)
-layer("Core", 0.9, P.white, fade, 1, 0.06)
+layer("Body", 5, P.white, fade, 0, 0, TEX.beamBody)
+layer("Core", 5, P.white, fade, 1, 0.02, TEX.beamCore, 1.6)
+layer("Glow", 1.6, P.white, seq({{0, 0.7}, {0.03, 0.2}, {0.94, 0.2}, {1, 0.9}}), 1, 0.04, TEX.beamGlow, 1.5)
 layer("Line", 0.1, P.white, NumberSequence.new(0), 1, 0.08)
 emitter(ray, "Streaks", {
 	Texture = TEX.spark,
@@ -252,6 +260,33 @@ emitter(ray, "Streaks", {
 	Orientation = Enum.ParticleOrientation.VelocityParallel,
 	EmissionDirection = Enum.NormalId.Front,
 	LightEmission = 1,
+})
+
+local impact = carrier("Impact")
+emitter(impact, "Disc", {
+	Texture = TEX.beamDisc,
+	Color = ColorSequence.new(P.white),
+	Size = seq({{0, 0}, {0.04, 18}, {0.5, 19.5}, {0.9, 20}, {1, 0}}),
+	Transparency = seq({{0, 0}, {0.88, 0}, {1, 1}}),
+	Lifetime = NumberRange.new(1),
+	Speed = NumberRange.new(0),
+	Rotation = NumberRange.new(0, 360),
+	RotSpeed = NumberRange.new(-30, 30),
+	LightEmission = 0,
+	LockedToPart = true,
+	ZOffset = 3,
+})
+emitter(impact, "Bloom", {
+	Texture = TEX.glow,
+	Color = ColorSequence.new(P.white),
+	Size = seq({{0, 0}, {0.04, 12}, {0.9, 13}, {1, 0}}),
+	Transparency = seq({{0, 0.2}, {0.88, 0.2}, {1, 1}}),
+	Lifetime = NumberRange.new(1),
+	Speed = NumberRange.new(0),
+	Brightness = 4,
+	LightEmission = 1,
+	LockedToPart = true,
+	ZOffset = 3.1,
 })
 
 local hit = carrier("Hit", Vector3.new(1, 1, 1))
@@ -376,7 +411,7 @@ for _, l in ipairs({{"Shell", 1.7, P.lilac, 0.35, 0}, {"Body", 1.05, P.white, 0,
 	local b = beam(bolt, l[1], head, tail, {
 		Width0 = l[2],
 		Width1 = 0,
-		Segments = 1,
+		Segments = 12,
 		FaceCamera = true,
 		Color = ColorSequence.new(l[3]),
 		Transparency = seq({{0, l[4]}, {0.7, (1 + l[4]) / 2}, {1, 1}}),
@@ -417,7 +452,7 @@ for i, s in ipairs(spots) do
 	local b = beam(pillars, "Pillar" .. i, att(pillars, "Low" .. i, CFrame.new(x, -3, z)), att(pillars, "High" .. i, CFrame.new(x, -3 + s[3], z)), {
 		Width0 = 0.35 + 0.08 * (i % 4),
 		Width1 = 0.14,
-		Segments = 1,
+		Segments = 12,
 		FaceCamera = true,
 		Color = ColorSequence.new(P.white, P.lilac),
 		Transparency = seq({{0, 1}, {0.12, 0.1}, {0.7, 0.3}, {1, 1}}),
@@ -635,7 +670,7 @@ for _, l in ipairs({{"Pillar", 0.4, 0.06, 0.05, 0.02}, {"Halo", 1.6, 0.3, 0.75, 
 	local b = beam(rise, l[1], low, high, {
 		Width0 = l[2],
 		Width1 = l[3],
-		Segments = 1,
+		Segments = 12,
 		FaceCamera = true,
 		Color = ColorSequence.new(P.white, P.mint),
 		Transparency = seq({{0, l[4]}, {0.6, (1 + l[4]) / 2}, {1, 1}}),

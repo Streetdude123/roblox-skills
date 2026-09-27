@@ -92,7 +92,7 @@ local function clip(name, length, loop, beats, extra)
 		local keys = {}
 		for i, b in ipairs(beats) do
 			local r = expanded[i][n] or {0, 0, 0}
-			local p = n == "root" and lifts and Vector3.new(0, b[2].lift or 0, 0) or nil
+			local p = n == "root" and lifts and Vector3.new(0, 0, -(b[2].lift or 0)) or nil
 			table.insert(keys, {t = b[1], r = r, p = p, e = b[3]})
 		end
 		joints[n] = keys
@@ -128,6 +128,9 @@ local W = {
 	sprawl = wing({-4, {-4, 0, -12}, {20, 0, 14}, {8, 0, -12}, {6, 0, 0}, 2}),
 	hoverUp = wing({-10, {-38, 0, 22}, {-6, 0, 8}, {-4, 0, 0}, {-3, 0, 0}, 0}),
 	hoverDown = wing({6, {34, 0, 26}, {-10, 0, 8}, {-12, 0, 0}, {-6, 0, 0}, -3}),
+	flail = wing({-18, {-58, 0, -14}, {-8, 0, 36}, {4, 0, -40}, {-4, 0, 0}, 10}),
+	flailB = wing({-12, {-46, 0, -4}, {-2, 0, 24}, {2, 0, -26}, {-3, 0, 0}, 6}),
+	crumple = wing({4, {10, -10, -30}, {10, 6, 60}, {6, -30, -80}, {6, 0, 0}, 22}),
 }
 
 local function tail(down, flat, side)
@@ -161,21 +164,27 @@ P.breath = pose(P.stand, {spine = {-0.35, 0, 0}, clavicle = {19.5, 0, 0}, neck =
 P.look = pose(P.stand, {neck = neck(-4.2, 2.6, -0.45), head = {7, 0, -4}, tail = tail(0.5, -0.35, 0.4)})
 P.lookBack = pose(P.stand, {neck = neck(-4.3, 2.4, 0.5), head = {5, 0, 4}, tail = tail(0.55, -0.35, 1.1), lift = 0.05})
 
-P.coil = pose(GROUND, W.loose, {_root = {-2, 0, 0}, spine = {0.8, 0, 0}, hip = {50, 0, 6}, knee = {-32, 0, 0}, ankle = {20, 0, 0}, neck = neck(-2, 4.2), head = {14, 0, 0}, _jaw_01 = {6, 0, 0}, tail = tail(0.95, -0.35, 1.6), lift = -0.5})
+P.coil = pose(GROUND, W.loose, {_root = {-2, 0, 0}, spine = {0.8, 0, 0}, hip = {50, 0, 6}, knee = {-32, 0, 0}, ankle = {20, 0, 0}, neck = neck(-2, 4.2), head = {14, 0, 0}, _jaw_01 = {6, 0, 0}, tail = tail(0.95, -0.35, 1.6), lift = -0.1})
 P.roar = pose(GROUND, W.threat, {_root = {8, 0, 0}, spine = {-1.2, 0, 0}, hip = {36, 0, 8}, knee = {-22, 0, 0}, ankle = {18, 0, 0}, neck = neck(-6, 2.5), head = {4, 0, 0}, _jaw_01 = {52, 0, 0}, tail = tail(-0.25, -0.35, -1.2), lift = 0.5})
 local function shake(yaw, jaw)
 	return pose(P.roar, {neck = neck(-6, 2.5, yaw), head = {4, 0, yaw * 7}, _jaw_01 = {jaw, 0, 0}})
 end
 P.roarHold = pose(P.roar, W.threat, {shoulder = {0, -2, 1}, neck = neck(-5.6, 2.7), head = {6, 0, -2}, _jaw_01 = {44, 0, 0}, tail = tail(-0.3, -0.35, 0.6), lift = 0.35})
 
-P.hit = pose(GROUND, W.flinch, {_root = {12, 0, -8}, spine = {-1.2, 0, 0.6}, hip = {30, 0, 6}, knee = {-48, 0, 0}, ankle = {30, 0, 0}, neck = neck(-3, -2, 2), head = {-18, 0, 12}, _jaw_01 = {32, 0, 0}, tail = tail(-0.85, -0.35, -1.4), lift = 0.3})
-P.stagger = pose(GROUND, W.half, {_root = {4, 0, 5}, spine = {0.6, 0, -0.3}, hip = {52, 0, 6}, knee = {-38, 0, 0}, ankle = {26, 0, 0}, neck = neck(0.5, 2.5, -1), head = {6, 0, -8}, _jaw_01 = {16, 0, 0}, tail = tail(0.15, -0.35, 1.5), lift = -0.4})
-P.reel = pose(P.stagger, {_root = {0, 0, 9}, neck = neck(1.5, 3.4, -0.8), head = {10, 0, -6}, _jaw_01 = {12, 0, 0}, knee = {-48, 0, 0}, hip = {56, 0, 6}, tail = tail(0.5, -0.35, 1.8), lift = -0.6})
+P.hit = pose(GROUND, W.flinch, {_root = {7, 0, -8}, spine = {-1.2, 0, 0.6}, hip = {30, 0, 6}, knee = {-48, 0, 0}, ankle = {30, 0, 0}, neck = neck(-3, -2, 2), head = {-18, 0, 12}, _jaw_01 = {32, 0, 0}, tail = tail(-0.5, -0.35, -1.4), lift = 1})
+P.stagger = pose(GROUND, W.half, {_root = {4, 0, 5}, spine = {0.6, 0, -0.3}, hip = {52, 0, 6}, knee = {-38, 0, 0}, ankle = {26, 0, 0}, neck = neck(0.5, 2.5, -1), head = {6, 0, -8}, _jaw_01 = {16, 0, 0}, tail = tail(0.15, -0.35, 1.5), lift = 0.35})
+P.reel = pose(P.stagger, {_root = {0, 0, 9}, neck = neck(1.5, 3.4, -0.8), head = {10, 0, -6}, _jaw_01 = {12, 0, 0}, knee = {-48, 0, 0}, hip = {56, 0, 6}, tail = tail(0.5, -0.35, 1.8), lift = 0.2})
 
-P.buckle = pose(GROUND, W.sprawl, {_root = {-4, 0, 6}, spine = {0.8, 0, 0.4}, hip = {70, 0, 10}, knee = {-75, 0, 0}, ankle = {40, 0, 0}, neck = neck(-1, 1, 1), head = {-4, 0, 0}, _jaw_01 = {20, 0, 0}, tail = tail(0.4, -0.3, 1), lift = -0.3})
-P.down = pose(P.buckle, {_root = {-6, 0, 10}, hip = {85, 0, 15}, knee = {-80, 0, 0}, ankle = {50, 0, 0}, neck = neck(1, 2.5, 1), head = {6, 0, 0}, tail = tail(0.4, -0.3, 1.2), lift = -0.6})
+P.buckle = pose(GROUND, W.half, {_root = {-4, 0, 6}, spine = {0.8, 0, 0.4}, hip = {70, 0, 10}, knee = {-75, 0, 0}, ankle = {40, 0, 0}, neck = neck(-1, 1, 1), head = {-4, 0, 0}, _jaw_01 = {20, 0, 0}, tail = tail(0.4, -0.3, 1), lift = -0.8})
+P.down = pose(P.buckle, W.crumple, {_root = {-6, 0, 10}, hip = {85, 0, 15}, knee = {-80, 0, 0}, ankle = {50, 0, 0}, neck = neck(1, 2.5, 1), head = {6, 0, 0}, tail = tail(0.4, -0.3, 1.2), lift = -1.6})
 P.slump = pose(P.down, {neck = neck(5, 6, 1.5), head = {22, 0, 2}, _jaw_01 = {18, 0, 0}})
 P.rest = pose(P.down, {neck = neck(5.5, 5.5, 1.8), head = {24, 0, 3}, _jaw_01 = {10, 0, 0}, tail = tail(0.4, -0.3, 1.6)})
+
+P.fall = pose(W.flail, {_root = {-30, 0, 20}, spine = {0.6, 0, 0.5}, hip = {-10, 0, 10}, knee = {-15, 0, 0}, ankle = {10, 0, 0}, neck = neck(-2.5, -1.5, 1.5), head = {-14, 0, 8}, _jaw_01 = {28, 0, 0}, tail = tail(-0.9, -0.6, 1), lift = 0})
+P.fallB = pose(P.fall, W.flailB, {_root = {-38, 0, 28}, hip = {0, 0, 14}, knee = {-30, 0, 0}, neck = neck(-2, -1, 2), head = {-10, 0, 12}, tail = tail(-1.1, -0.4, -0.8)})
+P.impact = pose(GROUND, W.half, {_root = {-6, 0, 12}, spine = {1.2, 0, 0.5}, hip = {85, 0, 15}, knee = {-80, 0, 0}, ankle = {50, 0, 0}, neck = neck(-2, 0, 1), head = {-10, 0, 4}, _jaw_01 = {30, 0, 0}, tail = tail(0.5, -0.3, 1.4), lift = -1.7})
+P.bounce = pose(P.impact, W.half, {_root = {-3, 0, 10}, neck = neck(0.5, 2, 1.2), head = {4, 0, 2}, lift = -0.6})
+P.slam = pose(P.impact, W.crumple, {neck = neck(5.5, 6, 1.6), head = {24, 0, 3}, _jaw_01 = {16, 0, 0}, lift = -1.5})
 
 local FLY = {spine = {0, 0, 0}, hip = {70, 0, 0}, knee = {-30, 0, 0}, ankle = {40, 0, 0}, head = {4, 0, 0}, _jaw_01 = {0, 0, 0}}
 P.flyUp = pose(FLY, W.up, {_root = {2, 0, 0}, neck = neck(-0.2, -0.2), tail = tail(0.25, 0.25, 0), lift = -0.5})
@@ -184,12 +193,12 @@ P.flyDown = pose(FLY, W.down, {_root = {-3, 0, 0}, neck = neck(-0.6, -0.5), tail
 P.flyRec = pose(FLY, W.rec, {_root = {1, 0, 0}, neck = neck(-0.3, -0.3), tail = tail(0.15, 0.15, 0), lift = 0.3})
 
 local LEGS = {hip = {30, 0, 6}, knee = {-42, 0, 0}, ankle = {38, 0, 0}}
-P.flare = pose(W.flare, {_root = {30, 0, 0}, spine = {-0.5, 0, 0}, hip = {-5, 0, 6}, knee = {-10, 0, 0}, ankle = {25, 0, 0}, neck = neck(-1, -1), head = {15, 0, 0}, _jaw_01 = {4, 0, 0}, tail = tail(1.2, 1.2, 0), lift = 0})
-P.brake = pose(P.flare, W.brake, {_root = {26, 0, 0}, tail = tail(1.6, 1.4, 0), lift = 0.4})
-P.reach = pose(P.flare, {_root = {22, 0, 0}, hip = {10, 0, 6}, knee = {-15, 0, 0}, ankle = {30, 0, 0}, tail = tail(1.4, 1, 0), lift = 0.1})
+P.flare = pose(W.flare, {_root = {30, 0, 0}, spine = {-0.5, 0, 0}, hip = {-5, 0, 6}, knee = {-10, 0, 0}, ankle = {25, 0, 0}, neck = neck(-1, -1), head = {15, 0, 0}, _jaw_01 = {4, 0, 0}, tail = tail(0.8, 0.5, 0), lift = 0})
+P.brake = pose(P.flare, W.brake, {_root = {26, 0, 0}, tail = tail(1, 0.6, 0), lift = 0.4})
+P.reach = pose(P.flare, {_root = {22, 0, 0}, hip = {10, 0, 6}, knee = {-15, 0, 0}, ankle = {30, 0, 0}, tail = tail(0.9, 0.4, 0), lift = 0.1})
 P.touch = pose(GROUND, W.balance, {_root = {-4, 0, 0}, spine = {1.2, 0, 0}, hip = {60, 0, 6}, knee = {-45, 0, 0}, ankle = {40, 0, 0}, neck = neck(2, 3), head = {-4, 0, 0}, _jaw_01 = {6, 0, 0}, tail = tail(1.3, -0.35, 0.4), lift = 0})
-P.absorb = pose(P.touch, {_root = {-7, 0, 0}, hip = {62, 0, 6}, knee = {-58, 0, 0}, neck = neck(2.8, 3.6), head = {-8, 0, 0}, tail = tail(1.5, -0.35, 0.6), lift = -1.1})
-P.rise = pose(GROUND, W.half, {_root = {1, 0, 0}, hip = {48, 0, 6}, knee = {-28, 0, 0}, neck = neck(-3.5, 2), head = {8, 0, 0}, _jaw_01 = {2, 0, 0}, tail = tail(0.6, -0.35, 0.7), lift = -0.2})
+P.absorb = pose(P.touch, {_root = {-7, 0, 0}, hip = {62, 0, 6}, knee = {-58, 0, 0}, neck = neck(2.8, 3.6), head = {-8, 0, 0}, tail = tail(1.5, -0.35, 0.6), lift = -0.4})
+P.rise = pose(GROUND, W.half, {_root = {1, 0, 0}, hip = {48, 0, 6}, knee = {-28, 0, 0}, neck = neck(-3.5, 2), head = {8, 0, 0}, _jaw_01 = {2, 0, 0}, tail = tail(0.6, -0.35, 0.7), lift = 0})
 
 P.hover = pose(LEGS, W.hoverUp, {_root = {24, 0, 0}, spine = {-0.3, 0, 0}, neck = neck(-1.2, -1), head = {10, 0, 0}, _jaw_01 = {2, 0, 0}, tail = tail(0.4, 0.1, 0), lift = -0.3})
 P.hoverDown = pose(P.hover, W.hoverDown, {_root = {20, 0, 0}, neck = neck(-1, -0.8), head = {8, 0, 0}, tail = tail(0.2, 0.05, 0), lift = 0.4})
@@ -262,6 +271,16 @@ Dragon.AirRoar = clip("DragonAirRoar", 1.9, false, {
 	{1.4, P.airRoar},
 	{1.9, P.hover},
 }, {events = {roar = 0.55}, life = {spine_04 = 1, neck_06 = 1.4, head = 2.2, tail_10 = 1.5, tail_20 = 2}, lifeRate = 1.6})
+
+Dragon.AirFall = clip("DragonAirFall", 0.6, false, {{0, P.airHit}, {0.18, P.fall}, {0.4, P.fallB}, {0.6, P.fall}})
+
+Dragon.Crash = clip("DragonCrash", 1.6, false, {
+	{0, P.fall},
+	{0.06, P.impact},
+	{0.2, P.bounce},
+	{0.42, P.slam},
+	{1.6, P.rest},
+}, {events = {crash = 0}, life = CALM.life, lifeRate = 0.3})
 
 Dragon.Down = clip("DragonDown", 1.8, false, {
 	{0, P.reel},

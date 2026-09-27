@@ -281,10 +281,12 @@ function Frieren.zoltraak(char)
 				flash()
 			end
 			kick(0.55)
-			for _, name in ipairs({"Edge", "Fringe", "Glow", "Core"}) do
-				local b = line[name]
-				show(b, {w[b][1] * Z.Width, w[b][2] * Z.Width}, 0.06, BACK)
-				hide(b, 0.18, Z.Hold)
+			for b, bw in pairs(w) do
+				if b.Name ~= "Line" then
+					b.TextureLength = 10 * Z.Width
+					show(b, {bw[1] * Z.Width, bw[2] * Z.Width}, 0.06, BACK)
+					hide(b, 0.18, Z.Hold)
+				end
 			end
 			local t0 = os.clock()
 			local pulse
@@ -292,9 +294,10 @@ function Frieren.zoltraak(char)
 				pulse = RunService.RenderStepped:Connect(function()
 					local t = (os.clock() - t0) / Tw.S()
 					local k = Z.Width * (1 + 0.07 * math.sin(t * 40) + 0.05 * math.sin(t * 23))
-					for _, name in ipairs({"Edge", "Fringe", "Glow", "Core"}) do
-						local b = line[name]
-						b.Width0, b.Width1 = w[b][1] * k, w[b][2] * k
+					for b, bw in pairs(w) do
+						if b.Name ~= "Line" then
+							b.Width0, b.Width1 = bw[1] * k, bw[2] * k
+						end
 					end
 				end)
 			end)

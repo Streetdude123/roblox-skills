@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 - Zoltraak beam and the barrage fall (user-authorized)
+
+- `roblox-vfx-craft`: new `scripts/beam_texture.py` (the anime Zoltraak look: a white core with sawtooth teeth, a dark grainy rim with green and magenta speckles, a glow and an impact disc, drawn as tall strips for Beam UVs); the `Beam` template uses them with 12 segments (one segment had drawn the beam about 85% transparent and hidden the light pillars); an `Impact` disc on the dragon's chest, the beam end follows the chest, the world darkens during the beam, the ring stream and the purple blast lights are gone and the dragon is charcoal. The barrage fall is a 0.5 s gravity drop into a crash on the timeline. `take.py --frozen` cuts stalls where the game froze. `cinematic.md` documents the segment and UV traps, the reference look and the memory freezes.
+- `roblox-r6-animation`: `ExampleDragon.lua` puts `lift` on the root bone's up axis (-Z; it had moved the dragon forward), adds `AirFall` and `Crash`, grounds the collapse poses from spine measurements and corrects the feet and tails; `study-frieren.md` records the rig traps and the fall.
+
 ## 2026-09-26 - Calm caster, a new dragon, more flowers (user-authorized)
 
 - `roblox-r6-animation`: `ExampleFrieren.lua` rekeys `ZoltraakCine` and `VolleyCine` as calm acting (one staff raise, a 6 degree release, no braces, stomps or skids, an ending that looks away); `ExampleDragon.lua` rebuilds every dragon clip on fitted poses (a folded wing, a four phase wing beat with a folded upstroke, a threat display, per-pose tail contact, a `close` finger fan and a `lift` root key); new `scripts/BoneView.lua` shows boned models in Edit and fits poses to target points. `study-frieren.md` and `project-style.md` log the feedback and the numbers.

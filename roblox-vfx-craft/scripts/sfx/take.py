@@ -4,6 +4,8 @@ import sys
 from pathlib import Path
 
 import imageio_ffmpeg
+import numpy as np
+from PIL import Image
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 FF = imageio_ffmpeg.get_ffmpeg_exe()
@@ -20,6 +22,8 @@ def main():
     ap.add_argument("--lead", type=float, default=0.0)
     ap.add_argument("--gap", type=float, default=150)
     ap.add_argument("--gain", type=float, default=0)
+    ap.add_argument("--frozen", type=float, default=0)
+    ap.add_argument("--frozen-min", type=float, default=800)
     args = ap.parse_args()
 
     rec = Path(args.rec)
@@ -42,6 +46,25 @@ def main():
     for (_, a), (_, b) in zip(keep, keep[1:]):
         if b - a > args.gap:
             gaps.append((a, b - a - 60))
+    if args.frozen:
+        prev, run = None, None
+        for i, ms in keep:
+            img = np.asarray(Image.open(rec / f"f{i:05d}.jpg").convert("L").resize((96, 40)), np.float32)
+            still = prev is not None and np.abs(img - prev).mean() < args.frozen
+            if still and run is None:
+                run = last_ms
+            if not still and run is not None:
+                if ms - run > max(args.gap, args.frozen_min):
+                    gaps.append((run, ms - run - 60))
+                run = None
+            prev, last_ms = img, ms
+        spans = []
+        for g0, g in sorted(gaps):
+            if spans and g0 <= spans[-1][1]:
+                spans[-1][1] = max(spans[-1][1], g0 + g)
+            else:
+                spans.append([g0, g0 + g])
+        gaps = [(a, b - a) for a, b in spans]
 
     def squeeze(ms):
         cut = 0
