@@ -50,6 +50,10 @@ traced. Scripts: `scripts/reference-match/` (measurement), `scripts/PaintTexture
   covered (strokes alone dropped IoU to 76 to 80%). Colour each stroke along its own length: measured map at the root, then the
   brightest quarter of the tip pixels (255,144,163 at 55 to 70% of the radius, 254,132,142 at 70 to 85%, fading to 217,73,86).
   In the engine tint the emitter 255,84,126 at Brightness 1.25.
+- **Explosion rim** ("the valleys between the spikes needs tp be deeper and more variates, think of noise waves"): take the
+  upper-quartile outline over 11 bins as the base, multiply each stroke length by layered sine noise (5 octaves, random phases,
+  `waveDepth` 0.5, `peakBoost` 0.15, per-stroke `needle` 0.3), normalise by the mean square so the area stays, clamp to 95% of
+  the texture edge, and cut the haze at 60 to 85% of the local spike length so valleys stay dark. Parameters in `strokecrown.ps1`.
 
 ## Final scores (Play, Level21, t = 0.14 s, reference camera, spike crown)
 

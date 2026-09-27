@@ -277,6 +277,11 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
   traced silhouette alone gives a cut-paper edge. A burst is many separate spear strokes that end in sharp points (one stroke
   per 1.5 degrees, each as long as the image shows at that angle), over a dimmer traced haze. Colour the ends from the brightest
   quarter of the tip pixels (bright coral pink), not the mean, which the blur mixes with the dark floor.
+- "this is like an explosion, the valleys between the spikes needs tp be deeper and more variates, think of noise waves": an
+  explosion rim is lobes, not an even fringe. Spike lengths follow layered sine noise around the circle (4, 9, 17, 31 and 53
+  waves per turn with random phases, valleys cut to half the radius, peaks 15% past it), with only a little per-spike randomness
+  (too much makes needles), normalised so the area stays the same; the haze stops early in the valleys so they read dark.
+  Following his taste here lowers the outline overlap with the image (92% to 69%) at the same size: his look wins over the score.
 
 ## Related feedback on animation
 

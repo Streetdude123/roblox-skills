@@ -1,4 +1,4 @@
-param([double]$k = 0.502, [double]$baseTy = 547, [string]$name = "strokecrown.png", [double]$step = 1.5, [double]$w0 = 1.6, [double]$occT = 0.45, [double]$tipExp = 0.9, [int]$seed = 7, [double]$fillTo = 0.55, [double]$hazeA = 0.55)
+param([double]$k = 0.502, [double]$baseTy = 547, [string]$name = "strokecrown.png", [double]$step = 1.5, [double]$w0 = 1.6, [double]$occT = 0.45, [double]$tipExp = 0.9, [int]$seed = 7, [double]$fillTo = 0.55, [double]$hazeA = 0.55, [double]$waveDepth = 0, [double]$peakBoost = 0.1, [double]$areaK = 1, [double]$needle = 0.9)
 $dir = $PSScriptRoot
 $sp = Split-Path $dir
 Add-Type -AssemblyName System.Drawing
@@ -6,9 +6,10 @@ Add-Type -ReferencedAssemblies System.Drawing @"
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Collections.Generic;
 public static class StrokeCrown {
 	static double Smooth(double a, double b, double x) { double t = Math.Max(0, Math.Min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); }
-	public static double fillTo = 0.55, hazeA = 0.55;
+	public static double fillTo = 0.55, hazeA = 0.55, waveDepth = 0, peakBoost = 0.1, areaK = 1, needle = 0.9;
 	public static string Paint(Bitmap reff, string path, double[,,] cmap, double k, double baseTy, double step, double w0, double occT, double tipExp, int seed) {
 		int bx = 647, by = 482, RW = reff.Width, RH = reff.Height, rp = 4, rn = 60;
 		var d = reff.LockBits(new Rectangle(0, 0, RW, RH), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
@@ -29,11 +30,39 @@ public static class StrokeCrown {
 			for (int r = 0; r < rn; r++) if (cnt[s, r] > 0 && hit[s, r] / cnt[s, r] >= occT) t = (r + 1) * rp;
 			tip[s] = t;
 		}
-		for (int s = 0; s < na; s++) {
-			double ac = s * step + step / 2;
-			if (ac > 245 && ac < 295) { double m = 0; for (int j = -3; j <= 3; j++) m = Math.Max(m, 0); }
-		}
 		var rng = new Random(seed);
+		if (waveDepth > 0) {
+			var bse = new double[na];
+			for (int s = 0; s < na; s++) {
+				var win = new List<double>();
+				for (int j = -5; j <= 5; j++) win.Add(tip[((s + j) % na + na) % na]);
+				win.Sort(); bse[s] = win[win.Count * 3 / 4];
+			}
+			int[] fq = { 4, 9, 17, 31, 53 }; double[] am = { 1.0, 0.75, 0.55, 0.4, 0.28 };
+			var ph = new double[fq.Length]; for (int i = 0; i < fq.Length; i++) ph[i] = rng.NextDouble() * Math.PI * 2;
+			var nv = new double[na]; double lo = 1e9, hi = -1e9;
+			for (int s = 0; s < na; s++) {
+				double th = (s + 0.5) / na * Math.PI * 2, v = 0;
+				for (int i = 0; i < fq.Length; i++) v += am[i] * Math.Sin(fq[i] * th + ph[i]);
+				v += (rng.NextDouble() - 0.5) * needle;
+				nv[s] = v; lo = Math.Min(lo, v); hi = Math.Max(hi, v);
+			}
+			var fv = new double[na]; double sq = 0;
+			for (int s = 0; s < na; s++) {
+				double m = (nv[s] - lo) / (hi - lo);
+				fv[s] = (1 - waveDepth) + (waveDepth + peakBoost) * Math.Pow(m, 1.4);
+				sq += fv[s] * fv[s];
+			}
+			double norm = Math.Sqrt(na / sq) * areaK;
+			for (int s = 0; s < na; s++) {
+				double th = (s + 0.5) * step * Math.PI / 180, cx = Math.Cos(th), cy = Math.Sin(th);
+				double lim = 1e9;
+				if (Math.Abs(cx) > 1e-6) lim = Math.Min(lim, 511 * k / Math.Abs(cx));
+				if (cy > 1e-6) lim = Math.Min(lim, (1023 - baseTy) * k / cy);
+				if (cy < -1e-6) lim = Math.Min(lim, baseTy * k / -cy);
+				tip[s] = Math.Min(bse[s] * fv[s] * norm, lim * 0.95);
+			}
+		}
 		var gain = new double[na]; var jitter = new double[na];
 		for (int s = 0; s < na; s++) { gain[s] = 0.8 + rng.NextDouble() * 0.3; jitter[s] = (rng.NextDouble() - 0.5) * step * 0.5; }
 		int S = 1024;
@@ -69,6 +98,7 @@ public static class StrokeCrown {
 			Func<int, int, double> oc = (qa, qr) => cnt[qa, qr] > 0 ? hit[qa, qr] / cnt[qa, qr] : 0;
 			double ov = (oc(q0, o0) * (1 - fq) + oc(q1, o0) * fq) * (1 - fo) + (oc(q0, o1) * (1 - fq) + oc(q1, o1) * fq) * fo;
 			double haze = hazeA * Smooth(0.4, 0.7, ov);
+			if (waveDepth > 0) { double Tl = tip[q0] * (1 - fq) + tip[q1] * fq; haze *= 1 - Smooth(0.6, 0.85, r / Math.Max(1, Tl)); }
 			bool hazeWins = haze > best;
 			if (hazeWins) best = haze;
 			double alpha = best * Smooth(-2, 6, r);
@@ -107,4 +137,8 @@ $cm = New-Object 'double[,,]' $cmLines.Count, 24, 3
 for ($q = 0; $q -lt $cmLines.Count; $q++) { $cells = $cmLines[$q] -split ";"; for ($ring = 0; $ring -lt 24; $ring++) { $v = $cells[$ring] -split ","; for ($c = 0; $c -lt 3; $c++) { $cm[$q, $ring, $c] = [double]$v[$c] } } }
 [StrokeCrown]::fillTo = $fillTo
 [StrokeCrown]::hazeA = $hazeA
+[StrokeCrown]::waveDepth = $waveDepth
+[StrokeCrown]::peakBoost = $peakBoost
+[StrokeCrown]::areaK = $areaK
+[StrokeCrown]::needle = $needle
 [StrokeCrown]::Paint($ref, (Join-Path $dir $name), $cm, $k, $baseTy, $step, $w0, $occT, $tipExp, $seed)
