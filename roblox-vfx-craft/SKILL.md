@@ -863,6 +863,7 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   dramatic and needs to be your BEST WORK possible, good enouhg to showcase and go on my portfolio", with "/roblox-r6-animation use these
   skills". The first cutscenes had a still caster, slow drifting shots with no cuts on the beats, no bars, no speed ramp, no sound and
   VFX that washed the frame white.
+- 2026-09-26 (later, the portfolio pass): his picks were "Frieren outfit" for the caster (a free model morph's hair, elf ears and anime head mesh on the clean R6, with the real head hidden), "SFX only" (no music) and "You upload them" for the built sounds. The three cutscenes were rebuilt on one engine (cinematic.md, "The Frieren cutscenes"), scored from 48 real recordings (references/sound.md), and sent as one 43 s video mixed offline from the cue log.
 
 ## Reference index
 
