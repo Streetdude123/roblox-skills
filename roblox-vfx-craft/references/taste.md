@@ -273,6 +273,10 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
 - "you're missing all those color variatiions for the outee spikes ring, look at the dark pink in the center and expands to a
   lighter pink": sample the colour by distance from the base (and by sector) and bake that ramp; the root is deep magenta pink,
   not pale.
+- "The endings of the spiky circle aren't jageed???" and "the ends of the circle need to be bright pink look at the color": a
+  traced silhouette alone gives a cut-paper edge. A burst is many separate spear strokes that end in sharp points (one stroke
+  per 1.5 degrees, each as long as the image shows at that angle), over a dimmer traced haze. Colour the ends from the brightest
+  quarter of the tip pixels (bright coral pink), not the mean, which the blur mixes with the dark floor.
 
 ## Related feedback on animation
 

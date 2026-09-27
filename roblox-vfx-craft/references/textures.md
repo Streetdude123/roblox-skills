@@ -44,10 +44,17 @@ traced. Scripts: `scripts/reference-match/` (measurement), `scripts/PaintTexture
   SpotLight cannot replace it (range 60 does not reach the far floor).
 - **Light**: a pink PointLight with range 15 lit the floor in front of the burst and the shape score counted it as burst; range 10.
 
-## Final scores (Play, Level21, t = 0.14 s, reference camera)
+- **Spike ends** (`reference-match/strokecrown.ps1`): the traced fill had a cut-paper edge ("the endings ... aren't jagged").
+  Paint one stroke per 1.5 degrees, as long as the occupancy trace reaches at that angle (occupancy 0.35 or more), base width 2
+  bins, tapering to a hard point; lay a dimmer traced haze (alpha 0.6, measured colour) under the strokes so the blurred gaps stay
+  covered (strokes alone dropped IoU to 76 to 80%). Colour each stroke along its own length: measured map at the root, then the
+  brightest quarter of the tip pixels (255,144,163 at 55 to 70% of the radius, 254,132,142 at 70 to 85%, fading to 217,73,86).
+  In the engine tint the emitter 255,84,126 at Brightness 1.25.
 
-Area ratio 1.047, outline IoU 91.8%, mask correlation 0.937, soft-mask correlation 0.975, 64 x 36 colour similarity 95.5% with
-luminance correlation 0.952, per-pixel colour correlation R 0.949 G 0.764 B 0.907. The per-pixel green score stays low
+## Final scores (Play, Level21, t = 0.14 s, reference camera, spike crown)
+
+Area ratio 1.049, outline IoU 92.6%, mask correlation 0.944, soft-mask correlation 0.979, 64 x 36 colour similarity 94.6% with
+luminance correlation 0.930, per-pixel colour correlation R 0.945 G 0.731 B 0.889. The per-pixel green score stays low
 because fine detail differs (streak texture, crack pieces, rock, ember cores dimmed by the GUI vignette); pushing it to 0.98 would
 mean copying the reference pixels, which reproduces the original artist's work, so the texture work stops at traced silhouette,
 measured colour maps and painted detail.
