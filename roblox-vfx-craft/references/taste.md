@@ -282,6 +282,10 @@ summoning please, just lower down the tone its simple small vfx for summoning a 
   waves per turn with random phases, valleys cut to half the radius, peaks 15% past it), with only a little per-spike randomness
   (too much makes needles), normalised so the area stays the same; the haze stops early in the valleys so they read dark.
   Following his taste here lowers the outline overlap with the image (92% to 69%) at the same size: his look wins over the score.
+- "Bigger color contrast between the outer and the inner spikee curcle": one emitter tint over the whole crown flattens the hues
+  together. Bake a strong hue ramp along each spike (pale pink at the root, hot magenta 255,70,210 in the inner circle, coral-orange
+  255,125,95 in the outer ring, deep red 205,64,64 at the tips) and use only a mild corrective tint (255,160,210, Brightness 1.1,
+  LightEmission 0.6), because the glow alone lifts green about 1.6 times and turns both ends pastel.
 
 ## Related feedback on animation
 

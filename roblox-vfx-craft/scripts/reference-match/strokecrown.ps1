@@ -1,4 +1,4 @@
-param([double]$k = 0.502, [double]$baseTy = 547, [string]$name = "strokecrown.png", [double]$step = 1.5, [double]$w0 = 1.6, [double]$occT = 0.45, [double]$tipExp = 0.9, [int]$seed = 7, [double]$fillTo = 0.55, [double]$hazeA = 0.55, [double]$waveDepth = 0, [double]$peakBoost = 0.1, [double]$areaK = 1, [double]$needle = 0.9)
+param([double]$k = 0.502, [double]$baseTy = 547, [string]$name = "strokecrown.png", [double]$step = 1.5, [double]$w0 = 1.6, [double]$occT = 0.45, [double]$tipExp = 0.9, [int]$seed = 7, [double]$fillTo = 0.55, [double]$hazeA = 0.55, [double]$waveDepth = 0, [double]$peakBoost = 0.1, [double]$areaK = 1, [double]$needle = 0.9, [switch]$contrast)
 $dir = $PSScriptRoot
 $sp = Split-Path $dir
 Add-Type -AssemblyName System.Drawing
@@ -9,6 +9,24 @@ using System.Drawing.Imaging;
 using System.Collections.Generic;
 public static class StrokeCrown {
 	static double Smooth(double a, double b, double x) { double t = Math.Max(0, Math.Min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); }
+	public static bool contrast = false;
+	static readonly double[][] CRamp = {
+		new double[] { 0.00, 1.00, 0.85, 0.97 },
+		new double[] { 0.18, 1.00, 0.40, 0.88 },
+		new double[] { 0.42, 0.98, 0.27, 0.80 },
+		new double[] { 0.58, 1.00, 0.45, 0.50 },
+		new double[] { 0.72, 1.00, 0.52, 0.38 },
+		new double[] { 0.90, 0.96, 0.40, 0.30 },
+		new double[] { 1.00, 0.80, 0.25, 0.25 },
+	};
+	static double[] RampAt(double t) {
+		for (int i = 1; i < CRamp.Length; i++) if (t <= CRamp[i][0] || i == CRamp.Length - 1) {
+			double u = Math.Max(0, Math.Min(1, (t - CRamp[i - 1][0]) / (CRamp[i][0] - CRamp[i - 1][0])));
+			u = u * u * (3 - 2 * u);
+			return new double[] { CRamp[i - 1][1] + (CRamp[i][1] - CRamp[i - 1][1]) * u, CRamp[i - 1][2] + (CRamp[i][2] - CRamp[i - 1][2]) * u, CRamp[i - 1][3] + (CRamp[i][3] - CRamp[i - 1][3]) * u };
+		}
+		return new double[] { 1, 1, 1 };
+	}
 	public static double fillTo = 0.55, hazeA = 0.55, waveDepth = 0, peakBoost = 0.1, areaK = 1, needle = 0.9;
 	public static string Paint(Bitmap reff, string path, double[,,] cmap, double k, double baseTy, double step, double w0, double occT, double tipExp, int seed) {
 		int bx = 647, by = 482, RW = reff.Width, RH = reff.Height, rp = 4, rn = 60;
@@ -121,6 +139,13 @@ public static class StrokeCrown {
 			double mixT = hazeWins ? 0 : Smooth(0.35, 0.6, bt);
 			if (hazeWins) { double u2 = Math.Min(1, r / Math.Max(1, env)); bt = u2; }
 			int kk = ty * o.Stride + tx * 4;
+			if (contrast) {
+				double tr2 = bt;
+				if (hazeWins) { double Tl2 = tip[q0] * (1 - fq) + tip[q1] * fq; tr2 = Math.Min(1, r / Math.Max(1, Tl2)); }
+				double[] rc = RampAt(tr2);
+				double hk = hazeWins ? 0.75 : 1;
+				for (int c = 0; c < 3; c++) { double v = rc[c] * bg * hk; ob[kk + 2 - c] = (byte)Math.Max(0, Math.Min(255, v * 255)); }
+			} else
 			for (int c = 0; c < 3; c++) { double v = (col[c] * (1 - mixT) + tipCol[c] * mixT) * bg; ob[kk + 2 - c] = (byte)Math.Max(0, Math.Min(255, v * 255)); }
 			ob[kk + 3] = (byte)(Math.Max(0, Math.Min(1, alpha)) * 255);
 		}
@@ -141,4 +166,5 @@ for ($q = 0; $q -lt $cmLines.Count; $q++) { $cells = $cmLines[$q] -split ";"; fo
 [StrokeCrown]::peakBoost = $peakBoost
 [StrokeCrown]::areaK = $areaK
 [StrokeCrown]::needle = $needle
+[StrokeCrown]::contrast = [bool]$contrast
 [StrokeCrown]::Paint($ref, (Join-Path $dir $name), $cm, $k, $baseTy, $step, $w0, $occT, $tipExp, $seed)
