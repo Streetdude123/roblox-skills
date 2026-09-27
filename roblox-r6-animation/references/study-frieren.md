@@ -155,24 +155,40 @@ Second round (the fight register and a walk, same checks):
 
 Checked in Studio on 2026-09-26 (a clean R6 StarterCharacter, `Poser.check` and `_G.feet` in Edit, the runtime in Play): every number above is the same in Studio, the planted soles slide 0.00, and CalmWalk slides 0.04 with its travel. In Play the clip clock and the effect schedule agree within two frames (the Zoltraak arm reaches the aim at 0.60 and kicks at 1.37; the volley bolts leave on the kick peaks). The effects half of that check is in `roblox-vfx-craft/references/study-frieren.md`, "Checked in Studio". Not yet judged: the look next to the reference frames.
 
-## The caster in a cutscene (2026-09-26)
+## The caster in a cutscene (2026-09-26, rewritten)
 
-Lepy on the first cutscene clips: "i'd like if the person was more dynamic and interactive, their animations is kind of boring, remember they are the one casting the spell." The calm register above (one part acts, the rest holds, a 5 to 7 degree release) is right for a gameplay cast and wrong for a 13 to 15 s cinematic: there the caster drives every beat of the spell with the whole body. The three clips in `ExampleFrieren.lua` (`ZoltraakCine`, `VolleyCine`, `FlowersCine`) follow these rules:
+Lepy on the first cutscene clips: "i'd like if the person was more dynamic and interactive". The first answer was big acting: a stomp for the floor circle, a staff spin, a brace against the roar, a recoil skid on the release, a tremor on every hold. After the video he wrote: "Only good animation is the flowers's ... all the other animations are tacky, remmeber frieren is nonchalant, just search up a reference of zoltraak and do it even better" and "The flower animation i think was perfect i really loved that a lot, the two other animations were mediocre though". So "dynamic" in a cutscene means timing and intent, not force. The calm register above holds for cutscenes too:
 
-- **Every effect beat has a body cause.** The floor circle appears on a stomp (the left foot steps 0.85 forward with a 0.4 lift, the torso drops 0.32 and pitches -16, the staff slams from overhead). The barrel of circles forms on a thrust with a 3 degree staff pulse per circle. The volley's circles bloom while the free hand sweeps from the right circle to the left one; each shot kicks the staff 5 to 7 degrees and the hand flicks 7 degrees. The release recoils the body 8 degrees back and skids both feet 0.5 back.
-- **Reactions to the world.** Head up to the sky 0.2 s before the dragon is seen, a half step back while it lands, a 0.1 dip on the landing tremor, a brace against the roar (lean -12, head turned 26 away, the free forearm up at 112 degrees, the staff arm back and out, the back foot pushed 0.25 back by the wind).
-- **Holds strain.** A hold in a cutscene is a moving hold with a tremor layer: `tremor(list, make, t0, t1, a, b, opts)` removes the keys inside the window and writes alternating keys between the poses `a` and `b` with an amplitude that grows or fades (wind buffets 1.8 to 0.9 degrees every 0.16 s; a charge that builds from 0.6 to 2.4 degrees every 0.1 s; a beam push of 3 to 2 degrees every 0.09 s). Life alone (1.2 degrees) stayed under 12 deg/s and read as still for 1.4 s.
-- **Feet as functions.** `foot(keys)` gives `Feet.post` a target per time: `{t, x, z, yaw, lift}` keys, smoothstep between them, `lift * sin(pi u)` in a step, no lift in a skid. The torso's z follows the feet, and its drop covers the widest foot (a 0.95 forward, 0.7 back stance needs about 0.24).
-- **Aim with the twist.** Staff aims use `aim(torsoYaw, down)` at every key so the staff stays on the target while the torso sways; the head counters the torso yaw (head yaw about -0.7 of it).
-- **R6 cup limit.** Two straight R6 arms meet only at navel height (the earlier search). A kneel put the cupped light 1.5 studs above the floor, inside the 3 stud grass; the gather is now a standing bow with the light floating 0.7 above the hands (`CupLift`).
+- **The reference beat (Zoltraak, Sakugabooru):** the eyes hold calm, the head turns first, the staff comes up to upright near the right shoulder, the circle fills the frame about 1 s later, light pillars rise, the hair blows back, the release is small and the body does not move. `ZoltraakCine` follows it: the head leads the raise by 0.2 s, the right arm rises once over 0.57 s to `RAISE` (arm 82 degrees forward, 14 in, slid 0.14 up and 0.12 back so the hand sits near the shoulder and the gem is above the head), a 3 degree overshoot settles by 6.85, and the floor circle and the pillars appear on that settle.
+- **No reaction to the monster.** The dragon lands and roars 50 studs away; she only tracks it with the head (the head lags the dragon by 0.2 to 0.4 s) and gives 1 to 2 degrees to the gust. The wind VFX (the gale, the updraft) does the work the brace did.
+- **The release is 6 degrees.** The arm kicks 6 degrees and the torso leans back 2.6 over 0.06 s, back to the hold by 10.7; no skid, no recoil dust at her feet. During the beam she holds.
+- **One gesture for the volley.** One raise to the aim (13 degree torso twist, arm up 19 degrees at the hovering dragon), then the staff holds for all 24 shots with a 1.2 degree pulse on every second shot; one 7 degree flick for the finisher.
+- **The ending carries the character.** She lowers the staff and looks away (Zoltraak: toward the camera; Volley: turned away from it). A far shot from behind hides a head turn, so each ending has a medium shot on her face from the free-hand side, and the head turn starts 0.2 to 0.5 s after that cut.
+- **Holds drift, they do not shake.** `tremor` stays for the Flowers kneel only. Life 0.8 degrees at rate 0.5 left 3.3% frozen frames in the 15 s clip; life 1.1 at rate 0.7 gives 0%.
+- **Camera against the staff arm.** An R6 arm that points at the camera fills half the frame as a block, and a staff between the camera and the face hides it. Shoot the face from her left (the free-hand side) or from behind; a front-right shot works only when the staff is upright beside the shoulder.
 
-Measured (`Poser.check`, `_G.feet`; the one-shot ranges do not fit a 15 s cutscene with calm and burst beats, frozen and still runs are what matter):
+Measured in Edit (`Poser.check`; the feet are planted all through, so `_G.feet` shows no slide):
 
-| Clip | frozen | still | longest still | rest | contrast | feet |
-| --- | --- | --- | --- | --- | --- | --- |
-| ZoltraakCine (15 s) | 0% | 11.4% | 0.77 s (the calm open and the last second under the fade) | 77.1% | 28.3 | gap 0.02, twist 33, slide 0.51 and 0.76 = the planned skids |
-| VolleyCine (13 s) | 0% | 9.8% | 0.82 s (the fade) | 71.6% | 11.2 | slide 0.01, gap 0.00, twist 36 |
-| FlowersCine (14 s) | 0% | 11.3% | 0.27 s | 54.3% | 7.9 | slide 0.03, gap 0.04, twist 39 |
+| Clip | frozen | still | longest still | rest | contrast |
+| --- | --- | --- | --- | --- | --- |
+| ZoltraakCine (15 s) | 0% | 79.4% | 4.75 s | 78.8% | 8.0 |
+| VolleyCine (13 s) | 0% | 58.3% | 1.23 s | 82.2% | 48.6 (the finisher flick against the long holds) |
+| FlowersCine (14 s, unchanged) | 0% | 11.3% | 0.27 s | 54.3% | 7.9 |
+
+The high still values are the design: nothing moves over 12 degrees a second for most of the clip, but life keeps every frame moving.
+
+## The dragon (2026-09-26 rework)
+
+Lepy: "the dragon isn't animated as good as i think". The dragon is one skinned `MeshPart` with 218 bones (a wyvern: the wings are the arms; rest pose = wings spread flat, neck straight, a 41 stud tail). `ExampleDragon.lua` keys poses per body part and expands them onto the bones (`neck`, `spine`, `tail` spread one value or a function of the bone index; `fingers` and `flaps` fill every finger bone; a `close` number fans the finger roots together; a `lift` number moves the root bone up or down). The right side mirrors the left as (-x, -y, +z).
+
+- **Axes (measured, left wing, in the dragon's pivot space):** shoulder X- raises, Z+ sweeps forward, Y+ tilts the wing back and down; forearm X+ bends the outer wing down, Z+ folds it forward; hand X+ bends the fingers down, Z- sweeps them back; fingers Z+ fans them forward. Neck and head X+ bend down, Z turns. Root X+ lifts the nose. Tail X+ curls down, Z curls sideways.
+- **Look before keying.** `scripts/BoneView.lua`: `View.new(template, cf)` clones a boned model into the workspace in Edit, `View.clip(view, clip, t)` writes `Poser.posesAt` into each `Bone.Transform` (a skinned mesh deforms in Edit), `View.pose(view, Dragon.expand(pose))` shows one pose and `View.point(view, name)` reads a bone in the model's pivot space. Captures from the caster's position, the side and the top judged each pose.
+- **Fit poses by numbers.** `View.fit(view, start, make, score)` is a coordinate-descent search: the fold, the threat display and the upstroke came from 13 wing values that move named bones (the wrist, the finger tips) to target points while a penalty keeps the spars outside the body. The old fold put the left wrist 0.4 studs right of the spine and a finger 3 studs through the body; the fitted fold keeps the wrist beside the shoulder and the spars along the flank (score 148 before `close`, 60 after).
+- **Ground contact per pose.** The tail tip must rest on the ground (pivot y -6.2): a one-number search per pose sets the tail curl (the roar with the nose up 8 needs -0.25, the landing touch 1.3). Wing tips stay above the ground in every grounded pose.
+- **The clips:** Fly (1.1 s: top, power stroke, bottom with the tips flexing up, a folded upstroke that shrinks the span by 30%, the body lifting 1.1 studs per beat); Land (flare 30 degrees nose up, two brake strokes, a flat touch at 1.38, a 1.1 stud absorb, the wings spread forward for balance, a half fold, the fold); Idle (breath, the head turning both ways, the tail swaying); Roar (a coil, the threat display, four head shakes 0.18 s apart that decay); Hit (a head whip up and aside, the wings flinch open, the legs buckle); Down (buckle, the body drops, the wings sprawl, the neck falls last); Hover, AirHit and AirRoar on the same parts.
+- **Lag.** Neck 0.015 s per bone, tail 0.02 per bone (a travelling wave on every tail move), forearm 0.035, hand 0.07, fingers 0.09 plus 0.015 per segment, head 0.05 (it was 0.22 and the head arrived last in every thrust).
+
+Measured (`Poser.check`): Fly frozen 0%, rest 14.3%, contrast 2.1; Hover 0%, 28.0%, 2.3; Idle 0% (loop); Land 0% (longest still 0.52 s); Roar 0%, contrast 17 (a snap into the roar against the holds); Hit 0%; AirHit 0%; AirRoar 0%; Down 22.8% frozen, all in the dead rest at the end.
 
 ## What changes from the Moon target
 

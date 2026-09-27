@@ -864,6 +864,8 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
   skills". The first cutscenes had a still caster, slow drifting shots with no cuts on the beats, no bars, no speed ramp, no sound and
   VFX that washed the frame white.
 - 2026-09-26 (later, the portfolio pass): his picks were "Frieren outfit" for the caster (a free model morph's hair, elf ears and anime head mesh on the clean R6, with the real head hidden), "SFX only" (no music) and "You upload them" for the built sounds. The three cutscenes were rebuilt on one engine (cinematic.md, "The Frieren cutscenes"), scored from 48 real recordings (references/sound.md), and sent as one 43 s video mixed offline from the cue log.
+- 2026-09-26 (after the 43 s video): "Only good animation is the flowers's make it different colors and more quantity, all the other animations are tacky, remmeber frieren is nonchalant, just search up a reference of zoltraak and do it even betterthe dragon isn't animated as good as i think." The Flowers cutscene passed; the Zoltraak and Volley caster acting (braces, stomps, staff spins, recoil skids) read as tacky for a nonchalant character, and the dragon's motion was not good enough.
+- 2026-09-26 (same video, later): "The flower animation i think was perfect i really loved that a lot, the two other animations were mediocre though". The Flowers cutscene is the reference for the other two: one idea per beat, the effect as the climax, the caster calm.
 
 ## Reference index
 

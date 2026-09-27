@@ -65,6 +65,15 @@ Config.Flowers = {
 	Count = 110,
 	Petals = 90,
 	Life = 7,
+	Colors = {
+		{Color3.fromRGB(168, 177, 229), Color3.fromRGB(246, 232, 170)},
+		{Color3.fromRGB(244, 242, 250), Color3.fromRGB(250, 214, 110)},
+		{Color3.fromRGB(242, 184, 208), Color3.fromRGB(255, 240, 200)},
+		{Color3.fromRGB(198, 172, 234), Color3.fromRGB(250, 226, 150)},
+		{Color3.fromRGB(150, 198, 240), Color3.fromRGB(244, 244, 250)},
+		{Color3.fromRGB(248, 222, 140), Color3.fromRGB(236, 150, 90)},
+		{Color3.fromRGB(246, 170, 160), Color3.fromRGB(255, 236, 190)},
+	},
 }
 
 return Config

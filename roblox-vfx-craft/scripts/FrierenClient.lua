@@ -212,6 +212,46 @@ player:GetAttributeChangedSignal("BarrierHit"):Connect(function()
 	end
 end)
 
+local function warm()
+	game:GetService("ContentProvider"):PreloadAsync({Assets})
+	local stage = Instance.new("Folder")
+	stage.Name = "Warm"
+	local cf = camera.CFrame * CFrame.new(0, 0, -14)
+	local list = Assets.Vfx:GetChildren()
+	table.insert(list, Assets.Dragon)
+	for _, t in ipairs(list) do
+		local c = t:Clone()
+		for _, d in ipairs(c:GetDescendants()) do
+			if d:IsA("BasePart") then
+				d.Anchored, d.CanCollide, d.CanQuery = true, false, false
+				d.Transparency = math.max(d.Transparency, 0.98)
+			elseif d:IsA("ParticleEmitter") then
+				d.Enabled = false
+				d.Transparency = NumberSequence.new(0.98)
+			elseif d:IsA("Beam") then
+				d.Transparency = NumberSequence.new(0.98)
+			elseif d:IsA("Light") then
+				d.Enabled = false
+			end
+		end
+		if c:IsA("PVInstance") then
+			c:PivotTo(cf)
+		end
+		c.Parent = stage
+	end
+	stage.Parent = workspace
+	for _, d in ipairs(stage:GetDescendants()) do
+		if d:IsA("ParticleEmitter") then
+			d:Emit(1)
+		end
+	end
+	for _ = 1, 3 do
+		RunService.RenderStepped:Wait()
+	end
+	stage:Destroy()
+end
+
+task.spawn(warm)
 if player.Character then
 	spawned(player.Character)
 end

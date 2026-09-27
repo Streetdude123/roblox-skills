@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-26 - Calm caster, a new dragon, more flowers (user-authorized)
+
+- `roblox-r6-animation`: `ExampleFrieren.lua` rekeys `ZoltraakCine` and `VolleyCine` as calm acting (one staff raise, a 6 degree release, no braces, stomps or skids, an ending that looks away); `ExampleDragon.lua` rebuilds every dragon clip on fitted poses (a folded wing, a four phase wing beat with a folded upstroke, a threat display, per-pose tail contact, a `close` finger fan and a `lift` root key); new `scripts/BoneView.lua` shows boned models in Edit and fits poses to target points. `study-frieren.md` and `project-style.md` log the feedback and the numbers.
+- `roblox-vfx-craft`: `FrierenVfx.flowers` tints each bloom from seven colour pairs and scales it 0.8 to 1.2; `FrierenCinema.lua` reshoots the raise, the wide, the eye close-up and both endings and drops the stomp and recoil effects; `FrierenClient.lua` draws every template once at join (a 3.5 s first-cast freeze is gone). `cinematic.md` adds the single-sided wing membrane fix and the recording length rule; `SKILL.md` logs the feedback.
+
 ## 2026-09-26 - A sunset field and the drama pass (user-authorized)
 
 - `roblox-vfx-craft`: new `scripts/FrierenField.lua` (terrain meadow, pond, sunset sky and lighting, motes). `FrierenTemplates.lua` adds `Charge`, `Blast`, `FloorCircle` and `Wave` and new release, beam and hit emitters from a scanned Toolbox pack; `FrierenVfx.lua` adds a camera kick, the floor circle, the gather, a barrel of circles, a pulsing wide beam, the blast, bolt ring trails, a barrier hit ripple and the flower waves; the flower model is 1.7 times larger. `SKILL.md` log (with the backdoor pattern found in five Toolbox models) and `study-frieren.md` follow.

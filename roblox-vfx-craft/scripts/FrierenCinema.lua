@@ -624,20 +624,20 @@ function Cinema.zoltraak(char, finish, body)
 	local shots = {
 		{t = 0, len = 1.7, a = {V(3.8, -0.2, 11), V(-2, 4.5, -60), 46}, b = {V(3.3, 0, 9.8), V(-1, 4.5, -60), 44}},
 		{t = 1.7, len = 1.05, a = {side, ahead, 50, -2}, b = {side, ahead, 46, 2}, drift = 0.3},
-		{t = 2.75, len = 1.15, a = {V(5, 1.8, 7), V(-1, 4.5, -48), 36}, b = {V(4.4, 2, 5.5), V(-1, 5, -48), 34, 1}, ease = "out"},
-		{t = 3.9, len = 0.65, a = {V(4.2, 1.6, 7), V(0, 6.5, -26), 44}, b = {V(3.8, 1.4, 6), V(0, 7.5, -26), 40, -2}},
-		{t = 4.55, len = 0.75, a = {V(-4, 1.1, -3.6), V(0, 1, 0), 40, 2}, b = {V(-3.5, 1.2, -3.1), V(0, 1, 0), 38, 3}},
-		{t = 5.3, len = 1, a = {V(0.8, 1.45, -3.4), V(0, 1.5, 0), 32}, b = {V(0.6, 1.5, -2.8), V(0, 1.55, 0), 29}, drift = 0.04},
-		{t = 6.3, len = 0.5, a = {V(-4.5, 1, -6.5), V(0, 1.6, 0), 46}, b = {V(-5.2, 1.2, -5.5), V(0, 1.4, 0), 44, 2}},
-		{t = 6.8, len = 0.7, a = {V(-6.5, 5, -6.5), V(0, -2, -0.5), 55}, b = {V(-7.5, 8, -7.5), V(0, -2.5, -1), 58, 3}, ease = "out"},
-		{t = 7.5, len = 1.1, a = {V(5, 2.2, 10), V(0.4, 2.2, -14), 48}, b = {V(4.2, 2.2, 8.4), V(0.3, 2.4, -14), 45}},
+		{t = 2.75, len = 1.15, a = {V(5, 1.8, 7), V(-1, 6, -48), 46}, b = {V(4.4, 2, 5.5), V(-1, 6.5, -48), 42, 1}, ease = "out"},
+		{t = 3.9, len = 1.1, a = {V(4.2, 1.6, 7), V(0, 6.5, -26), 44}, b = {V(3.6, 1.4, 5.6), V(0, 7.5, -26), 40, -2}},
+		{t = 5.0, len = 1.1, a = {V(0.9, 1.5, -3.6), V(0, 1.55, 0), 30}, b = {V(0.7, 1.52, -3.0), V(0, 1.58, 0), 27}, drift = 0.04},
+		{t = 6.1, len = 0.75, a = {V(-5.2, 1.3, -5.6), V(0.2, 1.7, -0.3), 40}, b = {V(-4.6, 1.5, -5.0), V(0.3, 2.0, -0.3), 38, -1}},
+		{t = 6.85, len = 0.8, a = {V(-9, 7, 15), V(0, 1, -14), 44}, b = {V(-10, 9, 17), V(0, 1.4, -14), 43, 1}, ease = "out"},
+		{t = 7.65, len = 0.95, a = {V(5, 2.2, 10), V(0.4, 2.2, -14), 48}, b = {V(4.2, 2.2, 8.4), V(0.3, 2.4, -14), 45}},
 		{t = 8.6, len = 0.65, a = {V(-10, 3, -14), V(0.8, 1.8, -3), 42}, b = {V(-8.5, 2.8, -12.5), V(0.8, 1.8, -3), 38}},
 		{t = 9.25, len = 0.35, a = {V(-7, 2.4, -19), drag.mouth, 44}, b = {V(-6.4, 2.2, -20), drag.mouth, 40, -3}},
-		{t = 9.6, len = 0.35, a = {V(-0.8, 1.2, -3), V(0.12, 1.2, -0.9), 20}, b = {V(-0.7, 1.2, -2.7), V(0.12, 1.2, -0.9), 17}, drift = 0.02},
+		{t = 9.6, len = 0.35, a = {V(-0.5, 1.62, -2.3), V(0, 1.6, 0), 24}, b = {V(-0.45, 1.62, -2.0), V(0, 1.6, 0), 21}, drift = 0.02},
 		{t = 9.95, len = 0.35, a = {V(-8, 2.4, -6), V(0.4, 1.9, -8), 40}, b = {V(-7.6, 2.4, -6.3), V(0.4, 1.9, -8), 37}, drift = 0.03},
 		{t = 10.3, len = 1.4, a = {V(34, 3, -8), V(0, 4, -22), 58, 4}, b = {V(32, 3.6, -11), V(0, 4, -24), 55, 2}},
 		{t = 11.7, len = 1, a = {V(-12, 3, -14), drag.chest, 46}, b = {V(-11, 2.6, -16), drag.chest, 44, -2}},
-		{t = 12.7, len = 2.3, a = {V(-3.5, 0.6, 7.5), V(0, 2, -40), 48}, b = {V(-6, 5, 17), V(0, 3.5, -50), 54}, ease = "out"},
+		{t = 12.7, len = 0.9, a = {V(-3.5, 0.6, 7.5), V(0, 2, -40), 48}, b = {V(-4.5, 2, 11), V(0, 2.8, -45), 51}, ease = "out"},
+		{t = 13.6, len = 1.4, a = {V(-4.4, 1.5, -4.8), V(0, 1.35, 0), 36}, b = {V(-4.8, 1.6, -5.3), V(0, 1.3, 0), 35}, drift = 0.05},
 	}
 	screen().Fade.BackgroundTransparency = 0
 	shoot(origin, shots)
@@ -682,12 +682,8 @@ function Cinema.zoltraak(char, finish, body)
 	tl.at(5.9, function()
 		sfx("Bell", 0.45)
 	end)
-	tl.at(6.45, function()
-		sfx("Swing", 0.9)
-	end)
-	tl.at(6.8, function()
-		sfx("Stomp", 1.3)
-		sfx("Rumble", 0.4)
+	tl.at(6.15, function()
+		sfx("Swing", 0.3, 0.8)
 	end)
 	tl.at(6.92, function()
 		sfx("Circle", 0.5, 1.2)
@@ -734,8 +730,8 @@ function Cinema.zoltraak(char, finish, body)
 	tl.at(12.9, function()
 		sfx("Debris", 0.7)
 	end)
-	tl.at(14.2, function()
-		hush(after, 0.8)
+	tl.at(14.4, function()
+		hush(after, 0.6)
 	end)
 
 	tl.at(2.45, function()
@@ -776,11 +772,6 @@ function Cinema.zoltraak(char, finish, body)
 	tl.at(6.8, function()
 		sigil, sigilConn, sigilClose = kit.floorCircle(char, 1.6, 0.8)
 		kit.rates(sigil, {Rise = 50, Lines = 20})
-		local w = kit.spawn("Wave", CFrame.new(floor + V(0, 0.3, 0)))
-		kit.emit(w, {Ring = 1, Thin = 1})
-		cleanup(w, 2)
-		dustWave(floor, 7, 16)
-		kick(0.35)
 		kit.rates(draft, {Motes = 18, Streaks = 6, Glints = 3})
 	end)
 	tl.at(6.9, function()
@@ -858,8 +849,7 @@ function Cinema.zoltraak(char, finish, body)
 		kit.emit(drag.maw, {Burst = 1, Embers = 60})
 		kit.rates(drag.maw, {Core = 0, Gather = 0, Embers = 0, Smoke = 0})
 		Tw.play(drag.maw.Light, {Brightness = 0}, 0.4, QUAD, IN)
-		gale(P(0, 1, -3), -look, {Streaks = 160, Dust = 30}, 0.45)
-		dustWave(floor, 11, 9)
+		gale(P(0, 1, -3), -look, {Streaks = 70, Dust = 12}, 0.45)
 		for i = 1, 18 do
 			later(0.1 * i, function()
 				blast(drag.chest(), {Sparks = 10, Smoke = 3}, 0, 2)
@@ -894,8 +884,8 @@ function Cinema.zoltraak(char, finish, body)
 			blast(drag.chest() + V(0, 3, 0), {Smoke = 3, Sparks = 4}, 0, 3)
 		end)
 	end
-	tl.at(14.2, function()
-		fade(1, 0.8)
+	tl.at(14.4, function()
+		fade(1, 0.6)
 	end)
 	tl.at(15.0, function()
 		local list = {path, sigilConn, sigil, charge, drag.clear}
@@ -999,11 +989,12 @@ function Cinema.volley(char, finish, body, clip)
 		{t = 2.75, len = 1.2, a = {V(-40, 8, -8), V(0, 11, -24), 50}, b = {V(-38, 9, -11), V(0, 11.5, -25), 48, 2}},
 		{t = 3.95, len = 1, a = {back, her, 55}, b = {back, her, 52, -2}, drift = 0.2},
 		{t = 4.95, len = 1.1, a = {V(-22, 6, -44), drag.chest, 52}, b = {V(-14, 9, -58), drag.chest, 50, 3}},
-		{t = 6.05, len = 0.95, a = {V(-3.6, 1.6, -4), V(0, 1.4, 0), 42}, b = {V(-3.1, 1.8, -3.5), V(0, 1.5, 0), 40, 2}},
+		{t = 6.05, len = 0.95, a = {V(-6, 0.6, 5), V(1, 7, -18), 52}, b = {V(-5.5, 0.7, 4.4), V(1, 7.6, -18), 50, 2}},
 		{t = 7.0, len = 0.7, a = {V(-4, 0.8, -26), drag.chest, 60}, b = {V(-3.5, 0.6, -27), drag.chest, 58}},
 		{t = 7.7, len = 0.6, a = {V(-7, 1.8, -2), V(0.4, 1.8, -2), 44}, b = {V(-6.3, 1.9, -2.6), V(0.4, 1.8, -2), 40}, drift = 0.04},
 		{t = 8.45, len = 1.45, a = {V(30, 6, -14), drag.chest, 58, 3}, b = {V(28, 5, -17), drag.chest, 56}},
-		{t = 9.9, len = 2.7, a = {V(3.5, 0.6, 7.5), V(0, 2, -40), 48}, b = {V(5.5, 4.5, 15), V(0, 3, -48), 54}, ease = "out"},
+		{t = 9.9, len = 1.1, a = {V(3.5, 0.6, 7.5), V(0, 2, -40), 48}, b = {V(4.5, 2, 11), V(0, 2.6, -45), 51}, ease = "out"},
+		{t = 11.0, len = 1.6, a = {V(-3.6, 1.2, -5.2), V(0.2, 1.45, 0), 34}, b = {V(-4.0, 1.3, -5.6), V(0.2, 1.4, 0), 33}, drift = 0.05},
 	}
 	screen().Fade.BackgroundTransparency = 0
 	shoot(origin, shots)
@@ -1026,11 +1017,10 @@ function Cinema.volley(char, finish, body, clip)
 			sfx("Flap", 0.5 + 0.15 * i, 0.82)
 		end)
 	end
-	tl.at(1.55, function()
-		sfx("Swing", 1)
+	tl.at(1.95, function()
+		sfx("Swing", 0.3, 0.8)
 	end)
 	tl.at(2.0, function()
-		sfx("Stomp", 0.8)
 		sfx("Bell", 0.5)
 	end)
 	for _, t in ipairs({1.55, 1.9, 2.25}) do
@@ -1083,8 +1073,8 @@ function Cinema.volley(char, finish, body, clip)
 	tl.at(10.3, function()
 		after = sfx("Wind", 0.4)
 	end)
-	tl.at(11.8, function()
-		hush(after, 0.8)
+	tl.at(12.0, function()
+		hush(after, 0.6)
 	end)
 
 	for i = 0, 7 do
@@ -1097,10 +1087,6 @@ function Cinema.volley(char, finish, body, clip)
 	tl.at(2.0, function()
 		sigil, sigilConn, sigilClose = kit.floorCircle(char, 1.2, 0.5)
 		kit.rates(sigil, {Rise = 40, Lines = 16})
-		local w = kit.spawn("Wave", CFrame.new(floor + V(0, 0.3, 0)))
-		kit.emit(w, {Ring = 1, Thin = 1})
-		cleanup(w, 2)
-		kick(0.15)
 	end)
 	tl.at(2.8, function()
 		drag.wings(false)
@@ -1211,7 +1197,7 @@ function Cinema.volley(char, finish, body, clip)
 		kit.rates(charge, {Gather = 0, Arcs = 0, Core = 0})
 		Tw.play(charge.Light, {Brightness = 0}, 0.4, QUAD, IN)
 		fire(main[1].Position, true)
-		gale(P(0, 1, -3), -look, {Streaks = 140, Dust = 24}, 0.4)
+		gale(P(0, 1, -3), -look, {Streaks = 70, Dust = 10}, 0.4)
 		kick(0.35)
 	end)
 	tl.at(8.3, function()
@@ -1250,8 +1236,8 @@ function Cinema.volley(char, finish, body, clip)
 			blast(drag.chest() + V(0, 3, 0), {Smoke = 3, Sparks = 4}, 0, 3)
 		end)
 	end
-	tl.at(11.8, function()
-		fade(1, 0.8)
+	tl.at(12.0, function()
+		fade(1, 0.6)
 	end)
 	tl.at(12.6, function()
 		local list = {path, fly, drag.clear, sigilConn, sigil, main[2], main[1], charge}
@@ -1355,7 +1341,7 @@ function Cinema.flowers(char, finish, body, clip)
 		kick(0.15)
 	end)
 	tl.at(2.85, function()
-		Vfx.flowers(char, {Gather = 3.0, Radius = 42, Near = 2.5, Speed = 11, Count = 220, Life = 9, Petals = 220, Scale = 2.6, Space = 16, Light = 1.2, Core = 8, CupLift = 0.7})
+		Vfx.flowers(char, {Gather = 3.0, Radius = 50, Near = 2.5, Speed = 12, Count = 460, Life = 9, Petals = 360, Scale = 2.4, Space = 10, Light = 1.2, Core = 8, CupLift = 0.7})
 	end)
 	tl.at(3.6, function()
 		kit.rates(draft, {Motes = 26, Streaks = 6, Glints = 5})

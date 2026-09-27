@@ -700,7 +700,19 @@ function Frieren.flowers(char, opts)
 				local base = CFrame.new(s[1]) * CFrame.Angles(0, s[3], 0)
 				local f = spawn("Flower", base * CFrame.new(0, -1.5 * k, 0))
 				if k ~= 1 then
-					f:ScaleTo(f:GetScale() * k)
+					f:ScaleTo(f:GetScale() * k * (0.8 + math.random() * 0.4))
+				end
+				local tint = {}
+				for i = 1, 3 do
+					tint[i] = F.Colors[math.random(#F.Colors)]
+				end
+				for _, part in ipairs(f:GetChildren()) do
+					local kind, bloom = part.Name:match("^(%a+)(%d)")
+					if kind == "Petal" then
+						part.Color = tint[tonumber(bloom)][1]
+					elseif kind == "Heart" then
+						part.Color = tint[tonumber(bloom)][2]
+					end
 				end
 				growing[f] = {base, now(), 0.3, false, f:GetChildren()}
 				pop.WorldPosition = s[1] + Vector3.new(0, 1.2 * k, 0)
@@ -716,6 +728,7 @@ function Frieren.flowers(char, opts)
 				local a = math.random() * 2 * math.pi
 				local pos = Vector3.new(hrp.Position.X + math.cos(a) * r, floor + 0.4 + math.random() * 3, hrp.Position.Z + math.sin(a) * r)
 				local p = spawn("Petal", CFrame.new(pos))
+				p.Color = F.Colors[math.random(#F.Colors)][1]
 				petals[p] = {
 					t0 = now(),
 					pos = pos,
