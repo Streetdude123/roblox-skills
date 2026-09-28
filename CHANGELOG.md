@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-27 (late night) — Ragdoll get-up blend, Humanoid momentum (user-authorized)
+
+- roblox-r6-animation: `references/custom-rigs.md` gains "Get-up from a physics ragdoll" (sphinx start pose, capture and hold the ragdoll joints in PreSimulation, stand the root in PreAnimation, measured 2.8 degrees worst frame) and "Momentum for a Humanoid creature"; `scripts/QuadClips.lua` adds the GetUp clip; `references/project-style.md` logs his sentences.
+
 ## 2026-09-27 (night) — Custom quadruped rigs, seamless baked loops (user-authorized)
 
 - roblox-r6-animation: new `references/custom-rigs.md` (non-R6 Motor6D rigs: Humanoid R15 + HipHeight setup, the rigid-leg foot solver with the corner raise, ground flow for straight and turning gaits, girdle drop and pitch, gait numbers for walk, half-bound sprint, pivot and crouch, limits of a rigid hind block); new `scripts/QuadRig.lua` and `scripts/QuadClips.lua` (the tested Verix example); `scripts/Poser.lua` loops sample wrapped time, `life` noise runs on a circle of the loop length, `bake` takes a warm-up pre-roll; `references/pipeline.md` documents the bake warm-up; `references/project-style.md` logs his sentences and the Verix numbers.

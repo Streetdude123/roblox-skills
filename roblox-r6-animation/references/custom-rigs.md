@@ -32,6 +32,15 @@ A front swing of 0.32 read as a prance from the side; 0.2 read as a walk. Measur
 - `life` on a loop now samples noise on a circle of the loop length, so a baked loop has no jump at the wrap.
 - Set `Weight = 0` on every pose whose joint the clip does not key (the Animation Editor does the same). A neck-only Bite then layers over a walk instead of pinning the torso.
 
+## Get-up from a physics ragdoll
+
+- The clip starts from a pose close to a collapse: the torso low, the head down, the legs lying flat. Rigid legs whose hooves sit forward of the leg cannot fold backward under the chest (the hooves dug 0.46 into the floor); a sphinx pose with the front legs forward works. `GetUp` in QuadClips: head first, the front feet step back under the shoulders and the chest rises, then the hind block steps back under the hips, a small head shake, 1.13 s. Checks: rest 37%, contrast 3.9, feet within 0.08.
+- The joints come back where the ragdoll left them only if code holds them: capture every Motor6D's Part0 and Part1 CFrame when `Downed` clears, hold `C0:Inverse() * Part0:Inverse() * Part1 * C1` in PreSimulation (root joint against the current root CFrame) and lerp into the Animator's pose, which reads back in PreSimulation. Stand the root upright at hip height in `PreAnimation` on the owning client first, or the Humanoid's lift during the step pops the body 0.36 studs. Measured worst rendered frame 2.8 degrees and 0.053 studs.
+
+## Momentum for a Humanoid creature
+
+The Humanoid reaches any WalkSpeed at once and `Move(Vector3.zero)` brakes in one frame. Keep a speed variable, ramp it (Verix: 16 up, 14 down, studs/s2, about 4.5 and 3.9 m/s2), keep calling `Move(heading)` while it coasts, cap it at the real speed plus 1 so a wall takes the momentum, and pick the gait clip from the speed, not from the keys. The clips then play through the coast at speed divided by their authored speed.
+
 ## Limits seen
 
 - A 1.4 stud rigid hind block cannot fold under a sitting body: with the rump on the floor the block is 0.1 to 0.2 under it. The sit that fits pitches the torso 38 and plants the block at an angle under the belly; its top shows through the rump.

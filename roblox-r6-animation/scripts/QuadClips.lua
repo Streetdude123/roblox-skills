@@ -321,5 +321,44 @@ return function(V, geo)
 		springs = {RightEar = "drag", LeftEar = "drag"},
 	}
 
+	local function step(from, to, t0, t1, h)
+		return function(t)
+			if t <= t0 then
+				return from, true
+			elseif t >= t1 then
+				return to, true
+			end
+			local u = (t - t0) / (t1 - t0)
+			local p = from:Lerp(to, u * u * (3 - 2 * u))
+			return Vector3.new(p.X, V.FLOOR + h * math.sin(math.pi * u), p.Z), false
+		end
+	end
+	local rl, rr, rh = geo.legs.LeftArm.rest, geo.legs.RightArm.rest, geo.legs.LeftLeg.rest
+	clips.GetUp = {
+		name = "GetUp", length = 1.1, loop = false, curve = "spline",
+		joints = {
+			MainTorso = {
+				K(0, -4, 0, 0, P(0, -0.88, 0.05)), K(0.12, -3, 0, 0, P(0, -0.86, 0.05)), K(0.4, 16, 1, 1.5, P(0, -0.55, 0.02)),
+				K(0.62, 10, 0, -1, P(0, -0.3, 0)), K(0.82, -2, 0, 0, P(0, 0.03, 0)), K(0.95, 0.8, 0.5, -0.5, P(0, -0.012, 0)),
+				K(1.1, -0.5, 1.2, -1.4, P(-0.018, -0.02, 0)),
+			},
+			Neck = {K(0, -25), K(0.1, -12, 2), K(0.35, -2, 1), K(0.6, 4, 0), K(0.85, -1, 2), K(1.1, -1, 4, 0.5)},
+			Head = {
+				K(0, 15), K(0.12, 6, 1), K(0.4, -4, 0), K(0.7, 2, 0), K(0.84, 1, 7, 3), K(0.92, 0, -6, -2), K(1.0, 0.5, 3, 1), K(1.1, 1, 3, 0.5),
+			},
+			RightEar = {K(0, 15, 3), K(0.3, 4, 6), K(0.6, -6, 6), K(0.86, -2, 14), K(0.95, -8, 0), K(1.1, -6, 6)},
+			LeftEar = {K(0, 15, -3), K(0.34, 4, -6), K(0.64, -6, -6), K(0.88, -2, -14), K(0.97, -8, 0), K(1.1, -6, -6)},
+			Jaw = {K(0, 0), K(0.5, -1.5), K(1.1, 0)},
+		},
+		lag = {Neck = 0.03},
+		springs = {RightEar = "drag", LeftEar = "drag"},
+		life = {Head = 0.6},
+	}
+	gaits.GetUp = {T = 1.1, v = 0, tuck = 0.7, legs = {
+		LeftArm = {path = step(Vector3.new(rl.X, V.FLOOR, rl.Z - 1.25), Vector3.new(rl.X, V.FLOOR, rl.Z), 0.12, 0.4, 0.25)},
+		RightArm = {path = step(Vector3.new(rr.X, V.FLOOR, rr.Z - 1.25), Vector3.new(rr.X, V.FLOOR, rr.Z), 0.18, 0.46, 0.25)},
+		LeftLeg = {path = step(Vector3.new(0, V.FLOOR, -0.25), Vector3.new(0, V.FLOOR, rh.Z), 0.45, 0.76, 0.2)},
+	}}
+
 	return clips, gaits
 end
