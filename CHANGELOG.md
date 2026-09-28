@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-28 (fourth pass) — Slash and cut sounds (user-authorized)
+
+- roblox-vfx-craft: `references/sound.md` gains "Slash and cut sounds" (swish, cut and impact layers; licensed Sever Metal Hit and Sword Whip picks with measured peaks, skips and volumes; the high-pass check); the `SKILL.md` feedback log and `references/taste.md` carry his sentence.
+
 ## 2026-09-28 (third pass) — Flashier by default, particle-heavy samurai moves (user-authorized)
 
 - roblox-vfx-craft: `SKILL.md` gains the rule "Flashier by default" and his sentences; `references/dragon-twister-lions-passage.md` gains "Particle pass" (a painted lion spirit sprite replaces the mesh head, LockedToPart spinning carriers for a particle tornado, burst numbers, what washed out or hid the hero, first-cast frame times) and recording traps; new `scripts/paint/lion.py` (a public-domain line art to a glowing sprite) and `scripts/BuildFx3_samurai.lua` (the particle templates); `references/taste.md` logs his sentences.

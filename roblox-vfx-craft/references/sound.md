@@ -79,3 +79,22 @@ Measure every pick with `PlaybackLoudness` sampled each RenderStepped (onset = f
 
 A long lead-in on a whoosh is better skipped with `TimePosition` than started early: the sound then follows the object it is
 parented to. All six ride one SoundGroup with the usual compressor (-9, 12:1, 1 ms, 0.12 s) and a +3 dB high EQ.
+
+## Slash and cut sounds (samurai, 2026-09-28)
+
+"you're missing slash sound effects". The kit had only air swishes (ProSoundEffects "Swish Med High End Sharp Swords",
+"Sword Swish 5"): a swish is the air, not the blade. Every sword move needs three layers: a swish or whip on the swing, a metal
+**cut** on the frame the blade lands, and the impact body on a hit. Search the Creator Store page with the creator filter
+(`create.roblox.com/store/audio?keyword=...&creatorName=ProSoundEffects`); the Studio search and the toolbox API return
+ripped game audio first. Measured with `PlaybackLoudness`:
+
+| Use | Id | Peak at | Loudness | Placement |
+| --- | --- | --- | --- | --- |
+| Cut A (Sever Metal Hit 1: "Sword Slice, Metal Hit, Swipe, Cut") | 9119028728 | 0.03 | 337 | volume 0.75, on the landing frame |
+| Cut B (Sever Metal Hit 2) | 9119028721 | 0.05 | 592 | volume 0.6, 0.05 to 0.06 s after Cut A for a second blade; also in every full impact |
+| Cut soft (Sever 1, pitch 1.2) | 9119028728 | 0.03 | - | volume 0.4 on each multi-hit tick |
+| Whip A / B (Sword Whip 501 / 601: metal slide and ching) | 9119751604 / 9119751891 | 0.32 / 0.35 | about 60 | Skip 0.19 / 0.15, volume 2.4, Cut 0.5 |
+| Whip C / D (Sword Whip 702 / 1002) | 9119752176 / 9119753139 | 0.68 / 0.65 | about 86 | Skip 0.47 / 0.52, volume 2, Cut 0.5 |
+
+The whips are quiet and start late; skip to 0.03 s before their onset and raise the volume, or they vanish under a tornado bed.
+Check a take with a 3.5 kHz high-pass envelope in the browser: a cut shows as a spike of 0.6 to 0.75 on the hit frame.

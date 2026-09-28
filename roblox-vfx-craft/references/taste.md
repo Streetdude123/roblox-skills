@@ -362,3 +362,5 @@ more than a second.
   as a blob, not as a lion. Picks: "Lion face sprite + burst", "Yes, all three moves". Then "Make the videos short, three separate
   videos for each moves, and keep in one perspective don't switch please" (player camera): a showcase for him is one short clip per
   move, no cuts. Not yet judged.
+- "you're missing slash sound effects" (2026-09-28): a swish alone does not read as a sword; he expects a metal cut on the frame the blade
+  lands and a slash with a ring on each swing, in every move. Not yet judged.
