@@ -70,3 +70,40 @@ the cut lands late with a cross flash and a lion image, then the knockback); a v
   frame on a 17.1 ms idle; one earlier run had a 394 ms frame after the click that did not come back.
 - Player view: the camera stays 12.6 studs from the head through the click. Console clean on client and server.
 - Video: 16.8 s, six shots, AAC peaks at 0.88.
+
+## Particle pass (2026-09-28, third pass)
+
+His note: the lion mesh "ruins" the move; every effect more particle heavy, the tornado most; flashier from now on.
+
+- **Lion spirit sprite.** Source: a public-domain (OpenClipart, freesvg.org) front roaring lion badge, rendered to 1024 px in the
+  browser. `scripts/paint/lion.py`: drop the round badge ring by the mean radius of each ink component (over 0.41 x size), treat all
+  pixels the outside cannot reach as the lion (the white muzzle and fangs stay), then map value to colour: white features to the core
+  (232,255,246) at alpha 1, face fur to jade-mint at 0.5 to 0.85, mane to teal at 0.16 to 0.36, edges plus 0.75 alpha toward the
+  core, a jade halo at 0.35 and a 28-step outward zoom blur. Uploaded as 129170861176068.
+- **LionRoar template** (one carrier, 13 x 13 x 0.5, facing the camera, at least 17 studs from it): Face (the sprite, Size 8 to 16,
+  LightEmission 0.3, Brightness 2, emit 2 stacked), Echo (mint, 12 to 22, at 0.1 and 0.34 s), then at 0.34 s the break-up: 170 spark
+  shards, 40 claw flakes, 90 rising embers, 26 wisps. At 17 studs, Size 14 draws a face about 60% of the view; Size 5.6 drew only 25%.
+  With LightEmission 0.55 the face washed out on the bright sky; 0.3 keeps the jade. A mint flare 14 to 22 and a white spiky shock hid
+  the first quarter second of the face; the flare is now jade 6 to 10 at 0.55 and the shock cool at 0.4.
+- **Storm (particle tornado).** Four carrier layers (diameter 5, 8, 11.5, 15; heights 3 to 4.5; y 1.5 to 13) spun in RenderStepped
+  at 12.5 to 20 rad/s, alternating direction. Every emitter is `LockedToPart` with a Cylinder Surface shape, so turning the carrier
+  turns its particles: a spinning funnel with no per-particle code. Per layer: claw/hook curls (Rate 40 to 58, cool colours at 0.35),
+  thin swooshes, rising spark streaks (70), motes (36); glow on the middle layers, outward dust at the bottom. Rates live in a `Rate`
+  attribute and `FxKit.rated(model, k)` scales them for the grow-in. First pass used white-hot curls at 1.4x the rate: from the
+  player camera the funnel was a white-out that hid the body; jade curls, 35% fewer, smaller, kept it dense and readable.
+- **StormBurst**: claws 70, wing slashes 18, streaks 200 at 60 to 110 studs/s, swooshes 60, motes 150, a spiky ring, a floor ring and
+  44 dust, all from a Cylinder Surface with ShapeInOut Outward (radial for free).
+- **Dash trail**: a Box carrier stretched along the dash, streaks 220 along it (EmissionDirection Front, VelocityParallel), 60
+  swooshes, 130 motes, 30 dust.
+- **Phoenix**: a WingBurst when the wings open in the air (feathers 24 + 18, claws 12, sparks 90, a flat thin ring) and a smaller one
+  at the apex, a Landing burst at the release (ring, dust 44, sparks 120), the crescent at streaks 200 and cuts 120. The first pass
+  (feathers 40 + 30 per burst and 40/s on the crescent, white claws 4.5 studs) covered the whole player view for 0.4 s.
+- **First casts after the pass** (no recorder, idle 16.6 ms): Phoenix worst 26.2 ms, Twister 29.1 ms, Lion 21.8 ms, none over 34 ms.
+
+### Recording traps on the 6 GB machine
+
+- Overlapping recorder sets (the previous take's audio still running) gave idle frames of 234 ms and an 819 ms stall; wait for
+  `audio.wav` of the last take before the next one.
+- MCP tool calls took up to 20 s under load, so a 10 to 16 s window missed the cast; use a 30 s window and cast after "live".
+- Frozen stretches in a take (identical images while the timestamps advance) mean Studio stopped drawing; retake, do not encode.
+- Fade the audio (0.05 s in, 0.35 s out) in the encoder: a long roar cut at the last frame clicks.

@@ -1,6 +1,14 @@
-local mods = game.ReplicatedStorage.Samurai.Modules
+local old = game.ServerStorage:FindFirstChild("SamTmp")
+if old then
+	old:Destroy()
+end
+local tmp = game.ReplicatedStorage.Samurai:Clone()
+tmp.Name = "SamTmp"
+tmp.Parent = game.ServerStorage
+local mods = tmp.Modules
 local Poser = require(mods.Poser)
-local RIG = workspace.Preview
+_G.samClips = require(mods.Clips)
+local RIG = game.ServerStorage.SamuraiSource.Preview
 
 local function joints(model)
 	local list = {}
@@ -66,10 +74,13 @@ end
 
 local FACE = {front = 0, side = -math.pi / 2, rear = math.pi, rear34 = math.pi * 0.75, front34 = -math.pi / 4, side34 = -math.pi * 0.3, left = math.pi / 2}
 
-function _G.clearStrip()
+function _G.clearStrip(all)
 	local f = workspace:FindFirstChild("SamStrip")
 	if f then
 		f:Destroy()
+	end
+	if all and tmp.Parent then
+		tmp:Destroy()
 	end
 end
 
@@ -85,7 +96,12 @@ function _G.samStrip(clip, times, opts)
 	for i, t in ipairs(times) do
 		local g = ghost(f, ("T%.3f"):format(t))
 		local pos = base + Vector3.new((i - (n + 1) / 2) * gap, 0, 0)
-		place(g, CFrame.new(pos) * CFrame.Angles(0, opts.yaw or 0, 0), Poser.posesAt(clip, t, opts.ctx))
+		local cf = CFrame.new(pos) * CFrame.Angles(0, opts.yaw or 0, 0)
+		if clip.root and not opts.flat then
+			local up, fwd, yaw = clip.root(t)
+			cf *= CFrame.new(0, up, -fwd * (opts.fwd or 0)) * CFrame.Angles(0, math.rad(yaw), 0)
+		end
+		place(g, cf, Poser.posesAt(clip, t, opts.ctx))
 	end
 	local face = FACE[opts.facing or "front"] or 0
 	local mid = base + Vector3.new(0, 0.5, 0)

@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-28 (third pass) — Flashier by default, particle-heavy samurai moves (user-authorized)
+
+- roblox-vfx-craft: `SKILL.md` gains the rule "Flashier by default" and his sentences; `references/dragon-twister-lions-passage.md` gains "Particle pass" (a painted lion spirit sprite replaces the mesh head, LockedToPart spinning carriers for a particle tornado, burst numbers, what washed out or hid the hero, first-cast frame times) and recording traps; new `scripts/paint/lion.py` (a public-domain line art to a glowing sprite) and `scripts/BuildFx3_samurai.lua` (the particle templates); `references/taste.md` logs his sentences.
+- roblox-r6-animation: `references/project-style.md` logs the Phoenix rework (leap, spin, dive, lunge; checks); `references/weapons.md` gains root motion as one `clip.root` field and the double-mark trap; `scripts/samurai/` updates ClipPhoenix.lua, Strip.lua (fresh module copies, root motion) and adds Anim.lua; `scripts/video/encode_av.html` fades the audio in and out.
+
 ## 2026-09-28 (later) — Dragon Twister and Lion's Passage (user-authorized)
 
 - roblox-vfx-craft: new `references/dragon-twister-lions-passage.md` (a spin-in-place tornado and a dash-through with a late cut: far-side slash flashes, the dragon sweep, the lion impression scaled by camera distance, the Poppercam trap and Invisicam for the caster, checks); the `SKILL.md` feedback log and `references/taste.md` carry his sentences.

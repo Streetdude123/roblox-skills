@@ -356,3 +356,9 @@ more than a second.
   and the dragon go on the far side of the body from the camera, the lion head scales with the camera distance and stays 17 studs
   from the lens, the target launches away from the camera line. ForceField alone never reads on a bright sky; a Neon core at 0.6 to
   0.72 inside it does. Details in references/dragon-twister-lions-passage.md. Not yet judged by him or Moon.
+- "the dragon at the end ruins the vfx for the lion's passage, please find an alternative for that by subsituting particles for it",
+  "i'd like if all these VFX were more particle heavy especially the tornado ability", "from now on, your animations and VFX needs
+  to be significantly more flashier" (2026-09-28). He called the ForceField lion head "the dragon": a see-through mesh creature reads
+  as a blob, not as a lion. Picks: "Lion face sprite + burst", "Yes, all three moves". Then "Make the videos short, three separate
+  videos for each moves, and keep in one perspective don't switch please" (player camera): a showcase for him is one short clip per
+  move, no cuts. Not yet judged.

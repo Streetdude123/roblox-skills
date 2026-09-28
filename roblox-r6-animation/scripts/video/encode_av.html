@@ -191,6 +191,12 @@ async function encode(segments, name, bitrate, gain) {
         }
         o += p.n;
       }
+      const fin = Math.round(0.05 * RATE), fout = Math.round(0.35 * RATE);
+      for (let i = 0; i < total; i++) {
+        const k = Math.min(1, i / fin, (total - 1 - i) / fout);
+        L[i] *= k;
+        R[i] *= k;
+      }
       const achunks = [];
       const aenc = new AudioEncoder({
         output: (chunk, meta) => {
