@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-27 (pivot) — Pivot in place with angular momentum (user-authorized)
+
+- roblox-r6-animation: `references/custom-rigs.md` gains "Pivot means turning in place" (creep speed, eased angular momentum, brake then pivot, pivot clips baked turning in place); `scripts/QuadClips.lua` pivot gaits at v 0.5 and 180 deg/s; `references/project-style.md` logs the feedback.
+
 ## 2026-09-27 (last) — Pet-sim egg hatch and egg carousel (user-authorized)
 
 - roblox-vfx-craft: the `SKILL.md` feedback log and `references/taste.md` gain the Wacky Pets pass: a ScreenGui hatch scene built from 2D sprites (particles never draw inside a ViewportFrame), rarity tiers for wobbles, charge, shake and hold with measured frame times, a tilted pet carousel around the egg with per-pet silhouettes, and the traps found (BillboardGui adornee set before parenting, absolute `Model:ScaleTo`, visible templates in a Folder, the four-frame spotlight seam, Beam `TextureSpeed` direction, capture stalls).

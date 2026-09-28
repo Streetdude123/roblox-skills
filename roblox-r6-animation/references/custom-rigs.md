@@ -41,6 +41,10 @@ A front swing of 0.32 read as a prance from the side; 0.2 read as a walk. Measur
 
 The Humanoid reaches any WalkSpeed at once and `Move(Vector3.zero)` brakes in one frame. Keep a speed variable, ramp it (Verix: 16 up, 14 down, studs/s2, about 4.5 and 3.9 m/s2), keep calling `Move(heading)` while it coasts, cap it at the real speed plus 1 so a wall takes the momentum, and pick the gait clip from the speed, not from the keys. The clips then play through the coast at speed divided by their authored speed.
 
+## Pivot means turning in place
+
+A pivot that walks a tight arc reads as "it kinda just walks in a circle" (Corvid, 2026-09-27). The turn centre must be the animal: creep at 0.5 studs/s so AutoRotate still turns the body (radius about 0.16 studs), rotate the heading with angular momentum (accelerate at 720 deg/s2 toward `min(top, sqrt(2 * accel * remaining))`, so it eases in and stops on the heading, never instantly), and bake the pivot clips with the ground flow at v 0.5 and the pivot rate so the feet step around the body. When the player asks for a direction behind while moving, brake harder than a coast (28 against 14 studs/s2), then pivot. Mesozoico footage shows the head and front leading, the body curving behind, about 150 deg/s with eased starts and stops.
+
 ## Limits seen
 
 - A 1.4 stud rigid hind block cannot fold under a sitting body: with the rump on the floor the block is 0.1 to 0.2 under it. The sit that fits pitches the torso 38 and plants the block at an angle under the belly; its top shows through the rump.

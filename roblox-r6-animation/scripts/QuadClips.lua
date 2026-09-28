@@ -166,7 +166,7 @@ return function(V, geo)
 		name = "PivotLeft", length = 0.4, loop = true, curve = "spline",
 		joints = {
 			MainTorso = {
-				K(0, -3, 6, 4.5), K(0.1, -3.5, 7.5, 5.5), K(0.2, -3, 8, 4.5), K(0.3, -3.5, 6.5, 5.5), K(0.4, -3, 6, 4.5),
+				K(0, -2, 6, 1), K(0.1, -2.6, 7.5, 1.8), K(0.2, -2, 8, 1), K(0.3, -2.6, 6.5, 1.8), K(0.4, -2, 6, 1),
 			},
 			Neck = {
 				K(0, -4, 15, 3), K(0.06, -6, 16, 3.5), K(0.17, -2.5, 17, 4), K(0.26, -6, 16.5, 3.5), K(0.37, -2.5, 15.5, 3), K(0.4, -4, 15, 3),
@@ -182,14 +182,14 @@ return function(V, geo)
 		springs = {RightEar = "drag", LeftEar = "drag"},
 		life = {Head = 0.5},
 	}
-	gaits.PivotLeft = {T = 0.4, v = 8, w = math.rad(240), legs = {
+	gaits.PivotLeft = {T = 0.4, v = 0.5, w = math.rad(180), legs = {
 		LeftArm = {phase = 0, duty = 0.45, h = 0.2, fwd = -0.05, early = 0.8},
 		RightArm = {phase = 0.5, duty = 0.45, h = 0.2, fwd = -0.05, early = 0.8},
 		LeftLeg = {phase = 0.22, duty = 0.42, h = 0.18, fwd = 0.12},
 	}}
 	clips.PivotRight = mirror(clips.PivotLeft)
 	clips.PivotRight.name = "PivotRight"
-	gaits.PivotRight = {T = 0.4, v = 8, w = -math.rad(240), legs = {
+	gaits.PivotRight = {T = 0.4, v = 0.5, w = -math.rad(180), legs = {
 		RightArm = {phase = 0, duty = 0.45, h = 0.2, fwd = -0.05, early = 0.8},
 		LeftArm = {phase = 0.5, duty = 0.45, h = 0.2, fwd = -0.05, early = 0.8},
 		LeftLeg = {phase = 0.22, duty = 0.42, h = 0.18, fwd = 0.12},
