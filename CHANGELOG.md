@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-28 (later) — Dragon Twister and Lion's Passage (user-authorized)
+
+- roblox-vfx-craft: new `references/dragon-twister-lions-passage.md` (a spin-in-place tornado and a dash-through with a late cut: far-side slash flashes, the dragon sweep, the lion impression scaled by camera distance, the Poppercam trap and Invisicam for the caster, checks); the `SKILL.md` feedback log and `references/taste.md` carry his sentences.
+- roblox-r6-animation: `references/weapons.md` gains "Root motion in a three-sword move" (`spin` and `dash` clip fields, blade tips after a dash, busy time); `scripts/samurai/` adds ClipTwister.lua and ClipLion.lua, `K.monotone` in ClipKit.lua and the new shots in TakeCam.lua; `references/project-style.md` logs his sentences.
+
 ## 2026-09-28 — Three swords, a flying sword wave, videos with sound (user-authorized)
 
 - roblox-r6-animation: `references/weapons.md` gains "Three swords: two hands and one in the mouth" (a free-model katana as a grip joint, the mirrored left-hand solver, the mouth sword on the Head, an upper-body stance loop over the Animator's legs, readability from behind); `scripts/WeaponRig.lua` adds `Rig.mirror` and `Rig.solveLeft`; new `scripts/samurai/` (the three-sword clip kit, Caliber Phoenix clip, stance loop, an Edit strip and onion tool for any Motor6D rig, the take probe); `scripts/video/record_audio.ps1` (WASAPI loopback placed by QPC time) and `scripts/video/encode_av.html` (crop, H.264 + AAC mux); `references/pipeline.md` item 9 documents takes with sound and cinematic cuts; `references/project-style.md` logs his sentences.

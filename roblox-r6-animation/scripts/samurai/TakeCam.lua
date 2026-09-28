@@ -9,6 +9,10 @@ local SHOTS = {
 	player = nil,
 	side = {eye = {Vector3.new(27, 4, -11), Vector3.new(26, 4.5, -14)}, look = {Vector3.new(1, 2.4, -13), Vector3.new(1, 2.2, -16)}, fov = 58},
 	impact = {eye = {Vector3.new(15, 2.6, -37), Vector3.new(14, 2.9, -38)}, look = {Vector3.new(3, 3, -17), Vector3.new(3, 3.2, -15)}, fov = 60},
+	orbit = {eye = {Vector3.new(-17, 5, -8), Vector3.new(-9, 8, -17)}, look = {Vector3.new(1, 5, -1), Vector3.new(1, 4, -2)}, fov = 62},
+	lowtwist = {eye = {Vector3.new(9, 1.2, -13), Vector3.new(12, 1.6, -10)}, look = {Vector3.new(0, 6, 0), Vector3.new(0, 5, 0)}, fov = 64},
+	lionside = {eye = {Vector3.new(-24, 4, -9), Vector3.new(-23, 4.5, -12)}, look = {Vector3.new(0, 2.5, -9), Vector3.new(0, 2.5, -13)}, fov = 62},
+	lionfront = {eye = {Vector3.new(9, 6.5, -46), Vector3.new(8, 6, -45)}, look = {Vector3.new(0, 3, -16), Vector3.new(0, 3, -20)}, fov = 55},
 	front = {eye = {Vector3.new(-8, 1.6, -9), Vector3.new(-7, 1.4, -10.5)}, look = {Vector3.new(0, 3.2, 0), Vector3.new(0, 3, -1)}, fov = 55},
 	high = {eye = {Vector3.new(-6, 10, 13), Vector3.new(-5, 10.5, 11)}, look = {Vector3.new(3, 0.5, -16), Vector3.new(3, 0.5, -18)}, fov = 62},
 }

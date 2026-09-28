@@ -351,3 +351,8 @@ more than a second.
   "Yes, find SFX". Built on the move rung with a recoloured pack crescent, feather beams on its trailing edge, three arcs that
   merge, painted feather and trail textures, licensed ProSoundEffects sounds and a 14 s video with sound from five angles.
   Method, numbers and traps in references/caliber-phoenix.md. Not yet judged by him or Moon.
+- "Rest of the abilities" and "Male sure itt looks super good okay?" (2026-09-28, Moon's sheet: Dragon Twister and Lion's Passage). Picks:
+  "X and C", "Spin in place", "Dash through", "Yes, with sound". "Super good" meant no frame that a piece covers: slash flashes
+  and the dragon go on the far side of the body from the camera, the lion head scales with the camera distance and stays 17 studs
+  from the lens, the target launches away from the camera line. ForceField alone never reads on a bright sky; a Neon core at 0.6 to
+  0.72 inside it does. Details in references/dragon-twister-lions-passage.md. Not yet judged by him or Moon.

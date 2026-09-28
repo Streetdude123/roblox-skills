@@ -157,3 +157,10 @@ Built for Lepy's client Moon (a Santoryu samurai, R6 free-model body). Sources: 
 - **Square grips through a sweep.** A horizontal sweep turns the blade 180 degrees against the forearm; when the blade points forward the grip is along the arm (33 degrees off square at the one key there). Keep that key a single fast frame; every held key sits at 25 degrees or less.
 - **Readability from behind.** Blades raised on wide fists with the edge inward (the tips curve out) read as wings from the player camera; blades pointing back point at the camera and vanish. Onion-skin the sweep from above (`_G.samOnion`) to see the arc shape.
 - **Checks:** 28 solves, 0 misses; Phoenix frozen 0, still 2.2%, rest 47% real, contrast 7.5, stops 2.3/s, unison 2.7/s; planted soles within the lift windows, hip gap 0.12 at the hop apex; stance loop frozen 0. Solve cache: 0.03 s to require.
+
+### Root motion in a three-sword move (Dragon Twister, Lion's Passage, 2026-09-28)
+
+- **Spin as a clip field.** `clip.spin` is a function of clip time that returns the root yaw in degrees; build it with `K.monotone({{t, deg}, ...})` (a monotone cubic, so the yaw never runs backward between keys). The owner's client adds it to the root in PreRender; the joints key only the body shape (arms out, blades tilted), so a 1440 degree spin needs no per-turn keys. Measure with `Poser.check`: rest reads high (67%) because the root, not the joints, carries the motion.
+- **Dash as a clip field.** `clip.dash = {t0, t1}` moves the root from the start to the stop between those clip times with an ease-out. The distance comes from `Sweep.dash` (a raycast that skips targets and effects), computed once on the caster and the server. Key the crossing pose at the middle of the window and the arrival past the target; a later event (`click`) lands the cut after the pass.
+- **Blade tips near the floor.** A low flick after a dash put the tip through the floor; raise the blade direction (y -0.12 with z -0.99 held it clear) and check the tip on the onion skin.
+- **Busy time.** The server's busy window is the real length minus 0.3 s, so the next move can start while the recovery settles.

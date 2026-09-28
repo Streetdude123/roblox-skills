@@ -143,6 +143,35 @@ local function lin(list, t)
 end
 K.lin = lin
 
+function K.monotone(points)
+	local n = #points
+	local m = {}
+	for i = 1, n do
+		if i == 1 or i == n then
+			m[i] = 0
+		else
+			local d0 = (points[i][2] - points[i - 1][2]) / (points[i][1] - points[i - 1][1])
+			local d1 = (points[i + 1][2] - points[i][2]) / (points[i + 1][1] - points[i][1])
+			m[i] = (d0 * d1 <= 0) and 0 or 2 / (1 / d0 + 1 / d1)
+		end
+	end
+	return function(t)
+		if t <= points[1][1] then
+			return points[1][2]
+		end
+		for i = 2, n do
+			local a, b = points[i - 1], points[i]
+			if t <= b[1] then
+				local h = b[1] - a[1]
+				local s = (t - a[1]) / h
+				local s2, s3 = s * s, s * s * s
+				return (2 * s3 - 3 * s2 + 1) * a[2] + (s3 - 2 * s2 + s) * h * m[i - 1] + (-2 * s3 + 3 * s2) * b[2] + (s3 - s2) * h * m[i]
+			end
+		end
+		return points[n][2]
+	end
+end
+
 function K.steps(list, air, base)
 	base = base or K.STANCE.feet
 	local function foot(key)
