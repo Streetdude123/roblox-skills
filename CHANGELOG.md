@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-27 (last) — Pet-sim egg hatch and egg carousel (user-authorized)
+
+- roblox-vfx-craft: the `SKILL.md` feedback log and `references/taste.md` gain the Wacky Pets pass: a ScreenGui hatch scene built from 2D sprites (particles never draw inside a ViewportFrame), rarity tiers for wobbles, charge, shake and hold with measured frame times, a tilted pet carousel around the egg with per-pet silhouettes, and the traps found (BillboardGui adornee set before parenting, absolute `Model:ScaleTo`, visible templates in a Folder, the four-frame spotlight seam, Beam `TextureSpeed` direction, capture stalls).
+
 ## 2026-09-27 (late night) — Ragdoll get-up blend, Humanoid momentum (user-authorized)
 
 - roblox-r6-animation: `references/custom-rigs.md` gains "Get-up from a physics ragdoll" (sphinx start pose, capture and hold the ragdoll joints in PreSimulation, stand the root in PreAnimation, measured 2.8 degrees worst frame) and "Momentum for a Humanoid creature"; `scripts/QuadClips.lua` adds the GetUp clip; `references/project-style.md` logs his sentences.
