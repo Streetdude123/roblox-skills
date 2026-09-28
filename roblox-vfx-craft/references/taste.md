@@ -338,3 +338,10 @@ more than a second.
   visible source in the ground: the rocks tell where the force comes from. A small cracked ring rises at the load (`Burst.bowl`
   radius 2.6, 7 rocks, a floor-coloured puff), then a wider ring bursts at the eruption (radius 4.6, 12 rocks, 8 flying debris,
   a puff) and stays after the column collapses.
+- "improve egg hatching animations please", "Make suee your GUI matches the style of the game" and "think of it like a carousel
+  around the egg for these stuff" (2026-09-27, Wacky Pets). A pet-sim hatch is a UI effect: it matches the game's panels (FredokaOne,
+  dark outline stroke, gradient bodies) and says what you got (name, rarity colour, NEW on a first find); anticipation grows with
+  rarity (more wobbles, a charge, a shake, a second burst). Preview pets orbit their egg on a ring tilted toward the camera, so they
+  never bunch up and the ones behind the egg pass out of sight. "maka sure the z index for the pet stats is high and none of it is
+  covered please": information labels (name, rarity, chance) are AlwaysOnTop; a flat 1 px seam in a dim overlay is a visible defect
+  to him ("I don't like this line", "the line is here too???"). Full entry in SKILL.md, feedback log.
