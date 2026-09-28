@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-28 — Three swords, a flying sword wave, videos with sound (user-authorized)
+
+- roblox-r6-animation: `references/weapons.md` gains "Three swords: two hands and one in the mouth" (a free-model katana as a grip joint, the mirrored left-hand solver, the mouth sword on the Head, an upper-body stance loop over the Animator's legs, readability from behind); `scripts/WeaponRig.lua` adds `Rig.mirror` and `Rig.solveLeft`; new `scripts/samurai/` (the three-sword clip kit, Caliber Phoenix clip, stance loop, an Edit strip and onion tool for any Motor6D rig, the take probe); `scripts/video/record_audio.ps1` (WASAPI loopback placed by QPC time) and `scripts/video/encode_av.html` (crop, H.264 + AAC mux); `references/pipeline.md` item 9 documents takes with sound and cinematic cuts; `references/project-style.md` logs his sentences.
+- roblox-vfx-craft: new `references/caliber-phoenix.md` (a flying sword wave on the move rung: beats, recoloured beam crescent, feather beams, trail and streak traps, warm-up in view, checks); `references/sound.md` gains licensed ProSoundEffects picks with measured onsets and the Skip technique; `references/textures.md` and `scripts/paint/` add the feather and trail painters; the `SKILL.md` feedback log and `references/taste.md` carry his sentences.
+
 ## 2026-09-27 (pivot) — Pivot in place with angular momentum (user-authorized)
 
 - roblox-r6-animation: `references/custom-rigs.md` gains "Pivot means turning in place" (creep speed, eased angular momentum, brake then pivot, pivot clips baked turning in place); `scripts/QuadClips.lua` pivot gaits at v 0.5 and 180 deg/s; `references/project-style.md` logs the feedback.

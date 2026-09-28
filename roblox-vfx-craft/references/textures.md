@@ -76,3 +76,10 @@ measured colour maps and painted detail.
 - Fresh uploads render blank until moderation completes; poll `thumbnails.roblox.com/v1/assets?assetIds=` in a background task.
 - One unit of particle Size draws about two studs across.
 - Studio PowerShell: a `Remove-Item` safety filter blocks some long commands that contain no delete; split the edit.
+
+## Painted sprites for a sword wave (2026-09-28)
+
+`scripts/paint/feather.py` paints a 512 px feather (curved quill, barbs at 38 degrees with split gaps, core to mint to teal, a
+dark teal rim and a soft halo) and `scripts/paint/trail.py` a 256 px trail strip (bright edge at the tip side, soft streaked
+body fading toward the hilt). Pillow, `py -3`. Uploaded as 107483578603804 and 119359586668380 (feathers) and 82141299579764
+(trail); on a beam the feather runs along the beam (quill at Attachment0), on a particle use FacingCamera and a random rotation.

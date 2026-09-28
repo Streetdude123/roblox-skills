@@ -345,3 +345,9 @@ more than a second.
   never bunch up and the ones behind the egg pass out of sight. "maka sure the z index for the pet stats is high and none of it is
   covered please": information labels (name, rarity, chance) are AlwaysOnTop; a flat 1 px seam in a dim overlay is a visible defect
   to him ("I don't like this line", "the line is here too???"). Full entry in SKILL.md, feedback log.
+- "make animation and VFX for this based on clients request, make sure it's really cool, you can use free models for the r6 rig,
+  asian samurai with a straw hat" (2026-09-28, a paid test for his client Moon: the "Three-Blade Swordsman" sheet). His picks:
+  "Caliber Phoenix", "Showcase + working move" (key, a dummy with knockback, a video for Moon), "Two in hands, one in mouth",
+  "Yes, find SFX". Built on the move rung with a recoloured pack crescent, feather beams on its trailing edge, three arcs that
+  merge, painted feather and trail textures, licensed ProSoundEffects sounds and a 14 s video with sound from five angles.
+  Method, numbers and traps in references/caliber-phoenix.md. Not yet judged by him or Moon.

@@ -59,3 +59,23 @@ failing in the console is not ours to fix.
 
 `UltimateClient` and `StandClient` preload every sound, the clip and every particle texture at join,
 else the first cast misses the first clip (Wind was silent on the first cast before that).
+
+## Licensed library picks (Caliber Phoenix, 2026-09-28)
+
+The Creator Store audio search mixes ripped game sounds (Limbus Company, JJS, League) with licensed partner audio. Use only
+the partner uploads: creator `ProSoundEffects` ("Courtesy of Pro Sound Effects") and `APMOfficial`. Search with the library's
+own title style, for example `Sword Swish (SFX)`, `Whoosh Fast Pass (SFX)`, `Cinematic Impact Hit Boom Deep (SFX)`.
+
+Measure every pick with `PlaybackLoudness` sampled each RenderStepped (onset = first sample over 20% of the peak) before timing it:
+
+| Use | Id | Onset | Peak at | How it was placed |
+| --- | --- | --- | --- | --- |
+| Gather (air rush, pitch 1.15) | 9113080188 | 0.51 | 0.78 | started at the cast so the peak lands on the release (0.73 s) |
+| Spread swish (pitch 0.9) | 9119750447 | 0.12 | 0.13 | started 0.12 s before the spread |
+| Swing (Sword Swishes 2) | 9119749931 | 0.04 | 0.05 | started 0.04 s before the sweep |
+| Flight (searing whoosh) | 9125920594 | 0.35 | 0.45 | `TimePosition` 0.3 (a `Skip` attribute) so it rises with the launch |
+| Impact (Sword Impact 202) | 9119747138 | 0.07 | 0.08 | Skip 0.05 |
+| Boom (deep hit, pitch 1.1) | 9125484526 | 0.07 | 0.17 | Skip 0.05, faded after 0.7 s (`Cut`) |
+
+A long lead-in on a whoosh is better skipped with `TimePosition` than started early: the sound then follows the object it is
+parented to. All six ride one SoundGroup with the usual compressor (-9, 12:1, 1 ms, 0.12 s) and a +3 dB high EQ.

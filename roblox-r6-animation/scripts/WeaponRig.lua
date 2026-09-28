@@ -310,6 +310,20 @@ function solveSwordRaw(tp, hand, blade, edge, seed)
 	return {r = {best[1], best[2], best[3]}, p = p}, {r = {best[4], best[5], best[6]}}, best, left, bladeErr
 end
 
+-- a cframe mirrored across the x axis (M * cf * M): a left-hand problem becomes a right-hand one
+function Rig.mirror(cf)
+	local x, y, z, r00, r01, r02, r10, r11, r12, r20, r21, r22 = cf:GetComponents()
+	return CFrame.new(-x, y, z, r00, -r01, -r02, -r10, r11, r12, -r20, r21, r22)
+end
+
+-- sword in the left hand: solve the mirrored problem with the right-arm solver, then mirror the answer back ({lift, -twist,
+-- -side}, p.x negated); the seed stays in the mirrored space (the three-sword samurai, 2026-09-28)
+local FLIP = V3(-1, 1, 1)
+function Rig.solveLeft(tp, hand, blade, edge, seed)
+	local arm, wrist, x, miss, err = Rig.solveSword(Rig.mirror(tp), hand * FLIP, blade * FLIP, edge and edge * FLIP, seed)
+	return {r = {arm.r[1], -arm.r[2], -arm.r[3]}, p = arm.p * FLIP}, {r = {wrist.r[1], -wrist.r[2], -wrist.r[3]}}, x, miss, err
+end
+
 -- free arm's grip point on a target like the other hand on the handle
 local solveReachRaw
 function Rig.solveReach(tp, s, target, seed)
