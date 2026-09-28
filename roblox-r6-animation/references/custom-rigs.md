@@ -43,7 +43,7 @@ The Humanoid reaches any WalkSpeed at once and `Move(Vector3.zero)` brakes in on
 
 ## Pivot means turning in place
 
-A pivot that walks a tight arc reads as "it kinda just walks in a circle" (Corvid, 2026-09-27). The turn centre must be the animal: creep at 0.5 studs/s so AutoRotate still turns the body (radius about 0.16 studs), rotate the heading with angular momentum (accelerate at 720 deg/s2 toward `min(top, sqrt(2 * accel * remaining))`, so it eases in and stops on the heading, never instantly), and bake the pivot clips with the ground flow at v 0.5 and the pivot rate so the feet step around the body. When the player asks for a direction behind while moving, brake harder than a coast (28 against 14 studs/s2), then pivot. Mesozoico footage shows the head and front leading, the body curving behind, about 150 deg/s with eased starts and stops.
+A pivot that walks a tight arc reads as "it kinda just walks in a circle" (Corvid, 2026-09-27). The turn centre must be the animal: creep at 0.5 studs/s so AutoRotate still turns the body (radius about 0.16 studs), rotate the heading with angular momentum (accelerate at 720 deg/s2 toward `min(top, sqrt(2 * accel * remaining))`, so it eases in and stops on the heading, never instantly), and bake the pivot clips with the ground flow at v 0.5 and the pivot rate so the feet step around the body. When the player asks for a direction behind while walking, brake harder than a coast (28 against 14 studs/s2), then pivot; a running animal never pivots and turns on its radius; the walking trigger angle is wider than the standing one (135 against 90 degrees). Mesozoico footage shows the head and front leading, the body curving behind, about 150 deg/s with eased starts and stops.
 
 ## Limits seen
 
