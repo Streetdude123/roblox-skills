@@ -55,3 +55,14 @@ Read as text through web fetches and summaries; no video was watched frame by fr
 - The idle/run/landing, community walk, and sword tables preserve prior measurements. Their original clips and capture records are not included here. Treat labels such as professional in historical notes as prior descriptions, not independently verified credentials.
 - Project review history records preferences for named actions. Do not generalize it into mandatory overshoot, joint offsets, movement budgets, or editor restrictions.
 - Current Moon Animator save internals were not verified. Inspect the installed plugin and actual export rather than inventing a schema.
+
+## Lesson videos Lepy assigned (2026-09-29)
+
+Studied from the full caption transcripts plus frame grids of the demonstrations; the notes are in [lesson-videos.md](lesson-videos.md).
+
+| Primary source | Supports |
+| --- | --- |
+| [AlanBeckerTutorials, "12 Principles of Animation (Official Full Series)"](https://youtu.be/uDqjIdI4bF4) | Squash and stretch with volume, levels of anticipation, staging, pose to pose against straight ahead, follow-through and drag, slow in and out (no ease into a collision), arcs and smears, secondary action, the frames-to-meaning timing example, exaggeration, twinning, appeal. |
+| [NobleFrugal Studio, "The #1 Animation Principle (How To In-Between)"](https://youtu.be/6UXjRCORV44) | Timing against spacing, frames against drawings, halves, thirds and favours, stopwatch timing, the timing chart for a hammer slam. |
+| [Kuzillon, "6 Beginner ANIMATION MISTAKES to avoid!"](https://youtu.be/-WUhB9DLrqo) | Too slow, constant speed, the fading domino of body motion, arcs, simplify first, edges. |
+| [Bluebiscuits, "How to do Basic Animation from a beginner to a beginner"](https://youtu.be/Al_k9hmd4ws) | Start and end frames first, favour frames, mixed 2-3-4-2 holds, circles, squash and pull on in-betweens, the settle, the pull-back, the bounce, staggered secondary parts. |

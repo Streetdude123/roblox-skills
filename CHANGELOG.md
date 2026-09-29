@@ -48,6 +48,10 @@ needs.
 
 - roblox-r6-animation: `references/weapons.md` gains "A tool held by the engine grip" (blend the RightGrip weld C1 during a clip, why a square fist cannot mop, the two-handed long-handle pose family, the gimbal carry key, breakdowns that keep a floor contact out of the floor, the hand-back to a running Animator, replication); `references/project-style.md` logs his sentences and the mop scrub numbers; `references/pipeline.md` notes the source-server ports other sessions hold.
 
+## 2026-09-29 — Lesson videos: the 12 principles, timing and spacing, beginner mistakes, a beginner method (user-authorized)
+
+- roblox-r6-animation: new `references/lesson-videos.md` (four videos Lepy assigned, studied from full transcripts and frame grids, each translated to Poser: timing-meaning table, favour keys, pull-back, settle, bounce, stepped time for an animatic look, a hand-off checklist); `SKILL.md` gains the seven core rules, the reference row and the checklist step; `references/sources.md` lists the videos; `references/project-style.md` logs his sentence.
+
 ## 2026-09-26 (night) — Whole-body turn and flip channels, trail cleanup rule, Dragon Form R and T (user-authorized)
 
 - roblox-r6-animation: `references/pipeline.md` documents the `turn` and `flip` root channels; `references/project-style.md` logs his sentence and the Vortex and Tail numbers.

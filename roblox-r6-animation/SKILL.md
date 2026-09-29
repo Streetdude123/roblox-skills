@@ -25,12 +25,24 @@ The causes, each fixed below:
 4. **Snap then a long slow settle** (contrast 10 to 100). Pros keep the recovery moving: they hold the over-extended pose briefly, then pop back with the parts trailing.
 5. **Feet slid and sank and hips opened** when the torso turned, because R6 legs hang from the torso.
 
+## The fundamentals Lepy assigned (2026-09-29)
+
+He sent four lesson videos to watch in full (Alan Becker's 12 principles, NobleFrugal's timing and spacing, Kuzillon's six beginner mistakes, and his favourite, Bluebiscuits' beginner animation method). What they teach, translated to Poser, is in [lesson-videos.md](references/lesson-videos.md); read it before planning any clip. The core:
+
+1. Movement first, detail last: block the start and end poses simply, then the motion, then the polish.
+2. Timing is meaning: check each beat's duration against the timing table (a 0.17 s change reads as a dodge, 0.46 s as a stretch) and time actions from real life; the usual error is too slow.
+3. Spacing is the feel: close near the keys, wide in the middle, favour keys for snap; never constant speed on a living part; no ease into an impact, ease the rebound.
+4. Arcs everywhere, and motion spreads like fading dominoes into the neighbouring parts.
+5. Every move gets a pull-back before it (one to three levels of anticipation), a follow-through and settle after it, trailing appendages, and on small moves a bounce just before the final pose.
+6. Exaggerate until it is too much, then back off; a fast extreme must be bigger or held longer.
+7. Stage for the player's camera behind the character: nothing in front of the body, one main action at a time.
+
 ## Start with the actual task
 
 1. Read the project instructions and inspect the animation setup. Discover the Studio tools that exist; do not assume them.
 2. Extract the action, intent, reference, duration, loop or one-shot, rig, player camera, props, movement permission, impact and cancel times, and delivery format. Ask only about missing details that change the result.
 3. Inspect parts, sizes, `Motor6D.Part0`, `Part1`, `C0`, `C1`, root, grips and the existing controller. Confirm R6.
-4. Read [principles.md](references/principles.md) (posing, timing, overlap, holds, recoveries, idles) before the first key. Read [pipeline.md](references/pipeline.md) before running bundled scripts. Read [project-style.md](references/project-style.md) for Lepy or DIO work.
+4. Read [lesson-videos.md](references/lesson-videos.md) and [principles.md](references/principles.md) (posing, timing, overlap, holds, recoveries, idles) before the first key. Read [pipeline.md](references/pipeline.md) before running bundled scripts. Read [project-style.md](references/project-style.md) for Lepy or DIO work.
 5. Keep notes in [clip-plan.md](templates/clip-plan.md).
 
 ## The method
@@ -73,7 +85,7 @@ In Edit mode (`scripts/LoadTest.lua` loads the modules fresh, `scripts/EditStrip
 ## Verify and hand off
 
 1. Check joint names, increasing key times, clip bounds, start and end poses, event times and joint ownership.
-2. Report `Poser.check` and `_G.feet` numbers next to the pro ranges, and the captures you read (times and views).
+2. Report `Poser.check` and `_G.feet` numbers next to the pro ranges, and the captures you read (times and views). Answer the checklist at the end of [lesson-videos.md](references/lesson-videos.md) against the captures.
 3. Exercise the loop, the transition, the cancel, the speed change, the respawn or the second client that applies. Check the Studio output.
 4. Inspect the exported `KeyframeSequence` and replay it. `Poser.bake` includes lag, life, springs and the post pass. Check duration, end pose, hierarchy, priority, loop flag, keyed joints and markers (pipeline.md).
 5. Report the instance path, key decisions, checks and remaining limits. Distinguish **authored**, **measured**, **visually reviewed**, **runtime tested** and **user accepted**. One does not imply the others.
@@ -87,6 +99,7 @@ Keep the editable key source. Never claim a clip looks good; report what the num
 | Existing Poser project | Keep the runtime. Author spline clips with the motion layers, measure, capture, bake if asked. Legacy clips play unchanged. To lift an old clip, set `curve = "spline"`, drop its eases, then rework its holds and recoveries; the engine alone closes only part of the gap (motion-metrics.md). |
 | Existing Animator project | Keep the Animator and its controller. Author in Poser, measure, then deliver a baked sequence with the project's priorities and events. |
 | Supplied professional animation | Inspect and measure it first (`ReadClips.lua` then `motion_check.js`); play it raw through `Poser.fromSequence` instead of reauthoring. |
+| Only a video of the professional clip | Replicate it by computer, not by eye: export the rig, fit the cameras and the pose to the video, mark thin props by hand, track the motion, export and check from the fitted cameras ([video-rotoscope.md](references/video-rotoscope.md)). |
 | New place or unknown setup | Ask which handoff is needed before installing a controller or replacing the default character animation. |
 | No Studio connection | Author and reason about the source; leave measurement, visual and runtime checks marked unverified. Never fabricate captures or numbers. |
 
@@ -108,6 +121,7 @@ Give each joint one writer. Avoid TweenService on animated joints.
 
 | Resource | Use |
 | --- | --- |
+| [lesson-videos.md](references/lesson-videos.md) | The four lesson videos Lepy assigned: the 12 principles, timing and spacing, beginner mistakes, and his favourite beginner method (favour frames, mixed holds, pull-back, settle, bounce), each translated to Poser, with the timing-meaning table and a hand-off checklist. |
 | [principles.md](references/principles.md) | Posing checklist, timing in frames, overlap, moving holds, springs, recoveries, idles, walks, attacks. |
 | [motion-metrics.md](references/motion-metrics.md) | The measured pro and Claude numbers, metric definitions, targets, the engine experiment. |
 | [r6-mechanics.md](references/r6-mechanics.md) | R6 transforms, joint gaps, contacts and reach. |
@@ -119,5 +133,6 @@ Give each joint one writer. Avoid TweenService on animated joints.
 | [clip-plan.md](templates/clip-plan.md) | Brief, beat table, motion layers, measurements, review record. |
 | [custom-rigs.md](references/custom-rigs.md) | A creature or any non-R6 Motor6D rig: the leg solver (`QuadRig.lua`), ground flow for straight and turning gaits, gait numbers, baking loops with a warm-up, the Humanoid setup. |
 | [weapons.md](references/weapons.md) | Swords and held props: the three-axis grip joint, keys as hand and blade directions solved on the arm, physical twist, Euler branch continuity, blade tip checks, onion skins, props growing out of props, the solve cache. |
+| [video-rotoscope.md](references/video-rotoscope.md) | A 1:1 copy of a clip from a screen recording: rig export, camera and pose fit, hand-marked prop points, motion tracking, export, Studio checks; what went wrong on the warrior idle. |
 
 Scripts: `Poser.lua` (runtime, check, dump, bake), `Feet.lua` (planted legs), `WeaponRig.lua` (the sword arm solver, physical twist, Euler branches, the solve cache) and `WeaponStrip.lua` (Edit-mode strips with the weapon and props, the onion skin, the foot and blade tip check), `ExampleClips.lua` (a guard and a cross on the method, passing every check), `EditStrip.lua` (Edit-mode strips and the foot check), `LoadTest.lua` (fresh module copies from `serve.js`), `motion_check.js` (the same metrics on decode text), `ReadClips.lua` (decode a KeyframeSequence), `Clips.lua` and `ClipsLocomotion.lua` (the DIO project, legacy eases), `Strip.lua` and `StandStrip.lua` (Play-mode strips), `Bake.lua`, `check_decode.py`, `AnalyzeClips.js`. `samurai/` holds the three-sword kit (two hands and the mouth; `ClipKit` requires the solver as `SwordRig`, which is `WeaponRig.lua`), its Caliber Phoenix, Dragon Twister (root spin) and Lion's Passage (dash) clips, an Edit strip and onion tool for any Motor6D rig, and the take probe; `video/record_audio.ps1` and `video/encode_av.html` make videos with sound (pipeline.md item 9).
