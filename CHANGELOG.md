@@ -48,6 +48,10 @@ needs.
 
 - roblox-r6-animation: `references/weapons.md` gains "A tool held by the engine grip" (blend the RightGrip weld C1 during a clip, why a square fist cannot mop, the two-handed long-handle pose family, the gimbal carry key, breakdowns that keep a floor contact out of the floor, the hand-back to a running Animator, replication); `references/project-style.md` logs his sentences and the mop scrub numbers; `references/pipeline.md` notes the source-server ports other sessions hold.
 
+## 2026-09-29 (later) — Warrior idle, walk and run rebuild; RigFeet for custom rigs; weapon grip in a run (user-authorized)
+
+- roblox-r6-animation: new `scripts/RigFeet.lua` (planted feet from any rig's own leg geometry) and `scripts/WarriorClips.lua` (the Licensed To Strike warrior idle, walk and run on the lesson-video method, gait feet, built for the game's real speeds); `references/pipeline.md` documents both, the speed and stance-length limits and grid-aligned loop bakes; `references/weapons.md` gains the grip rule for a held weapon in a running arm and his forward-pointing preference; `SKILL.md` lists the scripts and two new rules; `references/project-style.md` logs his sentences and the numbers.
+
 ## 2026-09-29 — Lesson videos: the 12 principles, timing and spacing, beginner mistakes, a beginner method (user-authorized)
 
 - roblox-r6-animation: new `references/lesson-videos.md` (four videos Lepy assigned, studied from full transcripts and frame grids, each translated to Poser: timing-meaning table, favour keys, pull-back, settle, bounce, stepped time for an animatic look, a hand-off checklist); `SKILL.md` gains the seven core rules, the reference row and the checklist step; `references/sources.md` lists the videos; `references/project-style.md` logs his sentence.
