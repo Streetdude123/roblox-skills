@@ -25,11 +25,23 @@ Use this when the reference is a screen recording of the clip (a commissioned an
 - **Answer a grip question with marks, not words.** Marks only show where the parts are; they cannot show which end of a block is which. Check the texture order along the limb against the video first. Project the shoulder joint, the hand end (arm y -1.25) and the prop handle onto the video frame and the fitted render from the same camera. On the warrior the marks agreed with the wrong fit (a hanging arm with the hand at belt height), because the fit itself was upside down; the texture order showed the flip.
 - **The idle motion is small but real:** torso 1.3 degrees, head up to 4.8, arms 4 to 6, legs 2 to 3, sword 4 to 7, torso height 0.04 studs. At phase 0.85 (the far end of the loop) the tracked pose matched all four views.
 
+## Fast clips (the warrior run, 2026-09-29)
+
+A run is much harder than an idle or a walk: the body swings about 40 degrees, the sword turns a full circle every 0.97 s, and one frame of timing error moves the sword 20 degrees.
+
+- **Frame-to-frame tracking fails.** Flow tracking over 30 phases confused the legs and did not close the loop (one leg drifted 149 degrees). Fit 12 moments separately instead, each from the previous moment's pose plus a sword-flipped and a legs-swapped start.
+- **Limit the torso to the range the calibrated moments show.** Without it, the fit laid the body almost flat (torso pitch -71 to -100 degrees) and bent the legs up to cover the outline, at an equal error. A soft range (pitch -40 to 5, roll -25 to 10) kept it upright at the same or better error.
+- **Left and right legs swap in per-moment fits.** Two identical leg blocks let each moment pick either assignment, so the leg curves jumped 100 degrees between moments. Fit both legs over the whole cycle at once as one smooth path (2 harmonics for rotation, 1 for translation) with the left leg equal to the mirrored right leg half a cycle later. It cost 0.2 of error (3.96 against 3.74) and gave a clean alternating stride; it also reduced the back kick, which the reference shows further out.
+- **Refit each camera against several moments plus the horizon.** A camera calibrated on one moment had its elevation off by 8 to 10 degrees. The horizon row, measured from the per-segment median background, fixes the elevation; refit each camera on 6 fitted moments at once with the horizon as a soft term.
+- **Mark by hand, but let the frame choice float.** Marks on 11 moments in 4 views (sword tip, pommel, helmet) drove the fits; each view's frame then moves up to 2 frames to the best match, with the mark tolerance widened 4 times so a mark from the neighbouring frame does not fight it.
+- **Show a side-by-side video early.** Reference on the left, the Studio copy on the right, same camera, synced by matching a still of phase 0 against the recording.
+
 ## Studio checks that bite
 
 - `animator:StepAnimations(0)` right after `track:Play(0)` leaves the track at weight 0 and the rig at rest. Step three times with 0.001 (one step was not always enough), set `TimePosition` again, then step with 0. Read a part position back and compare it with the offline value before any capture.
 - A fitted camera can sit inside a wall of the map (the capture shows only one flat colour). Raycast every camera line and move the clone to a clear spot.
 - The capture tool returns a cached image for identical camera numbers; change a number by 0.001.
+- After Play stops, the Edit viewport can stay frozen on the last Play frame; `screen_capture` then times out. Start and stop Play once to reset it. In Edit mode a camera set once from `execute_luau` is taken back by the editor; hold it from a `RunService.Heartbeat` connection and take a window screenshot.
 
 ## Machine limits
 
