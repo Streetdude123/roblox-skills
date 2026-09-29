@@ -351,3 +351,7 @@ scalars and are coerced to strings. Duplicate frontmatter fields still fail.
 ## 2026-09-29 (last) — Clip previews of unpublished clips, camera angle for a forward weapon (user-authorized)
 
 - roblox-r6-animation: `references/pipeline.md` ("Video of a clip") gains the Edit-mode clip preview for unpublished clips, the rear three-quarter angle that shows a weapon held forward, and a check that the take mark sits inside the recording window; `references/project-style.md` logs his video request and what the takes show.
+
+## 2026-09-29 (after the videos) — Brisk warrior walk, a weapon arm that pumps in a run (user-authorized)
+
+- roblox-r6-animation: `scripts/WarriorClips.lua` walk rebuilt for 4.8 studs/s (0.84 s cycle, 2.38 stud stance) and the run's sword arm pumping 2 to 60 degrees with a 15 degree wrist give; `SKILL.md` rules "Held weapon, pumping arm" and "Locomotion speed" updated; `references/weapons.md` and `references/pipeline.md` carry the numbers; `references/project-style.md` logs his sentence.

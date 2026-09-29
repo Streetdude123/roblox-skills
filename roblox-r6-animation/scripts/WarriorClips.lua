@@ -2,7 +2,7 @@
 -- videos: one breath engine with the head and the free arm following it, a pull-back, hitch and settle of the sword
 -- on the shoulder, a glance with an anticipation; a walk with contact, down, passing and up, the body rolling over the
 -- stance leg, the free arm on an arc and the shouldered sword bobbing and settling each step; a run with a 22 degree
--- lean, flight, a back kick and a knee-up, the free arm pumping and the sword held forward, pointing where the warrior faces. The warrior is an
+-- lean, flight, a back kick and a knee-up, both arms pumping and the sword held forward, pointing where the warrior faces. The warrior is an
 -- r6-style custom rig (joints named by part: Torso, Head, RightArm, LeftArm, RightLeg, LeftLeg, Sword, Shield; C0 and C1
 -- without rotation; hips at the legs' top centre 1.01 under the torso centre; legs 2.37 from hip to sole), so the feet
 -- are planted with RigFeet instead of Feet. Warrior.build(rf) takes RigFeet.new(RigFeet.fromRig(...)) and returns
@@ -137,62 +137,63 @@ function Warrior.build(rf)
 		}
 	end
 
-	-- walk at the game walk speed (WarriorConfig WalkSpeed 2, reference 2): right contact at 0, left at 0.5; duty 0.64;
-	-- the body lowest just after each contact, highest after passing
+	-- brisk walk built for 4.8 studs/s (he found 2 studs/s "WAY too slow"; WarriorConfig WalkSpeed, BackwardsWalkSpeed
+	-- and the walk reference 4.8 play it at 1.0x): 0.84 s cycle, right contact at 0, left at 0.5; duty 0.59 gives a
+	-- 2.38 stud stance, about the most a rigid 2.37 stud leg plants; the body lowest just after each contact
 	do
-		local T, v, duty = 1.15, 2.0, 0.64
-		local swing = {{0, 0, 0}, {0.2, 0.1, 0.13}, {0.5, 0.5, 0.2}, {0.8, 0.93, 0.1}, {1, 1, 0}}
+		local T, v, duty = 0.84, 4.8, 0.59
+		local swing = {{0, 0, 0}, {0.2, 0.08, 0.2}, {0.5, 0.5, 0.3}, {0.8, 0.94, 0.14}, {1, 1, 0}}
 		local post, stats = rf.post({
-			r = gaitFoot(T, v, 0, duty, 0.5, -0.62, -5, swing),
-			l = gaitFoot(T, v, 0.5, duty, -0.5, -0.62, 5, swing),
+			r = gaitFoot(T, v, 0, duty, 0.5, -1.08, -5, swing),
+			l = gaitFoot(T, v, 0.5, duty, -0.5, -1.08, 5, swing),
 		})
 		out.speeds.Walk = v
 		out.Walk = {
 			name = "Warrior Walk (fixed)", length = T, loop = true, curve = "spline", post = post, stats = stats,
 			life = {Head = 0.6},
-			lag = {Head = 0.05, LeftArm = 0.04, RightArm = 0.06},
+			lag = {Head = 0.04, LeftArm = 0.03, RightArm = 0.04},
 			springs = {Sword = "follow"},
 			joints = {
 				Torso = loop(T, {
-					{0.0, -5.0, 2.5, -0.7, 0.02, -0.06},
-					{0.1, -6.0, 1.8, -1.4, 0.05, -0.1},
-					{0.3, -4.5, 0.0, -1.1, 0.05, -0.01},
-					{0.38, -4.2, -0.8, -0.7, 0.04, 0.0},
-					{0.5, -5.0, -2.5, 0.7, -0.02, -0.06},
-					{0.6, -6.0, -1.8, 1.4, -0.05, -0.1},
-					{0.8, -4.5, 0.0, 1.1, -0.05, -0.01},
-					{0.88, -4.2, 0.8, 0.7, -0.04, 0.0},
+					{0.0, -7.0, 4.0, -0.9, 0.02, -0.08},
+					{0.1, -8.0, 3.0, -1.8, 0.05, -0.14},
+					{0.3, -6.0, 0.0, -1.3, 0.05, -0.02},
+					{0.38, -5.6, -1.2, -0.8, 0.04, 0.0},
+					{0.5, -7.0, -4.0, 0.9, -0.02, -0.08},
+					{0.6, -8.0, -3.0, 1.8, -0.05, -0.14},
+					{0.8, -6.0, 0.0, 1.3, -0.05, -0.02},
+					{0.88, -5.6, 1.2, 0.8, -0.04, 0.0},
 				}, true),
 				Head = loop(T, {
-					{0.0, 6.0, -2.5, 0.6},
-					{0.12, 7.5, -1.6, 1.2},
-					{0.35, 5.5, 0.8, 0.8},
-					{0.5, 6.0, 2.5, -0.6},
-					{0.62, 7.5, 1.6, -1.2},
-					{0.85, 5.5, -0.8, -0.8},
+					{0.0, 8.0, -4.0, 0.8},
+					{0.12, 9.5, -2.6, 1.5},
+					{0.35, 7.0, 1.2, 1.0},
+					{0.5, 8.0, 4.0, -0.8},
+					{0.62, 9.5, 2.6, -1.5},
+					{0.85, 7.0, -1.2, -1.0},
 				}),
 				LeftArm = loop(T, {
-					{0.0, 15.0, 10.0, -7.0},
-					{0.06, 16.5, 11.0, -7.5},
-					{0.3, 3.0, 9.0, -5.0},
-					{0.56, -13.0, 7.0, -8.0},
-					{0.8, 2.0, 8.0, -5.0},
+					{0.0, 24.0, 12.0, -8.0},
+					{0.06, 26.0, 13.0, -8.5},
+					{0.3, 4.0, 9.0, -5.0},
+					{0.56, -22.0, 6.0, -9.0},
+					{0.8, 3.0, 8.0, -5.0},
 				}),
 				RightArm = loop(T, {
 					{0.0, CARRY_R[1], CARRY_R[2], CARRY_R[3], CARRY_P.X, CARRY_P.Y, CARRY_P.Z},
-					{0.14, 7.0, CARRY_R[2], 172.4, CARRY_P.X, -2.1, CARRY_P.Z},
-					{0.36, 9.0, CARRY_R[2], 171.6, CARRY_P.X, -2.062, CARRY_P.Z},
+					{0.14, 6.4, CARRY_R[2], 172.6, CARRY_P.X, -2.12, CARRY_P.Z},
+					{0.36, 9.6, CARRY_R[2], 171.4, CARRY_P.X, -2.05, CARRY_P.Z},
 					{0.5, CARRY_R[1], CARRY_R[2], CARRY_R[3], CARRY_P.X, CARRY_P.Y, CARRY_P.Z},
-					{0.64, 7.0, CARRY_R[2], 172.4, CARRY_P.X, -2.1, CARRY_P.Z},
-					{0.86, 9.0, CARRY_R[2], 171.6, CARRY_P.X, -2.062, CARRY_P.Z},
+					{0.64, 6.4, CARRY_R[2], 172.6, CARRY_P.X, -2.12, CARRY_P.Z},
+					{0.86, 9.6, CARRY_R[2], 171.4, CARRY_P.X, -2.05, CARRY_P.Z},
 				}),
 				Sword = loop(T, {
 					{0.0, SWORD[1], SWORD[2], SWORD[3]},
-					{0.14, SWORD[1] - 2.0, SWORD[2], SWORD[3]},
-					{0.36, SWORD[1] + 1.0, SWORD[2], SWORD[3]},
+					{0.14, SWORD[1] - 3.0, SWORD[2], SWORD[3]},
+					{0.36, SWORD[1] + 1.5, SWORD[2], SWORD[3]},
 					{0.5, SWORD[1], SWORD[2], SWORD[3]},
-					{0.64, SWORD[1] - 2.0, SWORD[2], SWORD[3]},
-					{0.86, SWORD[1] + 1.0, SWORD[2], SWORD[3]},
+					{0.64, SWORD[1] - 3.0, SWORD[2], SWORD[3]},
+					{0.86, SWORD[1] + 1.5, SWORD[2], SWORD[3]},
 				}),
 				RightLeg = still(T),
 				LeftLeg = still(T),
@@ -240,21 +241,24 @@ function Warrior.build(rf)
 					{0.52, -42.0, -5.0, -14.0},
 					{0.77, 10.0, 6.0, -2.0},
 				}),
-				-- the sword points where the warrior faces: the sword arm is held forward at the waist with a small pump
-				-- (18 to 34 degrees, the free arm does the full swing) so the arm cancels the 22 degree lean, and the fist
-				-- keeps its natural square grip (twist 0, lift within 4 degrees) with the blade within 8 degrees of level
+				-- the sword arm pumps opposite the free arm ("the arm holding the sword while running needs to move"): 2 to
+				-- 60 degrees against the leaned torso, one frame behind the free arm, crossing in on the forward swing and
+				-- sliding up into the shoulder there for a bent-elbow read; the blade points where the warrior faces and
+				-- rocks with the fist, the wrist giving at most 15 degrees off square so the tip stays off the floor
 				RightArm = loop(T, {
-					{0.0, 20.0, 4.0, -3.0, 0, 0.0},
-					{0.04, 19.0, 4.0, -3.0, 0, 0.0},
-					{0.27, 26.0, 0.0, -4.0, 0, 0.06},
-					{0.52, 33.0, -3.0, -5.0, 0, 0.12, -0.04},
-					{0.77, 26.0, 0.0, -4.0, 0, 0.06},
+					{0.0, 4.0, 3.0, 1.0, 0, 0.0},
+					{0.05, 2.0, 3.0, 1.5, 0, 0.0},
+					{0.29, 30.0, 1.0, -4.0, 0, 0.07},
+					{0.54, 60.0, -2.0, -10.0, 0, 0.16, -0.05},
+					{0.58, 58.0, -2.0, -10.0, 0, 0.16, -0.05},
+					{0.79, 30.0, 1.0, -4.0, 0, 0.07},
 				}),
 				Sword = loop(T, {
-					{0.0, 0.0, 0.0, 0.0},
-					{0.27, -2.0, 0.0, 0.0},
-					{0.52, -4.0, 0.0, 0.0},
-					{0.77, -2.0, 0.0, 0.0},
+					{0.0, 13.0, 0.0, 0.0},
+					{0.05, 15.0, 0.0, 0.0},
+					{0.29, 1.0, 0.0, 0.0},
+					{0.56, -14.0, 0.0, 0.0},
+					{0.79, 1.0, 0.0, 0.0},
 				}),
 				RightLeg = still(T),
 				LeftLeg = still(T),
