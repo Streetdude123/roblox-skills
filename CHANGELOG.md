@@ -355,3 +355,7 @@ scalars and are coerced to strings. Duplicate frontmatter fields still fail.
 ## 2026-09-29 (after the videos) — Brisk warrior walk, a weapon arm that pumps in a run (user-authorized)
 
 - roblox-r6-animation: `scripts/WarriorClips.lua` walk rebuilt for 4.8 studs/s (0.84 s cycle, 2.38 stud stance) and the run's sword arm pumping 2 to 60 degrees with a 15 degree wrist give; `SKILL.md` rules "Held weapon, pumping arm" and "Locomotion speed" updated; `references/weapons.md` and `references/pipeline.md` carry the numbers; `references/project-style.md` logs his sentence.
+
+## 2026-09-29 (run rejected) — Warrior run deleted (user-authorized)
+
+- roblox-r6-animation: `references/project-style.md` logs his rejection of the warrior run; `scripts/WarriorClips.lua` marks its run as a rejected record not to reuse.

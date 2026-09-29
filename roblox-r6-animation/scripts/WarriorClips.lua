@@ -201,6 +201,8 @@ function Warrior.build(rf)
 		}
 	end
 
+	-- rejected by Lepy on 2026-09-29 ("this run animation sucks") and deleted from his place; kept only as a record of
+	-- the foot and grip numbers, do not reuse these run keys.
 	-- run built for 15 studs/s (set the run reference speed to 15; a 25 studs/s sprint plays it at 1.67x): right
 	-- contact at 0, left at 0.5; duty 0.25 (flight between); swing: back kick, tuck, knee-up, reach
 	do
