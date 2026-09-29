@@ -270,3 +270,7 @@ Layers: `curve = "spline"`, `lag` (lead arm 2 frames), `springs` (lead arm `drag
 ## Runs: legs out (Lepy, 2026-09-29)
 
 A run is judged by the legs. Keep the swing leg driving up to about 80 degrees against the torso with the leg pulled up into the hip (0.7 to 0.95 studs) so it reads as a knee, kick the back leg to about -50 after push-off, keep each foot on the floor about 25% of the cycle so the body flies between steps, and keep the body riding high with a shallow dip so it looks light. A cycle near 0.7 s; 0.9 s reads as a walk. Legs kept under the body read as an "old man walk".
+
+## Human, not robotic, locomotion (Lepy, 2026-09-29)
+
+A cycle where every part is a pure sine in lockstep reads as a robot. Give it: a weight shift (the body sways and tilts over the stance foot, feet solved so they do not slide sideways), secondary parts (head, free arm, a carried weapon) driven through a damped spring so they trail and settle instead of copying the torso, a walk bob that is highest over the stance foot (a run bob is lowest there), and restraint on a walk: a small knee lift and twist on a natural 1.0 to 1.1 s cycle. A heavy plod (big lift, twist and bob on a slow step) reads as "trying too hard".
