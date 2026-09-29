@@ -347,3 +347,7 @@ scalars and are coerced to strings. Duplicate frontmatter fields still fail.
 - Full harness regression: 67/67 (testlab/run_tests.py), rerun twice to
   confirm idempotence. Seeded child now fails with exactly the 3 real defects
   (alternatives false-FAIL eliminated) and repairs in 4 bounded cycles.
+
+## 2026-09-29 (last) — Clip previews of unpublished clips, camera angle for a forward weapon (user-authorized)
+
+- roblox-r6-animation: `references/pipeline.md` ("Video of a clip") gains the Edit-mode clip preview for unpublished clips, the rear three-quarter angle that shows a weapon held forward, and a check that the take mark sits inside the recording window; `references/project-style.md` logs his video request and what the takes show.
