@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-30 (third pass) — Verix re-rigged, rig transfer, crouch walk (user-authorized)
+
+- roblox-r6-animation: `references/custom-rigs.md` gains "Moving clips between two rigs of one model" (exact transfer by matching part frames, 0.00001 studs), "Crouch walk" (0.6 s at 3 studs/s, two review rounds with the leg swing numbers) and movement lessons (camera-follow turning without AutoRotate, lean from physics, four-ray terrain tilt, preload against the first-play delay); new `scripts/RigTransfer.lua`; `references/project-style.md` logs his sentences and his designer's; `SKILL.md` lists the new script. Also carries unpushed 2026-09-30 warrior notes from another session (`references/pipeline.md`, `references/weapons.md`, `references/project-style.md`).
+
 ## 2026-09-30 (second pass) — Warrior Brave Slash and Guard Up (user-authorized)
 
 - roblox-r6-animation: `references/weapons.md` gains "A horizontal slash keeps the wrist" (solve the contact grip once, then only the arm; edge along the sweep tangent; the blade hides behind the torso from a camera straight behind); new `scripts/blender/wa.py` (numpy FK, sword solver with a fixed grip, leg and reach solvers for background Blender); `references/project-style.md` logs his picks (two slash clips, shield on the left fist only in Guard Up, walk speed 8).

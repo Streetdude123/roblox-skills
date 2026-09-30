@@ -49,3 +49,20 @@ A pivot that walks a tight arc reads as "it kinda just walks in a circle" (Corvi
 
 - A 1.4 stud rigid hind block cannot fold under a sitting body: with the rump on the floor the block is 0.1 to 0.2 under it. The sit that fits pitches the torso 38 and plants the block at an angle under the belly; its top shows through the rump.
 - The ragdoll get-up snaps in one frame without a clip.
+
+## Moving clips between two rigs of one model
+
+Verix came back from the designer rigged again (2026-09-30): the same parts at the same places, but a `Core` joint under the root, arms and hind block hung from `Core`, part frames turned 90 degrees about X and new names (`Arm.L`, `Leg`, `Ear.R`). A clip keys joints by `Part1.Name` in joint space, so the old clips play nothing on the new rig. Check first that it is the same model: every welded decoration part sat 0.0067 studs off its twin relative to the root on both rigs (compare parts of equal size, not names).
+
+The exact transfer (`scripts/RigTransfer.lua`): for each frame, run forward kinematics on the old rig with the old poses, take each old part's root-space CFrame, multiply by the rest offset `oldRest^-1 * newRest` of the matching new part, then solve the new rig top down with `T = C0^-1 * parentRel^-1 * target * C1`. A new joint with no old twin (`Core`) follows the old part it replaces. Pivots may differ, so `T` may carry a translation; that is correct. Worst error 0.00001 studs in the math and 0.0007 on the played Animator pose. An overlay clip (Weight 0 on the parents) transfers with the parents at rest and only the keyed joints weighted. Raise the new root by the rest offset (HipHeight + 0.0067 on Verix) so the feet stay on the floor. The authoring tools (QuadRig, Poser) keep working on the old rig; author there and transfer.
+
+## Crouch walk (Verix, 2026-09-30)
+
+Crouch speed 3 studs/s. The first cut (0.7 s, drop 0.45, duty 0.68) swung the legs -44 to +54 degrees and read as a crawl; the kept one is 0.6 s, drop 0.36, duty 0.66, lift 0.18 with `early` 0.7: legs -35 to +42, frozen 0, rest 1.8%, contrast 1.4, feet within 0.02 of the floor, planted slide 0.000. The head counters the torso sway on its own frames so the face stays level (a stalk). The game pauses it (speed 0) when the body stops, so every frame must read as a crouch.
+
+## Movement lessons from the same pass
+
+- Humanoid AutoRotate trails the move direction by about 0.12 s, and an eased turn with angular acceleration a trails a turning camera by w^2 / 2a (measured 16.7 degrees at 90 deg/s and 45 at 180 before the fix). Feed the camera's own yaw step into the heading (capped at the turn rate), rotate the input by the same step (it is one frame stale), and set the root facing yourself with AutoRotate off: 0.00 degrees after.
+- Lean into a turn from physics: `atan(speed * yawRate / gravity)`, times how far the speed is between walk and run, clamped (12 degrees); pivot about the floor under the root. Measured 9.0 degrees at 20 studs/s and 90 deg/s (the formula gives 9.1).
+- Terrain alignment: four rays (front, back, left, right of the root) give pitch and roll; rotate the root joint about the floor point under the root. Mean 21 degrees on a 20 degree ramp with the walk's own pitch on top.
+- A clip's first play waits for its asset download (1.2 to 1.6 s measured on the sit clips); `ContentProvider:PreloadAsync` on the Animation objects at spawn removes it.
