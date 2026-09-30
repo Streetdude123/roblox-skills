@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-30 (second pass) — Warrior Brave Slash and Guard Up (user-authorized)
+
+- roblox-r6-animation: `references/weapons.md` gains "A horizontal slash keeps the wrist" (solve the contact grip once, then only the arm; edge along the sweep tangent; the blade hides behind the torso from a camera straight behind); new `scripts/blender/wa.py` (numpy FK, sword solver with a fixed grip, leg and reach solvers for background Blender); `references/project-style.md` logs his picks (two slash clips, shield on the left fist only in Guard Up, walk speed 8).
+- roblox-vfx-craft: `references/taste.md` logs his brief (gold like the model, tech hard-light for the lore, redo the wave, add sounds), the textures that read in gold, the squash-before-rotation trap and the two backdoor families found in the packs.
+
 ## 2026-09-30 — Welded carry in idle and walk, edits in Blender (user-authorized)
 
 - roblox-r6-animation: `references/weapons.md` gains "A carried weapon is welded in idle and walk" (one constant weapon pose shared by the idle and the walk; a carry may leave the shoulder joint but must touch the body, measured per frame); new `scripts/blender/contact_fix_bg.py` (background Blender: weld the grip, slide the arm onto the torso side, smoothed); `references/project-style.md` logs his sentences, including the rule that every clip edit is made in Blender and shown before import; earlier unpushed files from 2026-09-29 are included (`references/video-rotoscope.md`, `scripts/loco_author.py`, `scripts/offline/warrior/`) with `references/principles.md` updates.
