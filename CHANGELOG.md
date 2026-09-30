@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-30 — Welded carry in idle and walk, edits in Blender (user-authorized)
+
+- roblox-r6-animation: `references/weapons.md` gains "A carried weapon is welded in idle and walk" (one constant weapon pose shared by the idle and the walk; a carry may leave the shoulder joint but must touch the body, measured per frame); new `scripts/blender/contact_fix_bg.py` (background Blender: weld the grip, slide the arm onto the torso side, smoothed); `references/project-style.md` logs his sentences, including the rule that every clip edit is made in Blender and shown before import; earlier unpushed files from 2026-09-29 are included (`references/video-rotoscope.md`, `scripts/loco_author.py`, `scripts/offline/warrior/`) with `references/principles.md` updates.
+
 ## 2026-09-28 (fourth pass) — Slash and cut sounds (user-authorized)
 
 - roblox-vfx-craft: `references/sound.md` gains "Slash and cut sounds" (swish, cut and impact layers; licensed Sever Metal Hit and Sword Whip picks with measured peaks, skips and volumes; the high-pass check); the `SKILL.md` feedback log and `references/taste.md` carry his sentence.
