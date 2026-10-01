@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-01 (night) — Less VFX, faster punches (user-authorized)
+
+- roblox-vfx-craft: feedback log entry (his sentence, only the parry clash kept, a small fist glint replaces every punch effect, the Glint numbers).
+- roblox-r6-animation: `references/project-style.md` logs the faster pace (server hit 0.40 -> 0.28, retime only before the hit) and the lesson on stretched wind-ups.
+
 ## 2026-10-01 (evening) — Pick videos per move, limb gap check (user-authorized)
 
 - roblox-r6-animation: `SKILL.md` reference step 3 now asks for one labeled video per move, a limb-to-torso gap check on every frame (over 0.12 studs is dropped), no R15 clips on R6, and labeled mirror or slide-removed fixes when no clean clip exists; `references/project-style.md` logs his sentences about the pick videos, the picks, the wind-up bridge and the mirror method.
