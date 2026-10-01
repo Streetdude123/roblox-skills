@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-01 (late) — Upper-body abilities, in-between keys (user-authorized)
+
+- roblox-r6-animation: `references/project-style.md` logs Crit's review of the warrior Brave Slash and Guard Up (in-between keys that bridge the poses, take time on quality, no leg keys on upper-body abilities because the warrior moves during them, no cape keys) and the R6 limit that a torso twist turns the walk legs.
+
 ## 2026-10-01 (night) — Less VFX, faster punches (user-authorized)
 
 - roblox-vfx-craft: feedback log entry (his sentence, only the parry clash kept, a small fist glint replaces every punch effect, the Glint numbers).
