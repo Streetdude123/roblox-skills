@@ -98,3 +98,19 @@ ripped game audio first. Measured with `PlaybackLoudness`:
 
 The whips are quiet and start late; skip to 0.03 s before their onset and raise the volume, or they vanish under a tornado bed.
 Check a take with a 3.5 kHz high-pass envelope in the browser: a cut shows as a spike of 0.6 to 0.75 on the hit frame.
+
+## Punch kit (Scripter Combat Trial, 2026-10-01)
+
+Fist combat picks, all ProSoundEffects (public, play on any account). Envelopes measured with `PlaybackLoudness` (onset over 20% of the peak):
+
+| Use | Id | Onset / peak | Loudness | Placement |
+| --- | --- | --- | --- | --- |
+| Swing whoosh 1-4 (Whoosh Heavy Punches 1, 2, 3, 4) | 9120728815, 9120728883, 9120729007, 9120729005 | peaks 0.14, 0.17, 0.15, 0.22 | 246 to 314 | started at 0.37 - peak - network lateness after the Swing event, so the peak lands mid-strike |
+| Hit 1 (Punch Kit Beefy Hit 7) | 9117970193 | 0.03 / 0.03 | 657 | on the Hit event |
+| Hit 2, 3 (Beefy Hit 3, 4) | 9117969717, 9117969878 | 0.05 / 0.07, 0.05 / 0.13 | 601, 574 | Skip 0.03, 0.05 |
+| Uppercut crack layer (Cracky Punch 10) | 9113965059 | 0.27 | 122 | Skip 0.25, volume 1.8, with Beefy Hit 7 at 0.9 pitch |
+| Parry press (Swish Med High End Sharp Swords Fast Punches) | 9126014020 | 0.08 | 233 | Skip 0.04 |
+| Clash crack (Whip Cracks 2) | 9120660382 | 0.37 / 0.42 | 306 | Skip 0.35 |
+| Clash ring (Anvil Hits Ringing Metal Clinks Blacksmith 1) | 9125361455 | 0.02 | 101 | volume 1.6 |
+
+One SoundGroup with the usual limiter and +3 dB high EQ; the final take peaked at -1.0 dBFS, RMS -21.9 dB, 0 clipped samples.

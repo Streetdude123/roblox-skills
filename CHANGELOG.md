@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-01 — Scripter Combat Trial: fist chain, parry, punch kit sounds (user-authorized)
+
+- roblox-r6-animation: `references/project-style.md` logs his sentences for the trial (phases, Deepwoken reactive parry, the enemy AI, the video at the end) and six lessons: the up Euler form for a fists-up R6 guard, aiming strikes against the forward lean, the hook from the torso sweep, a forearm bar that clears the face, a long telegraph on a 0.4 s server wind-up, and a client clip player that fades in on play age with additive flinches.
+- roblox-vfx-craft: `SKILL.md` feedback log entry (white and gold hit, clash, tell, guard and daze templates from two Toolbox packs; both known backdoors found again with their ids; the gold-blooms-white fix; Bloom threshold 2 on a new Baseplate; first-cast frame numbers); `references/sound.md` gains "Punch kit" (ProSoundEffects ids with measured onsets and placement).
+
 ## 2026-09-30 (fourth pass) — Verix legs shrink instead of sliding into the body (user-authorized)
 
 - roblox-r6-animation: `scripts/QuadRig.lua` takes per-leg scale about the runtime hip pivot (`V.read(model, pivots)`, `geo.scale`, `V.legPoint`, `gait.tuck`/`needTuck` for the slide limit); `references/custom-rigs.md` gains "Legs that shrink instead of sliding into the body" (runtime scaling from the playing tracks, the get-up per-leg curves and the planted-foot trap, the async `RegisterKeyframeSequence` trap); `references/project-style.md` logs his sentences (videos, legs, a much simpler GUI).
