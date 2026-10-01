@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-01 (evening) — Pick videos per move, limb gap check (user-authorized)
+
+- roblox-r6-animation: `SKILL.md` reference step 3 now asks for one labeled video per move, a limb-to-torso gap check on every frame (over 0.12 studs is dropped), no R15 clips on R6, and labeled mirror or slide-removed fixes when no clean clip exists; `references/project-style.md` logs his sentences about the pick videos, the picks, the wind-up bridge and the mirror method.
+
 ## 2026-10-01 (later) — Always animate from a reference (user-authorized)
 
 - roblox-r6-animation: `SKILL.md` opens with "Always animate from a reference" (his rule of 2026-10-01: every clip, not only locomotion, starts from a reference he picks, from anime clips or the Toolbox; the five steps from search to report); `references/project-style.md` logs the pass 2 requests and picks (camera-facing 4-way walk and run, look pitch, copied Toolbox locomotion played by a synced phase) and the traps found while solving the punch rework.
