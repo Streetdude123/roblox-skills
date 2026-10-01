@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-09-30 (fourth pass) — Verix legs shrink instead of sliding into the body (user-authorized)
+
+- roblox-r6-animation: `scripts/QuadRig.lua` takes per-leg scale about the runtime hip pivot (`V.read(model, pivots)`, `geo.scale`, `V.legPoint`, `gait.tuck`/`needTuck` for the slide limit); `references/custom-rigs.md` gains "Legs that shrink instead of sliding into the body" (runtime scaling from the playing tracks, the get-up per-leg curves and the planted-foot trap, the async `RegisterKeyframeSequence` trap); `references/project-style.md` logs his sentences (videos, legs, a much simpler GUI).
+
 ## 2026-09-30 (third pass) — Verix re-rigged, rig transfer, crouch walk (user-authorized)
 
 - roblox-r6-animation: `references/custom-rigs.md` gains "Moving clips between two rigs of one model" (exact transfer by matching part frames, 0.00001 studs), "Crouch walk" (0.6 s at 3 studs/s, two review rounds with the leg swing numbers) and movement lessons (camera-follow turning without AutoRotate, lean from physics, four-ray terrain tilt, preload against the first-play delay); new `scripts/RigTransfer.lua`; `references/project-style.md` logs his sentences and his designer's; `SKILL.md` lists the new script. Also carries unpushed 2026-09-30 warrior notes from another session (`references/pipeline.md`, `references/weapons.md`, `references/project-style.md`).

@@ -17,7 +17,7 @@ local function corners(size)
 	return list
 end
 
-function V.read(model)
+function V.read(model, pivots)
 	local geo = {joints = {}, legs = {}, order = {}, model = model, boxes = {}}
 	local list = {}
 	for _, m in model:GetDescendants() do
@@ -63,7 +63,7 @@ function V.read(model)
 		local j = geo.joints[name]
 		local sole = Vector3.new(0, -j.part.Size.Y / 2, 0)
 		local s0 = j.r * (j.c1:Inverse() * sole)
-		geo.legs[name] = {j = j, sole = sole, s0 = s0, len = s0.Magnitude, rest = world[name] * sole}
+		geo.legs[name] = {j = j, sole = sole, s0 = s0, len = s0.Magnitude, rest = world[name] * sole, pivotY = pivots and pivots[name] or j.c1.Position.Y}
 	end
 	local f, h = geo.legs.LeftArm.j.c0.Position.Z, geo.legs.LeftLeg.j.c0.Position.Z
 	geo.front, geo.hind = f, h
@@ -83,28 +83,47 @@ local function aim(u)
 	return CFrame.Angles(0, 0, math.atan2(u.X, math.max(-u.Y, 0.05))) * CFrame.Angles(math.asin(math.clamp(-u.Z, -1, 1)), 0, 0)
 end
 
-local function lowOf(geo, name, cf)
+function V.scaleOf(geo, name, t)
+	local f = geo.scale
+	if not f or not geo.legs[name] then
+		return 1
+	end
+	return type(f) == "number" and f or f(name, t or 0)
+end
+
+function V.legPoint(geo, name, s, p)
+	if s == 1 then
+		return p
+	end
+	return Vector3.new(p.X, p.Y * s + geo.legs[name].pivotY * (1 - s), p.Z)
+end
+
+local function lowOf(geo, name, cf, t)
+	local s = V.scaleOf(geo, name, t)
 	local lo = math.huge
 	for _, c in geo.boxes[name] do
-		lo = math.min(lo, (cf * c).Y)
+		lo = math.min(lo, (cf * V.legPoint(geo, name, s, c)).Y)
 	end
 	return lo
 end
 V.lowOf = lowOf
 
-function V.solveLeg(geo, name, torsoCF, target, maxTuck, planted)
+function V.solveLeg(geo, name, torsoCF, target, maxTuck, planted, t)
 	local leg = geo.legs[name]
 	local j = leg.j
+	local sole = V.legPoint(geo, name, V.scaleOf(geo, name, t), leg.sole)
+	local s0 = j.r * (j.c1:Inverse() * sole)
+	local len = s0.Magnitude
 	local pivot = torsoCF * j.c0.Position
 	local goal = target
 	local pose, ext
 	for _ = 1, 3 do
 		local d = torsoCF.Rotation:Inverse() * (goal - pivot)
-		ext = d.Magnitude - leg.len
-		local q = aim(d.Unit) * aim(leg.s0.Unit):Inverse()
+		ext = d.Magnitude - len
+		local q = aim(d.Unit) * aim(s0.Unit):Inverse()
 		pose = CFrame.new(d.Unit * math.clamp(ext, -(maxTuck or 0.45), 0)) * q
 		local cf = torsoCF * j.c0 * (j.rinv * pose * j.r) * j.c1:Inverse()
-		local drop = (cf * leg.sole).Y - lowOf(geo, name, cf)
+		local drop = (cf * sole).Y - lowOf(geo, name, cf, t)
 		goal = Vector3.new(target.X, target.Y + drop, target.Z)
 	end
 	return pose, ext
@@ -164,7 +183,7 @@ local function need(geo, gait, auth, t)
 		for name in gait.legs do
 			local target, planted = V.foot(geo, gait, name, t)
 			if planted then
-				local _, ext = V.solveLeg(geo, name, torsoCF, target, 0.45, true)
+				local _, ext = V.solveLeg(geo, name, torsoCF, target, gait.needTuck or 0.45, true, t)
 				if FRONT[name] then
 					ef = math.max(ef, ext)
 				else
@@ -227,7 +246,7 @@ function V.gait(geo, clip, gait)
 		local torsoCF = torso * geo.rootR
 		for name in gait.legs do
 			local target, planted = V.foot(geo, gait, name, t)
-			poses[name] = (V.solveLeg(geo, name, torsoCF, target, gait.tuck or 0.45, planted))
+			poses[name] = (V.solveLeg(geo, name, torsoCF, target, gait.tuck or 0.45, planted, t))
 		end
 	end
 	for name in gait.legs do
@@ -283,13 +302,17 @@ function V.strip(geo, clip, times, opts)
 						rels[d] = p.CFrame:Inverse() * d.CFrame
 					end
 				end
+				local sc = V.scaleOf(geo, p.Name, t)
 				p.Anchored = true
 				p.CanCollide = false
-				p.CFrame = world[p.Name]
+				p.CFrame = world[p.Name] * CFrame.new(V.legPoint(geo, p.Name, sc, Vector3.zero))
+				p.Size = p.Size * Vector3.new(1, sc, 1)
 				for d, rel in rels do
 					d.Anchored = true
 					d.CanCollide = false
-					d.CFrame = world[p.Name] * rel
+					d.CFrame = world[p.Name] * CFrame.new(V.legPoint(geo, p.Name, sc, rel.Position)) * rel.Rotation
+					local ax = rel.Rotation:VectorToObjectSpace(Vector3.yAxis)
+					d.Size = d.Size * (Vector3.one + Vector3.new(math.abs(ax.X), math.abs(ax.Y), math.abs(ax.Z)) * (sc - 1))
 				end
 			elseif p:IsA("BasePart") then
 				p:Destroy()
@@ -325,8 +348,8 @@ function V.feet(geo, clip, gait, opts)
 		for _, name in V.LEGS do
 			local r = res[name] or {low = math.huge, high = -math.huge, slide = 0, planted = 0, frames = 0}
 			res[name] = r
-			local lo = lowOf(geo, name, world[name])
-			local soleW = rootCF * (world[name] * geo.legs[name].sole)
+			local lo = lowOf(geo, name, world[name], t)
+			local soleW = rootCF * (world[name] * V.legPoint(geo, name, V.scaleOf(geo, name, t), geo.legs[name].sole))
 			local on = lo < V.FLOOR + 0.03
 			r.frames += 1
 			if on then
