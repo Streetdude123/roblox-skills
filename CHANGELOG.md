@@ -7,7 +7,7 @@ needs.
 
 ## 2026-10-01 (later) — Always animate from a reference (user-authorized)
 
-- roblox-r6-animation: `SKILL.md` opens with "Always animate from a reference" (his rule of 2026-10-01: every clip, not only locomotion, starts from a reference he picks; the five steps from search to report); `references/project-style.md` logs the pass 2 requests and picks (camera-facing 4-way walk and run, look pitch, copied Toolbox locomotion played by a synced phase) and the traps found while solving the punch rework.
+- roblox-r6-animation: `SKILL.md` opens with "Always animate from a reference" (his rule of 2026-10-01: every clip, not only locomotion, starts from a reference he picks, from anime clips or the Toolbox; the five steps from search to report); `references/project-style.md` logs the pass 2 requests and picks (camera-facing 4-way walk and run, look pitch, copied Toolbox locomotion played by a synced phase) and the traps found while solving the punch rework.
 
 ## 2026-10-01 — Scripter Combat Trial: fist chain, parry, punch kit sounds (user-authorized)
 
