@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-01 (later) — Always animate from a reference (user-authorized)
+
+- roblox-r6-animation: `SKILL.md` opens with "Always animate from a reference" (his rule of 2026-10-01: every clip, not only locomotion, starts from a reference he picks; the five steps from search to report); `references/project-style.md` logs the pass 2 requests and picks (camera-facing 4-way walk and run, look pitch, copied Toolbox locomotion played by a synced phase) and the traps found while solving the punch rework.
+
 ## 2026-10-01 — Scripter Combat Trial: fist chain, parry, punch kit sounds (user-authorized)
 
 - roblox-r6-animation: `references/project-style.md` logs his sentences for the trial (phases, Deepwoken reactive parry, the enemy AI, the video at the end) and six lessons: the up Euler form for a fists-up R6 guard, aiming strikes against the forward lean, the hook from the torso sweep, a forearm bar that clears the face, a long telegraph on a 0.4 s server wind-up, and a client clip player that fades in on play age with additive flinches.

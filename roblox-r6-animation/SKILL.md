@@ -7,6 +7,16 @@ description: Create, refine, inspect, and export Roblox R6 character animation i
 
 The target is motion that a viewer cannot tell from a professional animator's hand-keyed work. Poses alone do not get there. Professional motion never stops everywhere at once: parts start, arrive and settle at different times, holds keep drifting, strikes carry speed through the contact, and feet stay where they stand. Keep the requested action and style. Do not add VFX, camera work, combat mechanics or a new locomotion system unless the task asks for them.
 
+## Always animate from a reference (Lepy, 2026-10-01)
+
+"from now on, please ALWAYS use references for when you're animating for accuracy". This covers every clip: idles, walks, runs, strafes, attacks, blocks, parries, hit reactions, stuns, emotes and stand moves. A clip invented from numbers alone is not done, even when every check passes.
+
+1. Find candidates before the first key: Creator Store packs from named animators (free Models; skip look-alike spam accounts, which carry backdoors), a video he sends, or a video found online (the frame grids in the built-in browser, [video-rotoscope.md](references/video-rotoscope.md)).
+2. Insert packs into `ServerStorage`, read and delete every script, keep only the KeyframeSequences, then decode and measure them (ReadClips, `Poser.check`, forward kinematics of the fists and feet).
+3. Show three to five candidates on his avatar in short in-place videos (or frame grids of a video), numbered, with the measured differences, and let him pick. Ask how to bridge any gap between the reference and the game (speed, timing, distance) before you build.
+4. Copy the pick: its timing, torso, head and arm channels, as authored. Change only what the game needs (event times, step-in, planted feet at the game speed) and state each change and its size.
+5. In the report, name the reference that each clip copies and list how the clip differs from it.
+
 ## What made earlier AI clips look dead (measured 2026-09-22)
 
 Lepy: "the animations that AI creates have too much still frames and aren't dynamic enough". The clips were measured against his professional references with `scripts/motion_check.js` (the numbers are in [motion-metrics.md](references/motion-metrics.md)):
