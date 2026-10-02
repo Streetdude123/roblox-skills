@@ -114,3 +114,11 @@ Fist combat picks, all ProSoundEffects (public, play on any account). Envelopes 
 | Clash ring (Anvil Hits Ringing Metal Clinks Blacksmith 1) | 9125361455 | 0.02 | 101 | volume 1.6 |
 
 One SoundGroup with the usual limiter and +3 dB high EQ; the final take peaked at -1.0 dBFS, RMS -21.9 dB, 0 clipped samples.
+
+## CC0 punch kit and public upload (Scripter Combat Trial, 2026-10-01)
+
+- A trial or a place file that someone else opens needs public audio: uploaded audio is private to the owner, so distribute each sound on the Creator Store (configure page, "Distribute on Creator Store", 100 shares per 30 days).
+- Upload to the account Lepy names: the dashboard creator switcher was on a group and the first upload landed there. Read the creator before every batch.
+- A description with a web address ("kenney.nl") gets moderated to "####" and the distribute switch stays disabled until the description is rewritten without the address.
+- The configure page loads its saved state about 4 s after the route change; clicking the switch earlier is undone by the load.
+- Level new sounds against the old ones by PlaybackLoudness in the same Sound template (same EQ), not by file RMS; a thin metallic ring scores far lower than a deep thump at the same perceived level.
