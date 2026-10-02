@@ -122,3 +122,5 @@ One SoundGroup with the usual limiter and +3 dB high EQ; the final take peaked a
 - A description with a web address ("kenney.nl") gets moderated to "####" and the distribute switch stays disabled until the description is rewritten without the address.
 - The configure page loads its saved state about 4 s after the route change; clicking the switch earlier is undone by the load.
 - Level new sounds against the old ones by PlaybackLoudness in the same Sound template (same EQ), not by file RMS; a thin metallic ring scores far lower than a deep thump at the same perceived level.
+- **PlaybackLoudness ignores Sound.Volume** (measured 2026-10-01: the same clip read 308 at Volume 0.25, 1 and 2). To match a new clip to an old one, new Volume = old Volume x old PlaybackLoudness peak / new PlaybackLoudness peak, both measured in the same template (same EQ, speed and start). The first pass of the trial sounds forgot the old Volume and came out with hits about 4 dB quiet and whooshes 2-5 dB loud.
+- A freshly uploaded audio can show "Enabling Store is unavailable at this time" for several minutes; retry later, it turned public after about 10 minutes.
