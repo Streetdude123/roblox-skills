@@ -125,6 +125,48 @@ def loft(name, rings, c=None, cap0=True, tip=None, cap1=False):
     return put(name, bm, c)
 
 
+def loft_open(name, rings, c=None):
+    bm = bmesh.new()
+    vr = [[bm.verts.new(p) for p in ring] for ring in rings]
+    m = len(rings[0])
+    for a, b in zip(vr, vr[1:]):
+        for j in range(m - 1):
+            bm.faces.new((a[j], a[j + 1], b[j + 1], b[j]))
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    return put(name, bm, c)
+
+
+def ring_sample(pts, n, closed=True):
+    p = [Vector((x, y)) for x, y in pts]
+    if closed:
+        p = p + [p[0]]
+    acc = [0.0]
+    for a, b in zip(p, p[1:]):
+        acc.append(acc[-1] + (b - a).length)
+    L = acc[-1]
+    out = []
+    cnt = n if closed else n - 1
+    k = 0
+    for i in range(n):
+        s = L * i / cnt
+        while k < len(acc) - 2 and acc[k + 1] < s:
+            k += 1
+        seg = acc[k + 1] - acc[k] or 1.0
+        t = (s - acc[k]) / seg
+        q = p[k].lerp(p[k + 1], t)
+        out.append((q.x, q.y))
+    return out
+
+
+def rr(w, d, r, n=40, start=0.0):
+    pts = rect(w, d, min(r, w / 2 - 1e-3, d / 2 - 1e-3), 6)
+    s = ring_sample(pts, 400)
+    angs = [math.atan2(y, x) for x, y in s]
+    i0 = min(range(len(s)), key=lambda i: abs(((angs[i] - start + math.pi) % (2 * math.pi)) - math.pi))
+    s = s[i0:] + s[:i0]
+    return ring_sample(s, n)
+
+
 def sweep(name, path, prof, c=None, loop=False, shut=True, scale=None, twist=None, up=None, caps=True, uvs="world", ups=None):
     fr = frames(path, up, ups)
     bm = bmesh.new()
@@ -368,7 +410,7 @@ def tri(ob):
     return mod(ob, "TRIANGULATE", quad_method="BEAUTY", ngon_method="BEAUTY", keep_custom_normals=True)
 
 
-def cut(ob, cutter, op="DIFFERENCE", solver="EXACT"):
+def cut(ob, cutter, op="DIFFERENCE", solver="MANIFOLD"):
     cutter.display_type = "WIRE"
     cutter.hide_render = True
     return mod(ob, "BOOLEAN", object=cutter, operation=op, solver=solver)
@@ -458,10 +500,18 @@ def dup(ob, name, c=None, keep_mods=True):
 
 def edit_mode(ob, fn):
     only([ob])
-    bpy.ops.object.mode_set(mode="EDIT")
-    bpy.ops.mesh.select_all(action="SELECT")
-    r = fn()
-    bpy.ops.object.mode_set(mode="OBJECT")
+    try:
+        bpy.ops.object.mode_set(mode="EDIT")
+        bpy.ops.mesh.select_all(action="SELECT")
+        r = fn()
+    except RuntimeError as e:
+        print("EDITFAIL %s type=%s mode=%s ctxobj=%s visible=%s faces=%d hide=%s err=%s" % (
+            ob.name, ob.type, bpy.context.mode, bpy.context.object.name if bpy.context.object else None,
+            ob.visible_get(), len(ob.data.polygons), ob.hide_get(), str(e).splitlines()[0]))
+        raise
+    finally:
+        if bpy.context.object and bpy.context.object.mode != "OBJECT":
+            bpy.ops.object.mode_set(mode="OBJECT")
     return r
 
 
@@ -674,7 +724,7 @@ def multi_edit(obs, fn):
     return r
 
 
-def pack_parts(parts, px=8, size=1024, low=0.2, thresh=0.03, rot="AXIS_ALIGNED", ground=None):
+def pack_parts(parts, px=8, size=1024, low=0.2, thresh=0.03, rot="AXIS_ALIGNED", ground=None, boost=None):
     from bpy_extras import bmesh_utils
     uniq = [p for p in parts if not p.get("copy_of")]
     vis = visibility_parts(parts, ground=ground)
@@ -689,13 +739,20 @@ def pack_parts(parts, px=8, size=1024, low=0.2, thresh=0.03, rot="AXIS_ALIGNED",
             uvl = bm.loops.layers.uv.active
             for isl in bmesh_utils.bmesh_linked_uv_islands(bm, uvl):
                 ar = sum(f.calc_area() for f in isl) or 1.0
+                k = None
                 if sum(v[f.index] * f.calc_area() for f in isl) / ar < thresh:
                     hidden += 1
+                    k = low
+                elif boost:
+                    for name, test, factor in boost:
+                        if p.name == name and any(test(f) for f in isl):
+                            k = factor
+                if k:
                     pts = [l[uvl].uv.copy() for f in isl for l in f.loops]
                     c = sum(pts, Vector((0, 0))) / len(pts)
                     for f in isl:
                         for l in f.loops:
-                            l[uvl].uv = c + (l[uvl].uv - c) * low
+                            l[uvl].uv = c + (l[uvl].uv - c) * k
     multi_edit(uniq, lambda: bpy.ops.uv.pack_islands(rotate=True, rotate_method=rot, scale=True, merge_overlap=False,
                                                      margin_method="FRACTION", margin=px / size, shape_method="CONCAVE"))
     for p in parts:
@@ -746,6 +803,9 @@ def mat(name, color=(0.8, 0.8, 0.8), rough=0.5, metal=0.0):
     b.inputs["Base Color"].default_value = (*color, 1)
     b.inputs["Roughness"].default_value = rough
     b.inputs["Metallic"].default_value = metal
+    m.diffuse_color = (*color, 1)
+    m.roughness = rough
+    m.metallic = metal
     return m
 
 
@@ -832,8 +892,10 @@ def unpx(name, a, path=None, data=False):
 
 
 def coverage(ob, size):
+    obs = ob if isinstance(ob, (list, tuple)) else [ob]
     im = fimage("coverage", size)
-    mask_bake(ob, lambda nt: (1.0, 1.0, 1.0), im, samples=1, margin=0)
+    for i, o in enumerate(obs):
+        mask_bake(o, lambda nt: (1.0, 1.0, 1.0), im, samples=1, margin=0, clear=(i == 0))
     return px(im)[..., 0] > 0.5
 
 
@@ -895,11 +957,11 @@ def node(nt, kind, **kw):
     return n
 
 
-def swap_bake(ob, mats, kind, im, samples, margin):
+def swap_bake(ob, mats, kind, im, samples, margin, clear=True):
     keep = list(ob.data.materials)
     for i, m in enumerate(mats):
         ob.data.materials[i] = m
-    bake(ob, kind, im, samples=samples, margin=margin)
+    bake(ob, kind, im, samples=samples, margin=margin, clear=clear)
     for i, k in enumerate(keep):
         ob.data.materials[i] = k
     for m in set(mats):
@@ -907,9 +969,9 @@ def swap_bake(ob, mats, kind, im, samples, margin):
     return im
 
 
-def mask_bake(ob, build, im, samples=8, margin=16):
+def mask_bake(ob, build, im, samples=8, margin=16, clear=True):
     m = emit_mat("MaskBake", build)
-    return swap_bake(ob, [m] * len(ob.data.materials), "EMIT", im, samples, margin)
+    return swap_bake(ob, [m] * len(ob.data.materials), "EMIT", im, samples, margin, clear)
 
 
 def bake_ids(ob, im, margin=16):

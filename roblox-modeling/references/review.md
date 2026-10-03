@@ -16,6 +16,8 @@ Every build script ends with a review sheet (3 x 2 cells of 480 px) and a JSON a
 
 Studio's EEVEE does not run on this machine; do not switch engines. Lights scale with distance squared (`6 * d * d` watts in `studio`); at 55 or 16 the clay rendered white.
 
+A polished metal renders black in the studio rig, because it mirrors the dark background. The samurai v1 katana was black, but a sample of its maps (colour 0.61, metal 1, roughness 0.13, flat normal) was correct. Sample the maps at the part's UVs before you change them. For a blade, use roughness 0.2-0.4 and `rbx.studio(..., refl=1.4)`, and judge metal in the game's lighting.
+
 ## Audit thresholds (`rbx.audit`)
 
 - `tris` inside the class budget; `high_tris` reported.

@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-03 (end of night) — Modeling: heavy references, faceless characters (user-authorized)
+
+- roblox-modeling: `SKILL.md` rules 6 and 7 and `references/taste.md` log "The clothing looks horrible and the proportions are terrible, keep it faceless" and "Please use references, just like how you animate use heavy reference" (after the samurai v1): no blockout before the user picks a reference from a numbered sheet, match the pick closely, faceless characters unless asked. Lessons from the samurai work: `rbx.cut` defaults to the MANIFOLD solver (EXACT returned an empty mesh with a joined multi-piece cutter), `pack_parts(boost=...)` for hero islands, painted graphics as signed distances with a one-pixel ramp, tapered sweeps need evenly resampled paths, polished metal renders black in the dark studio rig, `rbx.mat` sets the viewport colour for Workbench colour renders, new helpers `loft_open`, `ring_sample`, `rr`, `coverage` and `edit_mode` diagnostics.
+
 ## 2026-10-03 (late night) — New skill: roblox-modeling (user-authorized)
 
 - roblox-modeling: new skill. Studied the three assigned videos (CG Cookie's six modeling principles, FlippedNormals' game modeling workflow, Digitalist's modeling concepts) and researched the Roblox Creator Docs (mesh, texture, SurfaceAppearance, export, Importer and its 25:7 stud-per-meter change, MeshPart fidelity, collision, performance, rigid accessory and body budgets), the Polycount wiki on face weighted normals and texture baking, the Blender 5.2 manual and PBR value ranges. Built and reviewed four practice models in Blender: a mid-poly crate, a high-to-low longsword, a terrain rock formation and an ornate chest with controlled imperfection, then previewed them inside Studio through EditableMesh and SurfaceAppearance (sizes matched Blender exactly). `references/taste.md` logs the user's modeling feedback: professional level, intricate detail on items, calm terrain, not too perfect, and a style scan of the game before modeling.

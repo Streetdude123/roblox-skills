@@ -34,7 +34,7 @@ Supports for a subdivision high poly: a subdivided cube becomes a sphere unless 
 
 ## Booleans
 
-- Use the EXACT solver for clean results, MANIFOLD for speed on large meshes.
+- `rbx.cut` uses the MANIFOLD solver by default: fast, and correct with joined multi-piece cutters. EXACT returned an empty mesh for a guard cut by four holes and two crescents joined into one cutter (Blender 5.2); use EXACT only with a single connected cutter, and check the face count after every cut.
 - A boolean adds the cutter's empty material slot to the result; call `rbx.tidy()`.
 - On a high poly, cut chips and dents last, after bevel and subdivision; a bevel after a chip cut tore the chest planks.
 - Join many small cutters into one object before cutting.
@@ -43,6 +43,7 @@ Supports for a subdivision high poly: a subdivided cube becomes a sphere unless 
 
 - `prism(outline)` for plates, guards, brackets, keyhole plates; `offset2d` for frames and engraved beads; `fillet` for rounded paths and outlines.
 - `sweep(path, profile)` for straps, bands, handles, wire wraps (`ups=` radial vectors keep a wrap flat on a grip), with `resample` for the high.
+  - `scale=` and `twist=` take the ring index, not the arc length. `fillet` puts many points in each corner, so a tapered sweep on a fillet path tapers in the corners. The samurai bangs became thin spikes this way, and the low tapered differently from the evenly resampled high. Resample the low path evenly too (`rbx.resample(path, 0.07)`) before a tapered sweep.
 - `lathe(profile, n)` for knobs, feet, pommels, gems; `extrude_x` for arch-shaped lids.
 - `leaf` and `trefoil` for ornament ends; `star` for reliefs; `dome` for rivets and beads; `torus` for rings.
 - `orient(at, z_to, x_hint)` places a flat part on any face; `place(ob, matrix)` bakes the transform into the mesh so copies stay stackable.

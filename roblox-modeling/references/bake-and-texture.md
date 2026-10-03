@@ -33,6 +33,13 @@ Common noise: `n1 = fbm(P, 1.2, 4)` large, `n2 = fbm(P, 6)` medium, `n3 = fbm(P,
 
 Finish: multiply colour by a soft AO (0.72 + 0.28 AO for dielectrics, 0.85 + 0.15 AO for metals); clamp roughness to 0.04-1; threshold metalness to 0 or 1.
 
+## Painted graphics (eyes, crests, brows, emblems)
+
+Paint each shape as a signed distance `d` in studs (negative inside) from the position map, and convert it to coverage with a one-pixel ramp: `cover(d) = clip(0.5 - d / w, 0, 1)`, with `w` = one texel in studs (0.0035 at 300 px/stud). Then blend: `col = col * (1 - m) + C(...) * m`. Boolean masks (`col[mask] = ...`) gave stair-stepped samurai eyes in v1.
+- Shapes: circle `hypot(u, v) - r`; ellipse `(hypot(u / a, v / b) - 1) * min(a, b)`; a stroke along a curve `abs(v - curve(u)) - half_width`; a region between two curves `max(v - upper(u), lower(u) - v)`; cut any shape to a span with `max(d, u - u1, u0 - u)`.
+- Clip inner shapes by the outer coverage (`iris = cover(d_iris) * opening`), so the lid line hides the top of the iris.
+- Anime eyes that read stern, not cute: a narrow almond (height about 0.25 of the width), the outer corner higher, a thick upper lash line that gets thicker toward the outer corner and ends in a wing, a thin lower line on the outer half only, a crease line above, the iris top hidden under the lid, two highlights, brows thick at the inner end and slanted down toward the nose.
+
 ## PBR value ranges
 
 - Non-metal albedo: sRGB 50 (charcoal) to 240 (fresh snow); keep most surfaces 60-200.

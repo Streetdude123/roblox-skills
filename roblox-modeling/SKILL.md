@@ -16,13 +16,15 @@ He set these rules on 2026-10-03 while this skill was built. They override any d
 3. Terrain (rocks, cliffs, ground pieces): dial the intricacy down - clean big forms, few strong breaks, quiet texture.
 4. "Perfect but not too perfect" - every model gets a controlled imperfection pass (see [imperfection.md](references/imperfection.md)).
 5. "Scan the game before you make models" - run the style scan and write a style brief before the first vertex (see [style-scan.md](references/style-scan.md)).
+6. "Please use references, just like how you animate use heavy reference" - no blockout before he picks a reference. Show 6-8 numbered candidates on one sheet, he picks, then match the pick closely: silhouette, proportions, layer order, piece shapes, colour blocking. Make the design original (no copy of a named character), but take every construction decision from the pick. The samurai v1, designed without a picked reference, got "The clothing looks horrible and the proportions are terrible".
+7. Characters stay faceless unless he asks for a face (samurai, 2026-10-03: "keep it faceless").
 
 Log every sentence of his feedback in [taste.md](references/taste.md) and push the skill folder.
 
 ## Start with the actual task
 
 1. **Target game.** Find which place the model is for. Run `scripts/studio/StyleScan.lua` (read only) and take player-camera captures. Write the style brief: stylized or realistic, textured or colour-driven, palette, saturation, edge treatment, triangle density, lighting. A model that ignores the brief is wrong even when it is well made.
-2. **Reference.** Collect references before modeling: real objects for proportion and construction, the game's own assets for style, his picks when he gives them. Name the reference in the report.
+2. **Reference (heavy, picked by him).** Collect candidates before modeling: finished Roblox models of the same kind (ArtStation, Sketchfab, X posts of Roblox artists), the game's own assets for style, real objects for construction. Put 6-8 on one numbered sheet in the built-in browser, let him pick, then keep the pick open during every pass and compare the blockout and each render with it side by side. Name the reference in the report.
 3. **Class and budget.** Classify the asset and take its budget from the table below. Ask about anything the request leaves open that changes the result (size, style, budget, use as tool or prop).
 4. **Scale and frame.** 1 Blender unit = 1 stud. Front faces Blender -Y, Z is up. An R6 character is 5 studs tall (legs 2, torso 2, head 1); put `rbx.dummy()` beside the model in every review.
 5. **Read the references** for the method: [lesson-videos.md](references/lesson-videos.md) (fundamentals Lepy assigned), [roblox-specs.md](references/roblox-specs.md), and the reference for the asset class.
@@ -77,6 +79,7 @@ Run a build: `& "C:\Program Files\Blender Foundation\Blender 5.2\blender.exe" --
 - Never render through the Blender MCP socket (deadlock). Build in `blender.exe --background`.
 - Smart UV Project splits every bevel strip into its own island (46% UV use on the crate). Chart seams fixed it.
 - A boolean adds an empty material slot from the cutter; `tidy()` after every join and every boolean apply.
+- In Blender 5.2 the EXACT solver returned an EMPTY mesh when the cutter was several separate pieces joined into one object (the katana guard vanished); MANIFOLD (now the `rbx.cut` default) and FLOAT cut it correctly. If a part has 0 faces after a cut, suspect this first.
 - Removing an object can leave a stale view-layer entry; `only()` refreshes the layer first.
 - Stacked UV copies must be duplicates of one master moved by a rigid transform; separately built copies can order loops differently (the chest feet broke this way). `stack_uvs` checks the topology.
 - Bake margin wider than half the island spacing lets one island's padding overwrite another's gutter (red gem fringe on brass brackets). Bake IDs with margin 0, normals and AO with half the spacing, then `dilate` from the coverage mask.
