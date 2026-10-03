@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-03 (night) — New skill: roblox-ui-design (user-authorized)
+
+- roblox-ui-design: new skill. Studied the five assigned videos (Jesse Showalter's C.R.A.P., Kole Jain's UI/UX concepts, Riot's UI design episode, BiteMe Games with Rive, Design Doc's inventory UX) and researched the Roblox UI docs (styling, UIShadow, UIStroke and UIGradient updates, flex, insets, ViewportDisplaySize, PreferredInput, accessibility settings), staff guidance on scaling, Refactoring UI, the Laws of UX, Material and Apple motion, Microsoft's TV guidelines and game HUD design. Device numbers come from `StudioDeviceSimulatorService` presets and the PlayerModule touch-control source. Tools: `Build.lua`, `Ui.lua`, `Fit.lua`, `Preview.lua`, `Devices.lua`, `Audit.lua`, `Install.lua`, `serve.js`, `icons.html`, `capture/` and `examples/PixelLab.lua`, proven on an Undertale-style sample captured on phone, tablet, desktop and Xbox presets (two fix rounds, audits clean, first open 0.3-7.2 ms). `references/taste.md` collects every UI sentence of the user's feedback since 2026-08.
+
 ## 2026-10-03 (late) — Skinned Bone rigs in Blender (user-authorized)
 
 - roblox-r6-animation: new `references/skinned-bone-rigs.md` (why the first Chara pass looked buggy: the collarbone posed as the upper arm, unbent elbows, a knife turning in the hand, a review camera in front; the IK pose solver with blade-driven hands, chest-frame channels, hair and vine springs, metrics on 17 joints, an 18 degree player camera and preview colours) and `scripts/blender/` (`pose3.py`, `rtools.py`, `clip_tools.py`, `video_render.py`, `grid.ps1` and the Chara clip specs as worked examples). `references/project-style.md` logs "Make sure you actually uss real references from undertale or something" and "These animations look super buggy, unnatural, and just isn't as cool as i expected, fix it".

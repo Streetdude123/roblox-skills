@@ -135,6 +135,43 @@ Package layout:
 Needs `pip install -r roblox-sfx-finder/requirements.txt`. The scripts are not
 covered by the test suite.
 
+### `roblox-ui-design`
+
+Designs and builds professional game UI - HUDs, menus, shops, inventories,
+settings, popups, toasts and reward screens - that work on phones, tablets,
+desktop, console/TV and VR, built as real instance trees in the game's own
+style. It carries the lessons of five assigned UI videos (C.R.A.P., every UI/UX
+concept, Riot's UI design episode, game UI as part of the game, inventory UX),
+the design system (hierarchy, spacing, type, colour, depth and motion tokens),
+the device rules measured from Roblox's own device presets and touch-control
+source (thumbstick and jump zones, top bar, safe areas, TV-safe margins,
+gamepad selection, VR panel), the style families with a list of what reads as
+AI-made, and the user's UI taste log. The tools were proven on a full
+Undertale-style sample (HUD, shop with confirm, settings, round result) captured
+on seven simulated devices.
+
+Package layout:
+
+- `SKILL.md` - session start, the user's rules, the workflow, the principles,
+  the numbers, the device rules, the sizing method, the engine traps and the
+  definition of done.
+- `references/` - `lesson-videos.md`, `principles.md`, `devices.md`,
+  `design-tokens.md`, `motion.md`, `components.md`, `game-ui.md`, `styles.md`,
+  `roblox-ui-engine.md`, `verification.md`, `taste.md`, `sources.md`.
+- `templates/ui-brief.md` - the brief to fill before building.
+- `scripts/` - `Build.lua` (Edit-mode builder with theme tokens, HSL ramps and
+  contrast), `Ui.lua` (runtime press/hover/ink states, open/close, toasts,
+  counters, bar trails, key hints per input), `Fit.lua` (one root UIScale per
+  device class), `Preview.lua` and `Devices.lua` (simulated-device previews
+  through `StudioDeviceSimulatorService`), `Audit.lua` (off-screen, thumb zones,
+  TV-safe, target and text size, contrast, overflow, nested buttons, overlaps,
+  consistency sets), `Install.lua` and `serve.js` (push sources into a place),
+  `icons.html` (SVG icon sets to PNG), `capture/` (window grab, letterbox trim,
+  contact sheets, pixel icons) and `examples/PixelLab.lua` (the verified sample).
+
+The Lua scripts run inside Roblox Studio through an execute-Luau bridge and the
+PowerShell tools on Windows; they are not covered by the Python test suite.
+
 ## Using these skills in a new chat
 
 1. Make the relevant skill folder and project instructions available to the agent.

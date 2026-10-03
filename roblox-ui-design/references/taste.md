@@ -1,0 +1,92 @@
+# Lepy's UI taste log
+
+Every sentence Lepy has said about UI, with the date, the place and what changed. Read this before
+every UI task. Add every new sentence here (date, place, quote, what was done) and push the skill
+folder to `Streetdude123/roblox-skills`.
+
+## Standing rules (from the log below)
+
+1. **Simple and flat by default.** No rounded pills, no dark translucent tracks, no gradients, no
+   glows unless the game's authored style has them. When "simple" is unclear, show 2-3 text mock-ups
+   and let him pick.
+2. **Match the game's own style.** Capture the authored panels first; build new panels by cloning and
+   restyling an authored one (outline colour, gradients, font, strokes, close button). Each shop or
+   panel gets its own palette inside the same structure.
+3. **Never overwrite the artist's labels or add visible elements into authored panels.** Write a label
+   only when its authored text is a placeholder for exactly that value. Report other states through
+   the existing toast. Invisible fixes (Active, hit areas) are fine.
+4. **UI is a real instance tree.** ScreenGuis, frames and templates exist in the place (StarterGui or
+   ReplicatedStorage); code clones, positions and drives them; no `Instance.new` UI at run time.
+5. **HUD pieces live in the existing HUD stack**, load with it, sit below what they must not cover; no
+   separate ScreenGui placed by code that drifts on phones; no floating buttons beside the HUD column.
+6. **Nothing covers information labels** (high ZIndex / AlwaysOnTop); no render defects (a 1 px seam is
+   a fail).
+7. **Test on a phone-sized view** (896 x 414 at least, and the device presets in `devices.md`) as well as
+   desktop. Scale padding inside scale grids.
+8. **Readable over pretty when he asks:** "doesn't matter how it looks" means label it clearly first.
+   Required indicators from a brief stay even in the simplest pass.
+9. **Code:** no comments, short natural names, modular, few defensive guards, ask before assuming, do
+   only what he asked.
+
+## The log
+
+**2026-08-26, Sword Arena** - "you modified the UI and added (SOON) to the UI, don't do that, please
+change that and revert UI back to what it used to be, it should still be functional."
+-> Reverted every relabel ("SOON", "OWNED", "SHOP", "COMING SOON") and removed the added PriceTag
+labels and UIStroke borders. Rule 3.
+
+**2026-09-10, Ashes of Aboshima (menu)** - the authored menu was Jura, black on white, square corners,
+1 px strokes, panels at 0.9 transparency. The new stats panel was cloned from the viewport panel so its
+styling is the artist's; no colour, radius or gradient was invented.
+
+**2026-09-12, Ashes of Aboshima (settings)** - he asked for shadows, blood and volume sliders "built as a
+real instance tree" and matching the rest of the UI. -> White fills, 1 px black UIStroke, no UICorner,
+Jura, rows named after their config keys.
+
+**2026-09-14, Ashes of Aboshima (platforms)** - "a translucent black controls list on the left". ->
+A 232-wide black panel at 0.7 transparency at the left middle, a Jura "CONTROLS" title, a hairline,
+rows of action (left) and key (right, gold, bold), pad glyphs on a gamepad, hidden on touch.
+
+**2026-09-16, Wacky Pets** - pick and fill prompts must be **BillboardGuis, not ScreenGuis** (world
+buttons over the crop and the well, in the egg-OPEN style).
+
+**2026-09-23, Grimoire / all projects** - "All UI and VFX must be built as a REAL INSTANCE TREE". Rule 4.
+Also "Never try to assume anything", "Do NOT do anything I didn't ask", no comments, non-AI names.
+
+**2026-09-24, Grimoire Battlegrounds (water mage)** - "Make the gui super bareboens and insanely
+simple". -> The kit selector became a list of plain buttons at the top right plus one text line.
+
+**2026-09-27, Wacky Pets** - "Make suee your GUI matches the style of the game"; "I don't like this
+line, fix it" and "the line is here too???" (a 1 px seam in a four-frame dim overlay -> one hole frame
+with a huge UIStroke); "Do you really gotta position the pet index there?" (a floating button beside
+the HUD column -> moved into the Pets panel's side strip); "maka sure the z index for the pet stats is
+high and none of it is covered please".
+
+**2026-09-28, Wacky Pets (phone screenshot)** - "fix this issue on mobile by making the UI behave like
+the coins UI and loading with it too instead of loading after, it's z index needs to be lower since it
+covers some of the UI". -> The Next Goal bar and the Gifts button moved into the coin bar stack
+(`CurrencyFrames` UIListLayout). Rule 5.
+Then "is it alright if you change how the seedshop looks actually with the same color palette but
+looks better and suits the game style more too? Do the same with the sell shop" (he picked the
+Pets/Index card grid), and "The sell shop shouldn't look like the seed shop in terms of color palette
+okay?" (he picked gold/yellow). Rule 2.
+
+**2026-09-30, Vesna (stamina/hunger/thirst bars)** - "Make the gui simpler WAY simpler super simple
+okay? It looks so AI right now so just make it super simple". The bars were 240 x 6 fills with
+`UICorner(1,0)` on a 45% black track. He picked flat square bars with no dark track and no rounded
+corners, colours kept (thirst blue, hunger orange, stamina white). Rule 1.
+
+**2026-10-01, Scripter Combat Trial HUD** - "super duper simple" -> two thin flat lines; "make it
+easier tontell which gui is which, doesn't matter how it looks" -> small coloured text labels beside
+each line; "Make the bars thicker longer" -> 360 x 8; "make the bars actually match the font" -> the
+same 1 px black outline as the text stroke (he picked only that: no track, no white fills). The parry
+status became a centred 60 x 20 rectangle above the bars with its label above it. Final HUD: Oswald
+Medium 12 caps off-white with a 1 px black stroke; colours health 255,140,30, stamina 255,215,50,
+posture 185,145,20, parry grey -> lit 255,215,50.
+
+**2026-10-03, this skill** - "You will be creating a roblox ui design skill ... Your own UI must be at a
+professional advanced level, please research as much as possible for me take your time on this." Then
+"Make sure you study correct UI for all devices too". Picks: **send the captures** with the report (for
+UI work he wants to see the screens). Asked where to test while Studio held 5.2 GB with 0.65 GB free,
+he answered "Make UI in the place itself" (the open Undertale Team Create place). -> The samples were
+built in that place's own style as disabled `Lab_*` ScreenGuis; the authored UI was not touched.

@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>icons</title></head>
+<body style="background:#222;color:#eee;font:12px monospace">
+<div id="log"></div>
+<div id="row"></div>
+<script>
+const q = new URLSearchParams(location.search);
+const set = q.get('set') || 'phosphor-fill';
+const size = parseInt(q.get('size') || '128', 10);
+const pad = parseInt(q.get('pad') || '4', 10);
+const names = (q.get('names') || '').split(',').filter(Boolean);
+const log = t => { document.getElementById('log').innerHTML += t + '<br>'; };
+const url = n => {
+  if (set === 'phosphor-fill') return `https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2/assets/fill/${n}-fill.svg`;
+  if (set === 'phosphor-bold') return `https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2/assets/bold/${n}-bold.svg`;
+  if (set === 'phosphor') return `https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2/assets/regular/${n}.svg`;
+  if (set === 'lucide') return `https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/${n}.svg`;
+  if (set === 'tabler-filled') return `https://cdn.jsdelivr.net/npm/@tabler/icons@latest/icons/filled/${n}.svg`;
+  return `https://cdn.jsdelivr.net/npm/@tabler/icons@latest/icons/outline/${n}.svg`;
+};
+async function one(n) {
+  const r = await fetch(url(n));
+  if (!r.ok) { log('MISS ' + n + ' ' + r.status); return; }
+  let svg = await r.text();
+  svg = svg.replace(/currentColor/g, '#FFFFFF').replace(/<svg /, `<svg width="${size}" height="${size}" `);
+  if (set === 'lucide' || set === 'tabler') svg = svg.replace(/stroke-width="[0-9.]+"/g, 'stroke-width="' + (q.get('stroke') || '2.25') + '"');
+  const img = new Image();
+  await new Promise((ok, bad) => { img.onload = ok; img.onerror = bad; img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg))); });
+  const c = document.createElement('canvas');
+  c.width = size; c.height = size;
+  const g = c.getContext('2d');
+  g.clearRect(0, 0, size, size);
+  g.drawImage(img, pad, pad, size - pad * 2, size - pad * 2);
+  document.getElementById('row').appendChild(c);
+  const out = await fetch('/put?name=' + encodeURIComponent((q.get('prefix') || '') + n + '.png'), { method: 'POST', body: c.toDataURL('image/png') });
+  log('OK ' + n + ' ' + (await out.text()));
+}
+(async () => {
+  for (const n of names) { try { await one(n); } catch (e) { log('ERR ' + n + ' ' + e); } }
+  log('DONE ' + names.length);
+  document.title = 'done';
+})();
+</script>
+</body>
+</html>
