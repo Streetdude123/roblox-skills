@@ -172,6 +172,42 @@ Package layout:
 The Lua scripts run inside Roblox Studio through an execute-Luau bridge and the
 PowerShell tools on Windows; they are not covered by the Python test suite.
 
+### `roblox-modeling`
+
+Models, textures and exports 3D assets for Roblox in Blender 5.2, driven from
+Python in background mode - props, weapons, items, accessories, character
+parts, terrain pieces and VFX meshes. It carries the lessons of three assigned
+modeling videos (six modeling principles, the game asset workflow, every
+modeling concept), the Roblox mesh, texture, importer and avatar numbers, and
+the user's modeling taste: intricate creative detail on items, calm terrain,
+controlled imperfection, and a style scan of the target game before any model.
+The methods were proven on four practice builds reviewed over several rounds:
+a mid-poly crate (3,900 triangles), a high-to-low longsword (41,810 baked into
+938), a terrain rock formation (2,158) and an ornate chest with imperfection
+(463k baked into 5,304), all previewed in Studio at the exact Blender size.
+
+Package layout:
+
+- `SKILL.md` - the user's rules, the start-of-task steps, budgets per asset
+  class, the method, the definition of done, the tools and the measured traps.
+- `references/` - `lesson-videos.md`, `roblox-specs.md`, `hard-surface.md`,
+  `bake-and-texture.md`, `uv-and-texel.md`, `organic-and-terrain.md`,
+  `imperfection.md`, `style-scan.md`, `review.md`, `studio-preview.md`,
+  `taste.md`, and `sheets/` (the final review sheet of each practice build).
+- `scripts/blender/rbx.py` - the modeling library (bmesh builders, sweeps and
+  lathes, ornament outlines, modifier stacks, chart seams, hidden-face UV
+  shrink, stacked copies, multi-object packing, per-part and mask bakes, numpy
+  noise, Voronoi and vertex sculpting, curvature, coverage dilation, audits,
+  review renders, FBX and mesh JSON export); `preview_export.py`; and
+  `examples/` (`crate.py`, `sword.py`, `rock.py`, `chest.py`).
+- `scripts/studio/` - `StyleScan.lua` (read-only style scan of a place),
+  `PreviewMesh.lua` (EditableMesh + SurfaceAppearance preview under the local
+  camera) and `serve_preview.js` (chunked local file server).
+
+The Blender scripts need Blender 5.2 and run with `blender --background`; the
+Lua scripts run inside Roblox Studio through an execute-Luau bridge. None of
+them are covered by the Python test suite.
+
 ## Using these skills in a new chat
 
 1. Make the relevant skill folder and project instructions available to the agent.
