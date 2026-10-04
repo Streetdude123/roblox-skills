@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-04 (late) — Noob King clips: planted steps, arm crosses, live holds (user-authorized)
+
+- roblox-r6-animation: `references/r6-mechanics.md` adds the arm-cross shoulder gap and its post-pass fix, scaled rigs (offsets times `Torso.Size.Y / 2`), stance changes as foot target tracks with steps, and the rule that a forward lunge step needs the torso turned toward the stepping hip. `references/principles.md` adds the numbers for a long dramatic hold and periodic noise for looped trembles. `references/project-style.md` logs the King clips shown before publishing.
+- roblox-vfx-craft: `references/taste.md` logs the Noob King scene rework request, the audio requirement and the side-view rift fix.
+
 ## 2026-10-04 (night) — Forest cutscenes: radio dialogue, rift portal, camera clearance (user-authorized)
 
 - roblox-vfx-craft: `references/taste.md` logs the cutscene requests and picks (portal with the homeland seen through it, letterbox + CRT, freeze during scenes), the video request, the thinner rift frame, "super cinematic", the dialogue under the letterbox bar and the camera collisions, with the clearance check method (oriented-box distance, terrain rays, line of sight) and the reveal path numbers.

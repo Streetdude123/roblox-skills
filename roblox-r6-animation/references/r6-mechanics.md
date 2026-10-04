@@ -7,6 +7,10 @@ Use the inspected rig, not assumed stock offsets. The equations below derive the
 - Rig and pose hierarchy
 - Transform convention
 - Direction and rotation checks
+- Joint gaps (legs and arm crosses)
+- Scaled rigs
+- Lean from the waist
+- Planted feet on rigid legs (stance changes as steps)
 - World-space contacts
 - Loops and world travel
 
@@ -74,6 +78,12 @@ A short-arc rotation difference between matrices R and S is `acos(clamp((trace(t
 
 A pose translation `p` on a limb moves the whole part away from its joint. The R6 hip C0 sits at the torso's bottom corner `(+-1, -1, 0)` and C1 at the leg's top corner `(+-0.5, 1, 0)`, so with `p = 0` those two points coincide whatever the rotation, and any `p` separates them by `|p|`. Daylight shows when the leg goes below or sideways: measure it in torso space as `c = torso.CFrame:PointToObjectSpace((leg.CFrame * CFrame.new(+-0.5, 1, 0)).Position)`, `below = max(0, -1 - c.Y)`, `slide = sqrt((c.X -+ 1)^2 + c.Z^2)`. Keep both under 0.12. A positive `p.Y` pushes the leg up inside the torso and is hidden. To move a foot without a gap, swing the hip: a forward offset `z` becomes `lift += deg(asin(-z / 2))`, a sideways offset `x` becomes `side += deg(asin(x / 2))`, and the foot rises `2 (1 - cos)` (0.05 at 13 degrees), which a torso drop of the same amount plants again. `Clips.lua` applies this as `attachLegs` to every authored DIO clip after the keys are written, so authors may still think in foot offsets. Measured on 2026-09-22 after a circled hip gap: the seven DIO clips went from 0.30 to 0.65 of daylight to 0.00 to 0.12.
 
+An arm has the same trap in a cross. The shoulder pivot sits on the arm's inner face half a stud below its top, so an arm that points across the body (a two-handed slash ending on the far side) swings its top face outward off the torso. Measured on the Noob King release (2026-10-04): 0.215 of daylight during the recovery from the cross, not on the key itself, because the spline holds the crossed direction while the slide key already fades. Fix it as a post pass after every other change: put the arm's top-face points (3 x 3 grid) into torso space with `CFrame.new(C0.p) * P * C0.rotation * C1:Inverse()`, find the point nearest the torso box, and slide the arm pose toward the box by the excess over 0.05 (`stick` in the King clip source). All seven King clips then measured 0.05 or less.
+
+## Scaled rigs
+
+`Feet.lua` and the numbers above assume the stock 1 x 2 x 1 limbs. For a scaled R6 rig (the Noob King is 1.109) scale every offset by `S = Torso.Size.Y / 2`: the hip `(+-S, -S, 0)`, the leg vector `(-+0.5 S, -2 S, 0)`, the sole corners `+-0.5 S`, the floor `-3 S`. Read the scale from the rig, never type 1.109.
+
 ## Lean from the waist
 
 The torso turns about its own centre, so a pitch or a roll also moves the hips: a 15 degree forward lean swings the hip centre 0.26 back and a roll swings it sideways. A real body bends at the hips. Add the offset that keeps the hip centre where the key's translation puts it: for a pose rotation R, `p += (0, -1, 0) - R * (0, -1, 0)`, which for lift l and side s is `(-sin s cos l, -1 + cos s cos l, sin l)` (twist does not move the hip centre). `waist` and the torso key helper `T` in `scripts/ExampleClips.lua` do this. Without it the feet of the example cross slid and the lead leg needed 0.47 more reach.
@@ -85,6 +95,8 @@ The torso turns about its own centre, so a pitch or a roll also moves the hips: 
 Measure the floor contact at the LOWEST SOLE CORNER, not the sole centre. The corner of a swung rigid leg sits `2 cos a + 0.5 sin a` below the hip for a combined swing `a = acos(cos lift * cos side)`: a 30 degree swing lifts the leg centre 0.27 but the heel corner only 0.02, a 14 degree swing puts the corner 0.06 BELOW the rest floor, and 45 degrees lifts it 0.23. So a walk needs no pushed-down back leg: solve the torso height from the stance foot's corner (`depth - 2`, with the torso lean added to the leg angle because the legs hang from the torso) and the body bobs by geometry, highest just after passing and lowest at contact (0.10 on Walk2's angles). `legDepth` in `scripts/Clips.lua`.
 
 For a planted foot under a torso that twists, leans and rolls (a copied stand hit), aim each rigid leg from its hip at a floor target instead of translating it: the target turns with the torso's heading (the feet pivot with the hips; with fixed targets a 124 degree whip put the targets out of reach and dropped the torso 2.4 studs), the torso drops only as far as the farther target needs, a too-close target is pushed out along the floor, and two passes fix the sole: aim the centre, measure the real lowest corner (twist and roll change which corner it is), aim again with the error removed. `legIK` / `dropFor` in `scripts/Clips.lua`; measured on the DIO chain: 0.00 hip gap, planted corners -0.05..+0.05, a 0.22 to 0.73 crouch.
+
+A keyed stance change slides the feet: the first Noob King clips keyed the legs as hip angles and slid 1.1 to 4.6 studs per clip while "planted". Give each foot a target track instead: planted positions in root space and steps between them (smoothstep across the floor, `sin(pi u) * height` up, 0.2 to 0.32 studs for a heavy boss), one foot moving at a time, then solve both legs every frame and drop the torso only as far as the farther leg needs (over 0.08 of hip gap). Slides fell to 0.07 or less. The twist must agree with the step: a left foot that lunges forward needs the torso turned right so the left hip comes forward; with the torso turned left the left hip went back and up, the drop needed to reach sank the body and pushed the back leg 1.31 studs up into the torso. Check the leg slide-up in the baked sequence (the hip pose Position.Y); over about 0.6 the leg reads short.
 
 Measure a live walk with a ray under each lowest corner every frame. A floor height read once at the start of a walk sample reported a 1.0 stud float that was the SpawnLocation under the path.
 

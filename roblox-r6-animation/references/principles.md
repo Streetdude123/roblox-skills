@@ -86,6 +86,7 @@ A perfectly static pose looks lifeless within a few frames. A moving hold keeps 
 - The head follows the same momentum as the body; an unmotivated head move breaks the weight.
 - Different parts settle at different times: the hips settle first, then the arms, the head last.
 - `life` adds slow noise to the upper body so a long hold is never frozen; it does not replace a drift that has a direction.
+- A long dramatic hold (the Noob King's 3 s sword hold, 2026-10-04) still needs motion over 12 deg/s somewhere. A slow drift plus a 0.4 degree tremble measured 35% still with a 1.4 s still run; a 1 degree tremble growing to 2.4 and a 1.3 degree breath every 1.6 s cut it to 18% and 0.13 s. Ramp a tremble in and out over 0.1 to 0.3 s, or it pops when it switches. In a looped hold, sample the noise on a circle (`math.noise(cos(a) r, sin(a) r, seed)` with `a = 2 pi t / length`), or it jumps at the loop seam.
 
 ## Follow-through and springs
 
