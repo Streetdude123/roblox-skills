@@ -196,6 +196,7 @@ his Undertale place on seven simulated devices.
 - `scripts/capture/` - `grab.ps1`, `crop.ps1`, `sheet.ps1`, `pixicons.ps1`
 - `scripts/examples/PixelLab.lua` - the full verified sample (Undertale-style HUD, shop + confirm,
   settings, result) built with `Build.lua`
+- `scripts/examples/ShopPhoneLayout.lua` - a `Layout` module for an authored scale-built panel (the Untitled TD Unit Shop, 2026-10-04): on Phone it stores the authored values once, places every key element in offset pixels below the top bar inset, sets each UIAspectRatioConstraint to the new box ratio, and restores everything for other kinds (0 differences on restore). The client calls it with `Fit.kind` on open and on `AbsoluteSize` change and hides touch controls while the modal is open. Measured: buttons 12 px -> 44 px, slots 17 -> 48 px, close 26 -> 52 x 44 px on a Galaxy A16; layout 1.56 ms.
 
 ## Pushing the skill
 

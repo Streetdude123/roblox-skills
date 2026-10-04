@@ -113,3 +113,7 @@ keeps its content (gold reward, time, Play Again, Back to Lobby) with a new desi
   template (the old one was built with `Instance.new` in `QueueTeleport`) and float above head
   height. Open: the Shop's authored layout gives 12 px buttons on a Galaxy A16 and sits under the top
   bar - reported, not changed.
+- Answer to the open Shop item: "Shop on phonws fix it." -> the Shop phone layout is fixed in the lobby pass (44 px+ targets, clear of the top bar).
+- Later the same day: "Also completely change up the victory and death screen and the commander dialogue please". His picks from 3 mock-ups each: result screens = cinematic banner (the world stays visible but dark, a wide band with huge VICTORY or DEFEAT sweeps in, gold and time count up, buttons slide in, Forest colours) with the same content (gold, time, Play Again, Back to Lobby); commander dialogue = radio transmission (monitor panel, portrait with scanlines and a static flicker on open, INCOMING TRANSMISSION header, typed text, a radio click per line, boss lines in a red SIGNAL OVERRIDE version). Change the box design, the animation and sound, and the Commander portrait; keep the lines.
+  - Rule: "completely change up" after a restyle means a new layout and presentation, not new colours on the old layout. Offer 2-3 different presentations as text mock-ups.
+- "Make sure to always use the UI skill when you make UI, and modeling skill whenever you make maps and props and everytjing" -> this skill runs for every UI task, with no exception.

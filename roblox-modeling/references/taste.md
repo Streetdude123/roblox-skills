@@ -35,6 +35,22 @@ Log every sentence of his feedback on models here, with the date and the model, 
 - Request: "I want you to improve the lobby UI significantly and the map in general please." (with /roblox-modeling)
 - His picks: the lobby map; "Retro bricks, richer" - keep the studded blocky style of the game and add better props, set dressing, lighting and composition in that same style. This is the case rule 9 allows: the game style is lower fidelity than the samurai, so match the style scan, not the samurai detail.
 
+- His answers after the sheet of 8 numbered candidates: "I like yhe little pathway I create with the fireflies and trees and lanterns i create that lead into the real lonby so try to incorporate that just make it shorter. I pick the stud village, number one. Keep the lighting the reference i pocket. Change layout."
+  - The pick: reference 1, stud village (timber houses, stone tower, stairs, dirt paths, cube trees, red mushroom), devforum.roblox.com/t/2939498.
+  - The light matches the pick, not the old lobby light. The layout is new.
+  - Rule: when he names a set piece he made himself (here the entry path with trees, lanterns and fireflies), move and reuse his real instances in the new layout; change only what he asks (here: shorter).
+
+- "Make sure to always use the UI skill when you make UI, and modeling skill whenever you make maps and props and everytjing"
+  - This skill runs for every map, prop and part build too, not only for Blender meshes.
+
+- On the plan v1 drawing (top view: meadow with his shorter tree tunnel, two stud stairs up an 8-stud cliff, the square with the 4 portals on the plateau): "Build plan v1". On five giant background cube trees that hid the open sky and sea of the pick: "Move them to ServerStorage".
+  - Rule: for a map, draw a numbered top-view plan from the pick and get a yes before the blockout; move removed pieces to ServerStorage, never delete them.
+
+- During the build: "You may change the structure of the map however you'd like" -> the layout, terrain and placement of his pieces are free for this lobby pass (his named pieces still stay in use).
+
+- Later: "make the walk shorter too from spawn to elevators, and change up how the tower looks by making it more details and complex in shape and intricacy". His picks: the timber towers and the round stone tower get the detail pass; the walk from the spawn to the nearest elevator about 5 seconds (the tree path shorter again, the elevators in the east half of the square near the stairs).
+  - Rule: a lobby walk to the queue is a cost; about 5 s (80 studs) is his target.
+
 What it means in practice (applied in this skill):
 1. Items, props, weapons, characters: intricate, creative, layered detail (chest.py is the reference).
 2. Terrain: calm big forms (rock.py final pass).

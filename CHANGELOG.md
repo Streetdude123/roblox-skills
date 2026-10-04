@@ -5,6 +5,12 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-04 (evening) — Lobby stud village, detailed towers, preview VFX, Shop on phones (user-authorized)
+
+- roblox-modeling: `scripts/studio/stud/` (part builders `Village.lua`, `Towers.lua` with `tower2` and `roundTower2`, `Paths.lua`, and the plan and colour tools) and `references/stud-maps.md` (style read, plan-first rule, colour by sampling, traps). `references/taste.md` logs his reference pick, the plan answers, the walk-time target and the tower detail request.
+- roblox-vfx-craft: `scripts/ambient/PreviewFx.lua` (themed map preview portals) and `scripts/ambient/fade_server.js` (edge fade for a decal image through EditableImage, a PNG server and `upload_image`); SKILL.md feedback entry with the numbers and three traps; `references/taste.md` logs "make the VFX stronger" and the edge fade request.
+- roblox-ui-design: `scripts/examples/ShopPhoneLayout.lua` (a phone `Layout` module for an authored scale-built panel) and the SKILL.md file entry; `references/taste.md` logs the Shop phone fix, the result screen and dialogue picks, and the always-use-the-skill rule.
+
 ## 2026-10-04 (later) — UI: Forest-style result screens and lobby, the frost meter rule (user-authorized)
 
 - roblox-ui-design: `references/taste.md` logs "Make sure the frost meter only appears if the frosty peaks map is loaded though when it's selected in the lobby" and what was built for Untitled Tower Defense: win/lose screens rebuilt from clones of the upgrade panel (striped header, stat cells, green and red buttons side by side for 44 px+ phone targets, a 720 x 456 cap so desktop keeps the old size), the lobby Shop restyled to the Forest tokens without renames, queue billboards moved from `Instance.new` code to a template, and an open phone-layout issue.
