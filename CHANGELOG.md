@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-04 — Modeling: the samurai is the baseline (user-authorized)
+
+- roblox-modeling: `SKILL.md` rule 9 and `references/taste.md` log "looks good already, make sure to store what you learned in the modeling skill please, this type of modeling should be the baseline minimum for modeling, unless the game's style or quality calls for quality less of this". The finished `scripts/blender/examples/samurai.py` (R6 character on a picked reference; stages block, highs, full and compose; 16,670 low and 610k high triangles; 0 open and 0 non-manifold edges) is now the minimum standard, with its sheet in `references/sheets/samurai.png`. New: the mask cache plus saved UVs for compose rounds (Blender's UV pack is not repeatable), `scripts/blender/restore_export.py`, `scripts/studio/ImportAlign.lua`, the verified Import 3D flow and the backlit-baseplate light check in `references/studio-preview.md`, the lacquer, chainmail and straw recipes, and the boolean and lathe traps.
+
 ## 2026-10-03 (after midnight) — Modeling: the character-from-reference method (user-authorized)
 
 - roblox-modeling: new `references/character-from-reference.md` (numbered picks from the ArtStation and Sketchfab search APIs, a measured spec from the pick's views, the pick's own texture values sampled in the browser, questions on conflicts, plate frames that build the low and the high, colour views from the pick's angles side by side before the bake) and `scripts/blender/examples/samurai.py` (R6 heavy lamellar samurai on the user's pick: plate frames, rope sweeps with a twisted high, brass slots, tie loops and rivets in the high only, chainmail height turned into normals). `rbx.height_normal` converts a UV-space height map into the tangent normal; `rbx.mat` sets the viewport colour; more ID colours. `SKILL.md` rule 8 and `references/taste.md` log "Much better, i really like this remember how you built this but the model has to be significantly more detailed and intricate complex".

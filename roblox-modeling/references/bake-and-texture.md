@@ -31,7 +31,15 @@ Common noise: `n1 = fbm(P, 1.2, 4)` large, `n2 = fbm(P, 6)` medium, `n3 = fbm(P,
 - **Stone** (terrain): C(126,120,112) x large noise; faint strata bands (8%); cavity dirt (45%); faint edge highlight (20%); moss only on steep tops C(74,102,42); damp band near the ground; rough 0.84. In bright Roblox lighting use a darker base (90-110).
 - **Gem**: flat-shaded facets in the low, C(168,14,30), rough 0.05; an EmissiveMask can make it glow.
 
+- **Lacquered armor (samurai, from the pick's own maps)**: base sRGB (44, 10, 7), roughness 0.44, metal 0. Wear only on strong edges (`sstep(0.7, 0.86, CV)` with a patch noise) toward (88, 40, 30) at 0.4; an edge lift of (8, 4, 3); sparse isotropic scratches (`fbm(P * 40)` above 0.76). Scratches stretched along one axis (`P * [60, 60, 5]`) read as wood grain on plates; do not use them on lacquer.
+- **Chainmail (texture height, no geometry)**: rows of overlapping ellipse rings, spacing 0.05 stud, radii 0.55 and 0.4 of the spacing, wire half-width 0.2 of the spacing, odd rows offset by half a spacing; keep the strongest ring per texel and brighten the upper half of each ring. Gaps (18, 17, 16), wires (50, 48, 45) to (90, 87, 82), roughness 0.95 to 0.65, height 0.006 into `rbx.height_normal`. Round rings with a wide profile read as honeycomb.
+- **Straw weave (texture height)**: checkerboard of over and under strands, 0.045 stud cells, height 0.006.
+
 Finish: multiply colour by a soft AO (0.72 + 0.28 AO for dielectrics, 0.85 + 0.15 AO for metals); clamp roughness to 0.04-1; threshold metalness to 0 or 1.
+
+## Cache the masks, compose many times
+
+A character bake took 24 minutes on this machine (Blender used 1.9 GB and paged). Save every mask array after the bake (`np.savez_compressed(out/masks.npz, I, AO, NB, CV, PP, NW, TN, GID, COV)`) and add a `compose` stage that rebuilds the lows (same seed, so the same UVs), checks the coverage against the cache, loads the arrays and runs only the composite, the renders and the export. A texture round then costs minutes. Blender's UV pack is not repeatable between runs (a rebuild gave a 22.6% coverage mismatch), so also save the joined lows' UVs (`uvs.npz`) after the bake and write them back in the compose stage; check that the coverage mismatch is 0. `scripts/blender/restore_export.py` re-exports the FBX and JSON from a saved .blend (Blender keeps the previous save as .blend1) when a run overwrote them. Any change to the low geometry makes the cache invalid.
 
 ## Painted graphics (eyes, crests, brows, emblems)
 

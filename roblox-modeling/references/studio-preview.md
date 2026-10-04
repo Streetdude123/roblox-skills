@@ -23,6 +23,10 @@ Facts from the run: sizes matched Blender to 0.01 stud (sword 1.604 x 4.645 x 0.
 4. Check the facing on the first import: a Chara import with the default forward -Z faced +Z.
 5. Set CollisionFidelity (Box or Hull for props), RenderFidelity Automatic, CastShadow off for tiny parts, Anchored as needed.
 
+Verified 2026-10-04 on the samurai (11 groups, one FBX): File > Import (Ctrl+M) opens the file dialog, then Import Preview. Defaults that worked: Import Only as a Model, Upload to Roblox, Creator Me, Add to Workspace, Set Pivot to Scene Origin, World Forward Front, World Up Top, Scale Unit Stud, scale 1; the preview shows the file dimensions and the polygon count, check both against the audit. The importer uploaded every mesh and made a SurfaceAppearance per MeshPart with all four embedded maps (shared ids); the maps showed after a short moderation delay. The model faces -Z with the character's right at +X: Roblox position = (-x, z, y) of Blender + the placed origin, measured to 0.001 stud on the katana. Then rig with `scripts/studio/R6Rig.lua` (base = the import model pivot), anchor the root for a display model, and remove the empty import model.
+- Dialog automation: SendKeys typing goes nowhere if the main window is focused while a file dialog is open; click the file name field first, then type without refocusing.
+- Light check: the Baseplate sun at ClockTime 14.5 comes from (-0.56, 0.73, -0.40); a model facing the spawn is backlit and reads near black. Capture from the lit side as well before judging colour.
+
 ## C. Publish a mesh from an EditableMesh
 
 `AssetService:CreateAssetAsync` takes Mesh, Model, Image and Plugin asset types, but needs the AssetCreateUpdate capability; it was "not available yet" for animations in 2026-09. Try it only with his approval because it creates assets on his account.

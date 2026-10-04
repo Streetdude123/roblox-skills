@@ -31,7 +31,29 @@ When the pick disagrees with an earlier answer (cloth versus chainmail, straw ha
 - Small detail (lacing slots, tie loops, rivets, twisted rope, hair strands) exists only in the high and reaches the low through the normal and ID bakes.
 - Stepped plates need a real step and tilt to read from the front: the samurai sode went from 0.045 step, 10 degrees and 0.07 thickness (invisible edge-on) to 0.075 step, 16 + 7 per tier degrees and 0.1 thickness.
 
-## 5. Show before the bake
+## 5. Detail pass: "significantly more detailed and intricate complex"
+
+The first rebuilt blockout matched the pick but was not detailed enough for him. Add detail in layers that keep the pick's silhouette and colour blocking. Most of it lives in the high only and reaches the game through the bake.
+
+| Detail | Where | How (samurai.py) |
+| --- | --- | --- |
+| Lamellar plates (kozane imitation) | every armor plate | `scallop(ob, f)`: arched tops (pitch 0.1, depth 0.03) and a 0.004 groove on each scale boundary; the high plate is a dense sweep (`plate_prof`, one point per 0.02 along the width) |
+| Cross-knot stitching (hishinui) | the lowest plate of each stack and panel | `cross_row(f)`: two short cords per X every 0.12 near the bottom edge |
+| Lacing cords between tiers | stacked shoulder and forearm plates | `lace_between(upper, lower, us)` |
+| Brass slots, tie loops, rivets, pins | plates, splints | `slots`, `ties`, `rivets` on the plate frame |
+| Crest (mon) | chest centre | brass ring + two crossed leaves + dome, an original design |
+| Bow (agemaki) | back plate | ring, two loops, two tails, tassels, knot: low and high |
+| Shoulder straps with toggles | torso top | ribbon with per-point up vectors, brass toggles |
+| Throat guard, mask pegs and cords | under and beside a plain mask | arc plates, small lathes, rope |
+| Chin cords, brim ribs, band stitching, charm tassel | hat | rope, radial cords under the brim, small boxes |
+| Obi under the rope belt | waist | rect sweep with cloth folds |
+| Hand plates and finger cords | arm bottoms | `plate_reg(..., mat="Black", kozane=False)` |
+| Two hair layers | back of the head | 9 inner + 8 outer locks, 6 side locks |
+| Chainmail rings, straw weave | sleeves, feet | texture height `H`, then `rbx.height_normal` |
+
+Costs measured on the samurai: low 14,412 to 16,676 triangles; high 730k to 691k after the twisted rope dropped from 18 to 12 profile points and from 0.012 to 0.016 step. Weaves finer than about 4 high vertices per period belong in the texture height, not in geometry.
+
+## 6. Show before the bake
 
 - Render colour views from the pick's own angles (back, side, front, 3/4) in one row (`*_compare.png`), and the high clay sheet (`stage=highs`, about 15 s).
 - Put the pick and the renders on one HTML page (the pick hotlinked, the renders as `file:///` paths). Writing the file opens it in the browser pane. Send the PNGs with SendUserFile too.

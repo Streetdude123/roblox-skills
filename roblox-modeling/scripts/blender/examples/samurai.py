@@ -30,7 +30,7 @@ LO = rbx.col("Low")
 
 ORDER = ["Skin", "Hair", "Lacquer", "Brass", "Rope", "Mail", "Black", "Wood", "Cloth", "Straw", "Steel"]
 PAL = {"Skin": ((226, 176, 140), 0.6, 0), "Hair": ((196, 196, 192), 0.5, 0), "Lacquer": ((44, 10, 7), 0.44, 0), "Brass": ((168, 132, 96), 0.31, 1),
-       "Rope": ((160, 150, 140), 0.95, 0), "Mail": ((28, 26, 23), 0.92, 0), "Black": ((18, 13, 9), 0.6, 0), "Wood": ((50, 34, 24), 0.8, 0),
+       "Rope": ((196, 186, 170), 0.95, 0), "Mail": ((28, 26, 23), 0.92, 0), "Black": ((18, 13, 9), 0.6, 0), "Wood": ((50, 34, 24), 0.8, 0),
        "Cloth": ((52, 31, 23), 0.85, 0), "Straw": ((50, 44, 36), 0.85, 0), "Steel": ((202, 206, 212), 0.26, 1)}
 MAT = {}
 for nm in ORDER:
@@ -138,12 +138,12 @@ def rope(name, path, r=0.026, c=LO, loop=False, high=False):
     if not high:
         return rbx.sweep(name, path, rbx.circle(r, 4, R(45)), c, loop=loop, caps=not loop)
     src = list(path) + ([path[0]] if loop else [])
-    pth = rbx.resample(src, 0.012)
+    pth = rbx.resample(src, 0.016)
     if loop:
         pth = pth[:-1]
     L_ = sum((Vector(q) - Vector(p)).length for p, q in zip(pth, pth[1:]))
     turn = (round(L_ / 0.33) * 360.0) if loop else (L_ / 0.11 * 120.0)
-    prof = [(r * (0.84 + 0.16 * math.cos(3 * t)) * math.cos(t), r * (0.84 + 0.16 * math.cos(3 * t)) * math.sin(t)) for t in np.linspace(0, 2 * math.pi, 18, endpoint=False)]
+    prof = [(r * (0.84 + 0.16 * math.cos(3 * t)) * math.cos(t), r * (0.84 + 0.16 * math.cos(3 * t)) * math.sin(t)) for t in np.linspace(0, 2 * math.pi, 12, endpoint=False)]
     return rbx.sweep(name, pth, prof, c, loop=loop, caps=not loop, twist=lambda u: u * turn)
 
 
@@ -168,11 +168,82 @@ def surf(f, u, hz, lift=0.0):
     return Vector(f["ctr"]) + tg * (u * f["w"] / 2) + nd * (f["bow"] * (1 - u * u)) + up * hz + ou * (f["t"] / 2 + lift)
 
 
-def hplate(name, f, n=7, c=LO, bev=0.0):
+def plate_prof(t, h, bev, step):
+    hw, hh = t / 2, h / 2
+    pts = []
+    side = list(np.linspace(-hh + bev, hh - bev, max(2, int((h - 2 * bev) / step) + 1)))
+    arcs = ((hw - bev, hh - bev, 0), (-hw + bev, hh - bev, 90), (-hw + bev, -hh + bev, 180), (hw - bev, -hh + bev, 270))
+    pts += [(hw, z) for z in side]
+    pts += [(arcs[0][0] + bev * math.cos(R(arcs[0][2] + a)), arcs[0][1] + bev * math.sin(R(arcs[0][2] + a))) for a in (30, 60)]
+    pts += [(hw - bev, hh), (-hw + bev, hh)]
+    pts += [(arcs[1][0] + bev * math.cos(R(arcs[1][2] + a)), arcs[1][1] + bev * math.sin(R(arcs[1][2] + a))) for a in (30, 60)]
+    pts += [(-hw, z) for z in reversed(side)]
+    pts += [(arcs[2][0] + bev * math.cos(R(arcs[2][2] + a)), arcs[2][1] + bev * math.sin(R(arcs[2][2] + a))) for a in (30, 60)]
+    pts += [(-hw + bev, -hh), (hw - bev, -hh)]
+    pts += [(arcs[3][0] + bev * math.cos(R(arcs[3][2] + a)), arcs[3][1] + bev * math.sin(R(arcs[3][2] + a))) for a in (30, 60)]
+    return pts
+
+
+def hplate(name, f, n=7, c=LO, bev=0.0, dense=False):
     nd, tg, up, ou = frame_of(f)
     path = [tuple(Vector(f["ctr"]) + tg * (u * f["w"] / 2) + nd * (f["bow"] * (1 - u * u))) for u in np.linspace(-1, 1, n)]
-    prof = rbx.rect(f["t"], f["h"], bev, 2) if bev else rbx.rect(f["t"], f["h"])
+    if dense:
+        prof = plate_prof(f["t"], f["h"], bev, 0.06)
+    else:
+        prof = rbx.rect(f["t"], f["h"], bev, 2) if bev else rbx.rect(f["t"], f["h"])
     return rbx.sweep(name, path, prof, c, ups=[tuple(up)] * n)
+
+
+def scallop(ob, f, pitch=0.1, depth=0.03, band=0.035):
+    nd, tg, up, ou = frame_of(f)
+    me = ob.data
+    co = np.empty(len(me.vertices) * 3, np.float32)
+    me.vertices.foreach_get("co", co)
+    co = co.reshape(-1, 3)
+    c0 = np.array(f["ctr"], np.float32)
+    tgv, ndv, upv = (np.array(v, np.float32) for v in (tg, nd, up))
+    us = (co - c0) @ tgv
+    uu = np.clip(us / (f["w"] / 2), -1, 1)
+    base = c0 + np.outer(us, tgv) + np.outer(f["bow"] * (1 - uu ** 2), ndv)
+    hz = (co - base) @ upv
+    q = np.mod(us / pitch + 0.5 + f.get("ph", 0.0), 1.0)
+    arch = 1 - np.sqrt(np.clip(1 - ((q - 0.5) * 2) ** 2, 0, 1))
+    ouv = np.array(ou, np.float32)
+    outer = ((co - base) @ ouv) > f["t"] / 2 - 0.004
+    groove = np.exp(-(np.minimum(q, 1 - q) * pitch / 0.01) ** 2) * outer * (1 - rbx.sstep(f["h"] / 2 - band - 0.01, f["h"] / 2 - band, hz))
+    co = co - np.outer(rbx.sstep(f["h"] / 2 - band, f["h"] / 2, hz) * depth * arch, upv) - np.outer(groove * 0.0028, ouv)
+    me.vertices.foreach_set("co", co.ravel())
+    me.update()
+    return ob
+
+
+def cross_row(f, name, step=0.12):
+    nd, tg, up, ou = frame_of(f)
+    parts = []
+    span = f["w"] / 2 - 0.08
+    cnt = int(2 * span / step) + 1
+    for k in range(cnt):
+        us_ = -span + k * (2 * span / max(cnt - 1, 1))
+        c_ = surf(f, us_ / (f["w"] / 2), -f["h"] / 2 + 0.05, 0.004)
+        for sgn in (1, -1):
+            a_ = c_ + tg * 0.032 + up * (sgn * 0.032)
+            b_ = c_ - tg * 0.032 - up * (sgn * 0.032)
+            parts.append(rbx.sweep(name, [tuple(a_), tuple((a_ + b_) / 2 + ou * 0.006), tuple(b_)], rbx.circle(0.009, 6), HI))
+    j = rbx.join(parts, name)
+    rbx.give(j, MAT["Rope"])
+    return j
+
+
+def lace_between(fa, fb, us, name):
+    parts = []
+    ou = frame_of(fa)[3]
+    for u in us:
+        p0 = surf(fa, u, -fa["h"] / 2 + 0.03, 0.002)
+        p1 = surf(fb, u, fb["h"] / 2 - 0.03, 0.002)
+        parts.append(rbx.sweep(name, [tuple(p0), tuple((p0 + p1) / 2 + ou * 0.02), tuple(p1)], rbx.circle(0.011, 6), HI))
+    j = rbx.join(parts, name)
+    rbx.give(j, MAT["Rope"])
+    return j
 
 
 def deco_frame(f, u, hz):
@@ -218,24 +289,31 @@ def rivets(spots, name, r=0.028):
     return j
 
 
-def plate_reg(group, name, f, slot_n=0, tie_us=(), ends=False):
+def plate_reg(group, name, f, slot_n=0, tie_us=(), ends=False, cross=False, lace_from=None, mat="Lacquer", kozane=True):
+    f.setdefault("ph", rnd.random())
     lo = hplate(name, f)
 
     def build():
-        h = hplate(name + "H", f, 25, HI, 0.012)
-        soft(h, 1, dent=0.0015)
-        rbx.give(h, MAT["Lacquer"])
+        h = hplate(name + "H", f, max(25, int(f["w"] / 0.02) + 1), HI, 0.012, dense=True)
+        if kozane:
+            scallop(h, f)
+        soft(h, 0, dent=0.0015)
+        rbx.give(h, MAT[mat])
         out_ = [h]
         if slot_n:
             out_.append(slots(f, f["h"] / 2 - 0.1, slot_n, name + "SlotsH"))
         if tie_us:
             out_.append(ties(f, tie_us, name + "TiesH"))
         if ends:
-            nd, tg, up, ou = frame_of(f)
+            ou = frame_of(f)[3]
             out_.append(rivets([(surf(f, u, 0.0), ou) for u in (-0.8, 0.8)], name + "RivetsH"))
+        if cross:
+            out_.append(cross_row(f, name + "CrossH"))
+        if lace_from:
+            out_.append(lace_between(lace_from, f, (-0.62, 0.0, 0.62), name + "LaceH"))
         return out_
 
-    return reg(group, lo, "Lacquer", hi(build))
+    return reg(group, lo, mat, hi(build))
 
 
 HZ = 4.57
@@ -296,7 +374,30 @@ def menpo(name, na, nz, c):
 
 
 mask = menpo("Mask", 16, 5, LO)
-reg("Head", mask, "Black", hi(lambda: [soft(menpo("MaskH", 64, 20, HI), 1, ham=0.0015)]))
+reg("Head", mask, "Black", hi(lambda: [soft(menpo("MaskH", 64, 20, HI), 1, ham=0.0008)]))
+for k in range(2):
+    zc = 4.0 - 0.115 * k
+    rad = 0.665 + 0.035 * k
+    tl_ = R(14 + 6 * k)
+
+    def guard_path(n, zc=zc, rad=rad):
+        return [(rad * math.cos(t), 0.04 + rad * math.sin(t), zc) for t in np.linspace(R(-140), R(-40), n)]
+
+    def guard_ups(n, tl_=tl_):
+        return [tuple(Vector((0, 0, 1)) * math.cos(tl_) - Vector((math.cos(t), math.sin(t), 0)) * math.sin(tl_)) for t in np.linspace(R(-140), R(-40), n)]
+
+    gd = rbx.sweep("Throat%d" % k, guard_path(9), rbx.rect(0.035, 0.14), LO, ups=guard_ups(9))
+    reg("Head", gd, "Lacquer", hi(lambda k=k, guard_path=guard_path, guard_ups=guard_ups: [soft(rbx.sweep("Throat%dH" % k, guard_path(60), plate_prof(0.035, 0.14, 0.01, 0.035), HI, ups=guard_ups(60)), 0, dent=0.0015)]))
+for k, sx in enumerate((1, -1)):
+    phi = R(-90 + sx * 78)
+    pr = head_r(phi) + 0.075
+    peg_at = Vector((pr * math.cos(phi), pr * math.sin(phi), 4.3))
+    pg = rbx.lathe("MaskPeg%d" % k, [(0, 0.03), (0.024, 0.024), (0.03, 0.0), (0.024, -0.02), (0, -0.02)], 8, LO)
+    rbx.place(pg, rbx.orient(peg_at, Vector((math.cos(phi), math.sin(phi), 0))))
+    reg("Head", pg, "Brass", hi(lambda pg=pg: [soft(hcopy(pg), 1)]))
+    mc = [tuple(peg_at), (sx * 0.62, 0.12, 4.36), (sx * 0.5, 0.5, 4.42)]
+    mcl = rope("MaskCord%d" % k, mc, 0.013)
+    reg("Head", mcl, "Cloth", hi(lambda mc=mc, k=k: [rope("MaskCord%dH" % k, rbx.fillet(mc, 0.08, 3), 0.013, HI, high=True)]))
 
 
 def cap_keep(z):
@@ -334,12 +435,15 @@ def lock_path(phi, z0, z1, r0, r1, drift):
 locks = []
 for k in range(9):
     phi = R(24 + 132 * k / 8 + jr(4))
-    locks.append(("Lock%d" % k, phi, 4.86, 3.88 + 0.12 * abs(math.sin(k * 1.9)) + jr(0.03), 0.23 + jr(0.02), jr(0.1)))
-for k, phi in enumerate((-14, 12, 168, 194)):
-    locks.append(("SideLock%d" % k, R(phi + jr(3)), 4.88, 4.16 + jr(0.04), 0.2, R(-6 if phi < 90 else 6)))
-for nm, phi, z0, z1, w, drift in locks:
-    r0 = head_r(phi) + 0.06
-    lp = lock_path(phi, z0, z1, r0, r0 + 0.2, drift)
+    locks.append(("Lock%d" % k, phi, 4.86, 4.0 + 0.12 * abs(math.sin(k * 1.9)) + jr(0.03), 0.19 + jr(0.02), jr(0.1), 0.0))
+for k in range(8):
+    phi = R(32 + 116 * k / 7 + jr(4))
+    locks.append(("LockOut%d" % k, phi, 4.8, 3.84 + 0.1 * abs(math.sin(k * 2.7)) + jr(0.03), 0.2 + jr(0.02), jr(0.12), 0.05))
+for k, phi in enumerate((-20, -6, 10, 170, 186, 200)):
+    locks.append(("SideLock%d" % k, R(phi + jr(3)), 4.88, 4.14 + jr(0.05), 0.17, R(-6 if phi < 90 else 6), 0.0))
+for nm, phi, z0, z1, w, drift, lift in locks:
+    r0 = head_r(phi) + 0.06 + lift
+    lp = lock_path(phi, z0, z1, r0, r0 + 0.2 + lift, drift)
     ups = [(math.cos(phi + drift * t), math.sin(phi + drift * t), 0) for t in np.linspace(0, 1, 6)]
     lo = rbx.sweep(nm, lp, lens(w, 0.06, 4), LO, ups=ups, scale=taper)
 
@@ -355,13 +459,57 @@ HAT = Vector((0, 0.0, 5.1))
 hat_tilt = Matrix.Translation(HAT) @ Euler((R(-4), R(3), 0)).to_matrix().to_4x4() @ Matrix.Translation(-HAT)
 brim_prof = [(0.5, 0.03), (0.95, -0.02), (1.42, -0.1), (1.445, -0.118), (1.42, -0.135), (0.95, -0.055), (0.5, 0.0), (0.5, 0.03)]
 brim = rbx.place(rbx.lathe("Brim", brim_prof, 40, LO, at=HAT), hat_tilt)
-reg("Hat", brim, "Black", hi(lambda: [soft(rbx.place(rbx.lathe("BrimH", brim_prof, 160, HI, at=HAT), hat_tilt), 1, fold=streaks(0.002, 12, 12, 5))]))
-crown_prof = [(0.0, 0.58), (0.42, 0.58), (0.49, 0.55), (0.52, 0.46), (0.53, 0.0)]
+
+
+def brim_high():
+    h = soft(rbx.place(rbx.lathe("BrimH", brim_prof, 160, HI, at=HAT), hat_tilt), 1, fold=streaks(0.002, 12, 12, 5))
+    ribs = []
+    for k in range(24):
+        t = 2 * math.pi * (k + 0.25) / 24
+        pts = []
+        for r_ in np.linspace(0.56, 1.36, 12):
+            zb = float(np.interp(r_, [0.5, 0.95, 1.42], [0.0, -0.055, -0.135])) - 0.004
+            pts.append(tuple(hat_tilt @ (HAT + Vector((r_ * math.cos(t), r_ * math.sin(t), zb)))))
+        ribs.append(rbx.sweep("BrimRibH", pts, rbx.circle(0.011, 6), HI))
+    j = rbx.join(ribs, "BrimRibsH")
+    rbx.give(j, MAT["Black"])
+    return [h, j]
+
+
+reg("Hat", brim, "Black", hi(brim_high))
+crown_prof = [(0.0, 0.58), (0.42, 0.58), (0.49, 0.55), (0.52, 0.46), (0.53, 0.0), (0.0, 0.0)]
 crown = rbx.place(rbx.lathe("Crown", crown_prof, 24, LO, at=HAT), hat_tilt)
-reg("Hat", crown, "Cloth", hi(lambda: [soft(rbx.place(rbx.lathe("CrownH", crown_prof, 96, HI, at=HAT), hat_tilt), 1, dent=0.002)]))
+def crown_seams(P_, N_):
+    q = np.linalg.inv(np.array(hat_tilt, np.float32))
+    L_ = np.c_[P_, np.ones(len(P_))] @ q.T
+    a_ = np.mod(np.arctan2(L_[:, 1] - HAT.y, L_[:, 0] - HAT.x) / (2 * math.pi) * 6 + 0.5, 1.0)
+    side = np.abs(N_[:, 2]) < 0.7
+    return -0.004 * np.exp(-(np.minimum(a_, 1 - a_) / 0.012) ** 2) * side
+
+
+reg("Hat", crown, "Cloth", hi(lambda: [soft(rbx.place(rbx.lathe("CrownH", crown_prof, 288, HI, at=HAT), hat_tilt), 1, dent=0.002, fold=crown_seams)]))
 band_path = [(HAT.x + 0.545 * math.cos(t), HAT.y + 0.545 * math.sin(t), HAT.z + 0.19) for t in np.linspace(0, 2 * math.pi, 24, endpoint=False)]
 band = rbx.place(rbx.sweep("Band", band_path, rbx.rect(0.022, 0.18), LO, ups=[(0, 0, 1)] * 24, loop=True, caps=False), hat_tilt)
-reg("Hat", band, "Lacquer", hi(lambda: [soft(rbx.place(rbx.sweep("BandH", [(HAT.x + 0.545 * math.cos(t), HAT.y + 0.545 * math.sin(t), HAT.z + 0.19) for t in np.linspace(0, 2 * math.pi, 96, endpoint=False)], rbx.rect(0.022, 0.18, 0.006, 2), HI, ups=[(0, 0, 1)] * 96, loop=True, caps=False), hat_tilt), 1)]))
+
+
+def band_high():
+    h = soft(rbx.place(rbx.sweep("BandH", [(HAT.x + 0.545 * math.cos(t), HAT.y + 0.545 * math.sin(t), HAT.z + 0.19) for t in np.linspace(0, 2 * math.pi, 96, endpoint=False)], rbx.rect(0.022, 0.18, 0.006, 2), HI, ups=[(0, 0, 1)] * 96, loop=True, caps=False), hat_tilt), 1)
+    st_ = []
+    for k in range(48):
+        t = 2 * math.pi * k / 48
+        if k % 6 in (2, 3, 4):
+            continue
+        rad = Vector((math.cos(t), math.sin(t), 0))
+        for zz in (0.12, 0.26):
+            b_ = rbx.box("BandStitchH", (0.008, 0.006, 0.04), (0, 0, 0), HI)
+            rbx.place(b_, hat_tilt @ rbx.orient(HAT + Vector((0, 0, zz)) + rad * 0.557, rad))
+            st_.append(b_)
+    j = rbx.join(st_, "BandStitchesH")
+    rbx.give(j, MAT["Rope"])
+    return [h, j]
+
+
+reg("Hat", band, "Lacquer", hi(band_high))
 for k in range(8):
     t = 2 * math.pi * (k + 0.5) / 8
     rad = Vector((math.cos(t), math.sin(t), 0))
@@ -380,6 +528,13 @@ reg("Hat", tcord, "Rope", hi(lambda: [rbx.sweep("CharmCordH", [(-1.2, -0.4, 4.99
 tag = rbx.box("Charm", (0.11, 0.014, 0.19), (0, 0, 0), LO)
 rbx.place(tag, Matrix.Translation(TAG) @ Matrix.Rotation(R(6), 4, "Y"))
 reg("Hat", tag, "Rope", hi(lambda: [hard(hcopy(tag), 0.004, 2, 1)]))
+tas_prof = [(0.0, 0.0), (0.012, -0.005), (0.022, -0.05), (0.03, -0.11), (0.0, -0.115)]
+tas = rbx.lathe("CharmTassel", tas_prof, 8, LO, at=(TAG.x + 0.01, TAG.y, TAG.z - 0.095))
+reg("Hat", tas, "Cloth", hi(lambda: [soft(rbx.lathe("CharmTasselH", tas_prof, 24, HI, at=(TAG.x + 0.01, TAG.y, TAG.z - 0.095)), 1, fold=streaks(0.004, 120, 4, 9))]))
+for k, sx in enumerate((1, -1)):
+    cc = [(sx * 0.46, -0.04, 5.08), (sx * 0.64, -0.1, 4.78), (sx * 0.66, -0.2, 4.42), (sx * 0.61, -0.34, 4.2)]
+    ccl = rope("ChinCord%d" % k, rbx.resample(rbx.fillet(cc, 0.1, 2), 0.1), 0.014)
+    reg("Hat", ccl, "Cloth", hi(lambda cc=cc, k=k: [rope("ChinCord%dH" % k, rbx.fillet(cc, 0.1, 4), 0.014, HI, high=True)]))
 
 log("torso")
 core = lo_bev(rbx.box("Core", (1.96, 0.98, 2.0), (0, 0, 3.0), LO), 0.1, 2)
@@ -405,12 +560,15 @@ def do_grooves(P_, N_):
     z = P_[:, 2]
     g = np.exp(-((z - 3.46) / 0.012) ** 2) * (P_[:, 1] < 0)
     g += (np.exp(-((z - 3.2) / 0.012) ** 2) + np.exp(-((z - 2.9) / 0.012) ** 2)) * (P_[:, 1] > 0)
-    return -0.008 * g * (np.abs(N_[:, 2]) < 0.5)
+    q = np.mod(P_[:, 0] / 0.1 + 0.5, 1.0)
+    lam = np.exp(-(np.minimum(q, 1 - q) * 0.1 / 0.01) ** 2) * (np.abs(P_[:, 0]) < 0.86) * (z > 2.58)
+    crest = np.hypot(P_[:, 0], z - 3.04) < 0.17
+    return (-0.008 * g - 0.0028 * lam * (~crest)) * (np.abs(N_[:, 2]) < 0.5) * (np.abs(N_[:, 1]) > 0.6)
 
 
 def do_high():
-    h = do_shell("DoH", 128, 14, HI)
-    soft(h, 1, dent=0.0015, fold=do_grooves)
+    h = do_shell("DoH", 400, 30, HI)
+    soft(h, 0, dent=0.0015, fold=do_grooves)
     rbx.give(h, MAT["Lacquer"])
     out_ = [h]
     for side_, sy in (("F", -1), ("B", 1)):
@@ -430,6 +588,26 @@ def do_high():
         j = rbx.join(parts, "DoSlots%sH" % side_)
         rbx.give(j, MAT["Brass"])
         out_.append(j)
+    zc = 3.04
+    yc = -do_depth(zc) / 2 - 0.004
+    fm = Matrix(((1, 0, 0), (0, 0, 1), (0, -1, 0))).transposed().to_4x4()
+    fm.translation = Vector((0, yc, zc))
+    cp = []
+    rg = rbx.sweep("CrestRingH", [(0.138 * math.cos(t), 0.138 * math.sin(t), 0) for t in np.linspace(0, 2 * math.pi, 64, endpoint=False)], rbx.rect(0.024, 0.014, 0.004, 2), HI, ups=[(0, 0, 1)] * 64, loop=True, caps=False)
+    rbx.place(rg, fm)
+    cp.append(rg)
+    for k, a_ in enumerate((R(50), R(130))):
+        bl = rbx.prism("CrestLeafH", rbx.leaf(0.23, 0.022, 0.016, 16, 0.5), -0.006 + 0.004 * k, 0.006 + 0.004 * k, HI)
+        rbx.place(bl, fm @ Matrix.Rotation(a_, 4, "Z") @ Matrix.Translation((-0.115, 0, 0)))
+        rbx.bevel(bl, 0.003, seg=2, harden=False, strength="FSTR_NONE")
+        rbx.apply(bl)
+        cp.append(bl)
+    dm_ = rbx.dome("CrestDomeH", 0.026, 16, 4, HI)
+    rbx.place(dm_, fm)
+    cp.append(dm_)
+    cj = rbx.join(cp, "CrestH")
+    rbx.give(cj, MAT["Brass"])
+    out_.append(cj)
     return out_
 
 
@@ -479,15 +657,63 @@ osh_path = [(0.68 * math.cos(t), 0.12 + 0.5 * math.sin(t), 4.1) for t in np.lins
 osh_up = tuple(Vector((0, 0.28, 1)).normalized())
 osh = rbx.sweep("Oshitsuke", osh_path, rbx.rect(0.06, 0.36), LO, ups=[osh_up] * 9)
 reg("Torso", osh, "Lacquer", hi(lambda: [soft(rbx.sweep("OshitsukeH", [(0.68 * math.cos(t), 0.12 + 0.5 * math.sin(t), 4.1) for t in np.linspace(R(28), R(152), 33)], rbx.rect(0.06, 0.36, 0.012, 2), HI, ups=[osh_up] * 33), 1, dent=0.0015)]))
-belt_path = ring3(2.1, 1.34, 0.26, 2.47, n=28)
+obi_path = ring3(2.06, 1.3, 0.24, 2.48, n=28)
+obi = rbx.sweep("Obi", obi_path, rbx.rect(0.03, 0.12), LO, ups=[(0, 0, 1)] * 28, loop=True, caps=False)
+reg("Torso", obi, "Cloth", hi(lambda: [soft(rbx.sweep("ObiH", ring3(2.06, 1.3, 0.24, 2.48, n=160), rbx.rect(0.03, 0.12, 0.008, 2), HI, ups=[(0, 0, 1)] * 160, loop=True, caps=False), 1, cloth=0.004, fold=lambda P_, N_: 0.004 * np.sin(P_[:, 2] * 90.0) * (0.6 + 0.8 * rbx.fbm(P_, 3.0, 2, 6)))]))
+belt_path = ring3(2.14, 1.38, 0.27, 2.48, n=28)
 belt = rope("Belt", belt_path, 0.028, loop=True)
-reg("Torso", belt, "Rope", hi(lambda: [rope("BeltH", ring3(2.1, 1.34, 0.26, 2.47, n=140), 0.028, HI, loop=True, high=True)]))
-bk = rbx.lathe("BeltKnot", [(0, 0.06), (0.05, 0.045), (0.065, 0.0), (0.05, -0.045), (0, -0.06)], 8, LO, at=(0.62, -0.69, 2.47))
+reg("Torso", belt, "Rope", hi(lambda: [rope("BeltH", ring3(2.14, 1.38, 0.27, 2.48, n=140), 0.028, HI, loop=True, high=True)]))
+bk = rbx.lathe("BeltKnot", [(0, 0.06), (0.05, 0.045), (0.065, 0.0), (0.05, -0.045), (0, -0.06)], 8, LO, at=(0.62, -0.71, 2.48))
 reg("Torso", bk, "Rope", hi(lambda: [soft(hcopy(bk), 1)]))
 for side_, sy in (("Front", -1), ("Back", 1)):
     for k in range(4):
         f = dict(ctr=Vector((jr(0.012), sy * (0.67 + 0.05 * k), 2.42 - 0.4 * k - 0.23)), nd=(0, sy), w=1.3 + 0.04 * k, h=0.46, t=0.065, bow=0.03, tilt=9 + jr(1.2))
-        plate_reg("Torso", "Kusazuri%s%d" % (side_, k), f, slot_n=7, tie_us=(-0.45, 0.45))
+        plate_reg("Torso", "Kusazuri%s%d" % (side_, k), f, slot_n=7, tie_us=(-0.45, 0.45), cross=(k == 3))
+
+AG = Vector((0.0, do_depth(3.56) / 2 + 0.02, 3.56))
+
+
+def agemaki(c, high):
+    out_ = []
+    ring_ = rbx.torus("AgRing", 0.05, 0.013, 16 if high else 8, 6 if high else 4, (0, 0, 0), "XZ", c)
+    rbx.place(ring_, Matrix.Translation(AG + Vector((0, 0.01, 0.03))))
+    out_.append((ring_, "Brass"))
+    for sx in (1, -1):
+        lp = [AG + Vector((sx * 0.03, 0.04, -0.06)), AG + Vector((sx * 0.15, 0.07, 0.0)), AG + Vector((sx * 0.25, 0.08, -0.08)), AG + Vector((sx * 0.2, 0.07, -0.17)), AG + Vector((sx * 0.07, 0.05, -0.1))]
+        lp = [tuple(p) for p in lp]
+        out_.append((rope("AgLoop", rbx.fillet(lp, 0.05, 3) if high else lp, 0.026, c, loop=True, high=high), "Rope"))
+        tp = [AG + Vector((sx * 0.03, 0.06, -0.1)), AG + Vector((sx * 0.08, 0.07, -0.32)), AG + Vector((sx * 0.1, 0.06, -0.56))]
+        tp = [tuple(p) for p in tp]
+        out_.append((rope("AgTail", rbx.fillet(tp, 0.08, 3) if high else tp, 0.024, c, high=high), "Rope"))
+        tz = Vector(tp[-1])
+        tas_ = rbx.lathe("AgTassel", [(0.0, 0.02), (0.03, 0.0), (0.042, -0.08), (0.05, -0.16), (0.0, -0.17)], 16 if high else 6, c, at=tuple(tz))
+        if high:
+            rbx.vdisp(tas_, streaks(0.005, 140, 3, 13))
+        out_.append((tas_, "Rope"))
+    kn = rbx.lathe("AgKnot", [(0, 0.055), (0.05, 0.04), (0.065, 0.0), (0.05, -0.04), (0, -0.055)], 16 if high else 8, c, at=tuple(AG + Vector((0, 0.07, -0.08))))
+    out_.append((kn, "Rope"))
+    return out_
+
+
+ag_lo = agemaki(LO, False)
+ag_hi = None if BLOCK else agemaki(HI, True)
+for i, (o, mt) in enumerate(ag_lo):
+    his = None
+    if ag_hi is not None:
+        his = [ag_hi[i][0]]
+        rbx.give(his[0], MAT[ag_hi[i][1]])
+    reg("Torso", o, mt, his)
+for k, sx in enumerate((1, -1)):
+    wp = [(sx * 0.62, -0.62, 3.86), (sx * 0.63, -0.55, 4.0), (sx * 0.64, -0.3, 4.06), (sx * 0.64, 0.1, 4.06), (sx * 0.63, 0.36, 4.09), (sx * 0.62, 0.5, 4.2)]
+
+    def wups(pts):
+        return [tuple(Vector((0, (1 if p[1] > 0 else -1) * max(0.0, abs(p[1]) - 0.3) * 3, 1)).normalized()) for p in pts]
+
+    wl_ = rbx.fillet(wp, 0.06, 2)
+    wat = ribbon("Watagami%d" % k, wl_, 0.16, 0.03, wups(wl_))
+    reg("Torso", wat, "Cloth", hi(lambda wp=wp, k=k: [soft(ribbon("Watagami%dH" % k, rbx.resample(rbx.fillet(wp, 0.06, 4), 0.02), 0.16, 0.03, wups(rbx.resample(rbx.fillet(wp, 0.06, 4), 0.02)), c=HI), 1, cloth=0.003)]))
+    tog = lo_bev(rbx.box("Kohaze%d" % k, (0.1, 0.035, 0.04), (sx * 0.62, -0.645, 3.9), LO), 0.012, 1)
+    reg("Torso", tog, "Brass", hi(lambda tog=tog: [hard(hcopy(tog), 0.012, 3, 1)]))
 
 log("arms")
 
@@ -508,12 +734,20 @@ def arm(s):
     for k, z in enumerate((2.66, 2.5, 2.34)):
         wl = rope(side + "Wrap%d" % k, ring3(1.1, 1.1, 0.18, z, cx, 0.0, 24), loop=True)
         reg(grp, wl, "Rope", hi(lambda z=z, k=k: [rope(side + "Wrap%dH" % k, ring3(1.1, 1.1, 0.18, z, cx, 0.0, 140), high=True, loop=True)]))
+    prev = None
     for k in range(3):
         f = dict(ctr=Vector((cx + s * (0.64 + 0.075 * k), jr(0.01), 3.9 - 0.26 * k - 0.16)), nd=(s, 0), w=1.24 - 0.02 * k, h=0.32, t=0.1, bow=0.04, tilt=16 + 7 * k + jr(1.5))
-        plate_reg(grp, side + "Sode%d" % k, f, ends=True)
+        plate_reg(grp, side + "Sode%d" % k, f, ends=True, cross=(k == 2), lace_from=prev)
+        prev = f
+    prev = None
     for k in range(3):
         f = dict(ctr=Vector((cx + s * (0.64 + 0.075 * k), jr(0.01), 2.96 - 0.25 * k - 0.15)), nd=(s, 0), w=1.16 - 0.02 * k, h=0.3, t=0.1, bow=0.04, tilt=16 + 7 * k + jr(1.5))
-        plate_reg(grp, side + "Kote%d" % k, f, ends=True)
+        plate_reg(grp, side + "Kote%d" % k, f, ends=True, cross=(k == 2), lace_from=prev)
+        prev = f
+    f = dict(ctr=Vector((cx + s * 0.545, 0.0, 2.17)), nd=(s, 0), w=0.74, h=0.28, t=0.04, bow=0.03, tilt=4)
+    plate_reg(grp, side + "Tekko", f, ends=True, mat="Black", kozane=False)
+    fl_ = rope(side + "FingerCord", ring3(1.09, 1.09, 0.2, 2.07, cx, 0.0, 20), 0.016, loop=True)
+    reg(grp, fl_, "Cloth", hi(lambda: [rope(side + "FingerCordH", ring3(1.09, 1.09, 0.2, 2.07, cx, 0.0, 120), 0.016, HI, loop=True, high=True)]))
     for k, (dx, z, L_, ang) in enumerate(((0.0, 4.1, 0.72, 14), (0.46, 3.98, 0.5, 28))):
         m = Matrix.Translation((cx + s * dx, jr(0.01), z)) @ Matrix.Rotation(R(s * (ang + jr(1.5))), 4, "Y")
         bx = rbx.box(side + "Top%d" % k, (L_, 1.32 - 0.04 * k, 0.085), (0, 0, 0), LO)
@@ -564,7 +798,9 @@ def leg(s):
             rbx.apply(h)
             rbx.place(h, m)
             soft(h, 2, fold=streaks(0.005, 50, 3, 3 + i))
-            return [h]
+            out_n = -(m.to_3x3() @ Vector((0, 1, 0))).normalized()
+            spots = [(m @ Vector((0, -0.025, z)), out_n) for z in (0.24, -0.24)]
+            return [h, rivets(spots, side + "Pin%dH" % i, 0.02)]
 
         reg(grp, spl, "Wood", hi(spl_hi))
     for k, z in enumerate((1.0, 0.46)):
@@ -576,13 +812,19 @@ def leg(s):
             reg(grp, bw, "Rope", hi(lambda bpath=bpath, k=k, j=j: [rope(side + "Bow%d%dH" % (k, j), rbx.fillet(bpath, 0.03, 3), 0.02, HI, high=True)]))
     for k in range(3):
         f = dict(ctr=Vector((cx + s * (0.55 + 0.05 * k), jr(0.01), 1.98 - 0.33 * k - 0.19)), nd=(s, 0), w=0.86, h=0.38, t=0.065, bow=0.025, tilt=10 + jr(1.5))
-        plate_reg(grp, side + "Haidate%d" % k, f, slot_n=5, tie_us=(-0.4, 0.4))
+        plate_reg(grp, side + "Haidate%d" % k, f, slot_n=5, tie_us=(-0.4, 0.4), cross=(k == 2))
     sole = lo_bev(rbx.box(side + "Sole", (1.02, 1.3, 0.08), (cx, -0.12, 0.04), LO), 0.03, 1)
     reg(grp, sole, "Wood", hi(lambda: [hard(hcopy(sole), 0.02, 2, 2, ham=0.002)]))
     wj = lo_bev(rbx.box(side + "Waraji", (0.98, 1.26, 0.03), (cx, -0.12, 0.095), LO), 0.012, 1)
-    reg(grp, wj, "Straw", hi(lambda: [hard(hcopy(wj), 0.006, 2, 3, ham=0.003)]))
+    reg(grp, wj, "Straw", hi(lambda: [hard(hcopy(wj), 0.006, 2, 1)]))
     ft = lo_bev(rbx.box(side + "Foot", (0.94, 1.14, 0.3), (cx, -0.09, 0.26), LO), 0.13, 2)
-    reg(grp, ft, "Straw", hi(lambda: [soft(hcopy(ft), 2, cloth=0.004)]))
+
+    def toes(P_, N_):
+        d_ = np.abs(P_[:, 0] - (cx - s * 0.16))
+        front = rbx.sstep(-0.4, -0.55, P_[:, 1])
+        return -0.03 * np.exp(-(d_ / 0.025) ** 2) * front * (P_[:, 2] > 0.14)
+
+    reg(grp, ft, "Straw", hi(lambda: [soft(hcopy(ft), 3, cloth=0.004, fold=toes)]))
     for j, (y0, y1) in enumerate(((-0.5, -0.2), (-0.2, -0.5))):
         sp = rbx.fillet([(cx - 0.47, y0, 0.11), (cx - 0.3, (y0 + y1) / 2 - 0.08, 0.38), (cx, (y0 + y1) / 2 - 0.1, 0.43), (cx + 0.3, (y0 + y1) / 2 - 0.08, 0.38), (cx + 0.47, y1, 0.11)], 0.08, 3)
         stp = rope(side + "Strap%d" % j, rbx.resample(sp, 0.1), 0.022)
@@ -631,10 +873,10 @@ def katana_parts(prefix, c, hilt_only=False, high=False):
     holes = []
     for k_ in range(4):
         t = R(45 + 90 * k_)
-        holes.append(rbx.cyl("TsubaHole", 0.03, 0.2, 12 if high else 8, (0.15 * math.cos(t), 0.14 * math.sin(t), -0.17), "Z", c))
+        holes.append(rbx.cyl("TsubaHole", 0.026, 0.2, 12 if high else 8, (0.15 * math.cos(t), 0.14 * math.sin(t), -0.17), "Z", c))
     na_ = 10 if high else 5
     for sx_ in (1, -1):
-        cres = rbx.prism("TsubaCres", [(sx_ * (0.1 + 0.04 * math.cos(u)), 0.075 * math.sin(u)) for u in np.linspace(-1.3, 1.3, na_)] + [(sx_ * (0.1 + 0.015 * math.cos(u)), 0.06 * math.sin(u)) for u in np.linspace(1.3, -1.3, na_)], -0.25, -0.09, c)
+        cres = rbx.prism("TsubaCres", [(sx_ * (0.1 + 0.035 * math.cos(u)), 0.07 * math.sin(u)) for u in np.linspace(-1.2, 1.2, na_)] + [(sx_ * (0.1 + 0.013 * math.cos(u)), 0.056 * math.sin(u)) for u in np.linspace(1.2, -1.2, na_)], -0.25, -0.09, c)
         holes.append(cres)
     hc = rbx.join(holes, "TsubaCut")
     rbx.cut(ts, hc)
@@ -835,6 +1077,19 @@ for lo, hs, g in P:
         if h not in lst:
             lst.append(h)
 gobs = {g: rbx.join(gl[g], g) for g in GORDER}
+UVS = os.path.join(out, "uvs.npz")
+if STAGE == "compose":
+    u_ = np.load(UVS)
+    for g, o in gobs.items():
+        if len(u_[g]) == len(o.data.loops) * 2:
+            o.data.uv_layers.active.data.foreach_set("uv", u_[g])
+else:
+    uv_ = {}
+    for g, o in gobs.items():
+        buf = np.empty(len(o.data.loops) * 2, np.float32)
+        o.data.uv_layers.active.data.foreach_get("uv", buf)
+        uv_[g] = buf
+    np.savez_compressed(UVS, **uv_)
 rbx.lowvis(list(gobs.values()), False)
 hi_tris = sum(sum(len(f.vertices) - 2 for f in o.data.polygons) for o in HI.objects)
 log("joined into %d groups; high tris %d" % (len(gobs), hi_tris))
@@ -845,46 +1100,55 @@ def gbake(kind, im, samples, margin, extrude=0.025, ray=0.07):
         rbx.bake(gobs[g], kind, im, gh[g], samples=samples, extrude=extrude, ray=ray, clear=(i == 0), margin=margin)
 
 
-nim = rbx.fimage("normal", T)
-gbake("NORMAL", nim, 8, 3)
-log("normal baked")
-idm = {n: rbx.emit_mat("ID_" + n, lambda nt, c=rbx.ID_COLORS[k]: c) for k, n in enumerate(ORDER)}
-keep = {}
-for o in HI.objects:
-    keep[o.name] = list(o.data.materials)
-    for k, m_ in enumerate(o.data.materials):
-        o.data.materials[k] = idm.get(m_.name if m_ else "Mail", idm["Mail"])
-idim = rbx.fimage("id", T)
-gbake("EMIT", idim, 1, 0)
-for o in HI.objects:
-    for k, m_ in enumerate(keep[o.name]):
-        o.data.materials[k] = m_
-log("id baked")
-wb = bpy.data.worlds.new("Bake")
-sc.world = wb
-wb.light_settings.distance = 0.4
-aoim = rbx.fimage("ao", T)
-gbake("AO", aoim, 24, 3)
-log("ao baked")
-lo_b, hi_b = rbx.bounds(list(gobs.values()))
-psim, nwim, tnim, gdim = rbx.fimage("pos", T), rbx.fimage("nrmw", T), rbx.fimage("tint", T), rbx.fimage("gid", T)
-for i, g in enumerate(GORDER):
-    ob = gobs[g]
-    rbx.mask_bake(ob, rbx.pos_build(lo_b, hi_b), psim, samples=1, clear=(i == 0))
-    rbx.mask_bake(ob, rbx.nrm_build(), nwim, samples=1, clear=(i == 0))
-    rbx.mask_bake(ob, rbx.attr_build("tint"), tnim, samples=1, clear=(i == 0))
-    gv = (i + 1) / 16.0
-    rbx.mask_bake(ob, lambda nt, gv=gv: (gv, gv, gv), gdim, samples=1, margin=0, clear=(i == 0))
-COV = rbx.coverage(list(gobs.values()), T)
-log("masks baked")
-
-I = rbx.ids_of(rbx.px(idim))
-AO = rbx.px(aoim)[..., 0]
-CV = rbx.curvature(nim, 1.4)
-PP = rbx.px(psim)[..., :3] * np.array(hi_b - lo_b, np.float32) + np.array(lo_b, np.float32)
-NW = rbx.px(nwim)[..., :3] * 2 - 1
-TN = rbx.px(tnim)[..., 0]
-GID = np.rint(rbx.px(gdim)[..., 0] * 16).astype(np.int32) - 1
+CACHE = os.path.join(out, "masks.npz")
+if STAGE == "compose":
+    z_ = np.load(CACHE)
+    I, AO, NB, CV, PP, NW, TN, GID, COV = (z_[k] for k in ("I", "AO", "NB", "CV", "PP", "NW", "TN", "GID", "COV"))
+    cv_now = rbx.coverage(list(gobs.values()), T)
+    log("masks loaded; coverage mismatch %.4f%%" % (100.0 * np.mean(cv_now != COV)))
+else:
+    nim = rbx.fimage("normal", T)
+    gbake("NORMAL", nim, 8, 3)
+    log("normal baked")
+    idm = {n: rbx.emit_mat("ID_" + n, lambda nt, c=rbx.ID_COLORS[k]: c) for k, n in enumerate(ORDER)}
+    keep = {}
+    for o in HI.objects:
+        keep[o.name] = list(o.data.materials)
+        for k, m_ in enumerate(o.data.materials):
+            o.data.materials[k] = idm.get(m_.name if m_ else "Mail", idm["Mail"])
+    idim = rbx.fimage("id", T)
+    gbake("EMIT", idim, 1, 0)
+    for o in HI.objects:
+        for k, m_ in enumerate(keep[o.name]):
+            o.data.materials[k] = m_
+    log("id baked")
+    wb = bpy.data.worlds.new("Bake")
+    sc.world = wb
+    wb.light_settings.distance = 0.4
+    aoim = rbx.fimage("ao", T)
+    gbake("AO", aoim, 24, 3)
+    log("ao baked")
+    lo_b, hi_b = rbx.bounds(list(gobs.values()))
+    psim, nwim, tnim, gdim = rbx.fimage("pos", T), rbx.fimage("nrmw", T), rbx.fimage("tint", T), rbx.fimage("gid", T)
+    for i, g in enumerate(GORDER):
+        ob = gobs[g]
+        rbx.mask_bake(ob, rbx.pos_build(lo_b, hi_b), psim, samples=1, clear=(i == 0))
+        rbx.mask_bake(ob, rbx.nrm_build(), nwim, samples=1, clear=(i == 0))
+        rbx.mask_bake(ob, rbx.attr_build("tint"), tnim, samples=1, clear=(i == 0))
+        gv = (i + 1) / 16.0
+        rbx.mask_bake(ob, lambda nt, gv=gv: (gv, gv, gv), gdim, samples=1, margin=0, clear=(i == 0))
+    COV = rbx.coverage(list(gobs.values()), T)
+    log("masks baked")
+    I = rbx.ids_of(rbx.px(idim))
+    AO = rbx.px(aoim)[..., 0]
+    NB = rbx.px(nim)
+    CV = rbx.curvature(nim, 1.4)
+    PP = rbx.px(psim)[..., :3] * np.array(hi_b - lo_b, np.float32) + np.array(lo_b, np.float32)
+    NW = rbx.px(nwim)[..., :3] * 2 - 1
+    TN = rbx.px(tnim)[..., 0]
+    GID = np.rint(rbx.px(gdim)[..., 0] * 16).astype(np.int32) - 1
+    np.savez_compressed(CACHE, I=I, AO=AO, NB=NB, CV=CV, PP=PP, NW=NW, TN=TN, GID=GID, COV=COV)
+    log("masks cached")
 GM = {g: GID == i for i, g in enumerate(GORDER)}
 
 
@@ -920,12 +1184,12 @@ U = np.where(ax == 0, PP[..., 1], PP[..., 0])
 V = np.where(ax == 2, PP[..., 1], PP[..., 2])
 
 lac = cls["Lacquer"]
-wear = rbx.sstep(0.62, 0.8, CV) * rbx.sstep(0.4, 0.65, n2) * lac
-lay(wear, (92, 42, 30), 0.5)
-col = col + C(16, 8, 6) * (rbx.sstep(0.56, 0.7, CV) * lac)[..., None]
-scr = rbx.sstep(0.72, 0.75, rbx.fbm(PP * np.array([60, 60, 5], np.float32), 1.0, 2, 31)) * lac
-col = col + C(18, 10, 8) * scr[..., None]
-rough = rough + 0.06 * scr
+wear = rbx.sstep(0.7, 0.86, CV) * rbx.sstep(0.45, 0.7, n2) * lac
+lay(wear, (88, 40, 30), 0.4)
+col = col + C(8, 4, 3) * (rbx.sstep(0.62, 0.78, CV) * lac)[..., None]
+scr = rbx.sstep(0.76, 0.78, rbx.fbm(PP * np.array([40, 40, 40], np.float32), 1.0, 2, 31)) * lac
+col = col + C(10, 6, 5) * scr[..., None]
+rough = rough + 0.05 * scr - 0.06 * rbx.sstep(0.3, 0.7, n1) * lac
 br = cls["Brass"]
 pol = rbx.sstep(0.56, 0.78, CV) * br
 col = col * (1 - 0.45 * pol[..., None]) + C(226, 196, 150) * (0.45 * pol[..., None])
@@ -939,35 +1203,48 @@ ring = np.zeros(I.shape, np.float32)
 if ml.any():
     idx = np.nonzero(ml)
     pu, pv = U[idx], V[idx]
-    sp_, rr_, rw = 0.07, 0.024, 0.011
-    best = np.zeros(len(pu), np.float32)
+    sp_ = 0.05
+    rx, ry, rw = 0.55 * sp_, 0.4 * sp_, 0.2 * sp_
+    wire = np.zeros(len(pu), np.float32)
+    lit = np.zeros(len(pu), np.float32)
     j0 = np.floor(pv / (sp_ * 0.5))
-    for dj in (-1, 0, 1, 2):
+    for dj in (-2, -1, 0, 1, 2):
         j = j0 + dj
         off = np.mod(j, 2) * sp_ * 0.5
         i0 = np.floor((pu - off) / sp_)
         for di in (-1, 0, 1, 2):
-            dist = np.hypot(pu - ((i0 + di) * sp_ + off), pv - j * sp_ * 0.5)
-            best = np.maximum(best, np.exp(-((dist - rr_) / (rw * 0.75)) ** 2))
-    ring[idx] = best
-    H[idx] = best * rw
-    tone = C(26, 24, 21)[None, :] * (1 - best[:, None]) + C(72, 70, 66)[None, :] * best[:, None]
+            dx = pu - ((i0 + di) * sp_ + off)
+            dy = pv - j * sp_ * 0.5
+            w_ = np.clip(1 - np.abs(np.hypot(dx / rx, dy / ry) - 1.0) * ry / rw, 0, 1) ** 1.5
+            better = w_ > wire
+            wire = np.where(better, w_, wire)
+            lit = np.where(better, np.clip(0.5 + 0.5 * dy / ry, 0, 1), lit)
+    ring[idx] = wire
+    H[idx] = wire * 0.006
+    tone = C(18, 17, 16)[None, :] * (1 - wire[:, None]) + (C(60, 58, 54)[None, :] + C(44, 43, 40)[None, :] * lit[:, None]) * wire[:, None]
     col[idx] = tone * fac[idx][:, None]
-    rough[idx] = 0.95 - 0.15 * best
+    rough[idx] = 0.95 - 0.3 * wire * lit
 
 rp = cls["Rope"]
 col[rp] *= (0.88 + 0.12 * n2)[rp][..., None]
 bl_ = cls["Black"]
-col = col + C(26, 22, 20) * (rbx.sstep(0.58, 0.75, CV) * bl_)[..., None]
-rough = rough - 0.1 * rbx.sstep(0.58, 0.75, CV) * bl_
+col = col + C(18, 16, 14) * (rbx.sstep(0.66, 0.82, CV) * bl_)[..., None]
+rough = rough - 0.08 * rbx.sstep(0.66, 0.82, CV) * bl_
+sk = cls["Skin"] & GM["Head"]
+col[sk] *= (1 - 0.32 * rbx.sstep(4.62, 5.02, PP[..., 2]))[sk][..., None]
 wd = cls["Wood"]
 grain = rbx.fbm(PP * np.array([40, 40, 2.5], np.float32), 1.0, 3, 41)
 col[wd] *= (0.78 + 0.44 * grain)[wd][..., None]
 cl_ = cls["Cloth"]
 col[cl_] *= (0.92 + 0.16 * n3)[cl_][..., None]
 sw = cls["Straw"]
-weave = 0.5 + 0.25 * np.sin(U * 140.0) * np.sin(V * 140.0) + 0.25 * np.sin((U + V) * 90.0)
-col[sw] *= (0.8 + 0.35 * weave)[sw][..., None]
+wu, wv = U / 0.045, V / 0.045
+over = np.mod(np.floor(wu) + np.floor(wv), 2) == 0
+wf = np.where(over, np.sin(np.mod(wu, 1.0) * math.pi), np.sin(np.mod(wv, 1.0) * math.pi)) ** 0.7
+weave = wf * (0.85 + 0.15 * np.sin(np.where(over, wv, wu) * 2 * math.pi * 3))
+col[sw] *= (0.7 + 0.45 * weave)[sw][..., None]
+H[sw] += (0.006 * weave)[sw]
+rough[sw] = (0.9 - 0.1 * weave)[sw]
 hr = cls["Hair"]
 stk = 0.5 + 0.5 * np.sin(np.arctan2(PP[..., 1], PP[..., 0]) * 70.0 + 6.0 * n2)
 col[hr] *= (0.84 + 0.16 * stk)[hr][..., None]
@@ -1001,7 +1278,7 @@ lay(cover(np.abs(np.hypot(du, dv - 0.035) - 0.026) - 0.006) * tg_, (20, 16, 14))
 lay(cover(np.maximum(np.abs(du) - 0.006, np.abs(dv + 0.035) - 0.04)) * tg_, (20, 16, 14))
 
 col = col * (0.9 + 0.12 * rbx.sstep(0.0, 5.6, PP[..., 2]))[..., None]
-col = col * np.where(br | cls["Steel"], 0.86 + 0.14 * AO, 0.7 + 0.3 * AO)[..., None]
+col = col * np.where(br | cls["Steel"], 0.86 + 0.14 * AO, np.where(cls["Rope"], 0.8 + 0.2 * AO, 0.7 + 0.3 * AO))[..., None]
 rough = np.clip(rough + 0.05 * (n2 - 0.5), 0.04, 1.0)
 
 rgba = np.ones(PP.shape[:2] + (4,), np.float32)
@@ -1014,7 +1291,7 @@ ma = np.ones_like(rgba)
 ma[..., :3] = rbx.dilate((metal > 0.5).astype(np.float32)[..., None], COV)
 mim = rbx.unpx("samurai_metal", ma, os.path.join(out, "samurai_metal.png"), data=True)
 na = np.ones_like(rgba)
-na[..., :3] = rbx.dilate(rbx.height_normal(rbx.px(nim), H, PP, COV), COV)
+na[..., :3] = rbx.dilate(rbx.height_normal(NB, H, PP, COV), COV)
 nrm8 = rbx.unpx("samurai_normal", na, os.path.join(out, "samurai_normal.png"), data=True)
 fin = rbx.pbr_mat("Samurai", cim, rim_, mim, nrm8)
 for g, ob in gobs.items():

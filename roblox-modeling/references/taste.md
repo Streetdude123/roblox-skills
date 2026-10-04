@@ -27,6 +27,9 @@ Log every sentence of his feedback on models here, with the date and the model, 
   - The method is in character-from-reference.md (pick, measure, sample the pick's maps, ask on conflicts, plate frames, show before the bake).
   - Next pass: far more detail and intricacy on top of the same construction.
 
+- On the finished samurai in Studio: "looks good already, make sure to store what you learned in the modeling skill please, this type of modeling should be the baseline minimum for modeling, unless the game's style or quality calls for quality less of this. Finish this up and we'll go to the real game where you'll begin modeling for my game."
+  - SKILL.md rule 9: the samurai is the minimum standard; go lower only when the game's style scan calls for it.
+
 What it means in practice (applied in this skill):
 1. Items, props, weapons, characters: intricate, creative, layered detail (chest.py is the reference).
 2. Terrain: calm big forms (rock.py final pass).

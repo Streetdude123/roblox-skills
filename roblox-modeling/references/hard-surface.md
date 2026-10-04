@@ -38,6 +38,8 @@ Supports for a subdivision high poly: a subdivided cube becomes a sphere unless 
 - A boolean adds the cutter's empty material slot to the result; call `rbx.tidy()`.
 - On a high poly, cut chips and dents last, after bevel and subdivision; a bevel after a chip cut tore the chest planks.
 - Join many small cutters into one object before cutting.
+- Keep at least 0.005 stud of material between two cutters. On the samurai tsuba, each crescent tip touched a round hole and the cut left a zero-width pinch: 2 non-manifold edges with 4 faces each, reported in every group that used the hilt.
+- A lathe profile that ends off the axis leaves an open rim (24 open edges on a hat crown). End the profile on the axis, `(0.0, z)`, to close it.
 
 ## Building blocks in rbx.py
 
