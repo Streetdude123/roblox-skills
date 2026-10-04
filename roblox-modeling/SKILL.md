@@ -18,6 +18,7 @@ He set these rules on 2026-10-03 while this skill was built. They override any d
 5. "Scan the game before you make models" - run the style scan and write a style brief before the first vertex (see [style-scan.md](references/style-scan.md)).
 6. "Please use references, just like how you animate use heavy reference" - no blockout before he picks a reference. Show 6-8 numbered candidates on one sheet, he picks, then match the pick closely: silhouette, proportions, layer order, piece shapes, colour blocking. Make the design original (no copy of a named character), but take every construction decision from the pick. The samurai v1, designed without a picked reference, got "The clothing looks horrible and the proportions are terrible".
 7. Characters stay faceless unless he asks for a face (samurai, 2026-10-03: "keep it faceless").
+8. "Much better, i really like this remember how you built this" - for every character, follow [character-from-reference.md](references/character-from-reference.md): numbered picks, a measured spec from the pick, the pick's own texture values, questions on conflicts, plate frames, and the side-by-side check before the bake. In the same sentence: "the model has to be significantly more detailed and intricate complex" - the first rebuilt samurai was not detailed enough even after rule 2.
 
 Log every sentence of his feedback in [taste.md](references/taste.md) and push the skill folder.
 

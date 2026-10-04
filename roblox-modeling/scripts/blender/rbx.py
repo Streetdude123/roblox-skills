@@ -979,7 +979,21 @@ def bake_ids(ob, im, margin=16):
     return swap_bake(ob, mats, "EMIT", im, 1, margin)
 
 
-ID_COLORS = [(1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 0), (1, 0, 1), (0, 1, 1), (1, 1, 1), (0.5, 0, 0), (0, 0.5, 0), (0, 0, 0.5)]
+ID_COLORS = [(1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 0), (1, 0, 1), (0, 1, 1), (1, 1, 1), (0.5, 0, 0), (0, 0.5, 0), (0, 0, 0.5),
+             (1, 0.5, 0), (0.5, 0, 1), (0, 1, 0.5), (0.5, 0.5, 0.5)]
+
+
+def height_normal(nrm, h, pos, cov, k=1.0):
+    n = nrm[..., :3] * 2 - 1
+    g = []
+    for axis in (1, 0):
+        d = np.linalg.norm(np.roll(pos, -1, axis) - np.roll(pos, 1, axis), axis=-1) * 0.5
+        ok = cov & np.roll(cov, -1, axis) & np.roll(cov, 1, axis) & (d > 1e-6)
+        d = np.where(ok, d, np.median(d[ok]) if ok.any() else 1.0)
+        g.append(np.where(ok, (np.roll(h, -1, axis) - np.roll(h, 1, axis)) * 0.5 / d, 0.0) * k)
+    o = np.stack([n[..., 0] - g[0] * n[..., 2], n[..., 1] - g[1] * n[..., 2], n[..., 2]], -1)
+    o /= np.linalg.norm(o, axis=-1, keepdims=True) + 1e-8
+    return o * 0.5 + 0.5
 
 
 def ids_of(idmap):

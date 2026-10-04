@@ -20,6 +20,12 @@ Log every sentence of his feedback on models here, with the date and the model, 
 - His answers to the rebuild questions: heavy armored build (big silhouette from armor plates); light armor over kimono (kimono and hakama close to the body, chest plate, two shoulder plates, bracers, shin guards); faceless = blank skin, no eyes (hair, mask and hat stay); numbered reference candidates first.
 - "Please use references, just like how you animate use heavy reference"
   - Rule 6 in SKILL.md: no blockout before he picks a reference; match the pick closely.
+- His pick from 8 numbered candidates: "Heavy lamellar armor, wide hat" (Edrey Aldana, "3D Roblox Character - Samurai for ZO Roblox video game", artstation.com/artwork/kNlGAd: R6, red-brown lamellar do, 4-tier kusazuri, stepped shoulder and forearm plates, chainmail sleeves with rope, splint shins, wide black hat with a studded crown).
+- His answers where the pick and the first answers disagreed: match the pick under the armor (chainmail sleeves with rope, splint shin guards with rope bows, straw sandals); the pick's wide hat; long white hair and a plain armored half mask with no eyes, no tusks and no face features; the pick's colours (dark red-brown lacquer, brass slots and rivets, white rope, dark grey chainmail, black hat).
+  - Rule: when a pick conflicts with an earlier answer, ask; the pick won on every point here.
+- After the rebuilt blockout and the high clay beside reference 2: "Much better, i really like this remember how you built this but the model has to be significantly more detailed and intricate complex"
+  - The method is in character-from-reference.md (pick, measure, sample the pick's maps, ask on conflicts, plate frames, show before the bake).
+  - Next pass: far more detail and intricacy on top of the same construction.
 
 What it means in practice (applied in this skill):
 1. Items, props, weapons, characters: intricate, creative, layered detail (chest.py is the reference).
