@@ -30,6 +30,11 @@ Log every sentence of his feedback on models here, with the date and the model, 
 - On the finished samurai in Studio: "looks good already, make sure to store what you learned in the modeling skill please, this type of modeling should be the baseline minimum for modeling, unless the game's style or quality calls for quality less of this. Finish this up and we'll go to the real game where you'll begin modeling for my game."
   - SKILL.md rule 9: the samurai is the minimum standard; go lower only when the game's style scan calls for it.
 
+## 2026-10-04 - Untitled Tower Defense lobby map
+
+- Request: "I want you to improve the lobby UI significantly and the map in general please." (with /roblox-modeling)
+- His picks: the lobby map; "Retro bricks, richer" - keep the studded blocky style of the game and add better props, set dressing, lighting and composition in that same style. This is the case rule 9 allows: the game style is lower fidelity than the samurai, so match the style scan, not the samurai detail.
+
 What it means in practice (applied in this skill):
 1. Items, props, weapons, characters: intricate, creative, layered detail (chest.py is the reference).
 2. Terrain: calm big forms (rock.py final pass).

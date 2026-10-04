@@ -90,3 +90,26 @@ professional advanced level, please research as much as possible for me take you
 UI work he wants to see the screens). Asked where to test while Studio held 5.2 GB with 0.65 GB free,
 he answered "Make UI in the place itself" (the open Undertale Team Create place). -> The samples were
 built in that place's own style as disabled `Lab_*` ScreenGuis; the authored UI was not touched.
+
+**2026-10-04, Untitled Tower Defense (lobby 119472908687736, Forest 98611647936601, Frozen Peak
+84729196662975)** - "I want you to improve the lobby UI significantly and the map in general please. I
+think the forest map has some pretty good UI, ignore the win lose screen though, i'd like if you were to
+fix it's UI." ... "The upgrade UI in my opinion is pretty good UI." Picks: the lobby UI matches the
+Forest UI (charcoal panels with a fine diagonal stripe, white mono text, bright green primary and red
+danger buttons, thin light borders - the upgrade panel is the style reference); the win/lose screen
+keeps its content (gold reward, time, Play Again, Back to Lobby) with a new design in that style.
+- During the merge: "Make sure the frost meter only appears if the frosty peaks map is loaded though
+  when it's selected in the lobby" -> the meter (a side tab on the upgrade panel cloned from authored
+  pieces: stat box, level pip with stripes, the Frosty Peaks frost bar and its ❄ label) is saved
+  hidden and is shown only when the loaded map's data has `frost = true` (only Frosty Peaks).
+- Win/lose result: same content (gold earned, time, Play Again, Back to Lobby) rebuilt from clones of
+  the upgrade panel's own parts: charcoal card, striped header with the authored trophies or skulls,
+  two stat cells (authored coin icon, an uploaded Phosphor `timer` glyph), green Play Again and red
+  Back to Lobby side by side (stacked buttons were 40 px on a phone; side by side keeps them about
+  46 px under the top bar). Card capped at 720 x 456 so desktop matches the old panel size; button
+  text has 10 %/20 % padding so it never touches the edges on phones.
+- Lobby: the Unit Shop, stats panel, radar chart, equip slots and Exit button were restyled to the
+  Forest tokens without renaming anything; the queue pad billboards became a `ServerStorage`
+  template (the old one was built with `Instance.new` in `QueueTeleport`) and float above head
+  height. Open: the Shop's authored layout gives 12 px buttons on a Galaxy A16 and sits under the top
+  bar - reported, not changed.

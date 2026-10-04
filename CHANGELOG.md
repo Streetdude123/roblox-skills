@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-04 (later) — UI: Forest-style result screens and lobby, the frost meter rule (user-authorized)
+
+- roblox-ui-design: `references/taste.md` logs "Make sure the frost meter only appears if the frosty peaks map is loaded though when it's selected in the lobby" and what was built for Untitled Tower Defense: win/lose screens rebuilt from clones of the upgrade panel (striped header, stat cells, green and red buttons side by side for 44 px+ phone targets, a 720 x 456 cap so desktop keeps the old size), the lobby Shop restyled to the Forest tokens without renames, queue billboards moved from `Instance.new` code to a template, and an open phone-layout issue.
+- roblox-modeling: `scripts/studio/StyleScan.lua` read `CollisionFidelity` on plain Parts and failed; it now reads it only on `TriangleMeshPart`. `references/taste.md` notes the lobby map case for rule 9.
+
 ## 2026-10-04 — Modeling: the samurai is the baseline (user-authorized)
 
 - roblox-modeling: `SKILL.md` rule 9 and `references/taste.md` log "looks good already, make sure to store what you learned in the modeling skill please, this type of modeling should be the baseline minimum for modeling, unless the game's style or quality calls for quality less of this". The finished `scripts/blender/examples/samurai.py` (R6 character on a picked reference; stages block, highs, full and compose; 16,670 low and 610k high triangles; 0 open and 0 non-manifold edges) is now the minimum standard, with its sheet in `references/sheets/samurai.png`. New: the mask cache plus saved UVs for compose rounds (Blender's UV pack is not repeatable), `scripts/blender/restore_export.py`, `scripts/studio/ImportAlign.lua`, the verified Import 3D flow and the backlit-baseplate light check in `references/studio-preview.md`, the lacquer, chainmail and straw recipes, and the boolean and lathe traps.

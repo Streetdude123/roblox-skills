@@ -30,7 +30,8 @@ for _, d in root:GetDescendants() do
 		if d.Material == Enum.Material.Neon then
 			count.neon += 1
 		end
-		coll[d.CollisionFidelity and d.CollisionFidelity.Name or "Part"] = (coll[d.CollisionFidelity and d.CollisionFidelity.Name or "Part"] or 0) + 1
+		local cf = if d:IsA("TriangleMeshPart") then d.CollisionFidelity.Name else "Part"
+		coll[cf] = (coll[cf] or 0) + 1
 		if d:IsA("MeshPart") then
 			count.meshes += 1
 			table.insert(meshSizes, d.Size.Magnitude)
