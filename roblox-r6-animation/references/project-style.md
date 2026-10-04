@@ -206,3 +206,6 @@ These project-specific notes were preserved from upstream revision `1993ddb`. Th
 - 2026-10-03 (UT:EF Chara): "Make sure you actually uss real references from undertale or something". For Undertale characters the reference candidates come from Undertale itself (battle sprites, cutscenes) or Undertale fan animations (Glitchtale, MMD, Spamdoor, ClearlyConfused), not generic anime fights.
 
 - 2026-10-03 (UT:EF Chara, after the kit video of Golden Thrash, Betrayal and Corrupted Save): "These animations look super buggy, unnatural, and just isn't as cool as i expected, fix it".
+
+- 2026-10-04 (Untitled Tower Defense, Forest): "Can you also fix how buggy the animations are for noob king and rework his animations for his two attacks, summon and charge attack?" His picks for what looks buggy: "Clips snap or jitter", "Body slides or floats", "Find them yourself" (play the boss wave, list what is wrong, show the list before fixing). Order he chose: the Forest cutscenes first, then the Noob King, then the lobby.
+- 2026-10-04, after the Forest cutscene videos: "after fixes with the king, don't forget the lobby" - the Noob King animation fixes come next, the lobby right after them.

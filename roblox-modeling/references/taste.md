@@ -51,8 +51,15 @@ Log every sentence of his feedback on models here, with the date and the model, 
 - Later: "make the walk shorter too from spawn to elevators, and change up how the tower looks by making it more details and complex in shape and intricacy". His picks: the timber towers and the round stone tower get the detail pass; the walk from the spawn to the nearest elevator about 5 seconds (the tree path shorter again, the elevators in the east half of the square near the stairs).
   - Rule: a lobby walk to the queue is a cost; about 5 s (80 studs) is his target.
 
+- Later the same day: "Make the map much larger please so players can explore more and the game will be adding new features in the lobby, this also gives the elevators more space. Maybe add npcs around the map, just make it SO much bigger." His picks: about 4x the area (open plazas kept for future features); the walk from the spawn to the elevators may be longer now. NPCs: "make sure the villagers are dummies, as this is a dummies vs noobs game. Add ambient villagers that can talk to you when you get close enough to them. Make sure it's just a dummy from the toolbox with a dark gray torso and some accessories attatched to them. Make placeholder prompts".
+  - Rule: in Untitled TD the player side is dummies and the enemies are noobs; friendly NPCs are dummies.
+
 What it means in practice (applied in this skill):
 1. Items, props, weapons, characters: intricate, creative, layered detail (chest.py is the reference).
 2. Terrain: calm big forms (rock.py final pass).
 3. Controlled imperfection on everything (imperfection.md).
 4. Style scan before modeling (style-scan.md).
+
+- Same day, while the Forest work ran: "Don't forget the lobby task too okay?" and the order "Cutscene, king, and then lobby". The 4x lobby with dummy villagers is next after the Forest cutscenes and the Noob King animations.
+- For the Forest intro he asked for a portal frame that shows the noob kingdom's homeland through it with nothing behind it ("Like the door from suzume? but make it a portal instead"). The homeland and the frame are models: they need the numbered reference pick like every model.
+- 2026-10-04, after the cutscene videos: "after fixes with the king, don't forget the lobby". The lobby (4x with dummy villagers) follows the Noob King animation fixes.

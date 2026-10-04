@@ -5,6 +5,13 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-04 (night) — Forest cutscenes: radio dialogue, rift portal, camera clearance (user-authorized)
+
+- roblox-vfx-craft: `references/taste.md` logs the cutscene requests and picks (portal with the homeland seen through it, letterbox + CRT, freeze during scenes), the video request, the thinner rift frame, "super cinematic", the dialogue under the letterbox bar and the camera collisions, with the clearance check method (oriented-box distance, terrain rays, line of sight) and the reveal path numbers.
+- roblox-ui-design: `references/taste.md` logs the instance-tree rule, the emoji icons replaced by flat pixel icons, the radio panel text fitting facts and traps, and the DisplayOrder rule for dialogue over a cutscene layer.
+- roblox-modeling: `references/taste.md` logs the lobby reminders and the portal and homeland model requests.
+- roblox-r6-animation: `references/project-style.md` logs the Noob King animation request, his picks and the order of work.
+
 ## 2026-10-04 (evening) — Lobby stud village, detailed towers, preview VFX, Shop on phones (user-authorized)
 
 - roblox-modeling: `scripts/studio/stud/` (part builders `Village.lua`, `Towers.lua` with `tower2` and `roundTower2`, `Paths.lua`, and the plan and colour tools) and `references/stud-maps.md` (style read, plan-first rule, colour by sampling, traps). `references/taste.md` logs his reference pick, the plan answers, the walk-time target and the tower detail request.
