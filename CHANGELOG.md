@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-03 (after midnight) — Modeling: the character-from-reference method (user-authorized)
+
+- roblox-modeling: new `references/character-from-reference.md` (numbered picks from the ArtStation and Sketchfab search APIs, a measured spec from the pick's views, the pick's own texture values sampled in the browser, questions on conflicts, plate frames that build the low and the high, colour views from the pick's angles side by side before the bake) and `scripts/blender/examples/samurai.py` (R6 heavy lamellar samurai on the user's pick: plate frames, rope sweeps with a twisted high, brass slots, tie loops and rivets in the high only, chainmail height turned into normals). `rbx.height_normal` converts a UV-space height map into the tangent normal; `rbx.mat` sets the viewport colour; more ID colours. `SKILL.md` rule 8 and `references/taste.md` log "Much better, i really like this remember how you built this but the model has to be significantly more detailed and intricate complex".
+
 ## 2026-10-03 (end of night) — Modeling: heavy references, faceless characters (user-authorized)
 
 - roblox-modeling: `SKILL.md` rules 6 and 7 and `references/taste.md` log "The clothing looks horrible and the proportions are terrible, keep it faceless" and "Please use references, just like how you animate use heavy reference" (after the samurai v1): no blockout before the user picks a reference from a numbered sheet, match the pick closely, faceless characters unless asked. Lessons from the samurai work: `rbx.cut` defaults to the MANIFOLD solver (EXACT returned an empty mesh with a joined multi-piece cutter), `pack_parts(boost=...)` for hero islands, painted graphics as signed distances with a one-pixel ramp, tapered sweeps need evenly resampled paths, polished metal renders black in the dark studio rig, `rbx.mat` sets the viewport colour for Workbench colour renders, new helpers `loft_open`, `ring_sample`, `rr`, `coverage` and `edit_mode` diagnostics.
