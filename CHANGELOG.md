@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-04 (night, lobby) — Untitled TD 4x lobby and talking dummy villagers (user-authorized)
+
+- roblox-modeling: `references/taste.md` logs the 4x lobby plan pick and the villager picks from a numbered sheet of Toolbox dummies (one shared body in the towers' colours, the variety in what they wear and hold, player size, classic smile), with the staging and capture method and the rule to ask when his words and a pick conflict.
+- roblox-ui-design: `references/taste.md` logs the speech bubble pick; `references/roblox-ui-engine.md` adds the NPC speech bubble recipe (offset-sized BillboardGui, `SizeOffset` so the bottom edge sits on the offset, `AlwaysOnTop`, typed text with `MaxVisibleGraphemes`).
+
 ## 2026-10-04 (evening) — Noob King clips published and wired, entrance cutscene (user-authorized)
 
 - roblox-r6-animation: `references/quality-review.md` adds the one-frame arm flip when a raised-arm hold blends with a down-arm clip (start holds under the attack clip at full weight, lower the arm with a reversed clip) and the one-shot that drops to the rest pose before the next clip (play the next clip underneath). `references/project-style.md` logs his "Publish the clips" and the Play measurements after wiring.

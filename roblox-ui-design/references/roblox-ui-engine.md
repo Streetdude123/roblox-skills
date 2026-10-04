@@ -27,6 +27,11 @@ Checked against the creator-docs repository and the API reference on 2026-10-03.
   BillboardGui scales with the billboard: 0.1 draws ~2 px, 2 draws a 40 px blob (measured). Setting
   `Adornee` before parenting can stop it drawing. `AlwaysOnTop` billboards do not show in
   `screen_capture`.
+- A speech bubble over an NPC (lobby villagers, 2026-10-04): size the BillboardGui in offset pixels
+  (strokes then draw at 1 px), set `SizeOffset = (0, 0.5)` so its bottom edge sits on `StudsOffset`
+  (a centred pixel billboard covers the head when the camera is close), and use `AlwaysOnTop` (a
+  transparent sea plane drew over a non-AlwaysOnTop panel). Type the line with
+  `TextLabel.MaxVisibleGraphemes` so an `AutomaticSize` panel keeps its final size while it types.
 - A `Camera` saved inside a ViewportFrame in StarterGui never reaches the client: build it at run time.
   ViewportFrames do not draw particles. A WorldModel is needed for an Animator to pose a rig inside one.
 
