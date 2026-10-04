@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-04 (evening) — Noob King clips published and wired, entrance cutscene (user-authorized)
+
+- roblox-r6-animation: `references/quality-review.md` adds the one-frame arm flip when a raised-arm hold blends with a down-arm clip (start holds under the attack clip at full weight, lower the arm with a reversed clip) and the one-shot that drops to the rest pose before the next clip (play the next clip underneath). `references/project-style.md` logs his "Publish the clips" and the Play measurements after wiring.
+- roblox-vfx-craft: `references/taste.md` logs the entrance cutscene build: the hole driven by the hands, the hidden King with a ghost in the homeland view, the gold light-gathering template, and the lessons on the dialogue panel, shot framing under letterbox bars, the font warm-up and the Play capture crop.
+
 ## 2026-10-04 (late) — Noob King clips: planted steps, arm crosses, live holds (user-authorized)
 
 - roblox-r6-animation: `references/r6-mechanics.md` adds the arm-cross shoulder gap and its post-pass fix, scaled rigs (offsets times `Torso.Size.Y / 2`), stance changes as foot target tracks with steps, and the rule that a forward lunge step needs the torso turned toward the stepping hip. `references/principles.md` adds the numbers for a long dramatic hold and periodic noise for looped trembles. `references/project-style.md` logs the King clips shown before publishing.
