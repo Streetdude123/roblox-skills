@@ -12,10 +12,7 @@ local TEX = {
 	dot = "rbxassetid://12082081459",
 	circle = "rbxassetid://257730458",
 	coin = "rbxassetid://82039572999398",
-	flash = "rbxassetid://867619398",
-	rays = "rbxassetid://1085001473",
 	ring = "rbxassetid://7919579655",
-	confetti = "rbxassetid://284872195",
 	exclaim = "rbxassetid://85961443128549",
 	anger = "rbxassetid://100652641974586",
 }
@@ -137,15 +134,9 @@ local buy = Instance.new("Folder")
 buy.Name = "Buy"
 buy.Parent = fx
 local core = attach(buy, "Core")
-emitter(core, "Flash", {tex = TEX.flash, size = ns({0, 1.5, 0.25, 4.5, 1, 3.5}), alpha = ns({0, 0, 1, 1}), life = {0.18, 0.18}, le = 0.9, bright = 1.5, color = cs(PALE, GOLD), count = 1, z = 1})
-emitter(core, "Rays", {tex = TEX.rays, size = ns({0, 1.5, 0.3, 5, 1, 5.5}), alpha = ns({0, 0.2, 1, 1}), life = {0.5, 0.5}, rot = {0, 360}, spin = {40, 40}, le = 0.6, bright = 1.2, color = cs(GOLD, DEEP), count = 1})
-emitter(core, "Ring", {tex = TEX.ring, size = ns({0, 1, 1, 6}), alpha = ns({0, 0, 1, 1}), life = {0.45, 0.45}, le = 0.8, bright = 2, color = cs(WHITE, GOLD), count = 1})
+emitter(core, "Sparks", {tex = TEX.star, size = ns({0, 0, 0.12, 0.6, 1, 0}), alpha = ns({0, 0, 1, 0}), life = {0.5, 0.8}, speed = {3, 6}, spread = Vector2.new(180, 180), drag = 5, rot = {0, 90}, spin = {-120, 120}, le = 0.6, bright = 1.2, color = cs(GOLD, WHITE), count = 8})
 local spill = attach(buy, "Spill", CFrame.Angles(math.rad(20), 0, 0))
-emitter(spill, "Coins", {tex = TEX.coin, size = ns({0, 0.6, 0.85, 0.6, 1, 0}), alpha = ns({0, 0, 0.8, 0, 1, 1}), life = {0.75, 0.95}, speed = {7, 11}, spread = Vector2.new(55, 55), accel = Vector3.new(0, -30, 0), drag = 0.8, rot = {0, 360}, spin = {-360, 360}, le = 0.1, color = cs(WHITE), count = 22})
-emitter(core, "Sparks", {tex = TEX.star, size = ns({0, 0, 0.1, 1.1, 1, 0}), alpha = ns({0, 0, 1, 0}), life = {0.6, 1}, speed = {5, 9}, spread = Vector2.new(180, 180), drag = 5, rot = {0, 90}, spin = {-120, 120}, le = 0.7, bright = 1.5, color = cs(GOLD, WHITE), count = 26})
-emitter(spill, "ConfettiGold", {tex = TEX.confetti, size = ns({0, 0.45, 0.85, 0.45, 1, 0}), alpha = ns({0, 0, 1, 0}), life = {1.4, 1.8}, speed = {6, 10}, spread = Vector2.new(70, 70), accel = Vector3.new(0, -10, 0), drag = 2.5, rot = {0, 360}, spin = {-400, 400}, le = 0.3, color = cs(GOLD, DEEP), count = 20, delay = 0.05})
-emitter(spill, "ConfettiWhite", {tex = TEX.confetti, size = ns({0, 0.4, 0.85, 0.4, 1, 0}), alpha = ns({0, 0, 1, 0}), life = {1.4, 1.8}, speed = {6, 10}, spread = Vector2.new(70, 70), accel = Vector3.new(0, -10, 0), drag = 2.5, rot = {0, 360}, spin = {-400, 400}, le = 0.3, color = cs(WHITE, PALE), count = 16, delay = 0.05})
-emitter(core, "Twinkles", {tex = TEX.twinkle, flip = true, size = ns({0, 0.9, 1, 1.2}), alpha = ns({0, 0.1, 0.75, 0.1, 1, 1}), life = {0.8, 1.2}, speed = {2, 4}, spread = Vector2.new(180, 180), drag = 3, rot = {0, 360}, le = 0.6, bright = 1.2, count = 14, delay = 0.15})
+emitter(spill, "Coins", {tex = TEX.coin, size = ns({0, 0.45, 0.85, 0.45, 1, 0}), alpha = ns({0, 0, 0.8, 0, 1, 1}), life = {0.6, 0.8}, speed = {5, 8}, spread = Vector2.new(50, 50), accel = Vector3.new(0, -30, 0), drag = 0.8, rot = {0, 360}, spin = {-360, 360}, le = 0.1, color = cs(WHITE), count = 8})
 
 local equip = Instance.new("Folder")
 equip.Name = "Equip"
