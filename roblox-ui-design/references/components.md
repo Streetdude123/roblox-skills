@@ -184,6 +184,24 @@ game logo or art, a progress bar driven by `ContentProvider:PreloadAsync` that o
 (`min(assets, elapsed / minTime)`), a minimum display time of 3-5 s, a SKIP after a few seconds, music
 muffled until done. Run its loop on Heartbeat (RenderStepped does not fire while Studio is hidden).
 
+Built and published for Untitled TD (2026-10-05, lobby v1360 + game place v189):
+- Join: a `ReplicatedFirst` LocalScript clones a `ReplicatedFirst` template into PlayerGui, then calls
+  `RemoveDefaultLoadingScreen`. Before `game.Loaded` the bar climbs by time to 30%; then it climbs with
+  `PreloadAsync` per child of PlayerGui, SoundService and ReplicatedStorage; it ends when the character
+  exists and at least 4 s passed. Tower figures in ViewportFrames: strip KeyframeSequences, Animations,
+  joints and welds from the clones (4353 -> 176 instances), anchor the parts, make the cameras at run time.
+- Gamepad: select SKIP when `PreferredInput` is Gamepad; clear the selection before hiding SKIP and set
+  `Selectable = false` on the backdrop button (verification.md section 9).
+- Teleport: the client clones a card template when the player is queued and calls
+  `TeleportService:SetTeleportGui(gui)` then and again when the card shows at countdown 0. It hides the
+  card when the countdown goes back up and on `TeleportInitFailed`.
+- Arrival in the destination place: a `ReplicatedFirst` LocalScript takes
+  `TeleportService:GetArrivingTeleportGui()` (nil in Studio and for a direct join), enables it, parents
+  it, removes the default screen, refits it, continues the bar from 0.6, and fades it out after the map
+  signal (an attribute the map loader sets), the character and a 0.8 s settle. A cutscene script that
+  hides all other ScreenGuis will also hide this screen; time the first cutscene after it.
+- Keep the top element below `GuiService.TopbarInset` on all three screens.
+
 ## Tutorial spotlight
 
 One `Frame "Hole"` the size of the target with a huge `UIStroke` (2600 px, black, transparency 0.4)

@@ -8,6 +8,7 @@ needs.
 ## 2026-10-05 - lobby loading screens, top bar and gamepad checks in Play (user-authorized)
 
 - roblox-ui-design: `references/taste.md` logs the loading-screen picks (join screen with a tower parade, teleport screen with a map card, the title, progress bar, tips and SKIP, the six tips, the Forest arrival script); `references/verification.md` adds section 9 (check full-screen UI in Play against the real top bar with `GuiService.TopbarInset`, the Roblox player list, the selection leak when a selected button hides, the mirrored second touch in the touch emulator, the Controller Emulator key map and its Studio warning, probe and attribute methods for short screens); `SKILL.md` adds the two traps.
+- roblox-ui-design (later the same day): `references/components.md` adds the built recipe for the join, teleport and arrival screens; `references/taste.md` logs the switch and publish answers (lobby v1360, Forest v189).
 
 ## 2026-10-04 (late night, lobby shop) - shopkeeper cutscene, counter shop, emote picks, custom prompt (user-authorized)
 
