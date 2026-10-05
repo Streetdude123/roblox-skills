@@ -55,6 +55,13 @@ python3 check.py sfx_find/built/*.wav --png
 - Roblox partner results per single word, ProSoundEffects: magic 829, sword 728, glass 1000+, explosion 328, punch 541, whoosh 1000+, cloth 840, bell 608, energy 789.
 - Built from real layers: `barrier_block` 1.9 s, centroid 5720 Hz; `heavy_hit` 5 s, centroid 698 Hz. Not yet judged by ear.
 - `Audition.lua` has not been run yet. It uses `AudioPlayer:GetWaveformAsync` and `AudioAnalyzer` PeakLevel and RmsLevel; check its output the first time it runs in Studio.
+- Python was not installed on 2026-10-05, so `find.py` and `build.py` did not run. The fallback: MCP `search_asset` (Audio, creator_store) for the store, and Web Audio in the built-in browser to measure.
+- **Listening page for store audio and local files (2026-10-05).** A create.roblox.com tab gets the CDN location from `assetdelivery.roblox.com/v2/assetId/<id>` with no sign-in. That tab cannot fetch localhost or frame it (CSP). A localhost page can fetch the CDN URL (CORS allowed): the bytes come back as plain `OggS` typed `binary/octet-stream`, so `<audio src=cdn>` fails with error 4, and a `Blob` typed `audio/ogg` plays. Pass the long signed URLs to the local page through a JSON file, never through tool output. One page per request: every candidate grouped by role, numbered per group, tick boxes and a summary line to copy.
+- **Level the page before the user listens.** ProSoundEffects ambience loops are mastered very low: Birds Park 1 -55 dB RMS, Forest Ambience 2 -59, Mountain Birds 1 -48, Water Lap Glugs 1 -39. DistroKid jazz measured -12 to -23 dB RMS; Kenney UI sounds -11 to -25 dB RMS at about -1 dBFS peak. Raw, the ambience is inaudible next to the music. Give each row a gain to its planned in-game RMS and put a limiter on the master.
+- **`Sound:Play()` does not restart a Sound that is playing.** A 0.45 s typing blip played on each new letter sounded once per 0.45 s (1 blip for a 31-letter line). `Stop()` then `Play()` gave one per letter (11 for 11 letters).
+- **`SoundService:PlayLocalSound` is invisible to tests:** the template gets no `IsPlaying` and no `Played`. Clone the template into a local folder under SoundService, `Play()`, destroy on `Ended`. A test can count it, clicks overlap, and 3D sounds use the same function with a part as the parent.
+- A Sound with an empty `SoundId` fires no `Played`. To count events before the real ids exist, give the clones a client-local test id.
+- **Footsteps on the default R6 walk** (180426354, 0.667 s loop): the right foot is forward at 0 s and the left at 0.381 s. Play a step when `TimePosition` wraps or crosses 0.381. At 7 studs/s (speed 0.48), 12 walkers made 51 steps in 10 s with a median gap of 0.63 s.
 
 ## Reading the spectrogram
 
@@ -72,6 +79,8 @@ python3 check.py sfx_find/built/*.wav --png
 
   The user chose: search both the web and the Roblox store; licenses CC0 plus free site licenses with no attribution; layering and processing allowed.
 - 2026-09-26: "Actually no keep them seperate, two separate repos" (meaning two skill folders in this repo). The finder became `roblox-sfx-finder`, and `roblox-sfx-synth` went back to synthesis only.
+- 2026-10-04 (Untitled TD lobby): "add sound effects, soft jazz music please too that plays in the lobby". His sound picks: ambient nature, villager sounds, elevator sounds, UI clicks.
+- 2026-10-05: "Lobby sounds and soft jazz candidates please". On the jazz: "I gotta listeb it to thugh" - he listens before he picks music. On the Kenney CC0 packs: "Yes, upload and make public". This led to the listening page with every candidate, levelled to its in-game level (Measured on this setup).
 
 ## References
 
