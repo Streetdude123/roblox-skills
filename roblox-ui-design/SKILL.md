@@ -148,6 +148,10 @@ his Undertale place on seven simulated devices.
   a disabled ScreenGui keeps a stale AbsoluteSize; `TextSize` ignores UIScale.
 - Fresh image uploads can render blank until moderation completes; decal ids need `LoadAsset` to get
   the image id; `.png` downloads may be WebP.
+- Edit mode has no top bar: check full-screen UI in Play and keep the top element below
+  `GuiService.TopbarInset` (verification.md section 9).
+- Hiding the selected button moves the gamepad selection to the nearest `Selectable` object (a
+  backdrop button, then the HUD): clear `SelectedObject` first and make backdrop buttons not `Selectable`.
 
 ## Definition of done
 

@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-05 - lobby loading screens, top bar and gamepad checks in Play (user-authorized)
+
+- roblox-ui-design: `references/taste.md` logs the loading-screen picks (join screen with a tower parade, teleport screen with a map card, the title, progress bar, tips and SKIP, the six tips, the Forest arrival script); `references/verification.md` adds section 9 (check full-screen UI in Play against the real top bar with `GuiService.TopbarInset`, the Roblox player list, the selection leak when a selected button hides, the mirrored second touch in the touch emulator, the Controller Emulator key map and its Studio warning, probe and attribute methods for short screens); `SKILL.md` adds the two traps.
+
 ## 2026-10-04 (late night, lobby shop) - shopkeeper cutscene, counter shop, emote picks, custom prompt (user-authorized)
 
 - roblox-ui-design: `references/taste.md` logs the shop redesign picks (counter cutscene, tap to skip, counter carousel, the stat hexagon kept), the custom prompt pick (key chip + word), and four traps (BillboardGui buttons in the touch simulator, prompt style changes on a shown prompt, prompt line of sight under an occluder, a child named Name).
