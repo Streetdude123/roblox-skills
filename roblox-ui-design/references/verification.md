@@ -130,3 +130,10 @@ Edits in a Team Create place are live for everyone and saved to the cloud. Build
 clearly named, disabled ScreenGuis (`Lab_*`, attribute `Lab`) and ask Lepy at the end whether to keep
 or delete them. Never touch the authored UI without his word; report its defects instead (for example
 the Undertale timer text overflowing its panel on phones).
+
+## 8. Real clicks in the device emulator (2026-10-05)
+
+- The Studio MCP virtual mouse does not activate buttons while the emulator is a touch phone; real clicks (`SetCursorPos` + `mouse_event`) with Studio in front do.
+- Measure the screen mapping in the same Play session: grab the screen, find two buttons, fit `screen = offset + scale * AbsolutePosition`. The Roblox top-bar buttons showed in one session and not in another, and an inset of `CoreUISafeInsets` moved the shop's top row about 80 px while the bottom-anchored row stayed. A take that clicks only bottom-anchored buttons survives that change.
+- A BillboardGui prompt sits lower on screen than `WorldToViewportPoint` of its adornee (87 px in the shop test); find it in a grab.
+- Log every `Activated` click with a sound or attribute logger, so a missed click shows at once.
