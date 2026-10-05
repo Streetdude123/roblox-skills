@@ -5,6 +5,12 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-04 (late night, lobby shop) - shopkeeper cutscene, counter shop, emote picks, custom prompt (user-authorized)
+
+- roblox-ui-design: `references/taste.md` logs the shop redesign picks (counter cutscene, tap to skip, counter carousel, the stat hexagon kept), the custom prompt pick (key chip + word), and four traps (BillboardGui buttons in the touch simulator, prompt style changes on a shown prompt, prompt line of sight under an occluder, a child named Name).
+- roblox-r6-animation: `references/project-style.md` logs the Forest lumberjack idle picks and grip rules, and the shopkeeper mood emotes (picks, uploads, and his praise for the Roblox catalog emote style, with the note that those clips are references, not authored clips).
+- roblox-modeling: `references/taste.md` logs the shopkeeper outfit pick, the figurine base from the stand mesh, and the rules on coplanar overlapping parts (z-fighting) and rig root transparency.
+
 ## 2026-10-04 (night, lobby) — Untitled TD 4x lobby and talking dummy villagers (user-authorized)
 
 - roblox-modeling: `references/taste.md` logs the 4x lobby plan pick and the villager picks from a numbered sheet of Toolbox dummies (one shared body in the towers' colours, the variety in what they wear and hold, player size, classic smile), with the staging and capture method and the rule to ask when his words and a pick conflict.
