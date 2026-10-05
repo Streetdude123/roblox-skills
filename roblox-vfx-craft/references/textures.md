@@ -83,3 +83,12 @@ measured colour maps and painted detail.
 dark teal rim and a soft halo) and `scripts/paint/trail.py` a 256 px trail strip (bright edge at the tip side, soft streaked
 body fading toward the hilt). Pillow, `py -3`. Uploaded as 107483578603804 and 119359586668380 (feathers) and 82141299579764
 (trail); on a beam the feather runs along the beam (quill at Attachment0), on a particle use FacingCamera and a random rotation.
+
+## Painted flame flipbook for a steady fire (2026-10-05, Shinsenkyo kagaribi)
+
+Toolbox fire packs (six high-rated ones, scripts read and removed) drew orange blobs in a sunset scene, and the "fire burst" flipbook 11489199156 is an explosion, not a flame. The fix was a painted 8x8 flame-tongue flipbook: `scripts/paint/flame/flame.py tongue <seed> 8 128`.
+
+- Shape: noise erosion, not a hand-drawn teardrop. A teardrop field (`G * F`) plus fbm noise that is masked to the flame's neighbourhood (unmasked noise left floating specks), noise erosion stronger near the tip, a fade at the cell bottom, a life envelope that grows the tongue, lifts its base and lets the lick drift off and fade.
+- Colour baked in the texture (deep red - orange - yellow - pale core). Alpha `ss(0.02, 0.62, T) ** 1.15`: a hard alpha ramp drew red outlines where tongues overlap. Overall `T * 0.9` keeps the core from turning white.
+- Judge the whole fire offline before upload: `sim.py fire1.json out.png` draws many particles the way a ParticleEmitter does (size curve, OneShot frames, LightEmission blend) over a dark and a sunset background.
+- Emitter (KagaribiFire.lua): flames spawn from an invisible Box-shape part over the basket mouth (an Attachment emits from one point), two flipbook variants (118340173564501, 121999875479986) at rate 12, life 0.75-1.0, speed 0.25-0.6, size 2.3-2.6; a smaller core layer; embers (8068783649, VelocityParallel + Squash); smoke 11414939890; a 4.2-stud glow at 0.9 transparency; a PointLight tagged FireLight that a client module flickers with two noise octaves; a crackle loop 9112780462 tagged AmbientSound. A fast tongue speed (0.6-1.2 plus acceleration 1) stretched the fire into a 4-stud column; the slow values read as a basket fire.
