@@ -7,6 +7,7 @@ needs.
 
 ## 2026-10-05 - Shisenkyo lobby request (user-authorized)
 
+- roblox-modeling (later): `references/taste.md` logs his lobby picks (LOOK 2 sunset canon, SHIP S1 bezaisen, plan v1, the name Shinsenkyō) and the rule that a lobby is a living scene (dense props, wind, fire, water, life and sound).
 - roblox-modeling: `references/taste.md` logs the Hell's Paradise lobby request (canon selection beach at Edo, semi-realistic models in the spirit of MAPPA's art, no rush) and the note to read the open place name from Studio instead of asking.
 
 ## 2026-10-05 - lobby loading screens, top bar and gamepad checks in Play (user-authorized)
