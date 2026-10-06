@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-06 - Shinsenkyō Hōrai court and the "keep going" instruction (user-authorized)
+
+- roblox-modeling: `references/taste.md` logs "Start now" and "Just leep goi" (start the character work at once and keep working without stopping, except for his picks); `references/organic-and-terrain.md` adds "Paved courtyards on terrain" (MaterialVariant overrides on unused terrain materials, ReplaceMaterial strips, slab values that read from the player camera, moat arms, focus Studio before a capture).
+
 ## 2026-10-06 - Shinsenkyō Hōjō valleys and the player character request (user-authorized)
 
 - roblox-modeling: `references/taste.md` logs his request to replace the player characters with custom R6 convict models (new convicts with heavy inspiration from the anime's convicts, correct proportions, a numbered sheet for each design, after Hōjō); `references/organic-and-terrain.md` adds "Wasteland set" (code-built dead trees, stone stacks with plane cuts, text tiles for canon details with no frame, set pieces that snap each child to the terrain).

@@ -46,3 +46,11 @@ The cleaved blocks themselves, triangulated and flat shaded, with a face-corner 
 - Stone stacks: icosphere stones with fbm noise, 2 to 4 random plane cuts for flat broken faces, flattened top and bottom, each stone placed on the top of the last. Smooth pebbles read as a zen garden; the cuts make them read as rough volcanic stone.
 - A canon detail with no anime frame (the Sōshin stacks) still goes on the sheet as a text tile with the wiki quote, next to real photos for the build.
 - Set pieces as Models with children at local offsets; the placer snaps each child to the terrain at its own XZ, so one template fits any slope.
+
+## Paved courtyards on terrain (Shinsenkyō Hōrai, 2026-10-06)
+
+- A palace court of 1,000 x 1,200 studs is terrain, not parts. Give it a texture with a MaterialVariant override: a variant with BaseMaterial Pavement and the paving maps, then `MaterialService:SetBaseMaterialOverride(Enum.Material.Pavement, "HoraiPaving")`. Pick a terrain material the rest of the map does not use, because the override is global.
+- Swap the court surface with `Terrain:ReplaceMaterial(region, 4, Slate, Pavement)` in strips of 248 studs. The occupancy stays, so the floor height does not move. A path is a second unused material (Concrete) with its own variant, written the same way.
+- Values that read from the player camera: slabs (Poly Haven large_grey_tiles) at StudsPerTile 22 with contrast 0.8 and mean 112,110,104; the lighter central way (floor_tiles_02) at StudsPerTile 16, mean 178,172,160. At contrast 1.2 the slabs read as a checkerboard.
+- A moat: carve only the four arms (FillBlock Air 16 high, Mud floor 3, Water 5.5). Do not carve the whole box and refill the island with FillBlock: FillBlock writes full occupancy, and the court surface voxels hold partial occupancy, so the refilled island would not match the court height.
+- Studio in the background shows none of this: focus it and wait 6 s before a capture.
