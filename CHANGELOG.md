@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-06 - Shinsenkyō island ambient effects (user-authorized)
+
+- roblox-vfx-craft: new `references/ambient.md` (canopy light shafts from real gaps, butterflies as beams on moving attachments after moving parts measured 2 ms per 30, zone mist with Atmosphere and ColorCorrection presets, beam axis and `Segments = 1` facts, the MCP camera reset); `scripts/ambient/` gains the island builder and the `Shafts`, `Butterflies` and `Mist` modules; `scripts/paint/` gains the wing, body and shaft painters; `SKILL.md` and `references/taste.md` log the canon requests.
+
 ## 2026-10-05 - Shisenkyo lobby request (user-authorized)
 
 - roblox-modeling (later): `references/taste.md` logs his lobby picks (LOOK 2 sunset canon, SHIP S1 bezaisen, plan v1, the name Shinsenkyō) and the rule that a lobby is a living scene (dense props, wind, fire, water, life and sound).
