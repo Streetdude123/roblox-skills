@@ -95,3 +95,4 @@ What it means in practice (applied in this skill):
   - Method that worked: a fast workbench block preview (kit.preview, about 20 s) compared side by side with the pick before each 5-20 minute bake. It caught a squat lantern, a straight-walled bale, inverted board caps, overlapping mats and a dummy blocking the camera before any bake time was spent.
   - Texture fixes without a rebake: kit.load_masks() + recompose=1, then refbx.py re-exports the FBX with the reloaded maps (the FBX embeds its textures).
   - Particle sprites are centred on the particle: a 2.5-stud flame sprite starts 1.25 studs under its emitter, so the kagaribi flames hung around the cone until the emitters were raised by half the sprite size.
+- After the props pass: "okay, forget about the fence it's fine, now what next? what should we do now?" The blockout post-and-rail fence around the practice yard stays as it is; do not rebuild it.
