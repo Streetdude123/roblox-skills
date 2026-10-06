@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-06 - Shinsenkyō Eishū colour and ground fill (user-authorized)
+
+- roblox-modeling: `references/taste.md` logs four requests from the Eishū pass (far more colour and flower species, the whole colour wheel, more than 8 colours in every view, no empty ground and more props) and what fixed the last one; `references/organic-and-terrain.md` adds "Lush ground fill" (terrain grass hides anything under about 2 studs, tall meadow tiles and two client clutter layers measured at 1 to 1.5 ms, collidable scenery on the server, find the cost with `Stats` and `LocalTransparencyModifier` before you cut).
+
 ## 2026-10-06 - Shinsenkyō island ambient effects (user-authorized)
 
 - roblox-vfx-craft: new `references/ambient.md` (canopy light shafts from real gaps, butterflies as beams on moving attachments after moving parts measured 2 ms per 30, zone mist with Atmosphere and ColorCorrection presets, beam axis and `Segments = 1` facts, the MCP camera reset); `scripts/ambient/` gains the island builder and the `Shafts`, `Butterflies` and `Mist` modules; `scripts/paint/` gains the wing, body and shaft painters; `SKILL.md` and `references/taste.md` log the canon requests.
