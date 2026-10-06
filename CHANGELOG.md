@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-06 - Shinsenkyō convict picks and the first convict review (user-authorized)
+
+- roblox-modeling: `references/taste.md` logs his convict picks (P3 + P6 combo, designs A2 B2 C2 D2 E2 F1 G1 H1, faceless, giants at the same height), the body-frame answers (B1, then B2 slim R6 blocks, then shorter and wider after the A2 review), the size rule (scale every part together, never stretch single limbs), and the A2 review ("more detail please more complex design", hair "so flat", then "tacky"): hair now gets its own numbered reference sheet before it is modeled.
+
 ## 2026-10-06 - Shinsenkyō Hōrai outer section (user-authorized)
 
 - roblox-modeling: `references/bake-and-texture.md` adds "Several assets in one Blender run" (hide finished assets during AO bakes, smooth SDF meshes before a metal bake, cache the high mesh, gold values for Roblox light); `references/organic-and-terrain.md` adds "Statue faces from an SDF" (smiling eyes, brows that do not frown, a laughing mouth).
