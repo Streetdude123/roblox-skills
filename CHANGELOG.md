@@ -7,6 +7,7 @@ needs.
 
 ## 2026-10-06 - Shinsenkyō convict picks and the first convict review (user-authorized)
 
+- roblox-modeling (later): `references/taste.md` logs his HA1 hair pick and the originality call ("aren't these supposed to be original convicts?"): each convict keeps the archetype and clothing language of its canon pick, but hair colour and cut, colour scheme and signature items are new; variants go on a numbered sheet.
 - roblox-modeling: `references/taste.md` logs his convict picks (P3 + P6 combo, designs A2 B2 C2 D2 E2 F1 G1 H1, faceless, giants at the same height), the body-frame answers (B1, then B2 slim R6 blocks, then shorter and wider after the A2 review), the size rule (scale every part together, never stretch single limbs), and the A2 review ("more detail please more complex design", hair "so flat", then "tacky"): hair now gets its own numbered reference sheet before it is modeled.
 
 ## 2026-10-06 - Shinsenkyō Hōrai outer section (user-authorized)
