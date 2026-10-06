@@ -39,3 +39,10 @@ The cleaved blocks themselves, triangulated and flat shaded, with a face-corner 
 - Keep collidable scenery (rocks, logs, stumps) on the server at a lower density; the client layers carry the density.
 - The canopy leaves were the main cost (646k of 1.56M scene triangles, 8 ms GPU), not the fill. Read `Stats.SceneTriangleCount`, `RenderGPUFrameTime` and `RenderCPUFrameTime` with each group hidden by `LocalTransparencyModifier` to find the cost before you cut anything.
 - Check the fill per view with a capture from the player camera and a hue count; the Eishū views read 10 to 12 of 12 hue groups.
+
+## Wasteland set (Shinsenkyō Hōjō, 2026-10-06)
+
+- Dead trees from code: a trunk tube with root fins and knots, primary limbs at 0.55 to 0.7 of the trunk radius, three levels of crooked branches (a sharp kink on about 1 in 5 segments, a light droop), arched roots that start on the trunk wall and end under the ground. Thin limbs (under 0.5 of the trunk) read as a young sapling, not a dead tree. 1,700 to 5,900 triangles each.
+- Stone stacks: icosphere stones with fbm noise, 2 to 4 random plane cuts for flat broken faces, flattened top and bottom, each stone placed on the top of the last. Smooth pebbles read as a zen garden; the cuts make them read as rough volcanic stone.
+- A canon detail with no anime frame (the Sōshin stacks) still goes on the sheet as a text tile with the wiki quote, next to real photos for the build.
+- Set pieces as Models with children at local offsets; the placer snaps each child to the terrain at its own XZ, so one template fits any slope.

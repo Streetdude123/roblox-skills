@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-06 - Shinsenkyō Hōjō valleys and the player character request (user-authorized)
+
+- roblox-modeling: `references/taste.md` logs his request to replace the player characters with custom R6 convict models (new convicts with heavy inspiration from the anime's convicts, correct proportions, a numbered sheet for each design, after Hōjō); `references/organic-and-terrain.md` adds "Wasteland set" (code-built dead trees, stone stacks with plane cuts, text tiles for canon details with no frame, set pieces that snap each child to the terrain).
+
 ## 2026-10-06 - Shinsenkyō Eishū colour and ground fill (user-authorized)
 
 - roblox-modeling (later): `references/taste.md` logs his approval of the Eishū fill ("Beautiful i love it").
