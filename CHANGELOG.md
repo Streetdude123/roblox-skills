@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-06 - Shinsenkyō Hōrai outer section (user-authorized)
+
+- roblox-modeling: `references/bake-and-texture.md` adds "Several assets in one Blender run" (hide finished assets during AO bakes, smooth SDF meshes before a metal bake, cache the high mesh, gold values for Roblox light); `references/organic-and-terrain.md` adds "Statue faces from an SDF" (smiling eyes, brows that do not frown, a laughing mouth).
+
 ## 2026-10-06 - Shinsenkyō Hōrai court and the "keep going" instruction (user-authorized)
 
 - roblox-modeling: `references/taste.md` logs "Start now" and "Just leep goi" (start the character work at once and keep working without stopping, except for his picks); `references/organic-and-terrain.md` adds "Paved courtyards on terrain" (MaterialVariant overrides on unused terrain materials, ReplaceMaterial strips, slab values that read from the player camera, moat arms, focus Studio before a capture).

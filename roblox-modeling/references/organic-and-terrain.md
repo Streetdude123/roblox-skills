@@ -54,3 +54,9 @@ The cleaved blocks themselves, triangulated and flat shaded, with a face-corner 
 - Values that read from the player camera: slabs (Poly Haven large_grey_tiles) at StudsPerTile 22 with contrast 0.8 and mean 112,110,104; the lighter central way (floor_tiles_02) at StudsPerTile 16, mean 178,172,160. At contrast 1.2 the slabs read as a checkerboard.
 - A moat: carve only the four arms (FillBlock Air 16 high, Mud floor 3, Water 5.5). Do not carve the whole box and refill the island with FillBlock: FillBlock writes full occupancy, and the court surface voxels hold partial occupancy, so the refilled island would not match the court height.
 - Studio in the background shows none of this: focus it and wait 6 s before a capture.
+
+## Statue faces from an SDF (Shinsenkyō golden heads, 2026-10-06)
+
+- A smiling closed eye is a groove shaped like an arch (middle higher than the corners) between an upper lid dome and a lower cheek bulge. A socket cut under the lid leaves a pit that reads as an open eye.
+- Brows whose inner ends sit lower than the arch, plus a nose bridge that reaches the brows, read as a frown. Raise the inner ends, start them wider apart, and fill the glabella with a soft ellipsoid.
+- A laughing mouth: a cavity with a top edge that curves up at the corners (`Z + 0.195 - 0.9 X^2`), the upper teeth set just behind the lip, a tongue deeper inside. Teeth that sit flush with the lips read as a closed slit.

@@ -65,3 +65,10 @@ Islands sit `px` pixels apart (5-8 at 1024). If a bake margin is wider than half
 ## Output for Roblox
 
 Save colour as sRGB PNG; normal, roughness and metalness as Non-Color PNG. One material slot on the exported mesh. In Studio these go into one SurfaceAppearance (ColorMap, NormalMap, RoughnessMap, MetalnessMap); 512 px is often enough for medium props, 1024 for hero props.
+
+## Several assets in one Blender run (gold heads, Shinsenkyō Hōrai, 2026-10-06)
+
+- An AO bake sees every renderable object in the scene. Three heads built at the same origin in one run: head A came out clean, B got brown patches and C turned brown all over, because the finished low heads of A and B sat inside C during its AO bake. Set `hide_render = True` on each finished asset before the next bake, and turn them back on only for the review render.
+- Metal shows every bump. The volume mesh from an SDF has stair rings that a matcap hides and gold shows; a density band of 2.5 voxels and a Laplacian smooth (4 iterations, lambda 0.6, keep volume) removed them. A curvature edge mask taken from a baked normal map draws the low mesh's triangle seams as camo patches; on smooth metal use AO for cavity and exposure only.
+- Cache the expensive high mesh (`np.savez` of vertices and triangles) so a texture fix rebakes in 1 minute per asset instead of 10.
+- Gold that reads in Roblox light: color 232,178,62 on exposed areas, 168,110,30 in shade, 92,54,16 in crevices, roughness 0.38, metalness 0.9, then SurfaceAppearance.Color 255,214,150 for a warm canon gold.
