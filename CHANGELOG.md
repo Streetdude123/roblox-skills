@@ -7,6 +7,7 @@ needs.
 
 ## 2026-10-06 - Shinsenkyō Eishū colour and ground fill (user-authorized)
 
+- roblox-modeling (later): `references/taste.md` logs his approval of the Eishū fill ("Beautiful i love it").
 - roblox-modeling: `references/taste.md` logs four requests from the Eishū pass (far more colour and flower species, the whole colour wheel, more than 8 colours in every view, no empty ground and more props) and what fixed the last one; `references/organic-and-terrain.md` adds "Lush ground fill" (terrain grass hides anything under about 2 studs, tall meadow tiles and two client clutter layers measured at 1 to 1.5 ms, collidable scenery on the server, find the cost with `Stats` and `LocalTransparencyModifier` before you cut).
 
 ## 2026-10-06 - Shinsenkyō island ambient effects (user-authorized)
