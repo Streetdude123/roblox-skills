@@ -41,6 +41,8 @@ Traps found on the way:
 - A coarse mass grid (96 x 60) gives a jagged rim at the hairline; 192 x 120 is smooth.
 - Geometric strand grooves alias on the 0.007 voxel grid (beads and zippers) and read as wet hair to him; leave strands to the texture.
 - Laplacian smoothing with volume preservation took 167 s on the high (plain Smooth: under 1 s).
+- Cutting the faces inside the head before decimation leaves an open edge only 0.012 inside the skin; decimation moves it out and it shows as dark specks where hair meets the face (589 open edges on A2). Decimate the closed union first, then cut 0.03 inside the head and fill the holes (80 open edges left, all hidden inside the head).
+- Hair textures: missing flow data (the flow bake hit the skin) reads as black root and edge; treat zero flow as neutral. AO bakes near 0 where low hair faces sit over hidden high faces; clamp hair AO at 0.45. Soften hair tangent normals (60 percent of the bake, tilt limited to about 30 degrees): 2 percent of hair pixels tilted over 37 degrees and lit as dark specks.
 - Helper hair (flyaways, a swirl at the whorl, a thin strand across the forehead, face-framing locks over the corner) made the hair look messy or knotted; leave them out unless the reference has them.
 
 ## Research (2026-10-06, "search up hair design modeling tips, real life hair, and modeling hair tips online")
