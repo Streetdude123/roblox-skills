@@ -60,3 +60,14 @@ The cleaved blocks themselves, triangulated and flat shaded, with a face-corner 
 - A smiling closed eye is a groove shaped like an arch (middle higher than the corners) between an upper lid dome and a lower cheek bulge. A socket cut under the lid leaves a pit that reads as an open eye.
 - Brows whose inner ends sit lower than the arch, plus a nose bridge that reaches the brows, read as a frown. Raise the inner ends, start them wider apart, and fill the glabella with a soft ellipsoid.
 - A laughing mouth: a cavity with a top edge that curves up at the corners (`Z + 0.195 - 0.9 X^2`), the upper teeth set just behind the lip, a tongue deeper inside. Teeth that sit flush with the lips read as a closed slit.
+
+## Big terrain in strips (2026-10-07, Shinsenskyō region pass)
+
+He asked for the first region "2.5x wider" with 10-12 open clearings of 150-250 studs for fights, "a LITTLE bit less flowers", and ruins in every valley of the second region.
+
+- A 3,328 x 3,328 numpy heightmap (13,312 studs at 4 studs per cell) with 20 float fields needs about 3 GB; on a 6 GB machine with Studio open it does not fit. Generate the terrain in strips of 256 rows with a 16-row halo (the halo keeps gradients, smoothing filters and neighbour minima correct at the seams), write the tiles of each strip, and drop the strip. The same terrain at r < 5,000 took 70 s and under 1 GB.
+- Scatter scripts that need the fields keep only float16 copies of the few fields they use (height, a validity mask, forest density, slope, gradients).
+- Clearings: a list of (x, z, radius); blend the height toward a 31-cell box blur inside the clearing (flat but not a plate), paint grass, and keep trees, patches and client clutter out by the same list (one shared module on the client).
+- Memory: a far forest belt does not need server parts. Ground patches became a client layer (a grid cell around the camera, a raycast to the terrain, tilt to the normal), which removed 9,150 server parts. Trees with collision stay on the server.
+- Studio Play holds the Edit, Server and Client copies: 33.6M terrain cells, 7,558 trees and 10,000 prop parts made Studio commit 7.8 GB on a 6 GB machine; it paged and the forest frame went from 36-47 ms to 60 ms median. Measure free memory and paging (Pages/sec) next to every frame time.
+- Ruins: build pieces as separate models with a pivot at the base, place them in clusters along the valley axis, sit each on the lowest of five ground hits, and keep them off the gameplay slots.

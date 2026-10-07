@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-07 - Region pass: big terrain in strips (user-authorized)
+
+- roblox-modeling: `references/organic-and-terrain.md` adds "Big terrain in strips" (strip generation with a halo for a 13,312-stud heightmap on a 6 GB machine, float16 fields for scatter, clearings from one shared list, ground patches as a client layer, Studio Play memory with three copies, ruin placement). `references/taste.md` logs his approval of the A2 hair ("looks good, get to work on regions now").
+
 ## 2026-10-06 - Sculpted clump hair and the bangs rules (user-authorized)
 
 - roblox-modeling: `references/hair.md` adds rules 9 and 10 (the cut fits the character's life - a convict is unkempt, no groomed middle part; bangs straight and clean to the eye line, never wavy or wet) and "Construction: sculpted clumps" (mass with dome and whorl bump, lens-section blade clumps on centripetal Catmull-Rom paths with transported frames and buried point roots, voxel union, decimated low, a baked hair-flow attribute for the strand texture) with the traps found while building it. `SKILL.md` rule 10 names both rules and the method. `references/taste.md` logs "try not a middle part, a convict wouldnt have well maintained hair, maybe bangs, like toji sort of" and "those bangs look stupid, stop making it wavy and wet, straight and clean to the eye level."
