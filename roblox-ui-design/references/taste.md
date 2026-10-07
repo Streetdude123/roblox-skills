@@ -148,6 +148,51 @@ the Play button becomes and which images it needs.
 - Rule: a new game with no authored UI gets a numbered style sheet of 6-8 directions that fit its theme, and
   he picks, before any build. Look for the franchise's own official game first (here Jigokuraku Paradise
   Battle, linked from the anime's official site).
+- His pick: "U2, maybe a little bit of U1". -> "A little" was open, so a second sheet showed three amounts
+  (`ui_mockups_M1_M3.jpg`, built by `mock_u2.py` over a lobby capture with Roblox's own Merriweather file):
+  M1 = U2 + hot pink (240, 36, 132, sampled from the official logo) on the Play diamond and the countdown,
+  no images; M2 = M1 + a black dry-brush ink band and a thin pink slash; M3 = M2 + ink splatter and a wide
+  slash. Element = the official "Round" HUD piece: a diamond with an outer ring, a label above it, a band to
+  the right with a hairline under it. Roblox serif options measured: Merriweather (closest to the official
+  Mincho Latin; Bold is asset 8075182406), Accanthis (Bodoni enum, old-style figures), Balthazar (Fantasy
+  enum, light), Roman Antique (Antique enum, narrow).
+- Then "i like the m2 u2, maybe not pink though since it doesn't fit thw wnvironment". -> Rule: an accent
+  colour taken from a reference must also fit the place's own scene; sample the scene first. A third sheet
+  (`ui_m2_colours_C1_C4.jpg`, `mock_m2.py`) showed M2 with colours sampled from the lobby: C1 the dais felt
+  and umbrella red (sampled 225, 22, 12; used 210, 30, 22), C2 the fire gold (sampled about 255, 185, 35;
+  used 232, 170, 52), C3 the curtain-stripe indigo (64, 94, 168), C4 black ink and white only, no slash.
+- His pick "Inlike fire gold" (C2), and uploads allowed ("Yes, upload them", covers small UI images in this
+  game). Built: `StarterGui.Queue` (Root > Fit, Main > Pop, Ink, Slash, Line, Mark > Ring, Fill, Icon, Time,
+  Dots, Label, Title, Status, Note, Leave, Play; `Layout` module), client `ReplicatedStorage.Client.Queue.Menu`
+  and `Client.UI.Fit`; builder `Shinsenkyo/studio/lobby/ui/build_queue.lua`. Ink and slash are painted white
+  and tinted in Roblox (ImageColor3), so one image serves any colour.
+- Mid-build, seeing the first in-game version: "Also scale the little brush of black to be longer, look at the
+  reference and look at the black paint, fix it". The game stroke was shorter than the approved mock-up (the
+  slash ran past its end), flat black and smooth-edged; the mock-up's was long with bristle lines and ragged
+  edges along its whole length. Rule: the built asset must be painted with the SAME method as the approved
+  mock-up and compared side by side before upload (`compare_ink.py`), never a "better" repaint. Fix: the
+  mock-up brush at 1400 x 186 (`paint_ui.py long`, image 76119264045739), 560 base units on desktop and TV,
+  slash on the stroke's dry end; 420 on phones and tablets so the Play hit area stays out of the thumbstick
+  zone. Placement: phones and tablets top right under the top bar (bottom right covered the character and
+  the jump zone), desktop and TV bottom centre; the empty Leave row under the band lifts the idle element,
+  so desktop sits 6 base units from the bottom (TV 30 for the 5% safe area).
+- "Looks good, next step" (approved), then from the live test on his phone (the UI at the top right):
+  "Great, keep the UI on the bottom though and remove the little tweening animation where the size
+  increases then decreases". Rules: (1) the main lobby action stays at the bottom on every device; on phones
+  and tablets it sits in the free strip between the thumbstick zone (left 40%) and the jump zone (audit:
+  phone jump zone starts 140 px from the right edge) - left edge at 40% of the width, a shorter stroke (270
+  base units, 248 px at phone scale 0.8, fits the iPhone 7's 260 px strip); (2) no size pops or pulses: no
+  grow-then-shrink on state changes, no countdown pulse, no hover grow; the only size change left is a press
+  shrink to 0.96 that returns with Quad Out (no Back overshoot).
+- Then "Make it sit at the bottom center closer and more accurately for all screens", and "yes I tested it
+  and it works fine on play in the real game". Rule: the main bottom element is centred on EVERY screen
+  (phones too, even though its left part then lies in the thumbstick zone - his call over the audit's STICK
+  ZONE question) and its visible bottom sits on a small fixed margin. The empty Leave/Note row under the
+  stroke made the idle element float by a different amount per screen; the fix moved the waiting text into
+  the label above the diamond ("Waiting for 4") and Leave to the top right of the stroke (the cancel
+  corner), so the frame ends 4 base units under the hairline. Measured: centred 0.0 px on Galaxy A16,
+  iPhone 7, iPhone 16 Pro Max, iPad, 1366 laptop, 1080p and Xbox; hairline 10 px from the bottom on
+  phones, 14 tablets, 17 desktop, 61 TV (5% safe area). Live lobby v47.
 - Sources that work: Interface In Game (`interfaceingame.com/games/<slug>/`, full-size screens at
   `/wp-content/uploads/<slug>/<name>.png`, the 500x281 thumbnails add `-500x281`), Steam
   `store.steampowered.com/api/appdetails?filters=screenshots&appids=<id>` (mostly gameplay), Dengeki Online

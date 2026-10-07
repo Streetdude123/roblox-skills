@@ -5,6 +5,9 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-07 - Shinsenkyō lobby Play and queue UI (user-authorized)
+
+- roblox-ui-design: `references/taste.md` logs the whole lobby UI pass: his picks (U2 "maybe a little bit of U1", M2 without pink, C2 fire gold, uploads allowed), "scale the little brush of black to be longer, look at the reference and look at the black paint" (paint the built asset with the approved mock-up's method and compare side by side before upload), "keep the UI on the bottom though and remove the little tweening animation where the size increases then decreases" (no pops, pulses or hover grow; press shrink only), and "Make it sit at the bottom center closer and more accurately for all screens" (centred on every device with a small fixed bottom margin; waiting text moved into the label, Leave to the top right), with the measured positions on seven devices.
 ## 2026-10-07 - Weather rain, the lobby UI style sheet and two island picks (user-authorized)
 
 - roblox-vfx-craft: `references/ambient.md` adds "Weather rain" (pack scan of the top rain packs, three camera-following emitter layers with a ring-shaped near layer, pooled raycast splashes, a roof check by an upward ray that fades the rain and crossfades two licensed loops, the grade values that made the forest read as rain, and the measured cost: about 6 ms on the first pass, 1.3 ms after the ring layer).
