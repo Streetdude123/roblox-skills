@@ -16,11 +16,13 @@ Learned 2026-10-06 on the Shinsenkyō convicts. Lepy's words, in order: "Hair lo
 
 ## Construction that works (`anime_hair` in `Shinsenkyo/blender/convicts/core.py`)
 
-1. A volume mass: a shell on a superellipsoid around the head (exponent 3 so it clears the rounded R6 box), radius x (1 + volume), volume per region (top 0.56, sides 0.46, back 0.5, front 0.28), bottom edge on a hairline (forehead el 30, sides el 0, nape el -34) with a small jag, solidified 0.05.
+1. A volume mass: a shell on a superellipsoid around the head (exponent 3 so it clears the rounded R6 box), radius x (1 + volume), volume per region (top 0.56, sides 0.27, back 0.5, front 0.28; sides 0.46 got "Too much side volume"), bottom edge on a hairline (forehead el 30, sides el 0, nape el -34) with a small jag, solidified 0.05.
 2. Thick crescent clumps (width 0.36 to 0.5, thickness 0.07, sag 0.05) laid on the mass: a side and back ring of 22 from el 52 down past the hairline with outward tips (30 percent flick up), a crown ring of 16 sweeping in the cut direction, 9 fringe clumps ending above the eye line, 2 side bangs per side, 5 tufts. Paths: slerp between two scalp directions, lift = base + rise x sin(pi/2 x t/0.7) (a dome, not a spike), droop and an end curl.
 3. About 6,000 low triangles for mass plus 48 clumps.
 
 ## Traps
+
+- A clump whose lift is set once at its root carries the root's volume along its whole path: crown clumps rooted at the top (volume 0.5) that sweep down to the temples made a wide helmet. Compute the lift from the local volume at every path point (`vfun=vloc` in `arc_path`). Measured on the A2 hairs: ear-level width 2.1 to 1.75 studs on a 1.12-stud head (1.56 x head, inside the pro range), maximum 2.24 to 1.85, top 0.05 studs lower.
 
 - Radial clumps from the crown with lift growing to the tip read as a sea urchin or a pineapple.
 - A hair cap that wraps the front corners of the head, or sideburn locks that hug the head, read as flat black panels beside the face. Cut the cap along a diagonal hairline (temple to behind the ear to the nape).
