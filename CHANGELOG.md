@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-06 - Hair from catalog and anime study (user-authorized)
+
+- roblox-modeling: new `references/hair.md` (study method with hair-only catalog search, `InsertService:LoadAsset` test heads and FOV-26 captures; measured pro and anime hair sizes; the volume-mass plus thick-clump construction; traps such as crown spikes, face-corner panels, one-eye fringes and the 14-colour ID palette; hair shading values). `references/taste.md` logs his four hair messages ("tacky", "look at real professional ugc hair", "needs more volume ... gabimaru's hair, lelouch's hair ...") and the island change request.
+
 ## 2026-10-06 - Shinsenkyō convict picks and the first convict review (user-authorized)
 
 - roblox-modeling (later): `references/taste.md` logs his HA1 hair pick and the originality call ("aren't these supposed to be original convicts?"): each convict keeps the archetype and clothing language of its canon pick, but hair colour and cut, colour scheme and signature items are new; variants go on a numbered sheet.
