@@ -63,6 +63,18 @@ take the camera, they run for the whole session, and their budget is "no measura
   LightInfluence 0.2 to 0.5.
 - Cost in the thick mist: 17.9 ms average, 19.3 p95 (the bare island measured 17.9 / 19.4 before the forest).
 
+## Weather rain (Shinsenkyō, 2026-10-07)
+
+Per-round weather from the island server (`Island` attributes `Weather` and `Daypart`, set by the layout from the round seed). Rain = client module `Rain` + templates `Fx.Rain` + a darker grade in the `Mist` module + an overcast skybox and Clouds from the server.
+
+- Pack scan: the 10 highest-voted rain packs on page one of "rain" (Rain Sky 950 votes, Rain System 860, Cloudy Rain 282, Realistic Rain 276, Rain (Particle) 196, Rain splash 188, ...); 8 scripts, all harmless (a camera drop effect, settings, lightning, a night clock, sounds). Textures kept: soft drop with a bright head 671728795 (near), crisp long streak 3806148993 (mid), a dense rain sheet 1742722513 (far curtains), crown splash 270368855 and splatter 1890069725 (ground). The Rain Sky skybox (4495864450 ...) is the rain-round sky.
+- Layers on three camera-following carriers under the camera: Near = a 90-stud Disc with ShapePartial 0.12 centred on the camera, 36 studs up, 650/s, size 2.6, speed 95-115, life 0.75, transparency 0.18, LightEmission 0.35; Mid = 190-stud box 62 up and 40 ahead, 1200/s, size 4.2, transparency 0.42; Far = 320-stud Disc with ShapePartial 0.42 (a ring, so no sheet near the lens), 16/s, size 26, transparency 0.76. All FacingCameraWorldUp, emitted down.
+- Splashes: 12 pooled attachments on one carrier; 0 to 3 raycasts down per frame inside 42 studs (biased ahead), a crown and half the time a splatter at the hit; on Grass the splash sits 1.1 studs up or the 2-stud terrain grass hides it.
+- Under a roof: a raycast up 160 studs every 0.2 s (leaves are CanQuery false, so the canopy does not count); the near and mid rates fade to 0 over about 0.25 s and the sound crossfades.
+- Sound: licensed ProSoundEffects loops, no upload: outdoor 9112853422 (Malaysia heavy rainfall on grass and a wooden roof, low thunder) at 0.6, indoor 9112853287 (heavy rain on a tent, dripping) at 0.45, both in SoundService.
+- Mood: the first pass read as a sunny forest with faint streaks. What made it rain: Lighting.Brightness 1.6 and OutdoorAmbient 160/166/172 from the server, and in the client grade Atmosphere density +0.15, haze +1.2, offset +0.06, colour and decay pulled 60% toward blue-grey, ColorCorrection brightness -0.08, saturation -0.34, contrast +0.05, tint 86/91/100% at 0.85. Haze +1.6 hid the forest past about 150 studs (too thick for fights).
+- Cost (Studio Play, forest clearing, machine paging): first pass about 6 ms (near drops 3.2 ms with a box over the camera, far sheets 2.7 ms at 26/s and size 30, mid streaks 0.1 ms); after the ring-shaped near layer and 16 sheets a second, 1.3 ms.
+
 ## Engine facts found on the way
 
 - Beam with `Segments = 1` samples its Transparency only at the two ends: a curve that is 1 at both ends draws nothing.

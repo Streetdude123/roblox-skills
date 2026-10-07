@@ -135,3 +135,21 @@ keeps its content (gold reward, time, Play Again, Back to Lobby) with a new desi
 - 2026-10-04/05 (Untitled TD lobby loading screens): "and a nice loading screen", picked "Both" (joining the lobby and the elevator teleport), then "Start on the loading screen". Picks: "Both tower parade and map preview", then "Join: towers, teleport: map"; title "Untitled Tower Defense"; "Yes, edit Forest too" (an arrival script in the Forest place keeps the teleport screen until the map is ready); "Progress bar, Tips, Skip button" (SKIP on the join screen only); "Use these tips" (six tips: shopkeeper, 5-tower loadout, 4 per elevator, upgrades, Frosty Peaks frost meter, gold). Built in the game's tokens (charcoal panels, grey 3 px strokes, radius 10, RobotoMono Bold, stripes, green bar): join = title tab, four turning tower figures in cards, LOADING %, bar, tip, SKIP after 3 s; teleport = one card with the map picture, map name, TELEPORTING..., bar and tip.
   - Rule from the Play check: a full-screen screen is checked in Play against the real Roblox top bar, not only in Edit. The menu pill covered the title corner on an iPhone 7; the top element now stays below `GuiService.TopbarInset`.
   - Order (2026-10-05): "Yes, switch now" (close the lobby in Studio and open the Forest place for the arrival script) and "After Forest is done" (publish the lobby and Forest together). Published lobby v1360 and Forest v189.
+
+**2026-10-07, Shinsenkyō lobby (90590086508312, Hell's Paradise game, no authored UI)** - asked for the
+lobby Play button and queue panel, he wrote "Style preference? somwthing that honestly suits hells paradise,
+give me multiple ui design references and let me pick between like 6-8 designs". -> A numbered sheet of 8
+directions (`Shinsenkyo/references/ui/ui_style_sheet_U1_U8.jpg`, built by `ui_sheet.py`): U1 the official
+game's black ink + hot pink brush, U2 the official game's serif + hairlines + diamonds, U3 words on the scene
+with a brush behind the pick (Ghost of Tsushima, Black Myth), U4 white washi + black ink (Ghost of Tsushima
+pause, Sifu), U5 old paper boards (Sekiro), U6 black lacquer, crimson and gold (Onimusha: Way of the Sword),
+U7 execution red (Sifu chapter, Sekiro death), U8 indigo + paper cards (Kunitsu-Gami). Each tile names what
+the Play button becomes and which images it needs.
+- Rule: a new game with no authored UI gets a numbered style sheet of 6-8 directions that fit its theme, and
+  he picks, before any build. Look for the franchise's own official game first (here Jigokuraku Paradise
+  Battle, linked from the anime's official site).
+- Sources that work: Interface In Game (`interfaceingame.com/games/<slug>/`, full-size screens at
+  `/wp-content/uploads/<slug>/<name>.png`, the 500x281 thumbnails add `-500x281`), Steam
+  `store.steampowered.com/api/appdetails?filters=screenshots&appids=<id>` (mostly gameplay), Dengeki Online
+  article images. The Game UI Database stayed on a Cloudflare check (not bypassed); Bing image scraping
+  returned junk.

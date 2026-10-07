@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-07 - Weather rain, the lobby UI style sheet and two island picks (user-authorized)
+
+- roblox-vfx-craft: `references/ambient.md` adds "Weather rain" (pack scan of the top rain packs, three camera-following emitter layers with a ring-shaped near layer, pooled raycast splashes, a roof check by an upward ray that fades the rain and crossfades two licensed loops, the grade values that made the forest read as rain, and the measured cost: about 6 ms on the first pass, 1.3 ms after the ring layer).
+- roblox-ui-design: `references/taste.md` logs "Style preference? somwthing that honestly suits hells paradise, give me multiple ui design references and let me pick between like 6-8 designs". A new game with no authored UI gets a numbered sheet of 6-8 style directions before any build; look for the franchise's own official game first. Interface In Game, the Steam appdetails screenshots and Dengeki Online article images work as sources; the Game UI Database stayed on a Cloudflare check.
+- roblox-modeling: `references/taste.md` logs "Option 2, make sure this doesn't afdect players if theres multiple of them though" (client-drawn far trees only with a shared server collider per tree) and the forest set-piece picks FS1-FS7.
 ## 2026-10-07 - Region pass: big terrain in strips (user-authorized)
 
 - roblox-modeling: `references/organic-and-terrain.md` adds "Big terrain in strips" (strip generation with a halo for a 13,312-stud heightmap on a 6 GB machine, float16 fields for scatter, clearings from one shared list, ground patches as a client layer, Studio Play memory with three copies, ruin placement). `references/taste.md` logs his approval of the A2 hair ("looks good, get to work on regions now").
