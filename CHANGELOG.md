@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-06 - Sculpted clump hair and the bangs rules (user-authorized)
+
+- roblox-modeling: `references/hair.md` adds rules 9 and 10 (the cut fits the character's life - a convict is unkempt, no groomed middle part; bangs straight and clean to the eye line, never wavy or wet) and "Construction: sculpted clumps" (mass with dome and whorl bump, lens-section blade clumps on centripetal Catmull-Rom paths with transported frames and buried point roots, voxel union, decimated low, a baked hair-flow attribute for the strand texture) with the traps found while building it. `SKILL.md` rule 10 names both rules and the method. `references/taste.md` logs "try not a middle part, a convict wouldnt have well maintained hair, maybe bangs, like toji sort of" and "those bangs look stupid, stop making it wavy and wet, straight and clean to the eye level."
+
 ## 2026-10-06 - Hair rules moved into the modeling skill (user-authorized)
 
 - roblox-modeling: `SKILL.md` rule 10 (hair is designed, not generated: reference pick, big-medium-small, tapered blades with thickness, flow from the part and the crown whorl, no visible scalp, painted strand texture) and the meaning of "push what you learned" (write the lesson into SKILL.md and its reference, then push). `references/hair.md` rewritten: rules first, his verdicts on the four rejected hairs, the research (design, modeling, real hair, texture, Roblox UGC), study method, measurements, the coverage test, traps, and the rejected constructions kept for their numbers. `references/character-from-reference.md` points hair work to `hair.md`. `references/taste.md` logs "Push what you learned and remake your hair for the convicts" and "I mean push what you learned to the modelong skill".

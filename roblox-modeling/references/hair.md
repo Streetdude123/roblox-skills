@@ -12,6 +12,8 @@ Hair is the first thing Lepy judges on a character. Every hair built so far was 
 6. **No scalp shows** anywhere (coverage test below).
 7. **Texture.** Three shades (base, darker in crevices and under layers, lighter on top), strand lines along each clump, darker roots and undersides, a soft highlight band across the flow on the top of the head, defined tips. Never one flat colour with curvature highlights (reads as plastic). Too much highlight reads wet.
 8. **Review.** Clay renders of the high (front, three quarter, side, back, top) side by side with the pick before any bake; then the textured renders; then the player camera in Studio.
+9. **The cut fits the character's life.** A convict does not have groomed hair: no neat middle part ("try not a middle part, a convict wouldnt have well maintained hair, maybe bangs, like toji sort of"). Unkempt means a rough, uneven cut, not wet strands.
+10. **Bangs: straight and clean to the eye line** ("stop making it wavy and wet, straight and clean to the eye level"). No waves, S-curves, leans or forks on bangs, no needle-thin stringy tips, no strand grooves that read as wet, no gloss (hair roughness about 0.6 or more).
 
 ## Why the earlier hair failed (his verdicts, 2026-10-06)
 
@@ -19,6 +21,27 @@ Hair is the first thing Lepy judges on a character. Every hair built so far was 
 2. Thin ribbon locks after the catalog study: "your hair isn't good, look at real professional ugc hair", then "Your hair in general needs more volume".
 3. Volume mass plus thick crescent clumps (`anime_hair`): "Too much side volume but other than that not bad" (side volume 0.46), then "let the hair fall naturally, kind of looks like it's floating" (a shell with an edge that hovers off the head).
 4. Gravity drape (`drape_hair`): the clay sheet N1 and N2 got "pretty good"; on the textured A2, "Fill this gap" (scalp at the part), then "Your hair design is horrible". Measured against the research below: a box silhouette (uniform offset over the R6 box), 87 locks of nearly one width (0.24 to 0.32), one thickness (0.06) and one taper (shingles, "spaghetti"), flat crescent strips, stiff parallel flow from gravity and a comb field, and a plastic texture (flat colour, curvature highlights, AO blotches).
+
+## Construction: sculpted clumps (2026-10-06, current; A2 in review)
+
+Files: `Shinsenkyo/blender/convicts/hair_sculpt.py` (exec after core.py), test renders `hair2_test.py` (clay high, low and colour from 5 views), debug `hair_dbg.py` (raw clumps in random colours plus the mass in grey, with per-clump frame checks).
+
+1. Mass: a closed shell over a 192 x 120 direction grid, offset = 0.82 x the volume field (top 0.13 plus a dome 0.15 that falls off from the top centre, sides 0.12 to 0.08, back 0.15, nape 0.06), tucked 0.045 inside the head below the hairline over a 12-degree ramp, plus a small bump (0.035) at the crown whorl.
+2. Clumps: sweeps of a lens section (top full thickness, underside 0.5) along a path through waypoints given as head directions with an offset (volume x k, or an absolute offset below the hairline). Paths use a centripetal Catmull-Rom spline. Frames are parallel-transported and only blended toward the head normal (a cross product of tangent and head normal flips where the path rises along the normal). Two width profiles: "leaf" (widest at 0.4, long taper) and "blade" (full width to 0.6, straight taper to a point, used for clean straight hair). Every root tapers to a point and starts inside the mass (k about 0.6 to 0.8) with a flat first segment.
+3. Layout for the A2 bangs: 7 bangs from near the crown over the top and straight down the front to the eye line (tips +0.09 above head centre, +-0.03), 4 straight side locks per side from the top-side edge to the jaw, 7 back clumps radiating from the whorl to the nape, 3 short under-nape clumps. About 25 clumps.
+4. Union: join mass and clumps, voxel remesh 0.007, Smooth 0.6 x 4, delete faces more than 0.012 inside the head. High about 350,000 triangles; low = Decimate (collapse) to 7,000 triangles plus a hole fill.
+5. Flow attribute on the high (`hflow`): across-clump position, root-to-tip position and a per-clump random value, found by projecting each vertex on the nearest clump centreline segment. It is baked from the high to the low (emission, selected to active) and drives the `hair2` texture kind in core.py: root darkening, clump-edge darkening, soft strand lines, lighter tips, a highlight band near the top, AO.
+
+Traps found on the way:
+- A uniform Catmull-Rom spline loops when one waypoint gap is short and the next is long (hooks at the crown). Use the centripetal form.
+- Cross-product frames (tangent x head normal) flip by up to 90 degrees where the path climbs out of the mass: U-shaped flaps at the crown. Check the minimum dot product of consecutive up vectors (should stay above 0.75).
+- A flat, cupped root end above the mass reads as a U-shaped flap. Taper roots to a point and bury them.
+- A high dome makes clumps rooted at the crown rise and fall: arches stand out of the mass. Keep the first segment inside the mass until the dome falls away.
+- Clumps that cross the front-top-side corner of the R6 head diagonally twist and bulge. Keep bangs on the front and side locks on the side; start side locks at the top-side edge.
+- A coarse mass grid (96 x 60) gives a jagged rim at the hairline; 192 x 120 is smooth.
+- Geometric strand grooves alias on the 0.007 voxel grid (beads and zippers) and read as wet hair to him; leave strands to the texture.
+- Laplacian smoothing with volume preservation took 167 s on the high (plain Smooth: under 1 s).
+- Helper hair (flyaways, a swirl at the whorl, a thin strand across the forehead, face-framing locks over the corner) made the hair look messy or knotted; leave them out unless the reference has them.
 
 ## Research (2026-10-06, "search up hair design modeling tips, real life hair, and modeling hair tips online")
 
