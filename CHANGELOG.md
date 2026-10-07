@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-06 - Hair rules moved into the modeling skill (user-authorized)
+
+- roblox-modeling: `SKILL.md` rule 10 (hair is designed, not generated: reference pick, big-medium-small, tapered blades with thickness, flow from the part and the crown whorl, no visible scalp, painted strand texture) and the meaning of "push what you learned" (write the lesson into SKILL.md and its reference, then push). `references/hair.md` rewritten: rules first, his verdicts on the four rejected hairs, the research (design, modeling, real hair, texture, Roblox UGC), study method, measurements, the coverage test, traps, and the rejected constructions kept for their numbers. `references/character-from-reference.md` points hair work to `hair.md`. `references/taste.md` logs "Push what you learned and remake your hair for the convicts" and "I mean push what you learned to the modelong skill".
+
 ## 2026-10-06 - Hair research after "Your hair design is horrible" (user-authorized)
 
 - roblox-modeling: `references/hair.md` adds "No gaps" (part-line roots, roots tucked into the scalp, a ray coverage test that grows filler locks, a blended comb at the crown, the green-cap test render) and "Research 2026-10-06: what good hair needs" (why the gravity-drape hair failed, measured against stylized hair guides, real hair growth and natural fall, the Roblox UGC middle-part study, five rules for every new hair, and the sources). `references/taste.md` logs "Fill this gap" and "Your hair design is horrible, search up hair design modeling tips, real life hair, and modeling hair tips online".

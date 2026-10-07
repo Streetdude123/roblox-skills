@@ -29,6 +29,7 @@ When the pick disagrees with an earlier answer (cloth versus chainmail, straw ha
 - Use the R6 part volumes as the frame: torso x ±1, y ±0.5, z 2-4; arms x ±1-2; legs x ±0-1, z 0-2; head about 1.2 at z 4-5.14. Armor that belongs to a limb goes in that limb's group so it moves with it. A plate that spans both legs goes on the torso.
 - Plates come from one frame dict (`ctr`, `nd`, `w`, `h`, `t`, `bow`, `tilt`): `hplate` builds the low and the high from it, and `surf` and `deco_frame` place slots, ties and rivets on its outer face. Random jitter goes into the dict once, so the low and the high agree.
 - Small detail (lacing slots, tie loops, rivets, twisted rope, hair strands) exists only in the high and reaches the low through the normal and ID bakes.
+- Hair is its own design task with its own reference pick: follow [hair.md](hair.md) (rules first). Four procedural hairs were rejected on the convicts before the research.
 - Stepped plates need a real step and tilt to read from the front: the samurai sode went from 0.045 step, 10 degrees and 0.07 thickness (invisible edge-on) to 0.075 step, 16 + 7 per tier degrees and 0.1 thickness.
 
 ## 5. Detail pass: "significantly more detailed and intricate complex"
