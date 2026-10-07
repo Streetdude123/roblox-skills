@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-06 - Hair research after "Your hair design is horrible" (user-authorized)
+
+- roblox-modeling: `references/hair.md` adds "No gaps" (part-line roots, roots tucked into the scalp, a ray coverage test that grows filler locks, a blended comb at the crown, the green-cap test render) and "Research 2026-10-06: what good hair needs" (why the gravity-drape hair failed, measured against stylized hair guides, real hair growth and natural fall, the Roblox UGC middle-part study, five rules for every new hair, and the sources). `references/taste.md` logs "Fill this gap" and "Your hair design is horrible, search up hair design modeling tips, real life hair, and modeling hair tips online".
+
 ## 2026-10-06 - Hair from catalog and anime study (user-authorized)
 
 - roblox-modeling: new `references/hair.md` (study method with hair-only catalog search, `InsertService:LoadAsset` test heads and FOV-26 captures; measured pro and anime hair sizes; the volume-mass plus thick-clump construction; traps such as crown spikes, face-corner panels, one-eye fringes and the 14-colour ID palette; hair shading values). `references/taste.md` logs his four hair messages ("tacky", "look at real professional ugc hair", "needs more volume ... gabimaru's hair, lelouch's hair ...") and the island change request.

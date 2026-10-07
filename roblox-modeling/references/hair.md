@@ -45,3 +45,43 @@ His note on the volume-shell hair: "let the hair fall naturally, kind of looks l
 - Styles: middle part (comb away from x = 0, front locks steered by a waypoint beside the temple), side part (part at x 0.24, fringe steered across to the far temple, stopped above the brows), messy (comb away from a crown whorl, random twist, some tip flicks), combed back to a low tie (great-circle field toward the tie plus a backward bias near the front, because the great circles diverge at the antipode on the forehead; flat bands with tapered roots so the hairline shows no square ends; tail draped against the robe back).
 - Pointed tips: full width to 40 percent of the length, then taper to 1.5 percent; wider rounded tips read as drips.
 - Cost: about 6,600 low triangles per style (curtain, side, messy), 9,900 for the tied style with the tail.
+- His verdict on the four drape styles: N1 middle part and N2 side part "pretty good"; N3 messy layers and N4 combed back "bad". Build from clear parts with wide locks; do not use many narrow pointed locks or flat sleek bands.
+
+## No gaps (2026-10-06, "Fill this gap")
+
+The first N1 build on A2 showed the scalp cap at the middle part and at the crown. With the cap AO and the steep normals of the lock root ends it read as a dark hole. Three changes in `drape_hair` (core.py) closed it:
+
+- Part roots: 8 pairs of roots 0.02 studs left and right of the part line, from the front hairline (32 degrees) over the top to the crown (130 degrees). Remove the random roots within 0.12 studs of the part (up to y 0.42) so the count stays low.
+- Root tuck: every lock starts 0.01 inside the scalp (`root_off=-0.01`) and rises to its layer offset with a smoothstep over 0.15 studs (`rise`), and the lift uses the same ramp. A lock that starts at its layer offset (up to 0.077) leaves its flat root end in the air; that end and the gap under it bake to steep normals and dark spots.
+- Coverage test (`bare`): 3,600 points on the scalp above hairline + 8 degrees, each with one ray along the head normal and eight rays tilted 37 and 52 degrees (only the rays that point up, z > 0.2), reach 0.5, against a BVH of the low locks. A point where any ray escapes is bare. Grow a filler lock at each bare point (skip points within 0.13 of a filler, layer offset x 0.6 so it sits under its neighbours) and test again; 3 rounds. On A2: 105 bare points and 18 fillers in round one, 1 bare point and 1 filler in round two, then 0.
+- Blend the comb at the crown: a hard switch from side locks to back locks (at y 0.3) leaves a bare wedge between them. Interpolate the comb and the end height with a smoothstep over y 0.12 to 0.42.
+- To find gaps, render the test head with the cap in bright green (`hair_gap.py`): top, front top, front, three quarter, back top and side, low and high.
+- Cost on A2: 59 locks and 6,668 head triangles before, 87 locks and 9,244 after.
+
+## Research 2026-10-06: what good hair needs ("Your hair design is horrible")
+
+His verdict on the gravity-drape hair after the textured A2 sheet. Research he asked for (design tips, real hair, modeling tips), with sources:
+
+Why the drape hair failed, measured against the sources:
+- No big shape. The hair followed the R6 box with a uniform offset, so the silhouette was a box. Professional hair starts as a designed "helmet" mass with a clear silhouette, then clumps, then strands (80.lv ZBrush hair guide; stylized sculpting guides).
+- Uniform clumps. 87 locks of almost one width (0.24 to 0.32), one thickness (0.06) and one taper read as shingles or "spaghetti". Clumps must vary: some thick, some medium, some thin, with a few hero clumps (Polycount critiques).
+- Wrong lock shape. A constant crescent section reads as a flat strip. Good stylized locks are blades or leaves: thick at the root, widest near a third of the length, then a long taper to a sharp tip, with thickness (Ready Player Me hair style guide: "curls and strands should have thickness"), on C and S curves (Clip Studio hair tutorials).
+- No designed flow. Gravity and a comb field made stiff parallel strips. Hair flows out from one source near the top back of the head (the crown whorl), clumps pass over and under each other in a designed order, and the flow is broken on purpose by a few wisps (80.lv hair flow analysis).
+- Plastic texture. Flat colour with curvature highlights and AO blotches. Avatar hair guides paint 3 shades (base, darkest in the shadows, a lighter shade on top), then strands, then a few highlight pops and defined ends; little dark on the fringe; too much highlight reads wet (Highrise hair art guide). Real hair shows a highlight band across the strand direction (anisotropic "angel ring") and darker roots and undersides.
+
+Real hair (barber and drawing sources):
+- Hair grows out from the crown whorl (most people have one, near the midline at the crown; it usually turns clockwise); the direction of every region follows from it; near the whorl the hair lies flat along the skull.
+- Hair rises from the root and then falls under gravity, so the hair mass sits above the skull with volume; straight hair lies flatter, short hair lifts more. Draw the skull first and keep the hair a varied distance above it.
+- Natural fall = hanging under gravity alone. A middle part makes two rounded domes that lift at the part, arc out over the temples and turn in at the ends (photo study R8): the front silhouette is a bell, widest at the temples.
+- An off-centre part puts more volume on the larger side.
+
+Roblox UGC hair that sells (catalog study, middle part, 2026-10-06): a big rounded silhouette about 1.6 to 1.8 head widths; a narrow, clean part with lift on both sides; layered tiers (top, middle, darker under layer at the nape); many thin-edged pointed locks breaking the outline; a jagged hem with tips at different lengths; strong painted strand texture (dark gaps, light strands, root-to-tip gradient). Low-poly anime hair (Blender packs) = a shaped cap plus many long pointed blades from the crown.
+
+Rules from now on:
+1. Hair gets a numbered reference sheet and his pick like every model (sheet: `Shinsenkyo/references/characters/hair_refs_R1_R8.jpg`). Match the pick's silhouette in front, side and back before any lock is placed.
+2. Build in the order big, medium, small: the mass, then 6 to 12 hero clumps, then medium clumps, then a few wisps. Vary width, length and thickness at every level; avoid symmetry.
+3. Every clump is a tapered blade with thickness, on a C or S curve, with a sharp tip. No clump of constant width.
+4. Design the flow from the part and the crown whorl, and decide which clump passes over which.
+5. Texture: 3 shades plus strand lines along each clump, darker roots and undersides, a soft highlight band, defined tips.
+
+Sources: 80.lv "Guide: Sculpting Stylized Hair in ZBrush" (Dan Eder); 80.lv "Designing a Real-Time Traditional Chinese Hairstyle in Blender"; Ready Player Me (wolf3d) style guide; Clip Studio TIPS "Drawing Stylised Hair: Shapes, Tufts & Strands", "Let's Draw Hair! by Ricky", "The Science behind HAIR Highlight"; Envato Tuts+ "What You Need to Consider When Drawing Hairstyles From Scratch"; Highrise "Hair & Hair Textures" art guide; Red Seal hairdressing study guide 5.5 "Growth Patterns, Natural Fall"; hair transplant clinics on the crown whorl; Roblox DevForum "How to make hair in Blender"; ArtStation stylized hair packs (World Dream, Stylized Male Hair Vol 1 and 2); Roblox catalog middle-part hairs.
