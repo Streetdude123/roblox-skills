@@ -33,3 +33,15 @@ Learned 2026-10-06 on the Shinsenkyō convicts. Lepy's words, in order: "Hair lo
 ## Shading
 
 Hair colour plus a highlight colour (black 24,24,28 with 92,100,122; brown 60,42,32 with 150,112,84; auburn 122,54,34 with 222,132,88) on convex ridges (baked curvature) and up-facing surfaces, darker in AO crevices, roughness 0.4.
+
+## Natural fall: gravity drape (current method, 2026-10-06)
+
+His note on the volume-shell hair: "let the hair fall naturally, kind of looks like it's floating". A shell around the head with clumps laid on it reads as a helmet that hovers. The fix is to grow every lock from the scalp and drape it (`drape`, `add_dlock`, `scalp_cap` in `Shinsenkyo/blender/convicts/core.py`; styles in `hair_styles.py`):
+
+- Collide against the real head shape: a rounded-box SDF with the R6 head half sizes and the 0.3 bevel radius (`head_sdf`). A superellipsoid sits 0.05 off the flat faces and inside the corners, so hair either floats or clips.
+- Roots: Fibonacci directions kept above a hairline (front 28, sides -8, back -36 degrees from the head centre), about 62 locks from 112 directions.
+- Each step: blend the direction toward a comb field, add gravity 9 per stud, step 0.02, push out to the layer offset, and above the head's mid-height pull the lock back to that offset (hug 0.6) so it lies on the skull; below mid-height it hangs freely.
+- Layer offset 0.012 to 0.077 and root lift up to 0.075 by closeness to the part or the crown whorl: hair from the top lies over hair from lower down, which gives volume without a shell.
+- Styles: middle part (comb away from x = 0, front locks steered by a waypoint beside the temple), side part (part at x 0.24, fringe steered across to the far temple, stopped above the brows), messy (comb away from a crown whorl, random twist, some tip flicks), combed back to a low tie (great-circle field toward the tie plus a backward bias near the front, because the great circles diverge at the antipode on the forehead; flat bands with tapered roots so the hairline shows no square ends; tail draped against the robe back).
+- Pointed tips: full width to 40 percent of the length, then taper to 1.5 percent; wider rounded tips read as drips.
+- Cost: about 6,600 low triangles per style (curtain, side, messy), 9,900 for the tied style with the tail.
