@@ -1,3 +1,5 @@
+import sys
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 import argparse
 import html
 import json
@@ -196,12 +198,12 @@ def search(args):
         it["score"] = score(it, args.query, args.min, args.max)
         keep.append(it)
     keep.sort(key=lambda it: -it["score"])
-    (out / "candidates.json").write_text(json.dumps(keep, ensure_ascii=False, indent=1))
+    (out / "candidates.json").write_text(json.dumps(keep, ensure_ascii=False, indent=1), encoding="utf-8")
     rows = ["| # | score | source | title | body s | centroid | top Hz | floor dB | license | page |", "|---|---|---|---|---|---|---|---|---|---|"]
     for i, it in enumerate(keep):
         m = it["m"]
         rows.append(f"| {i} | {it['score']} | {it['source']} | {it['title'][:50]} | {m['body_s']} | {m['centroid']} | {m['top_hz']} | {m['floor_db']} | {it['license']} | {it['page']} |")
-    (out / "candidates.md").write_text("\n".join(rows) + "\n")
+    (out / "candidates.md").write_text("\n".join(rows) + "\n", encoding="utf-8")
     print("\n".join(rows[: args.show + 2]))
     sheet(keep[: args.sheet], out / "sheet.png")
 
@@ -276,7 +278,7 @@ def roblox(args):
     print(text)
     if args.out:
         Path(args.out).parent.mkdir(parents=True, exist_ok=True)
-        Path(args.out).write_text(text + "\n")
+        Path(args.out).write_text(text + "\n", encoding="utf-8")
 
 
 def main():

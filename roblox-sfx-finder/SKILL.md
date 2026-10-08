@@ -63,6 +63,12 @@ python3 check.py sfx_find/built/*.wav --png
 - A Sound with an empty `SoundId` fires no `Played`. To count events before the real ids exist, give the clones a client-local test id.
 - **Footsteps on the default R6 walk** (180426354, 0.667 s loop): the right foot is forward at 0 s and the left at 0.381 s. Play a step when `TimePosition` wraps or crosses 0.381. At 7 studs/s (speed 0.48), 12 walkers made 51 steps in 10 s with a median gap of 0.63 s.
 
+- **Match the game's own sound by measurement (World Trigger, 2026-10-08).** When the user says a sound must match an anime or a game, measure that sound first and pick against the numbers ([anime-reference.md](references/anime-reference.md)): record the clip's audio in the built-in browser through Web Audio (silent for the user), map every block by its own `currentTime`, find the moments on frame sheets, then take band levels and the centroid per window. `scripts/match.py` scores files against the windows (`scripts/targets_world_trigger.json` is the example).
+- **効果音ラボ search misses titles.** `search.php` returned 0 for バリア, シールド, 結界, 近未来 and キラーン. The category pages list every title with a short description in the same `<li><span>` format (relative mp3 paths): `/sound/battle/` (+ `battle2.html`), `/sound/anime/`, `/sound/machine/`, `/sound/various/`, `/sound/button/`. Read the lists and pick by title. The World Trigger layers came from them: 魔法反射 (光の壁発生), 石が砕ける, 跳弾, 打撃, ガラスが割れる, キラッ2, 盾で防御, 石の壁がスライドする.
+- **Scores.** Score = mean absolute difference over 7 bands (40 Hz to 16 kHz, dB re total) + 6 x |log2(centroid ratio)|. Single files scored 2.0 to 8 against the anime windows; layered builds reached 2.7 to 6.3 after 3 to 5 rounds. A top single score can be the wrong kind of sound (a voice line, rain on a car window, a footstep loop): filter by title too.
+- **Volume from loudness.** File loudness = mean power of the 20 ms windows within 20 dB of the loudest. Volume = 10^((plan dB - (loudness - reference loudness)) / 20). The loopback recording of the game then measured rise -13 to -14 dB RMS, the breaks -15, shield hits -16 to -17, shield up -19 to -20, sink -19 to -21, shield down -22 to -23: the plan held.
+- **Upload as FLAC.** The audio form accepts `.flac`: 10 sounds were 659 KB as FLAC against 893 KB as WAV. Relay fragments of 180 to 275 KB (2 to 4 files each) worked. Ten uploads took about 2 minutes with `window.next.router.push` and the hidden file input; the form showed "1949 of 2000 uploads remaining" for the day. Private audio on his account played at once in an unpublished Studio place (PreloadAsync Success).
+
 ## Reading the spectrogram
 
 `check.py --png` and `sheet.png` show a peak envelope strip on top and a log-frequency spectrogram (40 Hz to 22 kHz, 80 dB range) below it. Look for:
@@ -85,11 +91,15 @@ python3 check.py sfx_find/built/*.wav --png
 - 2026-10-05 (upload): "sign in for me, you have my full permission" with his password in chat; the agent must not type passwords, and he was told to change it. Then "i can't get on my pc". What worked: Roblox Quick Sign-in. Click the login page's Quick Sign-in button (id `cross-device-login-button`), read the 6-character code from `.modal-content` (the screenshot tool showed a stale image, so read the DOM), send it to him, and he approves it in the Roblox app (More > Quick Sign In). The code changes about once a minute, so read and send the newest one fast. Then "You don't need to upload under any group, under me please im the creator a solo dev": uploads always go to his user account.
 - Upload facts from that pass: the Audio upload form now requires a Description (the Upload button stays disabled without one; write it with the native value setter and an `input` event). 11 WAVs uploaded in about one minute. The Distribute on Creator Store checkbox stayed disabled ("Enabling Store is unavailable at this time") until moderation finished, about an hour later for 10 of them; one (LobbyJoin) still had a disabled checkbox with "Your audio can be distributed" shown. A place owned by his user plays his private audio at once.
 
+- 2026-10-08 (World Trigger defensive triggers: Escudo, Advanced Escudo, Shield): "Find sfx but make sure its actually good sfx that matches the game and world trigfer it jeeds to match world trigger". Asked, he picked "Both (Recommended)" for the sources (Roblox licensed library plus web; download to measure, layer, upload private) and "You pick by measurement". The anime's own Escudo and Shield sounds were measured from two YouTube compilations (anime-reference.md); 10 sounds were layered from 31 real files, mostly 効果音ラボ category picks, scored against those windows, and uploaded as private FLAC on his user account. He answered "Yes, upload (Recommended)" for the license box and "Yes, now" for Quick Sign-in. After the sign-in, Roblox showed a Terms of Service update ("effective November 1, 2026") before the dashboard opened; asked first, he answered "Yes, click I agree".
+- 2026-10-08 (same pass): "record a video too". One MP4 per move with the game sound (WASAPI loopback, `record_audio.ps1` + `encode_av.html` from roblox-r6-animation) from the player camera.
+
 ## References
 
 - [sources.md](references/sources.md): every source, its license with evidence, how it is accessed, what was excluded and why.
 - [frieren.md](references/frieren.md): the Frieren team, evidence, sound brief and search terms.
 - [layering.md](references/layering.md): principles, measured reference ranges, the recipe format, built sounds, and the synthesis fallback.
+- [anime-reference.md](references/anime-reference.md): measure the target anime's or game's own sound in the built-in browser, the World Trigger numbers, and the scoring.
 - `roblox-sfx-synth` skill: the synth presets (last resort).
 
 ## Scripts
@@ -97,4 +107,5 @@ python3 check.py sfx_find/built/*.wav --png
 - `scripts/find.py`: `web` search, download, measure and rank; `roblox` store search.
 - `scripts/build.py`: layers found files and synth presets from a JSON recipe through pedalboard, and writes credits.
 - `scripts/check.py`: measures any audio file; `--png` writes a spectrogram.
+- `scripts/match.py`: band levels and centroid per window, scored against measured target windows from a JSON file (`targets_world_trigger.json`).
 - `scripts/Audition.lua`: measures Creator Store IDs in Studio (untested).

@@ -1,3 +1,5 @@
+import sys
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 import argparse
 import json
 import subprocess
@@ -140,19 +142,19 @@ def main():
     ap.add_argument("--variants", type=int, default=1)
     ap.add_argument("--seed", type=int, default=1)
     args = ap.parse_args()
-    recipe = json.loads(Path(args.recipe).read_text())
+    recipe = json.loads(Path(args.recipe).read_text(encoding="utf-8"))
     base = Path(args.recipe).resolve().parent
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     manifest = {}
     for c in base.glob("**/candidates.json"):
-        for it in json.loads(c.read_text()):
+        for it in json.loads(c.read_text(encoding="utf-8")):
             manifest[Path(it["wav"]).stem] = it
     for v in range(args.variants):
         path = out / f"{recipe['name']}_{args.seed + v}.wav"
         save(path, render(recipe, args.seed + v, base))
         print(path)
-    (out / f"{recipe['name']}_credits.json").write_text(json.dumps(credits(recipe, manifest), ensure_ascii=False, indent=1))
+    (out / f"{recipe['name']}_credits.json").write_text(json.dumps(credits(recipe, manifest), ensure_ascii=False, indent=1), encoding="utf-8")
 
 
 if __name__ == "__main__":

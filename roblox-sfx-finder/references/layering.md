@@ -78,7 +78,18 @@ Every layer is peak-normalised before `gain_db`, so gains are relative.
 | barrier_block | freesound 364530 sword clash; the same clash -5 semitones with a -180 Hz shift; 効果音ラボ wine glass break highpassed at 2.5 kHz; Kenney explosion crunch lowpassed at 400 Hz; 70 ms echo | 1.9 s, centroid 5720 Hz, 2–8 kHz band -2.0 dB |
 | heavy_hit | freesound 326868 sword clash -14 semitones with drive (metal door); Kenney explosion crunch with drive; 効果音ラボ bomb; Mixkit whoosh -4 semitones at +0.1 s; freesound glass -7 semitones lowpassed at 6 kHz (debris) | 5 s, centroid 698 Hz, mid band -3.7 dB |
 
-Not yet judged by ear.
+| escudo_rise (World Trigger) | freesound 560768 Breaking Glass 3; 効果音ラボ 魔法反射 (light wall) to 0.9 s; 文字表示の衝撃音1 highpassed 1.2 kHz; 打撃6; 地震魔法2 rumble lowpassed 1.5 kHz; 岩にヒビが入る crackle at 0.3 s | 1.7 s; head 0-0.5 s centroid 2876 Hz (anime 3682), body 0.5-1.5 s 892 Hz (anime 1054); scores 5.1 and 3.2 |
+| escudo_press | ジャンプの着地; Kenney impactPunch_medium_002; 石が砕ける highpassed 3 kHz; ガラスにひびが入る; 跳弾 (ricochet whine) +2 semitones highpassed 1.1 kHz at 0.1 s; 地震魔法1 low hum; ロボットの目が光る at -14 dB | 1.1 s; slap 0-0.25 s centroid 4441 Hz (anime 4302), sweep 0.25-0.65 s 2004 Hz (anime 2291); scores 4.7 and 4.1 |
+| escudo_line | ビームガン to 0.35 s; freesound 512471 electric zap | 0.36 s, centroid 7337 Hz |
+| escudo_sink | 石の壁がスライドする -2 semitones; 地震魔法2 lowpassed 700 Hz; 岩にヒビが入る; 魔法反射 -3 semitones highpassed 2 kHz | 1.5 s, centroid 432 Hz |
+| wall_hit | 打撃4 (岩を砕く); 石が砕ける highpassed 2.5 kHz; 岩にヒビが入る; ロボットを強く殴る2 | 0.52 s, centroid 937 Hz |
+| wall_break | 岩が真っ二つに割れる to 1.6 s; 石が砕ける; ガラスが割れる1 highpassed 1.5 kHz; 建物が少し崩れる2; ドーン lowpassed 900 Hz | 2.0 s, centroid 799 Hz |
+| shield_up | 決定ボタンを押す16 (glass-like); キラッ2; シャキーン2; ジャンプの着地 lowpassed | 0.77 s, centroid 5375 Hz |
+| shield_hit | Kenney impactPunch_medium_002 +5 semitones highpassed 170 Hz; 打撃4 band 180 Hz-1.2 kHz; 盾で防御 at -16 dB; ガラスにひびが入る at -18 dB | 0.46 s, centroid 636 Hz (anime 563), score 6.3 |
+| shield_break | freesound 861044 Hard Glass Break 3 lowpassed 10 kHz; ガラスが割れる2; ビーム砲2; 打撃6 | 1.25 s; burst 0-0.36 s centroid 3402 Hz (anime 3426), score 2.7 |
+| shield_down | 縮む to 0.4 s; ワープ | 0.5 s, centroid 1407 Hz |
+
+The barrier_block and heavy_hit rows are not yet judged by ear. The World Trigger rows are uploaded and in game, matched to the anime by measurement (anime-reference.md), not yet judged by ear.
 
 ## Synthesis fallback: what the lab showed
 

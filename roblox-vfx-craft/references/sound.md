@@ -124,3 +124,13 @@ One SoundGroup with the usual limiter and +3 dB high EQ; the final take peaked a
 - Level new sounds against the old ones by PlaybackLoudness in the same Sound template (same EQ), not by file RMS; a thin metallic ring scores far lower than a deep thump at the same perceived level.
 - **PlaybackLoudness ignores Sound.Volume** (measured 2026-10-01: the same clip read 308 at Volume 0.25, 1 and 2). To match a new clip to an old one, new Volume = old Volume x old PlaybackLoudness peak / new PlaybackLoudness peak, both measured in the same template (same EQ, speed and start). The first pass of the trial sounds forgot the old Volume and came out with hits about 4 dB quiet and whooshes 2-5 dB loud.
 - A freshly uploaded audio can show "Enabling Store is unavailable at this time" for several minutes; retry later, it turned public after about 10 minutes.
+
+## World Trigger defensive triggers (2026-10-08)
+
+- **Templates.** `ReplicatedStorage.Triggers.Assets.Sounds` holds 10 Sounds (InverseTapered, RollOffMinDistance 20 to 40, max 300) in `SoundService.TriggerSfx` with the Compressor at Threshold -9, Ratio 12, Attack 0.001, Release 0.12. The Edit builder `build/SoundBuild.lua` makes them as real instances.
+- **Player.** `Sfx.play(name, where, speed)` clones the template, parents it to an Attachment in Terrain for a Vector3 (or to the given part), sets PlaybackSpeed to speed x 0.97-1.03 and destroys it on `Ended`. A repeat of the same name within 0.05 s is skipped: the Box's four walls give one rise and one sink, and two hits in one frame give one sound.
+- **Beats.** Press and Line at the hand touch; Rise after the line time at the middle of the wall spots (Box at 0.9 speed, Box press at 0.92); Sink at the wall; WallHit at the hit point; WallBreak at the wall centre; ShieldUp on the root when the plate appears; ShieldHit at the block point; ShieldBreak at the plate; ShieldDown only on a normal release (none after a break, the lock skips it).
+- **Measured in Play.** Escudo: Press 0.255 s after the cast time, Rise 0.155 s after Press; Box: Press 0.304 s, Rise 0.103 s later; every GuardHit and GuardBreak played its sound in the same frame; console clean.
+- **Mix.** Volumes from file loudness against a plan: rise 0 dB, wall break -1, shield break -2, press -4, hits -5, sink and shield up -8, line -10, shield down -12. A loopback recording of the game measured the same order (rise -13 to -14 dB RMS, shield down -22 to -23).
+- **Test trap.** Attribute signals are deferred: setting `TestFire` to 0 and then 3 in one call ran the fire handler twice, and both runs read 3, so two shots hit in the same frame. Set a test attribute once per take, to a value that differs from the last one.
+
