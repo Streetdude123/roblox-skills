@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-10 - Extinction Protocol dinosaur movement (user-authorized)
+
+- roblox-r6-animation: `references/project-style.md` logs "Make sure the movement feels really good alright?" and his picks for the creature movement system (keys, gaits, MMB tap and hold, speeds, stamina, head look, swim, wade, step and climb rules, weight-based acceleration and slope limits). `references/custom-rigs.md` adds "Procedural creature movement on Motor6D dinosaurs": lean scaled by each species acceleration, terrain tilt from averaged normals with a height band, foot IK solved for the foot pivot joint with a plane-distance lift (feet on a 38 degree ramp went from 1.8-2.3 studs off to 0.01-0.34), the box-cast uphill bias, the steep-slope probe, no tilt or IK in deep water, the climb ray along the wall normal, and no yields in input handlers.
+
 ## 2026-10-08 - World Trigger defensive triggers: anime-matched sound, wall layout, videos (user-authorized)
 
 - roblox-sfx-finder: new `references/anime-reference.md` (measure the target anime's own sound in the built-in browser through Web Audio, per-block time mapping, frame and spectrogram sheets, the World Trigger Escudo and Shield numbers) and `scripts/match.py` with `targets_world_trigger.json` (band and centroid scoring against measured windows). `SKILL.md` logs "Find sfx but make sure its actually good sfx that matches the game and world trigfer it jeeds to match world trigger", "Both (Recommended)", "You pick by measurement", the upload and Terms of Service answers and "record a video too"; measured notes on 効果音ラボ category pages, scores, volume from loudness and FLAC uploads. `references/layering.md` lists the 10 built World Trigger sounds with their layers and scores; `references/sources.md` documents the 効果音ラボ category pages. `find.py`, `build.py` and `check.py` read and write UTF-8 on Windows.
