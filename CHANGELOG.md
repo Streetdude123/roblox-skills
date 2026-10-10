@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-10 - Extinction Protocol: turn in place with procedural steps (user-authorized)
+
+- roblox-r6-animation: `references/project-style.md` logs "Improve the turning in place ... just make the movement REALLY GOOD and smooth please" and his pick "Procedural steps". `references/custom-rigs.md` adds the clip-free turn in place (world-locked feet with plane-projected height, need-ordered steps with diagonal partners, arc, lead, body sway, the TurnTest numbers) and the swimming exit rule (release the hold in water too shallow to swim).
+
 ## 2026-10-10 - Extinction Protocol dinosaur movement (user-authorized)
 
 - roblox-r6-animation: `references/project-style.md` logs "Make sure the movement feels really good alright?" and his picks for the creature movement system (keys, gaits, MMB tap and hold, speeds, stamina, head look, swim, wade, step and climb rules, weight-based acceleration and slope limits). `references/custom-rigs.md` adds "Procedural creature movement on Motor6D dinosaurs": lean scaled by each species acceleration, terrain tilt from averaged normals with a height band, foot IK solved for the foot pivot joint with a plane-distance lift (feet on a 38 degree ramp went from 1.8-2.3 studs off to 0.01-0.34), the box-cast uphill bias, the steep-slope probe, no tilt or IK in deep water, the climb ray along the wall normal, and no yields in input handlers.
