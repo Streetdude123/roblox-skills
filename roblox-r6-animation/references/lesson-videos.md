@@ -110,7 +110,7 @@ The style: a simple flat character, bold readable poses, snappy timing with hold
 | Pull-back | 2 to 4 frames (0.03 to 0.07 s) moving 3 to 8 degrees (or 0.05 to 0.15 studs) against the coming move, before the load. |
 | Settle | 2 to 5 frames after the end pose: overshoot 4 to 8% and return. The `lead` spring gives about 6% and settles in 7 frames; key it by hand on the striking limb. |
 | Bounce | On the 3 to 6 frames before the final pose, torso `py` up 0.05 to 0.12 studs and back; stagger the head 1 frame later. |
-| Mixed holds | Poser plays at the frame rate, so a hold is a moving hold (5 to 15% drift). For the stepped, animatic look, sample the clip on quantised time: `t = math.floor(t * 12) / 12` for twos, or a per-segment step size for 2-3-4-2 holds. Offer it as a style option; never apply it to player locomotion without asking. |
+| Mixed holds | Poser plays at the frame rate, so a hold is a moving hold (5 to 15% drift). For the stepped, animatic look, sample the clip on quantised time: `t = math.floor(t * 12) / 12` for twos, or a per-segment step size for 2-3-4-2 holds. Offer it as a style option; never apply it to player locomotion without asking. Quantised sampling gives a twos look; an anime-style stepped strike instead poses each held step by hand on `step` keys with a hold list (stylized-and-roblox.md). |
 | Squash and pull | See squash and stretch above: a compact pose on contact, a long pose on the fastest frames. |
 | Stagger the parts | `lag` on loose parts, key offsets of 1 to 3 frames down the chain, the head answering the torso. |
 

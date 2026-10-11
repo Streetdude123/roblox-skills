@@ -9,6 +9,7 @@ Measured in a stand-combat place (the clips of `scripts/examples/stand-combat/Cl
 - Earlier code-authored clips
 - What the engine alone changes
 - The example clips
+- Fast one-shots from finished projects
 - Targets
 - How to measure
 
@@ -26,6 +27,7 @@ Speeds are central differences over 4 frames (so decode rounding cannot fake a s
 | contrast | Peak body speed over median body speed | Over 10 means the body snaps between near-stills. |
 | spread | Standard deviation of the frames where each active joint peaks | Near 0 means every part peaks on one frame. |
 | lag | Frame offset of the best speed correlation between the torso and each joint (positive trails) | Overlap. |
+| reversals | Sign changes of one channel's velocity per cycle (the bundled tools do not count them; count them on the sampled channels) | Shaking. Rest, contrast and unison miss it. |
 
 ## Professional reference clips
 
@@ -83,7 +85,7 @@ The same keys with their eases removed, played as `curve = "spline"` (V1), plus 
 | DioSummon | 66.7 / 56.8 / 59.0 / 57.9 | 20.8 / 13.2 / 11.9 / 10.1 |
 | DioTimeStop (still%) | 60.9 / 62.6 / 57.6 / 52.9 | 104.5 / 130.9 / 108 / 88.8 |
 
-The spline removes about a quarter to a third of the parked time and roughly halves the contrast; lag and springs lower the contrast further. The remaining gap is authoring: holds that barely move and long slow returns. Life at 1.5 degrees does not change the action numbers (it is slower than 12 deg/s by design); it removes frozen frames. So the engine is necessary and not sufficient: the principles.md holds and recoveries do the rest.
+The spline removes about a quarter to a third of the parked time and roughly halves the contrast; lag and springs lower the contrast further. The remaining gap is authoring: holds that barely move and long slow returns. Life at 1.5 degrees does not change the action numbers (it is slower than 12 deg/s by design); it removes frozen frames. So the engine is necessary and not sufficient. To lift an old eased clip, set `curve = "spline"` and drop its eases, then rework its holds and recoveries by hand (principles.md).
 
 ## The example clips
 
@@ -95,6 +97,17 @@ The spline removes about a quarter to a third of the parked time and roughly hal
 | Guard (3.2 s loop) | 0 | 100 | 0 | 0 | 0 | 1.2 | 0 | corners 0.00, slide 0.00, hip gap 0.00 |
 
 The Cross took five measured rounds. The first draft slid its feet 0.84 and 0.94 studs and sank them 0.26 because the torso turned 60 degrees over rigid legs; the post pass fixed the slide, the waist offset kept the hips over the stance, and a search over turn, drop and stance width found the 34 degree contact turn with a 0.36 drop that keeps every hip closed. Then the numbers showed the face 40 degrees off the target at the contact (a lagged head on a follow spring: now it counters the torso on its frames and stays within 3 degrees), the torso 7 degrees short of its contact key (a lead spring: now its overshoot is keyed), and the lead hand at waist height 1.9 studs out to the side (the lagged lead arm carried by the turn and an Euler path around the outside: now no lag, a crossed breakdown and a chin cover 0.5 stud from the chin). Final checks by forward kinematics: the fist at the contact is 2.95 studs ahead of the root and 0.79 right of centre, the face stays within 5 degrees of the target from 0.12 to 0.5 s, the lead hand never goes wider than 1.0 stud (its guard line is 0.76).
+
+## Fast one-shots from finished projects
+
+The professional table has no dashes and no hit reactions. These finished moves fill the gap. A fast move has no long holds, so its parts park less: they sit at 24 to 47% rest, low in the professional 16 to 50%. All read frozen 0.
+
+| Move | still% | rest% | contrast | stops/s | unison/s | feet |
+| --- | --- | --- | --- | --- | --- | --- |
+| Hit reaction (0.62 s) | 2.6 | 30 to 34 | 4.9 to 6.1 | 1.3 to 1.6 | 4.84 | hip gap 0.01 or less, twist 28 or less |
+| Thrust-dash (1.40 s: braced lunge, burst, flat flight, skid; the root travels 50 studs) | 0 | 39.2 | 3.9 | 2.38 | 2.86 | no sole under the floor, hip gap 0.00, planted twist 37 or less |
+| Grounded dash with a dragged blade | 0 | 24 to 36 | 2.0 to 3.9 | 1.9 to 3.2 | 2.5 to 3.8 | hip gap 0.00, planted twist 44 or less, slide 0.00 to 0.10 before the skid |
+| Three-sword special (two hands and the mouth, `scripts/examples/three-sword-kit/`, 1.55 s; rest in real time, `real = true`) | 2.2 | 47 | 7.5 | 2.3 | 2.7 | soles planted except in the lift windows |
 
 ## Targets
 
@@ -109,9 +122,19 @@ For a one-shot action of 0.3 to 1.5 s:
 | stops/s | 3 or less | 0.4 to 2.7 |
 | unison/s | 5 or less | 0 to 4.8 |
 | spread | information only (three pro strikes peak every part on one frame) | 0 to 5.7 |
-| planted feet | lowest corner within 0.03, slide 0.05 or less, hip gap 0.12 or less | not measured |
+| planted feet | lowest corner within 0.03, slide 0.05 or less, sole tilt about 8 degrees or less, torso contact 0 or more (no gap), top off about 50% or less (51 to 52% passed review on finished attacks) | not measured |
 
-For a loop or a held pose: frozen 0%. Walks and runs sit at rest under 8% and contrast under 2.
+Judge planted legs by those five numbers, not by the hip gap. The feet rule (SKILL.md) lets a leg slide off its hip socket while at least half of its top face stays under the torso and touches it, so the hip gap only shows how far the leg slid. `_G.feet` still prints it.
+
+For a loop or a held pose: frozen 0%. Keep a loop's seam under about 0.04 degrees, or the loop hitches each time it wraps; finished loops measured 0.00 to 0.04 (bake with a warm-up on the 60 fps grid, pipeline.md). Other kinds of clip need other checks:
+
+- **Held poses and channels** (a long hold, a channelled or stirring move). Measure the strike part (up to the hold or the chain time) on its own against the one-shot targets. Judge the whole clip on frozen 0 and still 0, not on rest or contrast: a fast strike next to a hold makes the hold count as rest, so finished holds read rest 60 to 71% and contrast up to 21. A stir of about 20 degrees per key with keys 0.3 s apart reached still 0; 10 degrees every 0.35 s left still runs of 0.07 s (principles.md). A rhythm hold after a combo swing is quieter on purpose: 28 to 55% still, never frozen (weapons.md).
+- **Root-carried moves: spins, flips and dashes.** When a root field carries the turn or the travel (weapons.md, "Cinematic moves"), the joints only hold the body shape, so they rest while the root moves. Expect rest 50 to 67% and, for a fast spin or dash, contrast 10 to 19: a 1440 degree spin read rest 67.4% and contrast 18.8, a 30 stud dash-through 55.1% and 10.0, a somersault 50.2% and 5.0, all frozen 0. Judge these by the root path (distance, direction, a yaw that never runs backward) and by frozen, still and unison against the one-shot targets (measured: still 0 to 2.1%, unison 1.6 to 2.2/s).
+- **Walks and runs.** They sit at rest under 8% and contrast under 2. Do not judge a cycle by contrast: a good cycle and a robotic one both score under 2 (quality-review.md lists the tells of a robotic cycle). Find shaking by reversals: 2 to 5 per channel per cycle is good. A traced run read as shaky with 6 to 10 reversals on the torso lean and roll, the head, the arm rolls and the sword, while its rest, contrast and unison passed (video-rotoscope.md).
+- **Idles.** A slow breath turns slower than the 12 deg/s action threshold, so a slow-breath idle may read a high still share; it must still read frozen 0. The professional reference idle reads still 100%; an idle matched to it read still 70.5% with contrast 3.9. A flat wave on every joint also reads still near 100%, but with contrast near 1 (principles.md, "Idle or held stance").
+- **Rigs with many joints.** These ranges come from six R6 joints. A 17-joint rig reads about three times the stops per second, and a clip that starts and ends at the idle adds two rests per joint. Judge its stops by where they fall, not by the total (skinned-bone-rigs.md, "Measure").
+
+In Play, log every joint's turn per frame with a client probe (quality-review.md, "Measure only what answers a question"). No joint should turn over about 50 degrees in one frame, and most should stay under 35: a larger step reads as a snap. A polish pass took the worst step from 160 degrees to under 50. Clip transitions should stay at 8 degrees per frame or less; a boss rig's transitions held 8 or less after its fixes. These limits apply to a joint's own turn. A blade's world direction adds the torso, arm and grip turns of the same frame, so it may reach 42 to 86 degrees per frame on strike frames (weapons.md). When a retime compresses a strike, cap each joint near 25 degrees per frame (1500 deg/s) with the hit pinned (principles.md).
 
 ## How to measure
 
