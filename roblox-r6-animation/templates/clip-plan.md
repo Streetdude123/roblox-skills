@@ -51,10 +51,10 @@ Count at 60 fps.
 
 ## Measurements
 
-| Revision | frozen% | still% / longest | rest% | stops/s | unison/s | contrast | spread | feet (corner, slide, hip gap) |
+| Revision | frozen% | still% / longest | rest% | stops/s | unison/s | contrast | spread | feet (corner, slide, sole tilt, torso contact, top off) |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 
-Targets for a one-shot: frozen 0, still 5% or less and 0.1 s or less, rest 45% or less, contrast 2 to 10, stops 3/s or less, unison 5/s or less, planted corners within 0.03, slide 0.05 or less, hip gap 0.12 or less. A loop or a held pose: frozen 0.
+Targets for a one-shot: frozen 0, still 5% or less and 0.1 s or less, rest 45% or less, contrast 2 to 10, stops 3/s or less, unison 5/s or less, planted corners within 0.03, slide 0.05 or less, planted sole tilt about 8 degrees or less, torso contact 0 or more, top off 50% or less (SKILL.md, feet rule). A loop or a held pose: frozen 0.
 
 ## Review
 

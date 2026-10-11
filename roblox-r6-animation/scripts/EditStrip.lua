@@ -4,7 +4,7 @@
 -- _G.editStrip(clip, times, opts) lays one ghost per time along +X and returns the camera position and look-at point
 -- for screen_capture; opts: spacing (4), origin (a CFrame far from the map), facing ("front", "side", "rear", "rear34",
 -- "front34"), ctx, plain (false keeps the rig's own colours and clothes; the default paints a mannequin that reads
--- at night: blue torso, pale limbs, the right arm and right leg warm so sides read in a mirror view). _G.feet(clip, opts) returns the lowest sole corner, the planted slide and the hip gap of each leg.
+-- at night: blue torso, pale limbs, the right arm and right leg warm so sides read in a mirror view). _G.feet(clip, opts) returns the lowest sole corner, the planted slide, the hip gap, the planted sole tilt, the torso contact (below 0 is a gap) and how much of the leg top hangs off the torso, per leg.
 -- _G.clearStrip() removes the ghosts. Cloning needs Archivable; the rig's value is restored after the copy.
 local POSER = game.ServerStorage:FindFirstChild("PoserTest") and game.ServerStorage.PoserTest.Modules.Poser
 	or game.ReplicatedStorage:FindFirstChild("Anim", true):FindFirstChild("Poser", true)
@@ -160,7 +160,7 @@ function _G.feet(clip, opts)
 	local floorY = 0
 	local out = {}
 	for _, leg in ipairs({"Right Leg", "Left Leg"}) do
-		out[leg] = {low = math.huge, high = -math.huge, slide = 0, gap = 0, twist = 0}
+		out[leg] = {low = math.huge, high = -math.huge, slide = 0, gap = 0, twist = 0, tilt = 0, touch = math.huge, off = 0}
 	end
 	local anchor = {}
 	-- toe direction against the torso's so a leg twisted round its own length shows up (Feet.stand once turned every toe the wrong way: the left idle toe ended 98 degrees off)
@@ -194,12 +194,20 @@ function _G.feet(clip, opts)
 				local c = world.Torso:PointToObjectSpace((cf * CFrame.new(0.5 * s, 1, 0)).Position)
 				r.gap = math.max(r.gap, math.max(0, -1 - c.Y) + math.sqrt((c.X - s) ^ 2 + c.Z ^ 2))
 				r.twist = math.max(r.twist, math.abs((yawOf(cf) - yawOf(world.Torso) + 180) % 360 - 180))
+				if h < 0.06 then
+					r.tilt = math.max(r.tilt, math.deg(math.acos(math.clamp(cf.UpVector.Y, -1, 1))))
+				end
+				local top = world.Torso:PointToObjectSpace(cf * Vector3.new(0, RIG[leg].Size.Y / 2, 0))
+				r.touch = math.min(r.touch, top.Y + 1)
+				local ox = math.max(0, math.min(1, top.X + 0.5) - math.max(-1, top.X - 0.5))
+				local oz = math.max(0, math.min(0.5, top.Z + 0.5) - math.max(-0.5, top.Z - 0.5))
+				r.off = math.max(r.off, 1 - ox * oz)
 			end
 		end
 	end, opts)
 	local lines = {}
 	for leg, r in pairs(out) do
-		table.insert(lines, ("%s lowest corner %.2f..%.2f slide %.2f hip gap %.2f twist %.0f"):format(leg, r.low, r.high, r.slide, r.gap, r.twist))
+		table.insert(lines, ("%s lowest corner %.2f..%.2f slide %.2f hip gap %.2f twist %.0f sole tilt %.0f torso contact %.2f top off %.0f%%"):format(leg, r.low, r.high, r.slide, r.gap, r.twist, r.tilt, r.touch, r.off * 100))
 	end
 	table.sort(lines)
 	return table.concat(lines, "; ")

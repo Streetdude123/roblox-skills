@@ -100,4 +100,45 @@ function Feet.gap(tp, s, fx, fz, lift)
 	return gap
 end
 
+local SOLE = {V3(-0.5, -1, -0.5), V3(0.5, -1, -0.5), V3(-0.5, -1, 0.5), V3(0.5, -1, 0.5)}
+
+function Feet.flatLeg(tp, s, spec)
+	local floor = -3 + (spec[4] or 0)
+	local foot = V3(spec[1], floor, spec[2])
+	local top = tp:PointToObjectSpace(foot + V3(0, 2, 0))
+	local x = math.clamp(top.X, -1, 1)
+	local deep = 1 - 0.5 / math.min(1, 1.5 - math.abs(x))
+	local edge = tp * V3(x, top.Y, math.clamp(top.Z, -deep, deep))
+	local up = (edge - foot).Unit
+	local leg = CFrame.fromMatrix(foot + up, CFrame.Angles(0, math.rad(spec[3] or 0), 0).LookVector:Cross(up).Unit, up)
+	local low = math.huge
+	for _, c in ipairs(SOLE) do
+		low = math.min(low, (leg * c).Y)
+	end
+	leg += V3(0, floor - low, 0)
+	local sink = tp:PointToObjectSpace(leg * V3(0, 1, 0)).Y + 1
+	return (tp * CFrame.new(s, -1, 0)):Inverse() * leg * CFrame.new(0.5 * s, 1, 0), sink
+end
+
+function Feet.flat(targets)
+	return function(poses, t)
+		local tp = poses.Torso
+		if not tp then
+			return
+		end
+		for s, key in pairs({[1] = "r", [-1] = "l"}) do
+			local spec = targets[key] and target(targets[key], t)
+			local name = s == 1 and "Right Leg" or "Left Leg"
+			if spec and poses[name] then
+				local pose, sink = Feet.flatLeg(tp, s, spec)
+				if sink < 0 or sink > 1 then
+					local tilt = Feet.stand(tp, s, spec[1], spec[2], spec[3], spec[4])
+					pose = sink > -0.15 and sink < 0 and tilt:Lerp(pose, (sink + 0.15) / 0.15) or tilt
+				end
+				poses[name] = pose
+			end
+		end
+	end
+end
+
 return Feet

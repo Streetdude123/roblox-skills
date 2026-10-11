@@ -25,7 +25,8 @@ Use stepped poses for the first check and real-time playback for timing. Use slo
 | A one-shot ends in the rest pose before the next clip (Play only) | The track list in the log: the one-shot drops to 0 before the next clip has weight | A server wait of the clip length overshoots and the non-looped track stops at its end. Put the next clip (the hold or an idle) underneath it at a lower priority from the start, so its end reveals the next pose. |
 | Next combo swing looks weird | The blade at the last swing's hold against the next swing's first keys | The next swing detours to its own load; start it from the hold pose and carry the blade on (weapons.md, "A combo flows"). |
 | Head off the target at a contact | Torso twist plus head twist at the contact frame | Head keys that counter the torso on the torso's frames; no lag or spring on that head. |
-| Feet slide or sink when the torso turns | `_G.feet`: slide, lowest corner, hip gap | `post = Feet.post`; lean from the waist; drop the torso with the turn (`Feet.gap` gives the need). |
+| Feet slide or sink when the torso turns | `_G.feet`: slide, lowest corner, sole tilt, torso contact | `post = Feet.flat`; lean from the waist; drop the torso with the turn. |
+| Feet stand on a corner (tilted soles) | `_G.feet`: sole tilt over about 8 degrees | `Feet.flat` instead of `Feet.post`; bring the foot target under the torso; drop the torso where it rises or leans back. |
 | Stiff | Repeated pose shapes, equal timing, parts moving as one without intent | Improve the main pose and contrast of timing; then add motivated overlap. |
 | Floaty | Support changes, slow braking before impact, unearned root rise | Restore contact and weight transfer; reshape spacing around the impact. |
 | Weak strike | Target path, fastest interval, incoming pose, contact silhouette | Correct direction and acceleration; preserve the required impact time. |

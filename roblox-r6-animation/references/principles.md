@@ -116,7 +116,7 @@ Do not put a spring on a part that must be on its key at a contact. Measured on 
 
 Choose the support at each beat and keep the mass over it in held poses. Show the sequence of effort: prepare support, apply force, accelerate, absorb or release, regain support. A heavy action can strike fast after a demanding preparation; slowing the whole clip does not make it heavy.
 
-In R6, compression is a torso drop with the legs re-aimed at their floor targets (`Feet.post`), never a leg pulled out of its hip. Lean from the waist (the `waist` offset), or the hips swing back and the feet slide. Turning the torso turns the hips around the feet; plan the drop with the turn (`Feet.gap` gives the need).
+In R6, compression is a torso drop with the legs standing flat on their floor targets (`Feet.flat`): a leg may slide up into the torso or off its socket while at least half of its top stays under the torso and it touches (SKILL.md, feet rule, 2026-10-10). Lean from the waist (the `waist` offset), or the hips swing back and the feet slide. Turning the torso turns the hips around the feet; plan the drop with the turn (`Feet.gap` gives the need).
 
 ## Arcs and paths
 
