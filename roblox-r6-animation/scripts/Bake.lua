@@ -6,7 +6,7 @@ local ServerStorage = game:GetService("ServerStorage")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 -- edit these three lines per place: the feature folder, the rig, and {clipKey, savedName, fps, bakeLength}
--- a held clip (DioPoint carries length 100000 so it never ends in play) MUST get a bakeLength: without one the bake
+-- a held clip (a clip that carries length 100000 so it never ends in play) MUST get a bakeLength: without one the bake
 -- loops for millions of frames, floods memory and crashes studio
 local root = ReplicatedStorage:FindFirstChild("Anim") or ReplicatedStorage.Stand
 local rig = ServerStorage:FindFirstChild("AnimRig") or ServerStorage.StandAnimRig

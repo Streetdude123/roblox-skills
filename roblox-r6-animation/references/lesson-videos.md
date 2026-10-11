@@ -13,11 +13,11 @@ Five lesson videos on the craft, each studied in full. The first four were studi
 ## Contents
 
 - The short version
-- 1. Alan Becker: the 12 principles, translated to R6
-- 2. NobleFrugal Studio: timing and spacing
-- 3. Kuzillon: six beginner mistakes
-- 4. Bluebiscuits: the practical tricks
-- 5. Alexander Rudenko: physics in animation
+- 1\. Alan Becker: the 12 principles, translated to R6
+- 2\. NobleFrugal Studio: timing and spacing
+- 3\. Kuzillon: six beginner mistakes
+- 4\. Bluebiscuits: the practical tricks
+- 5\. Alexander Rudenko: physics in animation
 - Hand-off checklist (one answer per principle)
 
 ## The short version (read this first)
