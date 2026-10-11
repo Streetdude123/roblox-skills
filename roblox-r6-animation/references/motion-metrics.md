@@ -1,12 +1,12 @@
 # Motion metrics
 
-Measured 2026-09-22 in the DIO place (`jojo stand`). Every clip was sampled at 60 fps and written as ReadClips decode text (0.1 degree and 0.01 stud rounding), then measured with `scripts/motion_check.js`. `Poser.check` computes the same numbers on exact samples inside Studio. The numbers describe motion quality proxies, not taste: a clip can pass every range and still have a weak pose. Use them to find stops, freezes, unison and sliding feet before a capture, and to compare with the professional clips.
+Measured in a stand-combat place (the clips of `scripts/examples/stand-combat/Clips.lua` and the reference clips below). Every clip was sampled at 60 fps and written as ReadClips decode text (0.1 degree and 0.01 stud rounding), then measured with `scripts/motion_check.js`. `Poser.check` computes the same numbers on exact samples inside Studio. The numbers describe motion quality proxies, not taste: a clip can pass every range and still have a weak pose. Use them to find stops, freezes, unison and sliding feet before a capture, and to compare with the professional clips.
 
 ## Contents
 
 - Definitions
 - Professional reference clips
-- Earlier Claude clips
+- Earlier code-authored clips
 - What the engine alone changes
 - The example clips
 - Targets
@@ -46,15 +46,15 @@ Speeds are central differences over 4 frames (so decode rounding cannot fake a s
 | Land Anim | 0.47 | 0 | 0 | 7.2 | 0.4 | 2.1 | 2.3 | 5.5 |
 | Walk2 (emm1gar) | 0.92 | 0 | 0 | 2.8 | 0 | 0 | 1.5 | 4.0 |
 | Run | 0.53 | 0 | 0 | 1.0 | 0 | 0 | 1.4 | 3.3 |
-| Idle (the one Lepy named the model) | 3.0 | 0 | 100 | 0 | 0 | 0 | 1.7 | 0 |
+| Idle (the model reference idle) | 3.0 | 0 | 100 | 0 | 0 | 0 | 1.7 | 0 |
 | TW idle (float) | 2.5 | 0 | 42 | 0 | 0 | 0 | 2.4 | 0 |
 | sword idle (a static weapon overlay) | 4.15 | 100 | 100 | 0 | 0 | 0 | 5.5 | 0 |
 
 Readings: no professional one-shot has a still frame. Their parts rest 16 to 50% of the time, never all at once for long, and the peak speed stays within about 2 to 10 times the median. The model idle is slow (still at the 12 deg/s action threshold) but never frozen. A weapon idle that is a static overlay relies on a lower layer to breathe.
 
-## Earlier Claude clips
+## Earlier code-authored clips
 
-Authored in `Clips.lua` with the legacy per-key eases (`cubic` departures, `back` arrivals, `sine` creep holds, keys shared across joints).
+Authored in `scripts/examples/stand-combat/Clips.lua` with the legacy per-key eases (`cubic` departures, `back` arrivals, `sine` creep holds, keys shared across joints).
 
 | Clip | Length | frozen% | still% | longest still | rest% | contrast |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -67,7 +67,7 @@ Authored in `Clips.lua` with the legacy per-key eases (`cubic` departures, `back
 | WorldTimeStop | 3.90 | 2.6 | 42.1 | 1.33 | 81.3 | 52.5 |
 | DioTimeStop | 3.90 | 1.3 | 60.9 | 0.98 | 89.8 | 104.5 |
 
-A short strike (DioHeavy) sits near the sword kit. Every move of a second or more spends 56 to 90% of its time with each part parked, and the long moves have still runs of up to 1.3 s: the "still frames" Lepy saw. Rounding-free `Poser.check` on the same clips also found 3 to 12 one-frame jolts each (a part leaving a full stop at nearly half its peak speed).
+A short strike (DioHeavy) sits near the sword kit. Every move of a second or more spends 56 to 90% of its time with each part parked, and the long moves have still runs of up to 1.3 s: the "still frames" a viewer sees. Rounding-free `Poser.check` on the same clips also found 3 to 12 one-frame jolts each (a part leaving a full stop at nearly half its peak speed).
 
 A first version of the analyzer counted every speed dip on the rounded decodes and reported 10 to 16 stops per second for these clips. That number was mostly rounding noise; the 4 frame window above replaced it. Keep that in mind before trusting a metric on rounded data.
 

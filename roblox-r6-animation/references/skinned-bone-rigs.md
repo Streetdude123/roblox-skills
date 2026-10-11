@@ -1,6 +1,6 @@
 # Skinned bone rigs animated in Blender
 
-Use this file when the character is not a Motor6D R6 rig but a skinned mesh with Bones (an Import 3D model from a team's .blend), and the clips are authored in Blender and converted to KeyframeSequences. It comes from the UT:EF Chara kit (2026-10-03): the first pass was called "super buggy, unnatural, and just isn't as cool as i expected"; the second pass rebuilt every clip with the method below.
+Use this file when the character is not a Motor6D R6 rig but a skinned mesh with Bones (an Import 3D model from a team's .blend), and the clips are authored in Blender and converted to KeyframeSequences. It comes from a knife-wielding chibi character kit: the first pass was judged buggy, unnatural and not cool enough; the second pass rebuilt every clip with the method below.
 
 ## What made the first pass look buggy (measured)
 
@@ -34,7 +34,7 @@ A pose is a dictionary of channels, not bone rotations. The solver turns it into
 - The arm is a two-bone IK: the elbow sits in the plane of the shoulder, the wrist target and the pole; the upper arm and the forearm frames map the rest hinge onto the new hinge, so the elbow always bends the right way.
 - The hand comes from the blade direction: the grip of the idle stays fixed in the hand, and the roll about the blade is chosen for the least wrist bend. 60% of the remaining twist goes into the forearm roll (pronation), so the wrist never shows a candy wrapper.
 - Keep the blade square to the forearm. Six first-pass keys pointed the blade along the arm and bent the wrist 70 to 105 degrees; the bake prints `wristR` and the time of the worst frame.
-- Arms of a chibi rig are short (0.61 units from the shoulder to the wrist on Chara). A hand cannot reach the far shoulder, so a self-hug from an MMD reference becomes a forearm across the chest with the fist at the near-centre; say so in the report.
+- Arms of a chibi rig are short (0.61 units from the shoulder to the wrist measured). A hand cannot reach the far shoulder, so a self-hug from an MMD reference becomes a forearm across the chest with the fist at the near-centre; say so in the report.
 - The team's idle had the legs already 1.2% past their reach and location keys on the left arm bones (a stretched arm). Drop the hips 0.05 to 0.1 for any lunge or step, and start and end each clip with `ends=(0.1, 0.12)`, which blends the first and last frames to the exact idle bases.
 
 ## Keys, curves and layers
@@ -48,7 +48,7 @@ A pose is a dictionary of channels, not bone rotations. The solver turns it into
 
 ## Measure
 
-`metrics(name)` samples the baked action at 60 Hz on 17 joints (the spine, the collarbones, both arm chains, both leg chains). The ranges in motion-metrics.md were made on six R6 joints, so stops per second read about three times higher here and every clip that starts and ends at the idle adds two rests per joint; judge stops by where they fall (`STOPS` prints the runs), not by the total. The Chara pass ended at still 0 to 3%, rest 26 to 49%, contrast 2.2 to 3.9.
+`metrics(name)` samples the baked action at 60 Hz on 17 joints (the spine, the collarbones, both arm chains, both leg chains). The ranges in motion-metrics.md were made on six R6 joints, so stops per second read about three times higher here and every clip that starts and ends at the idle adds two rests per joint; judge stops by where they fall (`STOPS` prints the runs), not by the total. The rebuilt pass ended at still 0 to 3%, rest 26 to 49%, contrast 2.2 to 3.9.
 
 ## Review renders
 

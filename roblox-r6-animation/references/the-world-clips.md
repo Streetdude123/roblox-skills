@@ -9,15 +9,13 @@ These are preserved measurements and interpretations from earlier project work. 
 - The stand idle (the float)
 - Barrage numbers
 - Key poses in parent-axis space
-- Historical DIO application
+- Applying these clips
 
-Lepy dropped a free model of The World (a WIP mesh stand on a standard R6 rig, no scripts) into
-Place1 on 2026-09-21 and said its animations are "SUPER high quality" and to learn from them. Its
-`AnimSaves` held eight Moon Animator clips baked at 60 fps as Linear keys: `TW idle`, `TWLeftPunch`,
-`TWRightPunch`, `TWLeftUpperCut`, `TWRightKick`, `TWLeftStab`, `Barrage`, `TWHeavyPunch`. They were
-decoded with `scripts/ReadClips.lua` into parent-axis poses (lift, twist, side, offset). Everything
-below is measured. The clips now play in the place through `Poser.fromSequence` (see pipeline.md);
-the raw sequences live in `ReplicatedStorage.Stand.Assets.Anims`.
+A free model of a stand (The World, a WIP mesh stand on a standard R6 rig, no scripts) held eight high-quality Moon Animator clips
+in its `AnimSaves`, baked at 60 fps as Linear keys: `TW idle`, `TWLeftPunch`, `TWRightPunch`, `TWLeftUpperCut`, `TWRightKick`,
+`TWLeftStab`, `Barrage`, `TWHeavyPunch`. They were decoded with `scripts/ReadClips.lua` into parent-axis poses (lift, twist,
+side, offset); the decodes are in `decodes/`. Everything below is measured. Such a set can play as it is through
+`Poser.fromSequence` (see pipeline.md).
 
 ## Recorded interpretation of these clips
 
@@ -109,25 +107,11 @@ the raw sequences live in `ReplicatedStorage.Stand.Assets.Anims`.
 - Heavy punch hit (frame 20): Torso {-33, -41, -15}; Head {-37, -3, -17}; Right Arm {40, -97, 112}
   p(-0.05, -0.70, -0.28); Left Arm {62, 139, -144} p(0.06, 0.39, -0.77); Left Leg p(0.34, 1.13, -1.26).
 
-## Historical DIO application
+## Applying these clips
 
-- A stand's clips now come from its own animation set sampled through `Poser.fromSequence` under the limitations in pipeline.md;
-  Claude authors only the pieces the set lacks (appear, vanish, the time stop) and re-targets its
-  own poses to the set's idle frame so nothing pops on the hand-off.
-- A rush loop is a torso engine at 6 beats a second with the head countering; fists ride.
-- The user's ZA WARUDO is the show's two frames and nothing else: arms crossed in an X in a forward
-  crouch, then flung up and out into a wide V with the chest out and the head back, held with a
-  tremble and one jolt on the freeze. A quiet one-hand version and an arms-flung-then-lunge version
-  were both rejected; the recorded pose values and review history are in [project-style.md](project-style.md#recorded-za-warudo-and-road-roller-poses).
-- On the road roller the stand samples its own `Barrage` sequence, subject to the import limits in pipeline.md, with a procedural root leaned
-  38 degrees down at the deck and a 12 Hz shiver (`WorldRollerBarrage`); the user holds the Jotaro
-  point on top. The stand never gets an authored clip for it.
-- Combo clips must chain end pose to start pose; author the last key of one as the first key of the next.
+- A companion's clips come from its own animation set sampled through `Poser.fromSequence` under the limitations in pipeline.md. Author only the pieces the set lacks (appear, vanish, a special move) and retarget those poses to the set's idle frame so nothing pops on the hand-off.
+- A rush loop is a torso engine at 6 beats a second with the head countering; the fists ride.
+- Combo clips chain end pose to start pose; author the last key of one as the first key of the next.
 - Piston punches: freeze the arm angle on the strike frames, translate the part, let the torso reach.
-- This project used larger stand offsets and smaller user offsets. Inspect the target rig and contacts rather than treating those old budgets as universal limits.
-- The user's body under the barrage holds still in the Jotaro point from his reference image (arm dead
-  ahead at the enemy, the free forearm to the collar, chin down). Under the five hit chain he COPIES the
-  stand's own clips (the show's stand user throws the punch and the stand's fist lands): the same
-  sequence on his torso, head and arms with the arm offsets scaled 0.4 and the torso roll 0.45, authored
-  planted legs, started three frames ahead. Authored command gestures read as "sitting back while the
-  stand does the work" and were cut. `aim(tw, down)` and `solveFootY` are in `scripts/Clips.lua`.
+- A floating companion takes larger limb offsets than a grounded body. Inspect the target rig and contacts rather than treating either budget as a universal limit.
+- The user under a companion's attack chain copies the companion's own clips (the user throws the punch and the companion's fist lands): the same sequence on the user's torso, head and arms with the arm offsets scaled 0.4 and the torso roll 0.45, authored planted legs, started three frames ahead. Authored command gestures over a companion's hits read as the user sitting back while the companion does the work. Under a sustained rush the user can hold still in one strong pose (an arm pointed dead ahead at the enemy, the free forearm to the collar, chin down). `aim(tw, down)` and `solveFootY` are in `scripts/examples/stand-combat/Clips.lua`.

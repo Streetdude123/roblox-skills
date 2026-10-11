@@ -56,7 +56,7 @@ Read as text through web fetches and summaries; no video was watched frame by fr
 - Project review history records preferences for named actions. Do not generalize it into mandatory overshoot, joint offsets, movement budgets, or editor restrictions.
 - Current Moon Animator save internals were not verified. Inspect the installed plugin and actual export rather than inventing a schema.
 
-## Lesson videos Lepy assigned (2026-09-29)
+## Lesson videos
 
 Studied from the full caption transcripts plus frame grids of the demonstrations; the notes are in [lesson-videos.md](lesson-videos.md).
 
@@ -66,3 +66,4 @@ Studied from the full caption transcripts plus frame grids of the demonstrations
 | [NobleFrugal Studio, "The #1 Animation Principle (How To In-Between)"](https://youtu.be/6UXjRCORV44) | Timing against spacing, frames against drawings, halves, thirds and favours, stopwatch timing, the timing chart for a hammer slam. |
 | [Kuzillon, "6 Beginner ANIMATION MISTAKES to avoid!"](https://youtu.be/-WUhB9DLrqo) | Too slow, constant speed, the fading domino of body motion, arcs, simplify first, edges. |
 | [Bluebiscuits, "How to do Basic Animation from a beginner to a beginner"](https://youtu.be/Al_k9hmd4ws) | Start and end frames first, favour frames, mixed 2-3-4-2 holds, circles, squash and pull on in-betweens, the settle, the pull-back, the bounce, staggered secondary parts. |
+| [Alexander Rudenko, "Physics in animation"](https://youtu.be/x3jaDhGUHuw) | Centre of mass, balance against the support area, rotation around the COM, ballistic COM, speed gained and lost only through support (spring leg, stopper leg), spin speed against pose, through motion and harmonic settles, the common contact-freeze mistakes, bouncing-ball points, the layered method, arcs. Studied from the caption transcript and the 226 storyboard frames; the video stream was blocked, so the demos were not frame-stepped. |

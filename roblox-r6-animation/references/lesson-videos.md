@@ -1,13 +1,14 @@
-# Lesson videos Lepy assigned (2026-09-29)
+# Lesson videos
 
-On 2026-09-29 Lepy sent four videos and said to watch all of them and put them in this skill, because the skill must know how to animate. They were studied in the built-in browser: the full caption transcript of each (turn captions on in the player, capture the player's own `timedtext` response, parse the json3 events), plus frame grids of the key demonstrations (canvas `drawImage` of the video at chosen times inside a modal `<dialog>`). This file keeps what each video teaches, in our words, and translates it to R6 clips authored in code with Poser. Where a number is ours (a conversion to 60 fps, a Poser setting), it says so.
+Five lesson videos on the craft, each studied in full. The first four were studied in a browser: the full caption transcript of each (turn captions on in the player, capture the player's own `timedtext` response, parse the json3 events), plus frame grids of the key demonstrations (canvas `drawImage` of the video at chosen times inside a modal `<dialog>`). This file keeps what each video teaches, in our words, and translates it to R6 clips authored in code with Poser. Where a number is ours (a conversion to 60 fps, a Poser setting), it says so.
 
 | Video | Length | What it is |
 | --- | --- | --- |
 | [AlanBeckerTutorials, "12 Principles of Animation (Official Full Series)"](https://youtu.be/uDqjIdI4bF4) | 24 min | The Thomas and Johnston principles, one chapter each, with stick-figure demonstrations. |
 | [NobleFrugal Studio, "The #1 Animation Principle (How To In-Between)"](https://youtu.be/6UXjRCORV44) | 12 min | Timing and spacing: frames against drawings, ways to divide space, a timing chart for a hammer slam. |
 | [Kuzillon, "6 Beginner ANIMATION MISTAKES to avoid!"](https://youtu.be/-WUhB9DLrqo) | 4 min | Six mistakes: too slow, constant speed, cut corners, straight paths, detail too early, lazy screen edges. |
-| [Bluebiscuits, "How to do Basic Animation from a beginner to a beginner"](https://youtu.be/Al_k9hmd4ws) | 16 min | **His favourite** ("half animation half animatic"): simple shapes, start and end frames, favour frames, mixed holds, pull-back, settle, bounce, squash and pull on the in-betweens. |
+| [Bluebiscuits, "How to do Basic Animation from a beginner to a beginner"](https://youtu.be/Al_k9hmd4ws) | 16 min | "Half animation half animatic": simple shapes, start and end frames, favour frames, mixed holds, pull-back, settle, bounce, squash and pull on the in-betweens. |
+| [Alexander Rudenko, "Physics in animation"](https://youtu.be/x3jaDhGUHuw) | 37 min | Centre of mass (balance, rotation around it, speed gained and lost only through support), rotation speed against pose, inertia ("through motion") and settles, bouncing-ball points, the layered method, arcs. |
 
 ## The short version (read this first)
 
@@ -18,6 +19,7 @@ On 2026-09-29 Lepy sent four videos and said to watch all of them and put them i
 5. **Every move has three small extras:** a pull-back before it (anticipation, one to three levels), a follow-through and settle after it, and appendages that trail and overshoot.
 6. **Exaggerate, then back off.** Push a pose until it is too much, then wind it back. A fast extreme must be bigger, or held longer, or nobody sees it.
 7. **Stage it for one viewer.** One main action at a time, clear from the camera that sees it. On Roblox that is the player's camera behind the character.
+8. **Physics underneath.** The centre of mass stays over the support or the body falls; it gains and loses speed only through a planted push or a braced stop; rotations turn around it; in the air it follows a parabola. Loose parts carry their speed through every contact and settle with shrinking bounces.
 
 ## 1. Alan Becker: the 12 principles, translated to R6
 
@@ -29,10 +31,10 @@ On 2026-09-29 Lepy sent four videos and said to watch all of them and put them i
 - In code: a small move the other way before the load (level 1 of anticipation), the load itself (level 2), a counter-limb swinging back (level 3) for the heavy hits. Scale the levels with the move's tier.
 
 **Staging.** Present one idea so it cannot be misread: control where the viewer looks, one main action at a time, no competing actions, and let one action finish before the next starts. Wide shots for big actions, close shots for expressions; the main action in the centre or on a third, with space in front of where the character faces. Insert a pause when the viewer needs time to take something in.
-- On Roblox the player's camera sits behind and above the character. A thrust straight away from the camera hides behind the body and wings (measured on the Water Dragon lance, 2026-09-26), so move the hands and the weapon to the side that the camera sees, or let the VFX carry the line. A giant construct must rise to the side, never between the camera and the body (the tail slam, 2026-09-26).
+- On Roblox the player's camera sits behind and above the character. A thrust straight away from the camera hides behind the body and wings (measured on a lance thrust), so move the hands and the weapon to the side that the camera sees, or let the VFX carry the line. A giant summoned construct must rise to the side, never between the camera and the body.
 
 **Straight ahead and pose to pose.** Pose to pose gives control for the body: keys, then extremes (the farthest each way), then breakdowns (how the extremes connect), then in-betweens, perfecting each level before the next. Straight ahead suits things driven by physics: fire, water, dust, explosions, and floppy parts such as ears, hair and tails. Animate the body pose to pose without those parts, then add them straight ahead.
-- This is our split: body keys in Poser, then springs, follow chains and lag for the tails, capes, hair, ribbons and VFX (the dragon tail's follow chain, `springs`, `lag`).
+- This is our split: body keys in Poser, then springs, follow chains and lag for the tails, capes, hair, ribbons and VFX (a tail's follow chain, `springs`, `lag`).
 
 **Follow-through, overlapping action and drag.** Parts keep moving after the body stops (follow-through), parts move at an offset from the body (overlap), parts lag behind the body (drag). The tip of an appendage catches up last and overshoots farthest before it settles. The whole body also follows through and comes back when it stops, and a landing follows through as the jump anticipated. The amount of drag says the mass (a stiff antenna against a feather). The elbow leads, then the forearm, then the hand, even in a walk. Offset the arms from the legs, and the top half from the bottom half when a character stands up.
 - R6 has no elbow: the shoulder rotation leads, the hand and the held weapon trail one to three frames, and a short translation up the limb suggests the bend. Use `lag` on loose parts, the spring presets on carried parts, and keep striking limbs off the lag list.
@@ -45,7 +47,7 @@ On 2026-09-29 Lepy sent four videos and said to watch all of them and put them i
 
 **Secondary action.** Gestures that support the main action and show how the character feels: an angry walk swings the arms and bobs the head; the free hand while knocking tells the mood (a fist, a dainty tap, tucked in while the head checks behind). It must not upstage the main action and must not go unnoticed; give it its own moment.
 
-**Timing.** The number of frames between two poses sets the meaning. His head-lean example, as durations at 24 fps on ones (our conversion, one in-between = one more frame of about 0.042 s; double them for twos):
+**Timing.** The number of frames between two poses sets the meaning. The video's head-lean example, as durations at 24 fps on ones (our conversion, one in-between = one more frame of about 0.042 s; double them for twos):
 
 | In-betweens | About | Reads as |
 | --- | --- | --- |
@@ -74,7 +76,7 @@ Use it as a meaning check for a strike or a reaction: a lunge whose strike takes
 - There are two kinds of motion: constant (even spacing) and accelerating or decelerating (spacing that grows or shrinks).
 - Three ways to split the space between two poses: **halves** (smooth, good when there are many frames), **thirds** (snappier: momentum builds or dies quickly), **favours** (snappiest: the in-between barely leaves its key and leans toward it). With only a few frames, favour both keys and the move still reads.
 - To choose a duration, act the move out against a stopwatch and multiply the seconds by the frame rate.
-- Make a timing chart for each pair of keys: ease in, ease out, both, constant, or none. His hammer slam: the wind-up slower (more drawings), the slam fast; the chart packs the in-betweens near the raised pose so the hammer leaves it slowly, then leaves big gaps so it arrives fast, and the last in-between favours the landing pose to put the motion to rest.
+- Make a timing chart for each pair of keys: ease in, ease out, both, constant, or none. The video's hammer slam: the wind-up slower (more drawings), the slam fast; the chart packs the in-betweens near the raised pose so the hammer leaves it slowly, then leaves big gaps so it arrives fast, and the last in-between favours the landing pose to put the motion to rest.
 - In code: a favour is a breakdown key close to its key in both time and value (for example 1 to 2 frames after the start at 5 to 10% of the travel). A slam is a slow departure (keys packed near the top) and a fast arrival with no ease into the contact, then an ease into the rest.
 
 ## 3. Kuzillon: six beginner mistakes
@@ -86,13 +88,13 @@ Use it as a meaning check for a strike or a reaction: a lunge whose strike takes
 5. **Detail too early.** Draw simple lines and shapes first, fix the pose and the motion, then add detail. (Block in grey strips before polish; fix timing before adding VFX.)
 6. **Lazy edges.** A subject entering or leaving the frame still needs full drawings; work outside the camera area. (For moves that leave the player's view, plan the whole motion, not only the part on screen.)
 
-## 4. Bluebiscuits (his favourite): the practical tricks
+## 4. Bluebiscuits: the practical tricks
 
-This is the style Lepy likes: a simple flat character, bold readable poses, snappy timing with holds, and small tricks that make each move pop. The method, as shown in the video and its onion skins:
+The style: a simple flat character, bold readable poses, snappy timing with holds, and small tricks that make each move pop. The method, as shown in the video and its onion skins:
 
 1. **Keys first.** Draw the start pose and the end pose, simply. Everything else connects them.
 2. **Favour frames.** Copy the start pose, nudge it a little toward the end; copy the end pose, nudge it a little back toward the start. With those four drawings the move already "flicks" across; add a middle drawing only when the poses are far apart or the move must be slower. In the onion skins, the first in-between hugs the start pose and the next one travels on an arc, with the arm trailing and then flicking up.
-3. **Mixed holds.** Hold drawings for 2, then 3, then 4, then 2 frames inside one move: fast, slow, fast. Her tip: step through animations you like frame by frame (the comma and period keys on YouTube) and count the frames.
+3. **Mixed holds.** Hold drawings for 2, then 3, then 4, then 2 frames inside one move: fast, slow, fast. A tip from the video: step through animations you like frame by frame (the comma and period keys on YouTube) and count the frames.
 4. **Circles.** Moving parts follow a loose circular path, never a straight line.
 5. **Squash and pull the in-betweens.** Squash when falling, stretch when taking off and when landing.
 6. **The settle.** After a move ends, add one or two frames at almost the same pose, nudged slightly, then the final pose. It lets the motion rest and looks much livelier.
@@ -112,16 +114,75 @@ This is the style Lepy likes: a simple flat character, bold readable poses, snap
 | Squash and pull | See squash and stretch above: a compact pose on contact, a long pose on the fastest frames. |
 | Stagger the parts | `lag` on loose parts, key offsets of 1 to 3 frames down the chain, the head answering the torso. |
 
-## Checklist from the videos
+## 5. Alexander Rudenko: physics in animation
 
-Before hand-off, a clip should answer yes to each:
+[Alexander Rudenko, "Physics in animation"](https://youtu.be/x3jaDhGUHuw) (37 min, 2024). By a lead gameplay animator trained at a studio built on physical animation. Studied on 2026-10-11 from the full caption transcript (947 caption events) and all 226 YouTube storyboard frames (160 x 90, one every 10 s). The video stream itself was blocked by YouTube's bot check, so fine motion in the demos was not frame-stepped; the storyboard frames confirm the setups described below.
 
-- Does each beat's duration match what it should mean (the timing table)? Is anything slower than real life?
-- Is the speed ever constant on a living part? Is there an ease into an impact that should hit at full speed?
-- Does every moving part travel on an arc (hand, tool tip, head, root)?
-- Does the motion spread to the neighbouring parts and fade out, with no hard-moving part next to a frozen one?
-- Is there a pull-back or wind-up before each major move, sized to the move, and a follow-through and settle after it?
-- Do the loose parts trail and overshoot more than the body?
-- Is each extreme pushed far enough to read at speed (bigger, or held longer)?
-- Is the main action clear from the player's camera, with nothing in front of the body?
-- No twinning in any held pose?
+The video names four parts of a good animation: the centre of mass, rotation speed, the inertia of body parts, and arcs. Realism is the base; stylized work breaks these rules on purpose, and only an animator who knows them can break them well.
+
+### Centre of mass (COM)
+
+- The COM is the point where the body's mass balances. It tells how speed is gained and lost, whether the body stands or falls, and whether a rotation is correct.
+- The video's rig: a locator in each joint (feet, shins, thighs, pelvis, chest, head, shoulders, forearms, wrists), one COM locator point-constrained to all of them with rough segment weights, a vertical line from the COM to the floor, and a plane skinned to the feet that shows the support area (seen in the frames as a green line and a blue plane). Rough weights are enough; the aim is to see it.
+- **Balance.** While the COM's floor projection stays inside the support area (the region between the support points), the character stands. When it leaves the area, the character falls unless a new support point catches it (a step). The nearer the edge, the harder the stand. On one foot the COM must stay over that foot, and it is never static: it keeps making small corrections.
+- **Quick balance check without a rig.** Look along the line of the support points, draw a vertical line up from the support, and compare the body volume on each side. Similar volumes mean a balanced pose. A dynamic pose can look right from one camera and fall over from another; check two views.
+- **Standing up and recovering** throw the COM: a push (hands or legs) gives the COM speed, it crosses into the support area, then the body brings it to a comfortable place.
+- **Rotation happens around the COM, not the pelvis.** Rotating around the root control is the most common beginner error: with heavy arms or legs held out, a pelvis pivot reads wrong. Fix: put a locator at the approximate COM, rebake the root onto it, and zero the old translates. In a flip, the COM (not the pelvis) follows the ballistic curve. In the air the COM's horizontal speed is constant and its height follows a parabola.
+- **Acceleration and deceleration need support.** The COM cannot speed up or slow down on its own. To start, a back leg compresses like a spring and releases while it is on the ground; a start from one leg needs a fall forward first. Every step is a fall caught by a leg; a run is a chain of falls. To stop, plant a stopper leg ahead of the COM in the direction of travel, lean the body back and sink; a leg placed without tension, or not ahead of the COM, only stumbles. A soft stop takes several steps; a hard stop is one braced, extended leg and a deep squat.
+
+### Rotation speed
+
+- In the air (and in a static pose), the spin rate stays constant; air drag is ignored. On the ground, friction slows it.
+- The spin rate depends on the pose: limbs far from the axis spin slowly, a tucked body spins fast (the skater who pulls the arms in). The axis passes through the COM, and the support foot draws a small circle to keep the COM over it.
+- The spin graphs in the video: the curve is flatter while the arms are out and steepens as they come in.
+
+### Inertia, or "through motion"
+
+- Nothing stops at once. When the skeleton stops (a landing, a fall on the back), the muscles, hair and clothes keep going at the speed they had, stretch, then come back in a decaying oscillation: the settle is harmonic damping.
+- **Mistakes shown side by side:** a freeze or slow-down at the moment of contact (the arms stick in the air, the head waits, the pelvis hangs) - "you should never do that", and the graph editor shows it as a slow-down; a "magnetic cushion" landing that eases into the floor; a hand that stops mid-air; bounces added afterwards as quick flicks of the same amplitude, which no mass can do; a part that leaves its arc for another direction.
+- A human has few inertia points; props add more (backpacks, guns, swords). Track them.
+- **Everything is a bouncing ball.** The video reduces a character to a set of balls: the top of the head (not the head), shoulders, hands, pelvis, feet, and props. Each ball follows bouncing-ball rules: an arc, spacing that shows gravity and impacts, no sudden change of direction. Raw motion capture looks the same, with more points.
+- **Layered method.** Block, then spline, the pelvis and the legs first, until you believe the body could move that way; then the back; then the arms and the head.
+
+### Arcs
+
+Everything moves on arcs and circles (the ribbon character in the frames). Arcs from a reference are cleaned and made more beautiful, not copied with their wobbles.
+
+### Realism and style
+
+Real motion is slow and plain next to game animation; combat moves are pushed for sharpness and impact. Understand the physics first, then push it or break it on purpose.
+
+### The same rules on an R6 rig (our translation)
+
+R6 parts cannot be weighed from their size: a viewer reads the character as a human, so use human segment fractions (Winter's table, rounded): Head 0.08, Torso 0.50, each Arm 0.05, each Leg 0.16. On the stock rig the part centres in torso space are Head (0, 1.5, 0), arms (+-1.5, 0, 0), legs (+-0.5, -2, 0), so the standing COM sits about 0.5 below the torso centre, in the lower half of the torso where a pelvis would be. Compute it per frame from the evaluated part CFrames: `com = sum(w_i * part_i.Position)` with the weights above. Scale with `S = Torso.Size.Y / 2` on a scaled rig.
+
+| Rule | R6 version |
+| --- | --- |
+| Balance | The support area is the floor box under the planted soles (each leg's bottom face is 1 x 1; two planted feet make the box around both). In a held pose or a slow move, keep the COM's floor projection inside it. Over the edge reads as falling: allow it only when a step, a push, a hit or a jump explains it, and land the next support under the COM. The Humanoid never falls, so the animation alone sells balance. |
+| Two views | Check the balance from the side and the front, not only from the player's camera. |
+| Rotation about the COM | RootJoint rotates about the torso centre, about 0.5 above the standing COM. For a flip, spin or big lean, add the translation that keeps the COM where it should be: `p += c - R * c` with `c` the COM in torso space (the same correction as the waist rule, with the COM as the pivot). In the air move the COM on the arc, not the torso. |
+| Ballistic flight | When a clip moves the body through the air itself, the COM's horizontal speed is constant and its height is a parabola. Match the game's gravity (`workspace.Gravity`, 196.2 studs/s^2 by default) unless the style asks for hang time. When the Humanoid jumps by physics, the clip does not add its own vertical arc. |
+| Spin speed | Constant in the air; faster when the limbs tuck, slower when they spread. A tuck in the middle of a flip speeds up the root rotation for those frames. |
+| Push before speed | A dash, lunge or jump starts with a compression of the back leg (torso drop) and a push while the foot is planted; or the body leans and falls into the first step. No root travel without a planted push. |
+| Stopper before stop | A stop puts a braced leg ahead of the COM, leans the torso back and sinks. A slide into a stop takes several small steps. |
+| Through motion | At a landing or a stop, the arms, head and props keep travelling along their arcs, then settle with each bounce smaller and shorter. Contact keys stay `auto`, never `flat` or eased; springs (`follow`, `drag`) give the decaying settle; never add same-size flicks afterwards. |
+| Bouncing balls | Track the head top, both shoulders (arm tops), both hands (arm bottoms), the pelvis (torso bottom), both soles and prop tips in root space. Each path must be an arc with readable spacing, with no stall at a contact and no change of direction mid-arc. |
+| Layered method | Animate the torso translation and the legs first (`Feet.flat` targets), then the torso rotation, then the arms, then the head. Do not polish arms on a body whose weight does not read. |
+
+## Hand-off checklist (one answer per principle)
+
+Answer each against the captures and the numbers before hand-off.
+
+- **Timing.** Does each beat's duration match what it should mean (the timing table)? Is anything slower than real life or the reference?
+- **Spacing.** Is the speed ever constant on a living part? Is there an ease into an impact that should hit at full speed?
+- **Anticipation.** Is there a pull-back or wind-up before each major move, sized to the move?
+- **Follow-through and overlap.** Is there a follow-through and settle after each move? Do the loose parts trail and overshoot more than the body? Does the motion spread to the neighbouring parts and fade out, with no hard-moving part next to a frozen one? At each contact, do the arms, head and props keep moving through it and settle with shrinking bounces, with no freeze?
+- **Arcs.** Does every moving part travel on an arc (hand, foot, tool tip, head top, root)?
+- **Squash and stretch.** Is the contact a compact pose and the fastest frame a long one?
+- **Staging.** Is the main action clear from the player's camera, with nothing in front of the body and one action at a time?
+- **Pose to pose and straight ahead.** Did the blocking read before the motion pass? Do loose parts follow through springs or lag chains?
+- **Secondary action.** Does the free hand, the head or a prop support the action without competing?
+- **Exaggeration.** Is each extreme pushed far enough to read at speed (bigger, or held longer)?
+- **Solid drawing, weight and balance.** No twinning in any held pose? In every held pose, is the COM's floor projection inside the support area, checked from two views? Does every fall over the edge have a cause and a catch? Does every gain of speed come from a planted push, and every stop from a braced leg ahead of the COM? Does every flip, spin or big lean rotate around the COM, and does an airborne COM follow a parabola at constant horizontal speed?
+- **Appeal.** Does the silhouette of each key pose read clearly and say what defines the character?
+- **Game feel.** Is the event on the contact key, the cancel window before the end, the recovery over-extended then popping back, and the next move's first pose equal to this move's end?

@@ -23,7 +23,7 @@ Motion cannot rescue a weak pose. Check every key pose from the player's camera 
 1. **Intent.** One sentence: what the character does and why (a committed strike, a wary guard, a tired recovery).
 2. **Line of action.** One C or S curve runs through the body. In R6 build it from the torso lean and roll, the head, the leg split and the arm line; a straight vertical body reads stiff.
 3. **Contrapposto.** Shoulders and hips are not parallel. The torso roll and twist set the shoulders; the leg split and the weight foot set the hips.
-4. **No twinning.** Arms and legs are not mirror images and do not reach the same angle on the same frame, unless the action is deliberately symmetric (a two-handed swing, a ritual, the ZA WARUDO V).
+4. **No twinning.** Arms and legs are not mirror images and do not reach the same angle on the same frame, unless the action is deliberately symmetric (a two-handed swing, a ritual, a wide V of both arms).
 5. **Negative space.** Leave gaps between the arms and the torso and between the legs so the silhouette reads as a shadow.
 6. **Weight.** In a held pose the mass sits over the support foot or between the feet. In motion it may leave the support when a step, a fall or a force explains it.
 7. **Push it.** Push the lean, the twist and the reach 10 to 20% past natural, then pull back only what breaks the read. Game poses are hyper-real.
@@ -86,7 +86,7 @@ A perfectly static pose looks lifeless within a few frames. A moving hold keeps 
 - The head follows the same momentum as the body; an unmotivated head move breaks the weight.
 - Different parts settle at different times: the hips settle first, then the arms, the head last.
 - `life` adds slow noise to the upper body so a long hold is never frozen; it does not replace a drift that has a direction.
-- A long dramatic hold (the Noob King's 3 s sword hold, 2026-10-04) still needs motion over 12 deg/s somewhere. A slow drift plus a 0.4 degree tremble measured 35% still with a 1.4 s still run; a 1 degree tremble growing to 2.4 and a 1.3 degree breath every 1.6 s cut it to 18% and 0.13 s. Ramp a tremble in and out over 0.1 to 0.3 s, or it pops when it switches. In a looped hold, sample the noise on a circle (`math.noise(cos(a) r, sin(a) r, seed)` with `a = 2 pi t / length`), or it jumps at the loop seam.
+- A long dramatic hold (a 3 s sword hold) still needs motion over 12 deg/s somewhere. A slow drift plus a 0.4 degree tremble measured 35% still with a 1.4 s still run; a 1 degree tremble growing to 2.4 and a 1.3 degree breath every 1.6 s cut it to 18% and 0.13 s. Ramp a tremble in and out over 0.1 to 0.3 s, or it pops when it switches. In a looped hold, sample the noise on a circle (`math.noise(cos(a) r, sin(a) r, seed)` with `a = 2 pi t / length`), or it jumps at the loop seam.
 
 ## Follow-through and springs
 
@@ -116,7 +116,7 @@ Do not put a spring on a part that must be on its key at a contact. Measured on 
 
 Choose the support at each beat and keep the mass over it in held poses. Show the sequence of effort: prepare support, apply force, accelerate, absorb or release, regain support. A heavy action can strike fast after a demanding preparation; slowing the whole clip does not make it heavy.
 
-In R6, compression is a torso drop with the legs standing flat on their floor targets (`Feet.flat`): a leg may slide up into the torso or off its socket while at least half of its top stays under the torso and it touches (SKILL.md, feet rule, 2026-10-10). Lean from the waist (the `waist` offset), or the hips swing back and the feet slide. Turning the torso turns the hips around the feet; plan the drop with the turn (`Feet.gap` gives the need).
+In R6, compression is a torso drop with the legs standing flat on their floor targets (`Feet.flat`): a leg may slide up into the torso or off its socket while at least half of its top stays under the torso and it touches (SKILL.md, feet rule). Lean from the waist (the `waist` offset), or the hips swing back and the feet slide. Turning the torso turns the hips around the feet; plan the drop with the turn (`Feet.gap` gives the need).
 
 ## Arcs and paths
 
@@ -127,10 +127,10 @@ Track the part that carries the action (the fist, the sole, the blade tip) in wo
 ### Idle or held stance
 
 1. Block an expressive rest pose: the loaded foot, the gaze, the hands' purpose, contrapposto.
-2. One engine: a breath of 2.5 to 3.5 s on the torso (lean 2 to 4 degrees, a 0.03 to 0.04 stud sink). The head and arms answer it about a fifth of a cycle later at half the size (measured on the idle Lepy named the model); in Poser use `lag`.
+2. One engine: a breath of 2.5 to 3.5 s on the torso (lean 2 to 4 degrees, a 0.03 to 0.04 stud sink). The head and arms answer it about a fifth of a cycle later at half the size (measured on the reference idle in idle-run-land.md); in Poser use `lag`.
 3. Add `life` of 1 to 1.5 degrees. Frozen must read 0%.
 4. For long idles add macro variation every three to six loops (a weight shift to the other leg, a look around, a fidget) and blend it in so the body is never still.
-5. A floating stand moves as one mass: all joints in phase, 2 to 3 times the limb amplitude, a 0.27 stud bob (measured on The World).
+5. A floating stand moves as one mass: all joints in phase, 2 to 3 times the limb amplitude, a 0.27 stud bob (measured on the stand clips in the-world-clips.md).
 
 ### Walk
 
@@ -174,10 +174,10 @@ A floating stand and a grounded user are different bodies. Use the canon referen
 
 Layers: `curve = "spline"`, `lag` (lead arm 2 frames), `springs` (lead arm `drag`), keyed overshoot on the torso and the fist, head keys that counter the torso on its frames, `life = 0.6`, `post = Feet.post` with the heel pivot as a function of time. The measurements are in motion-metrics.md.
 
-## Runs: legs out (Lepy, 2026-09-29)
+## Runs: legs out
 
 A run is judged by the legs. Keep the swing leg driving up to about 80 degrees against the torso with the leg pulled up into the hip (0.7 to 0.95 studs) so it reads as a knee, kick the back leg to about -50 after push-off, keep each foot on the floor about 25% of the cycle so the body flies between steps, and keep the body riding high with a shallow dip so it looks light. A cycle near 0.7 s; 0.9 s reads as a walk. Legs kept under the body read as an "old man walk".
 
-## Human, not robotic, locomotion (Lepy, 2026-09-29)
+## Human, not robotic, locomotion
 
 A cycle where every part is a pure sine in lockstep reads as a robot. Give it: a weight shift (the body sways and tilts over the stance foot, feet solved so they do not slide sideways), secondary parts (head, free arm, a carried weapon) driven through a damped spring so they trail and settle instead of copying the torso, a walk bob that is highest over the stance foot (a run bob is lowest there), and restraint on a walk: a small knee lift and twist on a natural 1.0 to 1.1 s cycle. A heavy plod (big lift, twist and bob on a slow step) reads as "trying too hard".
