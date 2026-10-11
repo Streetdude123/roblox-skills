@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-10 - Grimoire Duelists Flame Mage: pack fire and baked reference clips (user-authorized)
+
+- roblox-vfx-craft: `SKILL.md` and `references/taste.md` log the unique-fire request, the pick "Fire 1 and fire 3 combination" and the verdict on hand-painted flames, "That fire vfx looks horrible, just scrap that and use vfx packs and kits with decals and stuff", with the rebuild from Toolbox fire packs (EmitCount burst counts, build-time scaling, the arrow-shaft flame arm, forearm wraps as emitters) and the first-cast frame times.
+- roblox-r6-animation: `references/project-style.md` logs the reference picks and "Ou did not send me parry clip", the 60 fps Animator bake of picked clips into quaternion data modules (0.15 degree match), and the crouch depth limit for R6 legs.
+
 ## 2026-10-10 - Extinction Protocol: turn in place with procedural steps (user-authorized)
 
 - roblox-r6-animation: `references/project-style.md` logs "Improve the turning in place ... just make the movement REALLY GOOD and smooth please" and his pick "Procedural steps". `references/custom-rigs.md` adds the clip-free turn in place (world-locked feet with plane-projected height, need-ordered steps with diagonal partners, arc, lead, body sway, the TurnTest numbers) and the swimming exit rule (release the hold in water too shallow to swim).
