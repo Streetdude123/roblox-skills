@@ -10,7 +10,7 @@ These are preserved measurements and interpretations from earlier project work. 
 - The pattern
 - Adapting the kit to code
 
-Read on 2026-09-22 from `Workspace."this is SO 2006 roblox retro core...".Sword.AnimSaves` (block hit, block idle, block start, block end, charge, equip, finish, hit1, hit2, hit3, idle) and the folder `old animations (feb 2022)` (charged idle, charged swing, charging, equip, finish, idle, swing 1, swing 2). All exported at 60 fps with Linear poses. Decoding as in walk-cycles.md. The rig has an extra Handle motor (Right Arm to Handle) and a Sword motor.
+Read from `Workspace."this is SO 2006 roblox retro core...".Sword.AnimSaves` (block hit, block idle, block start, block end, charge, equip, finish, hit1, hit2, hit3, idle) and the folder `old animations (feb 2022)` (charged idle, charged swing, charging, equip, finish, idle, swing 1, swing 2). All exported at 60 fps with Linear poses. Decoding as in walk-cycles.md. The rig has an extra Handle motor (Right Arm to Handle) and a Sword motor.
 
 ## Ranges per clip
 
@@ -219,6 +219,6 @@ Other facts:
 
 Preserve the intended path and spacing when reducing sampled frames to source keys. Put explicit breakdowns at contact, path changes, and follow-through. Linear dense samples are not equivalent to a sparse back-eased arrival.
 
-Use the new action's brief to choose duration, amplitude, contact, and recovery. Do not multiply every summon by the same amplitude or delay the feet after every torso arrival. Use the easing decisions in principles.md and the contact checks in r6-mechanics.md.
+Use the new action's brief to choose duration, amplitude, contact, and recovery. Do not apply one clip's amplitude to every new move, or delay the feet after every torso arrival by habit. Use the easing decisions in principles.md and the contact checks in r6-mechanics.md.
 
 The earlier recipe claimed that a back parameter of 1.2 to 1.5 supplied 15 percent overshoot. That parameter is not a percentage, and it does not reproduce the measured curve automatically. Author an explicit overshoot pose when its amount and timing matter.

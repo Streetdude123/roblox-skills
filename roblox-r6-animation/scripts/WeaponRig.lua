@@ -317,7 +317,7 @@ function Rig.mirror(cf)
 end
 
 -- sword in the left hand: solve the mirrored problem with the right-arm solver, then mirror the answer back ({lift, -twist,
--- -side}, p.x negated); the seed stays in the mirrored space (the three-sword samurai, 2026-09-28)
+-- -side}, p.x negated); the seed stays in the mirrored space
 local FLIP = V3(-1, 1, 1)
 function Rig.solveLeft(tp, hand, blade, edge, seed)
 	local arm, wrist, x, miss, err = Rig.solveSword(Rig.mirror(tp), hand * FLIP, blade * FLIP, edge and edge * FLIP, seed)

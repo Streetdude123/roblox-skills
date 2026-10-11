@@ -52,7 +52,7 @@ Anime-style 3D gives up 3D accuracy for the picture: every key gets small imperf
 
 - `Stop` with fadeTime 0 on Motor6Ds whose MaxVelocity is 0 freezes the joints in place; cut a move with a short non-zero fade. After `Stop`, further `Stop` or `AdjustWeight` calls do nothing until `Play`.
 - `Length` is 0 until the animation has loaded: wait for `Length > 0` before the first `Play`, a marker hookup or stepping in Edit.
-- `TimePosition` can be set only while the track plays; `AdjustSpeed(0)` freezes it at a chosen point and negative speeds play backward. For hitstop on a native baked clip, use `AdjustSpeed(0)` or a very small speed for the stop frames, then `AdjustSpeed(1)`.
+- `TimePosition` can be set only while the track plays; `AdjustSpeed(0)` freezes it at a chosen point and negative speeds play backward. For hitstop on a native baked clip, play the attacker's track at a very small speed (about 0.05) for the hitstop frames, then `AdjustSpeed(1)`; `AdjustSpeed(0)` freezes it dead (combat.md, "Hitstop").
 - `Animator:LoadAnimation` always creates a new track; load each move's track once per character at spawn and keep it (`GetTrackByAnimationId` finds one already loaded).
 
 ## Markers and easing

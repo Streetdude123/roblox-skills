@@ -116,7 +116,7 @@ For a one-shot action of 0.3 to 1.5 s:
 | Check | Target | Pro range |
 | --- | --- | --- |
 | frozen% | 0 | 0 |
-| still% / longest | 5 or less / 0.1 s or less (a `Rig:hold` hitstop excepted) | 0 |
+| still% / longest | 5 or less / 0.1 s or less (an intended hitstop excepted) | 0 |
 | rest% | 45 or less (50 for slow heavy moves) | 16 to 50 |
 | contrast | 2 to 10 | 2 to 10.6 |
 | stops/s | 3 or less | 0.4 to 2.7 |

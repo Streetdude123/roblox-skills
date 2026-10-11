@@ -8,9 +8,10 @@ These are preserved measurements and interpretations from earlier project work. 
 - Walk2 by emm1gar, every key (hand keyed, 8 keys per 0.917 s cycle)
 - Walk4 by roblox_boi8913, a run, every 4th frame of 0.76 s
 - Walk3 by Gusthavuo777, a light crouched walk, every 4th frame of 0.867 s
+- Walk2 re-keyed as a game walk
 - Patterns recorded in these examples
 
-Read on 2026-09-22 from `Workspace.BestWalkAnimR6.R6.AnimSaves` (Walk1 by haynob, Walk2 by emm1gar, Walk3 by Gusthavuo777, Walk4 by roblox_boi8913) plus the Roblox default R6 walk (rbxassetid 180426354). Every pose is decoded into the parent part axes: lift = swing forward (+) or back (-), twist = rotation about the limb, side = out to +X. Torso lift + is a lean back. Positions are studs in the parent axes. All four exports are baked at 30 or 60 fps with Linear poses, so the timing lives in the curves.
+Read from `Workspace.BestWalkAnimR6.R6.AnimSaves` (Walk1 by haynob, Walk2 by emm1gar, Walk3 by Gusthavuo777, Walk4 by roblox_boi8913) plus the Roblox default R6 walk (rbxassetid 180426354). Every pose is decoded into the parent part axes: lift = swing forward (+) or back (-), twist = rotation about the limb, side = out to +X. Torso lift + is a lean back. Positions are studs in the parent axes. All four exports are baked at 30 or 60 fps with Linear poses, so the timing lives in the curves.
 
 ## Ranges per clip
 

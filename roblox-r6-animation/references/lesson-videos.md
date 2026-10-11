@@ -10,6 +10,16 @@ Five lesson videos on the craft, each studied in full. The first four were studi
 | [Bluebiscuits, "How to do Basic Animation from a beginner to a beginner"](https://youtu.be/Al_k9hmd4ws) | 16 min | "Half animation half animatic": simple shapes, start and end frames, favour frames, mixed holds, pull-back, settle, bounce, squash and pull on the in-betweens. |
 | [Alexander Rudenko, "Physics in animation"](https://youtu.be/x3jaDhGUHuw) | 37 min | Centre of mass (balance, rotation around it, speed gained and lost only through support), rotation speed against pose, inertia ("through motion") and settles, bouncing-ball points, the layered method, arcs. |
 
+## Contents
+
+- The short version
+- 1. Alan Becker: the 12 principles, translated to R6
+- 2. NobleFrugal Studio: timing and spacing
+- 3. Kuzillon: six beginner mistakes
+- 4. Bluebiscuits: the practical tricks
+- 5. Alexander Rudenko: physics in animation
+- Hand-off checklist (one answer per principle)
+
 ## The short version (read this first)
 
 1. **Movement first, detail last.** Block the start and end poses with simple shapes, get the motion right, then add detail. (Bluebiscuits, Kuzillon; our blocking strips are this step.)
@@ -24,14 +34,14 @@ Five lesson videos on the craft, each studied in full. The first four were studi
 ## 1. Alan Becker: the 12 principles, translated to R6
 
 **Squash and stretch.** Speed, momentum, weight and mass show as the shape getting longer or flatter, with the volume kept. A soft body squashes a lot and a stiff one barely. The stretch comes only near the fastest point (just before the ball lands), not for the whole fall. A character stretches on the way down and squashes after it lands, then settles.
-- R6 parts cannot scale. Squash is a compact pose: the torso drops, the legs translate up into the torso (hidden, allowed by the hip rule), the arms pull in and the head tucks. Stretch is a long pose: full extension along the line of action, the root rising, the limbs reaching. Put the stretch pose on the frames of peak speed only and the squash on the contact frame, then settle.
+- R6 parts cannot scale. Squash is a compact pose: the torso drops, the legs translate up into the torso (hidden, allowed by the feet rule in SKILL.md), the arms pull in and the head tucks. Stretch is a long pose: full extension along the line of action, the root rising, the limbs reaching. Put the stretch pose on the frames of peak speed only and the squash on the contact frame, then settle.
 - Trails, afterimages and smears carry the rest of the stretch on the fastest frames (see Arcs).
 
 **Anticipation.** The prep tells the viewer what comes next and gives the action its power: crouch before a jump, arm back before a punch; without it the energy comes from nowhere and the punch reads weak. Make the prep visible (the hand goes up before it goes into the pocket; the eyes and head look where the next thing happens). The frames showed a punch with several levels: the body first leans forward (a wind-out), then winds back, then throws the other arm back, then punches.
 - In code: a small move the other way before the load (level 1 of anticipation), the load itself (level 2), a counter-limb swinging back (level 3) for the heavy hits. Scale the levels with the move's tier.
 
 **Staging.** Present one idea so it cannot be misread: control where the viewer looks, one main action at a time, no competing actions, and let one action finish before the next starts. Wide shots for big actions, close shots for expressions; the main action in the centre or on a third, with space in front of where the character faces. Insert a pause when the viewer needs time to take something in.
-- On Roblox the player's camera sits behind and above the character. A thrust straight away from the camera hides behind the body and wings (measured on a lance thrust), so move the hands and the weapon to the side that the camera sees, or let the VFX carry the line. A giant summoned construct must rise to the side, never between the camera and the body.
+- On Roblox the player's camera sits behind and above the character. A thrust straight away from the camera hides behind the body (and any wings, cape or back piece) (measured on a lance thrust), so move the hands and the weapon to the side that the camera sees, or let the VFX carry the line. A giant summoned construct must rise to the side, never between the camera and the body.
 
 **Straight ahead and pose to pose.** Pose to pose gives control for the body: keys, then extremes (the farthest each way), then breakdowns (how the extremes connect), then in-betweens, perfecting each level before the next. Straight ahead suits things driven by physics: fire, water, dust, explosions, and floppy parts such as ears, hair and tails. Animate the body pose to pose without those parts, then add them straight ahead.
 - This is our split: body keys in Poser, then springs, follow chains and lag for the tails, capes, hair, ribbons and VFX (a tail's follow chain, `springs`, `lag`).
@@ -43,7 +53,7 @@ Five lesson videos on the craft, each studied in full. The first four were studi
 - `curve = "spline"` with `auto` keys is the default; a `flat` key only where a part turns round; the contact key of a strike keeps its speed (no flat ease into the hit), the recoil after it eases.
 
 **Arcs.** Living things move on curved paths; a midpoint in-between looks mechanical and can shrink the shape. For a thrown ball keep x constant and ease y. Arc a head turn (a small dip), a landing settle, the body's rise and fall before a step, a kick's follow-through. When a move is too fast to read, draw the arc as a smear from the start to the end pose.
-- Check the hand and tool paths in root space (pipeline.md, forward kinematics); add a breakdown to bend a straight path; use swing trails as the smear.
+- Check the hand and tool paths in root space (per-frame poses from `Poser.posesAt`, chained by r6-mechanics.md, "Transform convention"); add a breakdown to bend a straight path; use swing trails as the smear.
 
 **Secondary action.** Gestures that support the main action and show how the character feels: an angry walk swings the arms and bobs the head; the free hand while knocking tells the mood (a fist, a dainty tap, tucked in while the head checks behind). It must not upstage the main action and must not go unnoticed; give it its own moment.
 
@@ -183,6 +193,6 @@ Answer each against the captures and the numbers before hand-off.
 - **Pose to pose and straight ahead.** Did the blocking read before the motion pass? Do loose parts follow through springs or lag chains?
 - **Secondary action.** Does the free hand, the head or a prop support the action without competing?
 - **Exaggeration.** Is each extreme pushed far enough to read at speed (bigger, or held longer)?
-- **Solid drawing, weight and balance.** No twinning in any held pose? In every held pose, is the COM's floor projection inside the support area, checked from two views? Does every fall over the edge have a cause and a catch? Does every gain of speed come from a planted push, and every stop from a braced leg ahead of the COM? Does every flip, spin or big lean rotate around the COM, and does an airborne COM follow a parabola at constant horizontal speed?
+- **Solid drawing, weight and balance.** Does each key pose have one C or S line of action, shoulders tilted against the hips, and gaps between the limbs and the body? No twinning in any held pose? In every held pose, is the COM's floor projection inside the support area, checked from two views? Does every fall over the edge have a cause and a catch? Does every gain of speed come from a planted push, and every stop from a braced leg ahead of the COM? Does every flip, spin or big lean rotate around the COM, and does an airborne COM follow a parabola at constant horizontal speed?
 - **Appeal.** Does the silhouette of each key pose read clearly and say what defines the character?
-- **Game feel.** Is the event on the contact key, the cancel window before the end, the recovery over-extended then popping back, and the next move's first pose equal to this move's end?
+- **Game feel.** Is the player's anticipation short (1 to 8 frames for a light attack)? Is the striking limb the fastest joint in its window? Does each melee contact have a hitstop sized to its strength with the attacker creeping? Is the event on the contact key, the cancel window before the end, the recovery over-extended then popping back, and the next move's first pose equal to this move's end?

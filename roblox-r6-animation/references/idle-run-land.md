@@ -13,7 +13,7 @@ These are preserved measurements and interpretations from earlier project work. 
 - How the landing works
 - Choices to consider when adapting this set
 
-Read on 2026-09-22 from `Workspace."idle, run and landing animation r6".AnimSaves` (Idle 3.0 s loop at Idle priority, Run 0.533 s loop at Movement priority, Land Anim 0.467 s at Action priority), Linear baked poses. The idle and run tables use roughly 30 fps sampling; the landing table contains more densely spaced keys. Use each recorded timestamp rather than assuming one rate for all three clips. Decoding as in walk-cycles.md; lift + on the torso is a lean back, so the negative values below are forward leans.
+Read from `Workspace."idle, run and landing animation r6".AnimSaves` (Idle 3.0 s loop at Idle priority, Run 0.533 s loop at Movement priority, Land Anim 0.467 s at Action priority), Linear baked poses. The idle and run tables use roughly 30 fps sampling; the landing table contains more densely spaced keys. Use each recorded timestamp rather than assuming one rate for all three clips. Decoding as in walk-cycles.md; lift + on the torso is a lean back, so the negative values below are forward leans.
 
 ## Ranges
 

@@ -16,6 +16,8 @@ Before any posing, dump the rest bones (head, tail, length, parent, local X and 
 
 ## The solver (scripts/blender/pose3.py)
 
+`pose3.py`, `clip_tools.py` and `rtools.py` are written for the example kit's rig and scene: object `Armature`, spine `Bone` to `Bone.004`, arms `Arm_R`/`Arm_L` chains with the held prop on `Arm_R.004`, legs `Leg_*`/`Boot_*`, the chain `Vine1` to `Vine4`, and the meshes `Cube` (the knife), `VineArm` and the face meshes. Remap these bone and object names from the rest-bone dump and the scene's object list before using them on another rig.
+
 A pose is a dictionary of channels, not bone rotations. The solver turns it into bone bases with its own forward kinematics (no scene update per bone), so a 60 Hz bake of a 1 s clip takes seconds.
 
 | Channel | Meaning |
@@ -35,7 +37,7 @@ A pose is a dictionary of channels, not bone rotations. The solver turns it into
 - The hand comes from the blade direction: the grip of the idle stays fixed in the hand, and the roll about the blade is chosen for the least wrist bend. 60% of the remaining twist goes into the forearm roll (pronation), so the wrist never shows a candy wrapper.
 - Keep the blade square to the forearm. Six first-pass keys pointed the blade along the arm and bent the wrist 70 to 105 degrees; the bake prints `wristR` and the time of the worst frame.
 - Arms of a chibi rig are short (0.61 units from the shoulder to the wrist measured). A hand cannot reach the far shoulder, so a self-hug from an MMD reference becomes a forearm across the chest with the fist at the near-centre; say so in the report.
-- The team's idle had the legs already 1.2% past their reach and location keys on the left arm bones (a stretched arm). Drop the hips 0.05 to 0.1 for any lunge or step, and start and end each clip with `ends=(0.1, 0.12)`, which blends the first and last frames to the exact idle bases.
+- Check the team's idle for legs already past their reach and for location keys on arm bones (one kit's idle had legs 1.2% past reach and a stretched left arm). Drop the hips 0.05 to 0.1 for any lunge or step, and start and end each clip with `ends=(0.1, 0.12)`, which blends the first and last frames to the exact idle bases.
 
 ## Keys, curves and layers
 
@@ -53,5 +55,5 @@ A pose is a dictionary of channels, not bone rotations. The solver turns it into
 ## Review renders
 
 - `rtools.py` sets Workbench, a floor and cameras. The player camera stands behind the character and 18 degrees to its right; straight behind, a knife in front of the body never shows.
-- Dark props vanish against a dark floor in the preview: the preview paints the knife red and the vine bright green (preview only, the .blend keeps its materials). Say that in the report.
+- Dark props vanish against a dark floor in the preview: the preview paints dark props and loose chains in bright colours (`rtools.py` paints the mesh `Cube` red and `VineArm` green; change the names for another kit; preview only, the .blend keeps its materials). Say that in the report.
 - `video_render.py` renders one player-camera video per move at 30 fps (the last 0.3 s of the idle loop, the move, 0.35 s of idle); encode with `encode.html` from scripts/video.

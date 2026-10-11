@@ -4,7 +4,7 @@ local root = script.Parent.Parent
 
 local Tw = {}
 
--- the timescale attribute on the ultimate folder stretches every duration so slow mo captures still line up
+-- the timescale attribute on the grandparent folder stretches every duration so slow mo captures still line up
 function Tw.S()
 	return root:GetAttribute("TimeScale") or 1
 end

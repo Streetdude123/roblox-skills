@@ -27,7 +27,7 @@ Reviewed 2026-09-22. Use these primary references for the claims identified belo
 | [Joseph White / Animation Mentor - Pushing and pulling](https://www.animationmentor.com/blog/tutorial-animating-pushing-and-pulling-motions/) | Plan effort and object interaction through reference and blocking. |
 | [Denis Dvoryankin / Animation Mentor - Lifting a heavy object](https://www.animationmentor.com/blog/how-to-animate-weight-and-force-lifting-heavy-object/) | Make preparation and support communicate weight. |
 
-## Motion research (2026-09-22, for the motion-first rewrite)
+## Motion research
 
 Read as text through web fetches and summaries; no video was watched frame by frame. Numbers taken from these pages are marked as starting ranges in principles.md; the measured numbers come from the decoded clips.
 
