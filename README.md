@@ -89,7 +89,9 @@ Package layout:
   measured numbers and the feedback log.
 - `references/` - `taste.md`, `kit-workflow.md`, `modules.md`, `cinematic.md`,
   `sound.md`, `verification.md`, `ambient.md` (canopy light shafts, beam
-  butterflies, zone mist, weather rain).
+  butterflies, zone mist, weather rain), and the researched files
+  `impacts-and-camera.md`, `movement-fx.md`, `projectiles-beams-elements.md`
+  and `engine-and-performance.md`.
 - `scripts/` - `Tw.lua`, `Emitters.lua`, `Kit.lua`, `CameraRig.lua`,
   `ScreenFx.lua`, `ImpactFrames.lua`, `SpeedLines.lua`, the two worked
   examples `SummonVfx.lua` and `UltimateVfx.lua` with their client, server and
