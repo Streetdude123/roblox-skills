@@ -1,6 +1,6 @@
 # Research in progress (unverified)
 
-Raw findings from the 2026-10-11 combat, movement and ability research pass, stopped at the user's request before the source check. Each finding was read from its source by the researcher, but no independent re-read has checked it yet. Do not move any of it into the skill until a checker has re-read its source (see the plan at the end). The skill does not load this file.
+Raw findings from two stopped research passes (2026-10-11 and 2026-10-12), stopped at the user's request before the source check. Each finding below was read from its source by a researcher, but no independent re-read has checked it yet, except where "Checker verdicts" says so. Do not move any of it into the skill until a checker has re-read its source (see "Plan to finish"). The skill does not load this file.
 
 ## Traversal: climb, mantle, vault, slide, wall run, swim
 
@@ -504,15 +504,1092 @@ Target file: `references/dodges-and-dashes.md`. Status: researched, not checked.
 
 Searched without a usable source: Monster Hunter (World, Rise, Wilds) evade i-frame counts and roll timing: the Monster Hunter Wiki and Kiranico describe Evade Window only qualitatively; numbers appear only in Steam forum posts; God of War (2018) dodge and roll frame data, and the content of the GDC 2019 Kratos animation talk (GDC Vault not readable; the official guide gives inputs and uses only); Devil May Cry and Bayonetta dodge frame counts (startup, invulnerable and recovery frames): the wikis say i-frames exist but give no numbers; Street Fighter 6 backdash frame data and invulnerability (SuperCombo wiki blocked by bot protection); Tekken backdash and Korean-backdash frame counts (wavu.wiki unreachable; cthor.me's charts are images and its KBD section is unfinished); Skullgirls backdash frame data (Mizuumi wiki blocked by bot protection); Dark Souls III roll frame data (no DS3 rolling page found; the Reddit comparison could not be fetched); Sekiro and Bloodborne step and quickstep i-frames from a non-mod source (only Nexus mod pages and forum claims); Hades and Hollow Knight dash speed and duration values (no wiki page with numbers found); A measured COM path, duration and contact timing of a forward or shoulder roll (only practitioner guides and a phase-model abstract without numbers); A GDC talk or studio article on authoring dodge or roll animation (anticipation, tuck, get-up) with frame counts; An authoritative studio source comparing 8-way and 4-way directional dodge sets (only engine-forum and player-forum posts); Roblox DevForum posts by experienced animators critiquing dash or dodge animation (the threads found were scripting questions; the only official Roblox numbers came from the Platformer template); Exact frame rate of the Dark Souls 1 roll chart (the wiki page does not state it).
 
-## Plan for the rest of the pass
+## Stopped pass, 2026-10-12
 
-1. Check every finding above against its source with an independent reader (one checker per source; verdicts supported, partly with a corrected claim, unsupported, unreachable). Keep only supported and partly findings.
-2. Write `references/dodges-and-dashes.md` and `references/traversal.md` from the kept findings in the format of `references/combat.md`, using only Poser fields that exist in `pipeline.md`, then review each file against its findings.
-3. Research the topics not started yet, with the same research, check, write and review steps:
-   - `aerial-combat.md`: launchers, juggles, air combos, ground and wall bounce, plunges and slams, air dash, float, landing lag.
-   - `knockdowns-and-deaths.md`: knockback by strength, knockdown, get-up and wake-up, stun loops, guard and posture break, wall splat, deaths, ragdoll hand-off on R6.
-   - `grabs-throws-and-finishers.md`: grabs and throws, throw techs, paired animations and alignment, finishers and executions, parry and riposte, two-Animator sync and latency in Roblox.
-   - `abilities-and-casts.md`: cast times, charge loops, channels, release and recoil, projectile throws, beam poses, summons, transformations, ultimates, telegraphs, VFX sync through markers.
-   - `ranged-weapons.md`: aim poses and offsets, hip fire and aim, recoil, reloads, equip and holster, bows, grenades, pointing R6 arms at the camera.
-   - `combat-runtime.md`: upper-body attacks while moving on R6, priorities and weights, AdjustSpeed, fades, markers, client and server playback, preloading, IKControl, overriding the default Animate script, common bugs.
-4. Add a section per new file to `references/sources.md`, rows to the SKILL.md resource table and step 4, the README and the CHANGELOG.
+Fifteen agents (13 research topics and 2 checkers) were started, restarted at max effort at the user's request, and stopped after about 10 minutes when the user said "Save everything, we'll continue this later". No agent had written its file. They left the sources they opened, the searches they ran, four checker verdicts and one researcher's notes, all below. The downloaded pages stayed in the session scratchpad and are not kept. Treat every source here as a lead to re-read, not as a checked finding.
+
+### Checker verdicts recorded before the stop
+
+- Traversal: the checker found traversal-08, traversal-09, traversal-10 and traversal-11 supported (traversal-11: author and role confirmed on page 1 of its source). The other traversal findings and all dodge findings have no recorded verdict.
+
+### Raw notes from the first grabs researcher (unchecked)
+
+Short paraphrases written while reading; the sources are in the grabs list below.
+
+- critpoints paired animation: hero+enemy align, play one animation together, neither moves independently; animators manipulate victim limbs directly (catch a punch). AC pre-Origins all combat paired; Batman Arkham paired for punches, counters, takedowns; Dark Souls backstabs/ripostes; Doom glory kills; every fighting game throws. DX:HR multi-takedown cut to black. Smash: grabs can be hit; hyper armor on throw. Drawbacks: no multi-hit, snapping erases circumstances, often invincible, clipping. Use where required (grapples); ok when one hit kills. Limited snapping ok.
+- askagamedev: participants act relative to common point; exact distance and orientation; needs flat ground, space, no objects; failures: midair, punch miss by a mile, phantom judo throw, clip through; engineering finds good places near position/orientation.
+- gameanim Doom: glory kills 30 to 60 frames, 1-1.5 s at outside (quoting RPS).
+- avadev GDC2019 Spider-Man AI: sync joints: each combat anim extra joint; match attack and response sync joints so they play at right distance; each attack needs matching response per character -> lots of work.
+- UE motion warping: root motion; warping windows notify states; warp target name; translation, ignore Z, rotation; rotation type default (match target rotation) or facing; skew warp matches location+rotation at end of window; warp rotation time multiplier; punch example: skew warp window ending at strike.
+- ssbwiki Grab: standing grab fastest startup lowest ending lag, shortest range; dash grab more startup + heavier ending lag; pivot grab most startup. Ultimate gave grabs more ending lag. Grab duration Brawl+: 90 + 1.7p frames; mash -14.4 frames/input in Smash4/Ult; min 19 frames; release invuln 60 frames Ult; both grab at once -> cancel out (grab parrying).
+- ssbwiki Throw: invulnerable throughout throw in Ultimate (frame 1 to throw frame); Melee/Brawl weight-dependent throw speed weight/100 multiplier; Smash4 total + 26*(w/100-1); Ult removed. Release hitbox only affects target; collateral hitboxes only bystanders.
+- UFD Mario: grab 6/34, dash 9/42, pivot 10/36; fthrow 13/27, bthrow 44/59, uthrow 18/39, dthrow 18/39. Incineroar grab 7/37, dash 11/45, pivot 12/43; Alolan Whip (command grab) startup 16 total 57 grab active 16-32; lariat follow window frame 43-47.
+- infil KI basics: throws 5f startup, active 2f, 7 frames after connect to tech, very long whiff recovery, hard knockdown ~60 frames; command grabs can't be teched; avoid by moving out of range or throw-invincible move.
+- EventHubs SF6 beta: throws same startup/active as SF5; +6 recovery frames -> 30 frames total (24 in SF3/4/5); whiffed throw easier to punish (punish counter).
+- infil glossary: Throw tech -> both pushed apart to neutral. Command throw: can't tech; often longer range. Running bear grab: slower, visual tell, reactable. Throw protection: SF4/5/6 2f wakeup, 3S 6f, Strive 5f, KI none. Chain grab: Smash 4+ thrown once -> cannot be thrown again ~1s. Perfect Parry SF6: at most 2 frames before attack hits; screen freeze briefly, recover almost immediately. Parry SF3 tight window. Hit throw: animates like a throw if it hits, blockable. Screen freeze: dark, camera angle change, pose. Cinematic: camera cuts, ok as long as not too long.
+- TLOU2 gamedeveloper: melee attack contains attacker and target animations; start conditions range, facing, line of motion; if not met melee doesn't start; timeline tags hit frames, target tracking, invincibility.
+- Game Informer UC4: decoupled; enemy no longer slides unnaturally to line up with Drake; sync only when grappling; openers and attacks unsynced; hit reactions chosen by angle and where hit on body.
+- Unreal forum (users): both skeletons in one scene, roots known distance; snap enemy root to known position before; trigger both simultaneously; hand IK for height diff or separate anims. (users only)
+- DevForum how-to-make-grab: weld + PlatformStand (excessenergy quote); disable AutoRotate both; play anim on each humanoid; correct relative position key; animate both in Moon Animator; grab snaps attacker or victim into position; anchoring works if positioned.
+- DevForum issues-with-grab: Part0 of weld gets network ownership (jova); TSB comparison.
+- DevForum network ownership stolen: welded parts share ownership with assembly base part; remove weld then reset ownership at release.
+- Roblox docs network ownership: anchored parts server-owned, can't change; SetNetworkOwner nil conservatively jittery; owned parts no latency; can't verify client physics.
+- Roblox docs assemblies: weld/Motor6D -> assembly; root part priority: Anchored > Massless false > RootPriority > size (HumanoidRootPart, Torso weighting); root part used for replication and network ownership.
+- DevForum syncing two characters (631262): TimePosition not replicated; server can't read/write player char TimePosition; setting it overwritten.
+- DevForum syncing perfectly (1534896): slight delay inevitable; set TimePosition on first sync; GetServerTimeNow start with server time and advance track by delay.
+- DevForum anims same time not synced: ownership to initiator fixed dummy, not player pair; real problem LinearVelocity knockback.
+- AnimationTrack docs: TimePosition, Speed, IsPlaying, WeightCurrent tagged Not Replicated.
+- For Honor 2.60.1: Cavalier Dance parry window 166 ms (400-566), removed last frame before hit; reason players could react earlier. 2.38: parry follow-up input window +66ms; impaling riposte from parry 800 ms from 900.
+
+### Sources opened and searches run, per target file (unchecked leads)
+
+#### dodges-and-dashes.md
+
+Dodges, rolls, dashes and evasion.
+
+Sources opened:
+
+- <https://darksouls.fandom.com/api.php?action=parse&page=Rolling&prop=wikitext&format=json>
+- <https://eldenring.wiki.gg/wiki/Invincibility_Frames>
+- <https://eldenring.wiki.gg/wiki/Equip_Load>
+- <https://www.ssbwiki.com/api.php?action=parse&page=Roll&prop=wikitext&format=json>
+- <https://www.ssbwiki.com/api.php?action=parse&page=Spot_dodge&prop=wikitext&format=json>
+- <https://www.ssbwiki.com/api.php?action=parse&page=Air_dodge&prop=wikitext&format=json>
+- <https://www.ssbwiki.com/api.php?action=parse&page=Dash&prop=wikitext&format=json>
+- <https://www.dustloop.com/wiki/api.php?action=parse&page=GGST/Potemkin&prop=wikitext&format=json>
+- <https://raw.githubusercontent.com/NoelFB/Celeste/master/Source/Player/Player.cs>
+- <https://eldenring.wiki.gg/api.php?action=parse&page=Invincibility_Frames&prop=wikitext&format=json>
+- <https://eldenring.wiki.gg/api.php?action=parse&page=Equip_Load&prop=wikitext&format=json>
+- <https://www.dustloop.com/wiki/api.php?action=parse&page=GGST/Millia_Rage&prop=wikitext&format=json>
+- <https://www.dustloop.com/wiki/api.php?action=parse&page=GGST/Sol_Badguy&prop=wikitext&format=json>
+- <https://www.dustloop.com/wiki/api.php?action=parse&page=GGST/Controls&prop=wikitext&format=json>
+- <https://bayonetta.fandom.com/api.php?action=parse&page=Witch_Time&prop=wikitext&format=json>
+- <https://bayonetta.fandom.com/api.php?action=parse&page=Dodge_Offset&prop=wikitext&format=json>
+- <https://devilmaycry.fandom.com/api.php?action=parse&page=Trickster_Style&prop=wikitext&format=json>
+- <https://devilmaycry.fandom.com/api.php?action=parse&page=Actions&prop=wikitext&format=json>
+- <https://enterthegungeon.wiki.gg/api.php?action=parse&page=Dodge_Roll_(Move)&prop=wikitext&format=json>
+- <https://archive.org/wayback/available?url=eldenring.wiki.gg/wiki/Invincibility_Frames>
+- <https://archive.org/wayback/available?url=eldenring.wiki.gg/wiki/Equip_Load>
+- <https://archive.org/wayback/available?url=enterthegungeon.wiki.gg/wiki/Dodge_Roll_(Move>
+- <https://enterthegungeon.wiki.gg/wiki/Dodge_Roll_(Move>
+- <https://devforum.roblox.com/t/3088494.json>
+- <https://devforum.roblox.com/t/3088494/80.json>
+- <https://devforum.roblox.com/uploads/short-url/6OFsFGdW3deAasMoS9VnHGscRoF.rbxl>
+- <https://devforum.roblox.com/t/2883288.json>
+- <https://devforum.roblox.com/t/3280735.json>
+- <https://forums.unrealengine.com/t/need-help-setting-up-an-8-way-roll-dodge-blend-space/132465.json>
+- <https://games.gg/roblox/guides/the-strongest-battlegrounds-combat-guide/>
+- <https://parryeverything.com/2021/07/30/the-dark-souls-dodge-roll-immediacy-in-player-action/>
+- <https://critpoints.net/2017/07/25/how-iframes-augment-dodge-rolls/>
+- <https://www.quodsoler.com/blog/i-frames-are-animation-data-not-code>
+- <https://jmargaris.substack.com/p/dodging-in-the-lies-of-p-demo-kinda>
+- <https://www.playstation.com/en-sg/editorial/the-playstation-guide-to-god-of-war/>
+- <https://steamcommunity.com/app/1501750/discussions/0/6644556627476459213/>
+- <https://breakingmuscle.com/how-do-you-roll-gymnastics-vs-parkour/>
+- <https://jitsuiq.com/movement-mechanics/forward-roll.html>
+- <https://jssm.org/jssm-12-122.xml-Fulltext>
+- <https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2017.01571/full>
+- <https://evolve-university.com/blog/what-you-need-to-know-about-the-sidestep-in-boxing/>
+- <https://digitalcommons.wku.edu/ijesab/vol8/iss11/49>
+- <https://darksouls.fandom.com/api.php?action=parse&page=Rolling&format=json&prop=wikitext&formatversion=2>
+- <https://darksouls.fandom.com/api.php?action=parse&page=Rolling&format=json&prop=text&formatversion=2>
+- <https://eldenring.wiki.gg/api.php?action=parse&page=Invincibility_Frames&format=json&prop=wikitext&formatversion=2>
+- <https://eldenring.wiki.gg/api.php?action=parse&page=Equip_Load&format=json&prop=wikitext&formatversion=2>
+- <https://eldenring.wiki.gg/wiki/Invincibility_Frames?action=raw>
+- <https://web.archive.org/web/2026/https://eldenring.wiki.gg/wiki/Invincibility_Frames>
+- <https://web.archive.org/web/2026id_/https://eldenring.wiki.gg/wiki/Invincibility_Frames>
+
+#### traversal.md
+
+Traversal: climb, mantle, vault, slide, wall run, swim.
+
+Sources opened:
+
+- <https://raw.githubusercontent.com/Roblox/creator-docs/main/content/en-us/reference/engine/classes/Humanoid.yaml>
+- <https://raw.githubusercontent.com/MaximumADHD/Roblox-Client-Tracker/roblox/avatar/scripts/humanoidAnimateSAuth/humanoidAnimateSAuth.lua>
+- <https://raw.githubusercontent.com/Roblox/creator-docs/main/content/en-us/reference/engine/classes/TrussPart.yaml>
+- <https://devforum.roblox.com/t/4036735.json>
+- <https://devforum.roblox.com/t/4863739.json>
+- <https://devforum.roblox.com/t/738376.json>
+- <https://mdpi-res.com/d_attachment/ijerph/ijerph-17-02897/article_deploy/ijerph-17-02897.pdf>
+- <https://stacks.cdc.gov/view/cdc/214290/cdc_214290_DS1.pdf>
+- <https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:21917019%20AND%20SRC:MED&resultType=core&format=json>
+- <https://blog.playstation.com/?p=370798>
+- <https://www.gameanim.com/2014/02/11/animating-3rd-assassin/5/>
+- <https://www.gameanim.com/2014/02/11/animating-3rd-assassin/>
+- <https://eirteam-docs.readthedocs.io/en/latest/documentation/swansong/swansong_animation_sheets.html>
+- <https://raw.githubusercontent.com/jmechner/Prince-of-Persia-Apple-II/master/01%20POP%20Source/Source/SEQTABLE.S>
+- <https://raw.githubusercontent.com/jmechner/Prince-of-Persia-Apple-II/master/01%20POP%20Source/Source/TABLES.S>
+- <https://animationobsessive.substack.com/p/how-the-little-guy-moved>
+- <https://raw.githubusercontent.com/dyanikoglu/ALS-Community/main/Source/ALSV4_CPP/Private/Components/ALSMantleComponent.cpp>
+- <https://dev.epicgames.com/documentation/en-us/unreal-engine/motion-warping-in-unreal-engine>
+- <https://docs.unity3d.com/Manual/TargetMatching.html>
+- <https://docs.unity3d.com/ScriptReference/Animator.MatchTarget.html>
+- <https://history.siggraph.org/wp-content/uploads/2022/09/2017-Talks-Bollo_High-Performance-Animation-in-Gears-of-War-4.pdf>
+- <https://www.gameanim.com/2018/03/09/interactive-cinematics-in-uncharted-4/>
+- <https://mocaponline.com/blogs/mocap-news/climbing-animation-games-guide>
+- <https://eirteam-docs.readthedocs.io/en/latest/documentation/swansong/swansong_pitch.html>
+
+Searches run:
+
+- Animation Obsessive Prince of Persia Jordan Mechner rotoscoping 15 frames per second
+
+#### human-motion-data.md
+
+Human motion data: gait, running, strikes and jumps.
+
+Sources opened:
+
+- <https://pmc.ncbi.nlm.nih.gov/articles/PMC555760/table/T3>
+- <https://medicine.missouri.edu/sites/default/files/pm-r/Normal_Gait.pdf>
+- <https://europepmc.org/article/PMC/PMC555760>
+- <https://www.ebi.ac.uk/europepmc/webservices/rest/PMC555760/fullTextXML>
+- <https://clinicalgaitanalysis.com/data/>
+- <https://ouhsc.edu/bserdac/dthompso/web/gait/knmatics/gait.htm>
+- <https://api.figshare.com/v2/articles/5722711>
+- <https://peerj.com/articles/9329/>
+- <https://cob.silverchair.com/jeb/article-pdf/215/11/1944/1445059/1944.pdf>
+- <https://www.rehab.research.va.gov/jour/04/41/6/orendurff.html>
+- <https://www.andrew.cmu.edu/user/shc17/Arm_Swinging/Collins_2009_PRSB.pdf>
+- <https://journals.biologists.com/jeb/article/215/11/1944/10883/Muscular-strategy-shift-in-human-running-dependence>
+- <https://journals.biologists.com/jeb/article/212/4/523/18953/Control-and-function-of-arm-swing-in-human-walking>
+- <https://www.mdpi.com/2076-3417/15/12/6593>
+- <https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:10.3390/app15126593&format=json>
+- <https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%22arm%20swing%22%20AND%20walking%20AND%20%22shoulder%22%20AND%20%22range%20of%20motion%22%20AND%20healthy%20AND%20OPEN_ACCESS:y&format=json&pageSize=25>
+- <https://clinicalgaitanalysis.com/data/Baker/anon.gcd>
+- <https://clinicalgaitanalysis.com/data/Baker/notes.html>
+- <http://www.clinicalgaitanalysis.com/data/Baker/anon.gcd>
+- <https://www.clinicalgaitanalysis.com/data/Baker/Anon.gcd>
+- <https://clinicalgaitanalysis.com/data/HKfyp98/Young.gcd>
+- <https://clinicalgaitanalysis.com/data/HKfyp98/All.gcd>
+- <https://clinicalgaitanalysis.com/data/Normal.gcd>
+- <https://clinicalgaitanalysis.com/data/Linskell/dundee.gcd>
+- <https://web.archive.org/web/2015/http://www.clinicalgaitanalysis.com/data/Baker/anon.gcd>
+
+Searches run:
+
+- public dataset overground treadmill walking kinematics healthy individuals hip flexion extension degrees gait cycle PeerJ
+- normal gait sagittal plane hip knee ankle joint angles percent gait cycle peak knee flexion swing 60 degrees
+- pelvis rotation obliquity tilt range of motion walking degrees normal gait kinematics
+- arm swing walking shoulder flexion extension range of motion degrees 1:1 2:1 frequency slow walking speed
+- Kirtley normative gait data joint angles table percent gait cycle hip knee ankle pelvis download text
+- effects of walking speed on gait biomechanics healthy participants systematic review meta-analysis hip knee peak angles
+- normative reference values gait kinematics healthy adults table peak hip extension terminal stance peak knee flexion swing pelvic rotation range mean SD open access
+- "walking speed" young adults "pelvic rotation" "hip extension" "knee flexion" "arm swing" kinematics table degrees comfortable slow fast PMC
+- gait phases "terminal stance" hip "10 degrees" hyperextension "initial swing" knee "60 degrees" "pre-swing" ankle plantarflexion "initial contact" hip "30 degrees" flexion
+- Wagenaar van Emmerik arm swing walking speed frequency ratio 2:1 1:1 transition pelvis thorax relative phase
+- Collins Adamczyk Kuo dynamic arm swinging in human walking Proceedings Royal Society B arm swing amplitude
+- Orendurff effect of walking speed on center of mass displacement vertical lateral Journal of Rehabilitation Research and Development
+- Dorn Schache Pandy muscular strategy shift in human running step frequency step length ground contact time sprinting Journal of Experimental Biology
+- head stabilization during walking pitch angle degrees vertical head displacement walking speed study
+- ground contact time flight time step frequency step length across running speeds 3 to 9 m/s table sprinters PMC open access
+- Weyand 2000 faster top running speeds greater ground forces not more rapid leg movements swing time contact time 0.37 s
+- running speed effect contact time flight time duty factor recreational runners 10 12 14 16 km/h table PMC
+- arm swing during running shoulder flexion extension range of motion degrees elbow angle kinematics study speed
+- trunk forward lean angle running speed degrees kinematics study sagittal trunk flexion treadmill PMC
+- boxing punch kinematics elite boxers jab cross hook uppercut fist velocity m/s punch duration ms kinematic chain pelvis trunk shoulder elbow PMC
+- baseball pitching kinematic sequence pelvis upper trunk peak angular velocity timing after foot contact elbow extension shoulder internal rotation ball release Fleisig
+
+#### human-micro-motion.md
+
+Life in still poses: sway, breath, gaze and fidgets.
+
+Sources opened:
+
+- <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11688309/>
+- <https://www.scielo.br/j/rbfis/a/hFQTppgw4q3jGBCDKV9fdCH/?lang=en>
+- <https://bmclab.pesquisa.ufabc.edu.br/pubs/nl00.pdf>
+- <https://pmc.ncbi.nlm.nih.gov/articles/PMC11688309/>
+- <https://pmc.ncbi.nlm.nih.gov/articles/PMC4393163/>
+- <https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2021.722732/full>
+- <https://pro.univ-lille.fr/fileadmin/user_upload/pages_pros/cedrick_bonnet/2012a_Bonnet.pdf>
+- <https://pmc.ncbi.nlm.nih.gov/articles/PMC2290269/>
+- <https://bmclab.pesquisa.ufabc.edu.br/pubs/pmcvii.pdf>
+- <https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/271477>
+- <https://hdl.handle.net/11250/271477>
+- <https://stacks.cdc.gov/view/cdc/224973/cdc_224973_DS1.pdf>
+- <https://nva.sikt.no/registration/0198ed33c8e9-285c52ba-b057-4011-ab65-2322c62f4d33>
+- <https://pubmed.ncbi.nlm.nih.gov/?term=Age-related+changes+in+human+postural+control+of+prolonged+standing+Freitas>
+- <https://pubmed.ncbi.nlm.nih.gov/?term=Age-related+difference+on+weight+transfer+during+unconstrained+standing>
+- <https://pubmed.ncbi.nlm.nih.gov/?term=Stabilographic+analysis+of+unconstrained+standing+Duarte+Harvey+Zatsiorsky>
+- <https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=prolonged+standing+Freitas+Duarte+2005+age-related&retmode=json>
+- <https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=(prolonged+standing[Title])+AND+Duarte+M[Author]&retmode=json>
+- <https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=19084411,18696056,16274914&rettype=abstract&retmode=text>
+- <https://pmc.ncbi.nlm.nih.gov/articles/PMC10170532/>
+- <https://pmc.ncbi.nlm.nih.gov/articles/PMC5534162/>
+- <https://pmc.ncbi.nlm.nih.gov/articles/PMC3309333/>
+- <https://hal.univ-lille.fr/hal-02159217/document>
+- <https://ebm.ufabc.edu.br/publications/md/G07.pdf>
+- <https://lilloa.hal.science/hal-02159217/document>
+- <https://pro.univ-lille.fr/fileadmin/user_upload/pages_pros/cedrick_bonnet/2016c_Bonnet_and_Baudry.pdf>
+- <https://pmc.ncbi.nlm.nih.gov/articles/PMC2605952/>
+- <https://pmc.ncbi.nlm.nih.gov/articles/PMC4370616/>
+- <https://pubmed.ncbi.nlm.nih.gov/10333006/>
+- <https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=10333006&rettype=abstract&retmode=text>
+- <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4369292/>
+- <https://www.med.upenn.edu/solomon/images/Barany2002.pdf>
+- <https://pmc.ncbi.nlm.nih.gov/articles/PMC4369292/>
+- <https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Bentivoglio[Author]+AND+blink+rate+patterns+normal+subjects&retmode=json>
+- <https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=9399231&rettype=abstract&retmode=text>
+- <https://pmc.ncbi.nlm.nih.gov/articles/PMC4043155/>
+- <https://pmc.ncbi.nlm.nih.gov/articles/PMC5973601/>
+- <https://pmc.ncbi.nlm.nih.gov/articles/PMC3387343/>
+- <https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Tobin[Author]+AND+Breathing+patterns+normal+subjects[Title]&retmode=json>
+- <https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=1142186&rettype=abstract&retmode=text>
+- <https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=6354586,6872603&rettype=abstract&retmode=text>
+- <https://ijpp.com/IJPP archives/1998_42_3/417-420.pdf>
+- <https://publications.ersnet.org/content/erj/66/suppl69/oa5400>
+- <https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pmc&id=2605952>
+- <https://research.lancaster-university.uk/en/publications/eye-head-and-torso-coordination-during-gaze-shifts-in-virtual-rea/>
+- <https://research.lancaster-university.uk/files/274732202/Eye_Head_and_Torso_Coordination_During_Gaze_Shifts_in_Virtual_Reality.pdf>
+
+Searches run:
+
+- normative center of pressure quiet standing sway amplitude frequency anterior-posterior medial-lateral healthy adults open access
+- Duarte Zatsiorsky patterns of center of pressure migration prolonged unconstrained standing shifting fidgeting drifting
+- Duarte Freitas 2010 revision of posturography based on force plate for balance evaluation
+- quiet standing body sway angle degrees inverted pendulum COM RMS mm healthy young adults Loram
+- stance width effect on postural sway mediolateral anterior-posterior feet together versus apart COP pmc
+- "public data set of human balance evaluations" Santos Duarte PeerJ COP
+- Winter Patla Prince 1998 stiffness control of balance in quiet standing J Neurophysiol COM COP range mm
+- prolonged standing postural changes frequency per minute center of pressure shifts 30 minutes Duarte Ergonomics 2000 unconstrained standing
+- Wiltman Rekant Chambers prolonged standing weight shifts fidgets frequency increase over time discomfort
+- Prado Dinato Duarte 2011 age-related difference on weight transfer during unconstrained standing number of weight transfers 30 min
+- Freitas Wieczorek Marchetti Duarte age-related changes postural control prolonged standing COP shifts per minute
+- quiet stance COP RMS amplitude mm anteroposterior mediolateral young adults eyes open table "RMS" "mm" postural sway reference
+- head displacement quiet standing mm sway head marker young adults anteroposterior mediolateral amplitude
+- SwayStar normative trunk sway angle pitch roll range degrees standing two legs eyes open healthy
+- dual task cognitive attention effect quiet standing postural sway decreases or increases young adults COP review open access
+- Freedman coordination of the eyes and head during visually guided behavior head contribution gaze shift amplitude PMC
+- human eye-head gaze shifts head movement onset latency relative to eye ms head contribution percent amplitude head peak velocity deg/s open access
+- human head rotation kinematics natural behavior head saccade amplitude duration peak velocity main sequence degrees per second study
+- Stahl 1999 amplitude of human head movements associated with horizontal saccades eye-only range head movement range
+- human head movement velocity "deg/s" gaze shift 40 degrees head turn duration ms Zangemeister Stark head movement dynamics
+- high-speed camera characterization of voluntary eye blinking kinematics Kwon J R Soc Interface blink duration ms
+- breathing effect on postural sway quiet standing respiration COP oscillation amplitude hip ankle compensation open access
+- quiet breathing inspiratory time expiratory time ratio Ti/Ttot healthy adults resting breathing pattern tidal volume values
+- chest wall surface displacement quiet breathing mm anteroposterior rib cage abdomen optoelectronic structured light healthy adults
+- spontaneous sigh frequency humans per hour tidal volume twice normal Vlemincx sigh resets breathing variability
+- respiratory rate recovery after exercise time to return to baseline minutes healthy adults breathing frequency post-exercise recovery kinetics
+- Duarte Zatsiorsky "prolonged unconstrained standing" shifting fidgeting drifting pdf
+- Sidenmark Gellersen "Eye, Head and Torso Coordination During Gaze Shifts in Virtual Reality" pdf head latency contribution
+- eprints.lancs.ac.uk Sidenmark Gellersen eye head torso coordination gaze shifts virtual reality
+
+#### polish-and-critique.md
+
+Polish and critique: what separates professional motion.
+
+Sources opened:
+
+- <http://www.navone.org/Tutorial_Splines1.htm>
+- <https://www.gameanim.com/>
+- <https://www.animationmentor.com/?p=100828>
+- <https://www.animationmentor.com/?p=5392>
+- <https://www.animationmentor.com/?p=38977>
+- <https://blog.animschool.edu/?p=858>
+- <https://newsletters.animationmentor.com/newsletter/0609/feature_geek.html>
+- <https://blog.animschool.edu/?p=1121>
+- <https://devforum.roblox.com/t/tips-on-smooth-animation/1025384>
+- <https://www.scribd.com/document/370809455/Animation-Checklist>
+- <http://archive.org/wayback/available?url=keithlango.com>
+- <http://web.archive.org/cdx/search/cdx?url=keithlango.com*&output=txt&limit=200&filter=mimetype:text/html&collapse=urlkey>
+- <https://web.archive.org/web/2009/http://www.keithlango.com/>
+- <http://www.randygossman.com/images/student_projects/3dani4/animation-checklist.pdf>
+- <https://animatorsresourcekit.blog/2017/11/20/keith-lango-checklist/>
+- <http://keithlango.blogspot.com/2009/02/offset-keys-vs-changing-shapes.html>
+- <http://www.keithlango.com/tutorials/old/popThru/polish.html>
+- <https://keithlango.blogspot.com/p/free-animation-tutorials.html>
+- <https://keithlango.blogspot.com/2006/09/new-free-web-tutorial-breakdowns-can-be.html>
+- <http://www.navone.org/blog/>
+- <https://www.gamedeveloper.com/production/the-12-principles-of-animation-in-video-games>
+- <https://80.lv/articles/tips-on-making-fluid-and-powerful-animations>
+- <https://www.gamedeveloper.com/production/animation-experts-share-tips-advice-at-gdc-s-animation-bootcamp>
+- <https://www.gamedeveloper.com/design/game-animation-bootcamp-an-expert-roundtable-q-a>
+- <https://www.gamedeveloper.com/art/gdc-2017-animation-bootcamp-an-expert-roundtable-q-a>
+- <https://www.cartoonbrew.com/cgi/two-dozen-tips-tricks-improve-animation-147183.html>
+- <https://www.gdcvault.com/play/1028947/Animation-Summit-The-Tricks-of>
+- <https://www.youtube.com/watch?v=_1j5Tf6ulII>
+- <https://blog.animschool.edu/tag/spline-tips/>
+- <https://blog.animschool.edu/tag/animation-curves/>
+- <https://blog.animschool.edu/2024/08/02/cleaning-up-curves-splining-101/>
+- <https://blog.animschool.edu/2025/06/20/avoiding-spline-depression/>
+- <https://newsletters.animationmentor.com/>
+- <https://content.animationmentor.com/pdfs/TipsAndTricks_Volume1.pdf>
+- <https://content.animationmentor.com/pdfs/TipsAndTricks_Volume2.pdf>
+- <https://thinkinganimation.com/lessons-ten-things-to-think-about-polish-your-shots>
+- <https://blog.animschool.edu/?p=1086>
+- <https://videohighlight.com/v/ujo7aHa7DGQ>
+- <https://www.animationmentor.com/blog/why-all-animators-need-to-master-the-moving-hold/>
+- <https://anim.works/?p=25924>
+- <https://devforum.roblox.com/t/jespones-guide-to-animations/225752>
+- <https://devforum.roblox.com/t/animating-tipsguide/154214>
+- <https://rbossert27.wixsite.com/mysite-2/post/the-moving-hold>
+- <http://archive.org/wait/http://www.keithlango.com/tutorials/march05/movingHold.htm>
+- <https://archive.org/wayback/available?url=keithlango.com/tutorials/march05/movingHold.htm>
+- <https://archive.org/wayback/available?url=keithlango.com/tutorials/>
+- <https://web.archive.org/web/20231208201223/http://www.keithlango.com/tutorials/march05/movingHold.htm>
+- <https://web.archive.org/web/2023/http://www.keithlango.com/>
+- <http://web.archive.org/web/2023/http://www.keithlango.com/>
+- <https://archive.org/details/texts>
+- <http://www.keithlango.com/tutorials/march05/movingHold.htm>
+- <https://www.keithlango.com/>
+- <https://keithlango.blogspot.com/>
+- <https://keithlango.blogspot.com/feeds/posts/summary?max-results=500&alt=json&start-index=1>
+
+Searches run:
+
+- animation polish tips moving holds spacing graph editor animator blog
+- Keith Lango animation tips spacing polish article
+- Victor Navone splinophilia blog animation tips
+- gameanim.com Jonathan Cooper game animation polish responsiveness blending
+- gameanim.com "fundamentals of game animation" Cooper
+- AnimSchool blog moving holds McWhinnie momentum
+- Animation Mentor blog common animation notes dailies feedback polish
+- iAnimate blog polish tips curves arcs animation
+- "moving hold" animation how many frames drift tip animator
+- bloopanimation settle overshoot animation how many bounces
+- "spline doctors" OR spungella animation tips polish curves
+- animation "texture" in timing "even timing" breakup offsets polish animator article
+- common animation notes students receive mentor list floaty twinning arcs polish
+- "flat tangents" animation hitch "every key" graph editor tip animator
+- devforum.roblox.com animation tips experienced animator polish R6 guide
+- why does my animation look floaty fix spacing contact animator blog
+- Keith Lango polish checklist loop preview notes arcs offsets
+- animatorschecklist.com polish checklist favoring spacing
+- "Keith Lango" animation "moving hold" OR "polish" OR "breakdown" article quote
+- "Do Me a Favor" Keith Lango favors eases spacing tutorial
+- "Life After Pose to Pose" Keith Lango
+- "Breakdowns Can be Such a Drag" Keith Lango overlap
+- keithlango.blogspot.com spacing hold polish timing tip
+- Victor Navone Pixar animator blog workflow "splines" OR "polish" post
+- Jason Ryan animation tips blog breakdowns favor spacing "Jason Ryan"
+- Kenny Roy animation tips article graph editor polish game animation
+- Sir Wade Neistadt animation feedback tips article text graph editor spacing
+- GDC animation bootcamp polish game animation talk notes frames blend responsiveness weight animator
+- Overwatch animation GDC David Gibson snappy poses holds readability talk summary
+- animation cycle loop seamless tips offset curves cycle infinity animator game "first and last frame"
+- Simon Unger game animation tips blog responsiveness blend frames
+- Jean-Denis Haas spungella animation tips polish curves
+- GDC "Tricks of the Trade" animation bootcamp tips list game animators
+- newsletters.animationmentor.com feature_geek
+- animation polish tips "moving hold" "settle" frames animator blog
+- Kenny Roy floaty animation fix
+- Keith Lango animation tips moving hold texture timing
+- site:animationmentor.com blog polish animation tips curves graph editor
+- site:blog.animschool.edu polish graph editor tangents spacing
+- site:ianimate.net blog polish animation
+- gameanim.com Jonathan Cooper animation polish blending responsiveness
+- Victor Navone animation blog splining tips stepped to spline
+- "floaty" animation fix spacing "flat tangents" animator tips
+- most common animation notes dailies animators get "notes" fix polish article
+- AnimSchool blog polishing animation tips arcs offsets settle
+- "moving hold" minimum frames register hold animation "frames" read audience
+- overlapping action offset keys "two frames" chest neck head animation tutorial frames offset chain
+- devforum.roblox.com animation tips experienced animator easing styles polish feedback
+- game animation seamless loop cycle tips first frame last frame tangents animator article
+
+#### procedural-layers.md
+
+Procedural layers that make few keys look rich.
+
+Sources opened:
+
+- <https://theorangeduck.com/page/spring-roll-call>
+- <https://www.gameanim.com/?p=15568>
+- <https://gamedeveloper.com/design/video-an-indie-approach-to-procedural-animation>
+- <https://www.gdcvault.com/play/1020583/Animation-Bootcamp-An-Indie-Approach>
+- <https://polycount.com/discussion/comment/2093086>
+- <https://www.youtube.com/watch?v=LNidsMesxSE>
+- <https://hub.jmonkeyengine.org/t/dynamic-procedural-character-animation-system/29460>
+- <https://youtubetotranscript.com/transcript?v=LNidsMesxSE>
+- <https://www.youtube.com/watch?v=LNidsMesxSE&hl=en>
+- <https://vimeo.com/2360652>
+- <https://wolfire.com/blog/2010/02/initial-animation-and-scripting>
+- <https://github.com/WolfireGames/overgrowth/tree/main/Data/Scripts>
+- <https://github.com/WolfireGames/overgrowth/tree/main/Data/Animations>
+- <https://raw.githubusercontent.com/WolfireGames/overgrowth/main/Data/Scripts/aircontrols.as>
+- <https://www.gdcvault.com/play/1025331/Inertialization>
+- <https://www.gdcvault.com/play/1025165/Inertialization>
+- <https://theorangeduck.com/page/dead-blending>
+- <https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-blueprint-inertialization-in-unreal-engine>
+- <https://media.gdcvault.com/gdc2018/presentations/bollo_david_inertialization_high_performance.pdf>
+- <https://media.gdcvault.com/gdc2016/Presentations/Clavet_Simon_MotionMatching.pdf>
+- <https://media.gdcvault.com/gdc2016/Presentations/Clavet_Simon_Motion_Matching.pdf>
+- <https://www.ryanjuckett.com/damped-springs/>
+- <https://theorangeduck.com/page/code-vs-data-driven-displacement>
+- <https://gdcvault.com/play/1025165/Inertialization-High-Performance-Animation-Transitions>
+- <https://history.siggraph.org/?p=84136>
+- <https://ubm-twvideo01.s3.amazonaws.com/o1/vault/gdc2018/presentations/Bollo_David_Inertialization_High_Performance.pdf>
+- <https://ubm-twvideo01.s3.amazonaws.com/o1/vault/gdc2018/presentations/BolloDavid_Inertialization.pdf>
+- <https://media.gdcvault.com/gdc2018/presentations/Bollo_David_Inertialization_High_Performance.pdf>
+- <https://cdn.gearsofwar.com/thecoalition/publications/SIGGRAPH%202017%20-%20High%20Performance%20Animation%20in%20Gears%20ofWar%204%20-%20Abstract.pdf>
+- <https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-blueprint-blend-nodes-in-unreal-engine>
+- <https://dev.epicgames.com/documentation/en-us/unreal-engine/pose-warping-in-unreal-engine>
+- <https://dev.epicgames.com/documentation/en-us/unreal-engine/foot-placement-in-unreal-engine>
+- <https://dev.epicgames.com/documentation/en-us/unreal-engine/[a-z0-9-]*foot[a-z0-9-]*>
+- <https://docs.unrealengine.com/PythonAPI/class/FootPlacementPlantSettings.html>
+- <https://docs.unrealengine.com/PythonAPI/class/FootPlacementPelvisSettings.html>
+- <https://dev.epicgames.com/documentation/en-us/unreal-engine/python-api/class/FootPlacementPelvisSettings>
+- <https://api.unrealengine.com/INT/PythonAPI/class/AnimNode_FootPlacement.html>
+- <https://research.cs.wisc.edu/graphics/Papers/Gleicher/Animation/RegistrationCurves.pdf>
+- <https://runevision.com/multimedia/thesis/Rune_Skovbo_Johansen_-_Thesis_-_Automated_Semi-Procedural_Animation_for_Character_Locomotion.pdf>
+
+Searches run:
+
+- David Rosen "An Indie Approach to Procedural Animation" GDC 2014 transcript Overgrowth
+- David Bollo Inertialization High-Performance Animation Transitions Gears of War GDC 2018 slides pdf
+- wolfire blog Overgrowth procedural animation keyframes interpolation run cycle David Rosen
+- "Rosen" Overgrowth GDC animation bootcamp "two keyframes" OR "13 keyframes" OR "few keyframes" run cycle springs notes
+- youtube GDC "An Indie Approach to Procedural Animation" David Rosen
+- site:blog.wolfire.com animation keyframes interpolation
+- wolfire.com blog Overgrowth "animation" David Rosen procedural run jump physics blog post
+- Overgrowth angelscript "time_step" 120 hz update script character
+- Bollo inertialization quintic polynomial "x0" "v0" blend time "-5" overshoot formula
+- theorangeduck dead blending inertialization
+- "inertialization" Bollo slides "Gears of War 4" quintic polynomial blend time overshoot "inertialization" explanation blog
+- Bollo "Inertialization: High-Performance Animation Transitions in Gears of War" GDC 2018
+- Bollo inertialization quintic polynomial "x0" "v0" t1 "-5 x0 / v0" acceleration formula slides
+- inertialization Gears of War quintic polynomial blend "Bollo" explanation overshoot clamp duration
+- Unreal Engine "Foot Placement" animation node documentation pelvis "Plant Speed Threshold" settings
+- Kovar Gleicher "Flexible automatic motion blending with registration curves" pdf
+- Rune Skovbo Johansen "Automated Semi-Procedural Animation for Character Locomotion" thesis pdf
+
+#### aerial-combat.md
+
+Aerial combat: launchers, air combos and slams.
+
+Sources opened:
+
+- <https://www.ssbwiki.com/Landing_lag>
+- <https://ultimateframedata.com/mario>
+- <https://www.ssbwiki.com/Fast_fall>
+- <https://www.ssbwiki.com/Meteor_smash>
+- <https://www.dustloop.com/w/Glossary>
+- <https://www.dustloop.com/w/GGST/Movement>
+- <https://www.dustloop.com/wiki/api.php?action=query&list=search&srsearch=air+dash+landing+recovery&srlimit=20&format=json>
+- <https://www.dustloop.com/wiki/api.php?action=query&list=search&srsearch=wall+bounce+ground+bounce&srlimit=20&format=json>
+- <https://www.dustloop.com/wiki/api.php?action=parse&page=GGST/Damage&prop=wikitext&format=json>
+- <https://wiki.supercombo.gg/api.php?action=query&list=search&srsearch=launcher+air+combo+ground+bounce&srlimit=30&format=json>
+- <https://wiki.supercombo.gg/api.php?action=query&list=search&srsearch=launcher&srlimit=30&format=json>
+- <https://wiki.supercombo.gg/w/Ultimate_Marvel_vs_Capcom_3/Game_Mechanics>
+- <https://wiki.supercombo.gg/api.php?action=parse&page=Ultimate_Marvel_vs_Capcom_3/Game_Mechanics&prop=wikitext&format=json>
+- <https://wiki.supercombo.gg/api.php?action=parse&page=Ultimate_Marvel_vs_Capcom_3/System&prop=wikitext&format=json>
+- <https://wiki.supercombo.gg/api.php?action=query&prefix=Ultimate_Marvel_vs_Capcom_3/&list=allpages&aplimit=100&apprefix=Ultimate%20Marvel%20vs%20Capcom%203/&format=json>
+- <https://devforum.roblox.com/t/best-to-use-for-air-combat/3112442>
+- <https://the-strongest-battlegrounds.fandom.com/api.php?action=query&list=search&srsearch=downslam&srlimit=20&format=json>
+- <https://the-strongest-battlegrounds.fandom.com/api.php?action=query&list=search&srsearch=uppercut&srlimit=20&format=json>
+- <https://the-strongest-battlegrounds.fandom.com/api.php?action=parse&page=The_Strongest_Hero&prop=wikitext&format=json>
+- <https://raw.githubusercontent.com/NoelFB/Celeste/master/Source/Player/Player.cs>
+- <https://blogs.jccc.edu/dpatter/2016/03/15>
+- <https://www.gdcvault.com/play/1023148/Math-for-Game-Programmers-Building>
+- <https://www.ssbwiki.com/Stall-then-fall>
+- <https://wavu.wiki/w/api.php?action=query&list=search&srsearch=juggle&srlimit=20&format=json>
+- <https://wavu.wiki/w/api.php?action=query&list=search&srsearch=tornado&srlimit=20&format=json>
+- <https://peerj.com/articles/18000/>
+- <https://www.ncbi.nlm.nih.gov/pmc/?term=angular+momentum+jump+serve+volleyball>
+- <https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pmc&term=angular+momentum+airborne+volleyball+jump+serve&retmode=json>
+- <https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pmc&id=12843030,12751981,12475051,11365485,10302913,7481710,1725243&retmode=json>
+- <https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_json/PMC11365485/unicode>
+- <https://create.roblox.com/docs/reference/engine/classes/Camera>
+- <https://create.roblox.com/docs/reference/engine/classes/Camera.md>
+- <https://wavu.wiki/w/api.php?action=query&prop=revisions&rvprop=content&rvslots=main&format=json&titles=Juggle>
+
+Searches run:
+
+- dustloop Guilty Gear Strive system mechanics air dash landing recovery wall bounce gravity juggle
+- Devil May Cry air combo enemy hangs in air gravity "Aerial Rave" Dante stays airborne attacks slow fall
+- PlatinumGames blog action game design aerial combo enemy float gravity Bayonetta developer
+- gamedeveloper.com air juggle combat design launcher enemies airborne hang time action game
+- devforum.roblox.com air combo battlegrounds uppercut keep player in air velocity juggle
+- The Strongest Battlegrounds wiki uppercut downslam M1 combo jump space
+- Kyle Pittman "Building a Better Jump" GDC 2016 slides pdf faster gravity falling
+- volleyball spike biomechanics airborne angular momentum legs counter-rotate trunk arm swing conservation PMC
+- John Nesky "50 Game Camera Mistakes" jump camera should not follow vertical summary
+- 80.lv animator interview aerial attack jump attack animation combat weight landing
+
+#### knockdowns-and-deaths.md
+
+Knockback, knockdown, get-up, stun and death.
+
+Sources opened:
+
+- <https://raw.githubusercontent.com/Roblox/creator-docs/main/content/en-us/reference/engine/classes/Humanoid.yaml>
+- <https://raw.githubusercontent.com/Roblox/creator-docs/main/content/en-us/reference/engine/enums/HumanoidStateType.yaml>
+- <https://raw.githubusercontent.com/Roblox/creator-docs/main/content/en-us/reference/engine/classes/BallSocketConstraint.yaml>
+- <https://raw.githubusercontent.com/Roblox/creator-docs/main/content/en-us/reference/engine/classes/Players.yaml>
+- <https://raw.githubusercontent.com/Roblox/creator-docs/main/content/en-us/physics/network-ownership.md>
+- <https://raw.githubusercontent.com/Roblox/creator-docs/main/content/en-us/reference/engine/classes/BasePart.yaml>
+- <https://raw.githubusercontent.com/Roblox/creator-docs/main/content/en-us/physics/constraints/ball-socket.md>
+- <https://www.ssbwiki.com/index.php?title=Floor_getup&action=raw>
+- <https://glossary.infil.net/glossary.json>
+- <https://glossary.infil.net/>
+- <https://glossary.infil.net/glossary.js>
+- <https://glossary.infil.net/js/glossary.js>
+- <https://glossary.infil.net/json/glossary.json>
+- <https://www.dustloop.com/w/GGST/Damage>
+- <https://www.dustloop.com/wiki/api.php?action=parse&page=GGST/Damage&prop=wikitext&format=json>
+- <https://www.dustloop.com/wiki/api.php?action=parse&page=GGST/Frame_Data&prop=wikitext&format=json>
+- <https://wiki.supercombo.gg/api.php?action=query&list=search&srsearch=Street%20Fighter%206%20knockdown%20wakeup&format=json&srlimit=20>
+- <https://wiki.supercombo.gg/api.php?action=query&list=allpages&apprefix=Street%20Fighter%206/&aplimit=200&format=json>
+- <https://www.redbull.com/us-en/sekiro-shadows-die-twice-interview>
+- <https://www.psu.com/news/32685/for-honor-update-1-0-5-patch-notes>
+- <https://support.activision.com/sekiro/articles/sekiro-shadows-die-twice-game-mechanics>
+- <https://www.ubisoft.com/en-us/game/for-honor/news-updates/7hqWcY0hNa6Ynj7m7pdJcm/patch-notes-2681-for-honor>
+- <https://ubisoft.com/it-it/game/for-honor/news-updates/1nwGEXUmVA2kWXSPZcVkjR/patch-notes-2531-for-honor>
+- <https://graphics.cs.ucr.edu/projects/dynResp/mocsim2.html>
+- <https://history.siggraph.org/?p=113900>
+- <https://api.unpaywall.org/v2/10.1145/1073204.1073249?email=test@example.com>
+- <https://api.semanticscholar.org/graph/v1/paper/DOI:10.1145/1073204.1073249?fields=title,openAccessPdf,abstract>
+- <https://2018.cedec.cesa.or.jp:443/2010/archive/files/C10_I0052/C10_I0052.pdf>
+- <https://devforum.roblox.com/t/4298561.json>
+- <https://devforum.roblox.com/t/4656414.json>
+- <https://devforum.roblox.com/t/3266099.json>
+
+Searches run:
+
+- Roblox DevForum R6 ragdoll BallSocketConstraint Motor6D attachments getting up GettingUp state
+- Roblox "Avatar Joint Upgrade" AnimationConstraint BallSocketConstraint physics ragdoll announcement
+- ssbwiki tech window 20 frames lockout missed tech prone getup
+- For Honor patch notes guard break counter window ms "guard break" stagger out of stamina
+- Sekiro posture break deathblow design interview Miyazaki posture system why
+- ubisoft.com For Honor patch notes "wall splat" guaranteed heavy stun duration ms
+- Sekiro posture recovery rate guarding HP fextralife posture break frames deathblow window
+- ubisoft.com for-honor "out of stamina" knocked down guard break throw "ground attack" guide
+- "Dynamic Response for Motion Capture Animation" Zordan Majkowska Chiu Fast pdf
+- GDC physics animation ragdoll blend death animation hit reaction powered ragdoll slides pdf Uncharted OR "Last of Us" OR "Red Dead"
+- PuppetMaster BehaviourPuppet documentation get up prone supine blend to animation unpinned knockOutDistance
+- Zordan 2005 dynamic response motion capture "ballistic" "search" recovery motion simulation blend 0.1 seconds pdf
+- "Dynamic Response for Motion Capture Animation" filetype:pdf
+- "Physics Meets Animation" "Just Cause 2" Fuller Nilsson GDC pdf
+- Michal Mach "Physics Animation in Uncharted 4" GDC slides ragdoll hit reaction
+- gamedeveloper.com euphoria NaturalMotion active ragdoll interview Torsten Reil character falls protect head
+- Avatar Joint Upgrade Studio Beta physically simulated characters AnimationConstraint devforum ragdoll get up
+- ssbwiki floor recovery getup attack roll intangible frames lying down "jab reset"
+- supercombo wiki Street Fighter V quick rise back rise hard knockdown frames wake up timing
+- dustloop GGST wakeup timing face up face down frames knockdown Strive system data
+
+#### grabs-throws-and-finishers.md
+
+Grabs, throws, counters and finishers.
+
+Sources opened:
+
+- <https://critpoints.net/2020/03/24/what-the-fuck-is-paired-animation/>
+- <https://askagamedev.tumblr.com/post/739600621064372224/how-do-paired-animations-work-like-ive-heard>
+- <https://www.gameanim.com/?p=13952>
+- <https://grrava.blogspot.com/2019/03/gdc-2019-part-one.html>
+- <https://blog.avadev.be/2019/04/gdc-2019-part-one.html>
+- <https://dev.epicgames.com/documentation/en-us/unreal-engine/motion-warping-in-unreal-engine>
+- <https://www.ssbwiki.com/Grab>
+- <https://dustloop.com/w/Throws>
+- <https://words.infil.net/w03-sf6beta-p4.html>
+- <https://glossary.infil.net/?t=Throw%20Tech>
+- <https://glossary.infil.net/json/glossary.json>
+- <https://wiki.supercombo.gg/w/Street_Fighter_6/Game_Data>
+- <https://ki.infil.net/basics3.html>
+- <https://wiki.supercombo.gg/w/Street_Fighter_6/Offense>
+- <https://www.eventhubs.com/news/2022/nov/02/street-fighter-6-change-throw/>
+- <https://ultimateframedata.com/mario>
+- <https://ultimateframedata.com/incineroar>
+- <https://www.ssbwiki.com/Throw>
+- <https://amara.org/subtitles/Dkszke7reRsm/en/1/download/Which%20Dark%20Souls%20Has%20the%20Best%20Parry%20Animation.en.vtt>
+- <https://amara.org/subtitles/Dkszke7reRsm/en/1/download/Which%20Dark%20Souls%20Has%20the%20Best%20Parry%20Animation.en.srt>
+- <https://www.gamedeveloper.com/design/how-naughty-dog-defined-melee-attacks-and-behaviors-in-i-the-last-of-us-part-ii-i->
+- <https://www.gameinformer.com/b/features/archive/2015/01/23/how-uncharted-4-is-taking-game-technology-to-the-next-level.aspx>
+- <https://forums.unrealengine.com/t/animations-how-to-plan-and-create-synchronized-animations-for-a-melee-combat-game/13924>
+- <https://discussions.unity.com/t/melee-and-animation-sync-attacker-and-victim/81568>
+- <https://blog.playstation.com/?p=370399>
+- <https://www.gameanim.com/2018/04/20/god-of-war-iii-animation-process>
+- <https://www.gdcvault.com/play/1012720/>
+- <https://devforum.roblox.com/t/how-to-make-a-grab-move/2435254>
+- <https://devforum.roblox.com/t/issues-with-a-grab-skill/3678608>
+- <https://devforum.roblox.com/t/network-ownership-stolen-by-player/2809860>
+- <https://create.roblox.com/docs/physics/network-ownership>
+- <https://create.roblox.com/docs/physics/assemblies>
+- <https://devforum.roblox.com/t/syncing-up-animations-between-two-characters-on-all-clients/631262>
+- <https://devforum.roblox.com/t/syncing-animations-perfectly-across-the-network/1534896>
+- <https://devforum.roblox.com/t/animations-played-at-the-same-time-but-not-synced/2496434>
+- <https://create.roblox.com/docs/reference/engine/classes/Animator>
+- <https://create.roblox.com/docs/reference/engine/classes/AnimationTrack>
+- <https://create.roblox.com/docs/animation/using>
+- <https://www.ubisoft.com/en-au/game/for-honor/news-updates/1uyGJ38RqfLbgGnZBHC0wr/patch-notes-2601-for-honor>
+- <https://www.ssbwiki.com/Perfect_shield>
+- <https://www.ssbwiki.com/Counterattack>
+- <https://bethesda.net/en-AU/news/the-guts-and-gore-of-doom-glory-kills>
+- <https://gamingbolt.com/sekiro-shadows-die-twice-dev-talks-about-how-combat-differs-from-dark-souls-and-the-challenges-of-developing-it>
+- <https://pcgamer.com/doom-hands-on-teaching-old-demons-new-tricks>
+- <https://doomwiki.org/wiki/Glory_kill>
+- <https://critpoints.net/2017/06/10/the-majesty-of-dark-souls-3s-backstab/>
+- <https://twvideo01.ubm-us.net/o1/vault/gdc2019/presentations/Sheth_Mihir_EvolvingCombat.pdf>
+- <https://videohighlight.com/v/hE5tWF-Ou2k>
+- <https://gdconf.com/news/see-how-god-wars-combat-evolved-match-its-new-camera-system-gdc>
+- <https://askagamedev.tumblr.com/search/synced+animation>
+- <https://askagamedev.tumblr.com/post/[^>
+- <https://dev.epicgames.com/documentation/unreal-engine/API/Plugins/ContextualAnimation/UContextualAnimSelectionCriterio-_2>
+- <https://dev.epicgames.com/documentation/en-us/unreal-engine/python-api/class/ContextualAnimCriterionConeMode>
+- <https://docs.unrealengine.com/PythonAPI/class/ContextualAnimCriterionConeMode.html>
+- <https://www.gamedeveloper.com/programming/designing-ai-to-do-anything-a-spider-can-in-i-marvel-s-spider-man-i->
+- <https://www.gameanim.com/?p=67957>
+- <https://shazoo.ru/2021/05/18/110048/gejmdev-sozdanie-ii-vragov-i-sinhronnyh-animacij-marvels-spider-man>
+- <https://podwise.ai/episodes/1458953>
+- <https://www.youtube.com/watch?v=LxWq65CZBU8>
+- <https://www.youtube.com/youtubei/v1/get_transcript?prettyPrint=false>
+- <https://youtubetotranscript.com/transcript?v=LxWq65CZBU8>
+- <https://www.youtube.com/api/timedtext?v=LxWq65CZBU8&lang=en>
+- <https://www.youtube.com/api/timedtext?v=LxWq65CZBU8&lang=en&kind=asr>
+- <https://video.google.com/timedtext?lang=en&v=LxWq65CZBU8>
+- <https://www.youtube.com/youtubei/v1/player?prettyPrint=false>
+- <https://www.ssbwiki.com/Grab_release>
+- <https://www.gameanim.com/?s=glory+kill>
+
+Searches run:
+
+- GDC paired animations synchronized melee attacker victim alignment animation talk
+- Unreal Engine motion warping warp target root motion documentation
+- Doom Eternal glory kill animation length design interview id Software
+- devforum roblox grab system weld victim to attacker animation sync network ownership
+- Rock Paper Shotgun Doom glory kills 600-700 milliseconds design momentum
+- Unreal Engine Contextual Animation plugin scene asset roles selection criteria distance angle synchronized
+- "Unsynced" The Last of Us melee system GDC 2014 slides synced animations
+- Batman Arkham freeflow combat GDC animation warping counter takedown
+- Sekiro deathblow animation design interview FromSoftware posture deflect window frames
+- dustloop throw tech window frames Guilty Gear Strive throw startup 2 frames whiff
+- Street Fighter 6 throw startup 5 frames throw tech window throw whiff recovery supercombo
+- Capcom SF Seminar column throws throw escape command grab
+- "throw tech window" frames "Street Fighter 6" OR "Tekken 8" OR "Strive" whiff animation
+- For Honor parry window milliseconds patch notes Ubisoft parry riposte guard break
+- Sekiro deflect window frames datamine perfect deflect 0.2 seconds
+- Dark Souls parry window frames riposte animation critical attack wiki frame data
+- Uncharted 4 melee decoupled animations Drake opponent synced grappling Game Informer
+- gamedeveloper.com "synced animations" OR "paired animations" executions takedown animator interview
+- For Honor executions animation motion capture two actors interview animator Ubisoft Montreal
+- Ryse Son of Rome execution animation system GDC Crytek QTE slow motion camera
+- God of War 2018 stun grab finisher animation sync enemy Santa Monica animator GDC talk
+- devforum roblox sync two players animations grab desync latency play animation on both clients same time
+- devforum roblox carry grab system "CFrame" heartbeat victim follows attacker smooth replication jitter
+- For Honor patch notes "parry window" "100ms" OR "parry" "light attacks" reaction design ubisoft.com news-updates
+- Sekiro interview Kitao OR Miyazaki deflect sword clash sparks sound "deathblow" design intention
+- Doom 2016 GDC "push forward combat" glory kill stagger animation length talk summary
+- critpoints paired animations grapples assassin's creed batman arkham dark souls backstab
+- askagamedev synced animations paired animation distance orientation flat ground
+- "Evolving Combat in God of War" GDC 2019 Mihir Sheth pdf slides
+- askagamedev tumblr "synced" animations takedown "common point" flat ground
+- Unreal Engine Contextual Animation plugin documentation scene asset roles warp points paired interaction
+- UContextualAnimSelectionCriterion_Angle OR "ContextualAnimSelectionCriterion_Distance" unreal API
+- Marvel's Spider-Man GDC 2019 AI combat "sync joint" synced animations attack response Insomniac
+- Noonchester Spider-Man AI postmortem notes sync joint "each attack" response animation extra joint distance
+- youtube GDC "Marvel's Spider-Man" "AI Postmortem" Adam Noonchester
+
+#### abilities-and-casts.md
+
+Abilities, casts, charges and projectiles.
+
+Sources opened:
+
+- <https://leagueoflegends.fandom.com/wiki/Cast_time>
+- <https://dota2.fandom.com/wiki/Cast_Animation>
+- <https://wiki.leagueoflegends.com/en-us/Cast_time>
+- <https://liquipedia.net/dota2/Cast_Animation>
+- <https://dota2.fandom.com/api.php?action=parse&page=Cast_Animation&prop=wikitext&format=json>
+- <https://liquipedia.net/dota2/api.php?action=parse&page=Cast_Animation&prop=wikitext&format=json>
+- <https://web.archive.org/web/2024id_/https://dota2.fandom.com/wiki/Cast_Animation>
+- <https://wiki.leagueoflegends.com/en-us/Varus>
+- <https://wiki.leagueoflegends.com/en-us/Xerath>
+- <https://wiki.leagueoflegends.com/en-us/Lux>
+- <https://wiki.leagueoflegends.com/en-us/Karthus>
+- <https://www.surrenderat20.net/2014/09/red-post-collection-champion-animation.html>
+- <https://nexus.leagueoflegends.com/2017/05/dev-on-animating-xayah/>
+- <https://wiki.supercombo.gg/api.php?action=parse&page=Street_Fighter_6/Ryu/Data&prop=wikitext&format=json>
+- <https://wiki.supercombo.gg/api.php?action=parse&page=Street_Fighter_6/Ryu&prop=wikitext&format=json>
+- <https://wiki.supercombo.gg/w/Street_Fighter_6/Ryu/Data>
+- <https://wiki.supercombo.gg/api.php?action=parse&page=Street_Fighter_6/Game_Data&prop=wikitext&format=json>
+- <https://glossary.infil.net/?t=Super%20Freeze>
+- <https://glossary.infil.net/>
+- <https://glossary.infil.net/js/glossary.js>
+- <https://glossary.infil.net/json/glossary.json>
+- <https://pmc.ncbi.nlm.nih.gov/articles/PMC3445080/>
+- <https://library.keqingmains.com/combat-mechanics/frames>
+- <https://wiki.leagueoflegends.com/en-us/api.php?action=parse&page=Cast_time&prop=wikitext&format=json>
+- <https://wiki.leagueoflegends.com/en-us/api.php?action=parse&page=Channeling&prop=wikitext&format=json>
+- <https://wiki.leagueoflegends.com/en-us/api.php?action=query&list=search&srsearch=channel%20interrupt&srnamespace=0|4|10&format=json&srlimit=20>
+- <https://wiki.leagueoflegends.com/en-us/api.php?action=query&list=allpages&apprefix=Chan&format=json&aplimit=20>
+- <https://wiki.leagueoflegends.com/en-us/api.php?action=parse&page=Channel&prop=wikitext&format=json>
+- <https://dota2.fandom.com/api.php?action=parse&page=Cast_animation&prop=wikitext&format=json>
+- <https://dota2.fandom.com/api.php?action=parse&page=Cast_Animation&prop=wikitext&format=json&redirects=1>
+- <https://dota2.fandom.com/api.php?action=cargoquery&tables=abilities&fields=source,title,cast_point,cast_backswing&where=source%20IN%20(%27Lina%27,%27Pudge%27,%27Mirana%27,%27Sniper%27,%27Lion%27,%27Zeus%27,%27Earthshaker%27,%27Windranger%27,%27Crystal%20Maiden%27,%27Enigma%27,%27Shadow%20Fiend%27)&limit=200&format=json>
+- <https://dota2.fandom.com/api.php?action=parse&page=Channeling&prop=wikitext&format=json&redirects=1>
+- <https://overwatch.fandom.com/api.php?action=parse&page=Ultimate_ability&prop=wikitext&format=json&redirects=1>
+- <https://overwatch.fandom.com/api.php?action=parse&page=Ability&prop=wikitext&format=json&redirects=1>
+- <https://overwatch.fandom.com/api.php?action=parse&page=Ability/stats&prop=wikitext&format=json&redirects=1>
+
+Searches run:
+
+- League of Legends champion animation cast readability Riot animator interview spell windup
+- GDC Overwatch animation talk third person readability abilities ultimate animator
+- Genshin Impact elemental burst animation frames invincibility i-frames frame count library
+- Street Fighter 6 Ryu Hadoken frame data startup recovery official
+- overhand throwing biomechanics phases duration arm cocking acceleration milliseconds stride foot contact ball release percent of pitch
+- Roblox DevForum sync VFX with animation keyframe marker projectile spawn release frame
+- Overwatch ultimate voice line enemy hears different louder sound design GDC "play by sound"
+
+#### ranged-weapons.md
+
+Guns, bows and thrown weapons.
+
+Sources opened:
+
+- <https://devforum.roblox.com/t/character-arms-follow-camera/1492007>
+- <https://devforum.roblox.com/t/how-do-i-make-the-right-arm-point-to-what-the-camera-is-looking-at-on-the-y-axis/2321579>
+- <https://devforum.roblox.com/t/how-to-replicate-to-server-side/1517777>
+- <https://mein-mmo.de/warum-spielt-sich-destiny-so-gut-die-tricks-entwickler-153/>
+- <https://playvalorant.com/en-us/news/dev/how-the-valorant-arsenal-was-built/>
+- <https://blog.activision.com/call-of-duty/2019-07/Modern-Warfare-Initial-Intel-Detailing-Advancements-in-Animation-and-Authenticity>
+- <https://www.engadget.com/2012-11-08-infinity-ward-animator-talks-first-person-flourishes.html>
+- <https://eprints.bournemouth.ac.uk/24308/7/Callaway_Archery_ArchiveCopy.pdf>
+- <https://jyx.jyu.fi/bitstream/123456789/50039/1/URN%3aNBN%3afi%3ajyu-201606022817.pdf>
+- <https://learn.microsoft.com/en-us/halo-master-chief-collection/h2/art/animation/animationsfpanims>
+- <https://www.cryengine.com/docs/static/engines/cryengine-5/categories/23756816/pages/25535363>
+- <https://developer.valvesoftware.com/wiki/Blend_sequence>
+- <https://www.cryengine.com/docs/static/engines/cryengine-5/categories/23756816/pages/23308006>
+- <https://dev.epicgames.com/documentation/en-us/unreal-engine/aim-offset-in-unreal-engine>
+- <https://dev.epicgames.com/documentation/unreal-engine/creating-an-aim-offset-in-unreal-engine>
+- <https://www.ea.com/ea-play/news/ignite-mid-season-patch-notes>
+- <https://playvalorant.com/en-gb/news/game-updates/valorant-patch-notes-1-08/>
+- <https://pcgamesn.com/insurgency-sandstorm/insurgency-sandstorm-reloading>
+- <https://ea_dice.artstation.com/blog/jMao/animating-weapons-for-battlefield-v>
+- <https://bestofama.com/amas/12jpl2>
+- <https://www.gamesradar.com/call-of-duty-modern-warfare-animation-director-details-the-reboots-slick-gun-animations/>
+- <https://devforum.roblox.com/t/{tid}.json>
+- <https://devforum.roblox.com/t/{tid}/posts.json?{q>
+- <https://create.roblox.com/docs/reference/engine/classes/UnreliableRemoteEvent>
+- <https://create.roblox.com/docs/scripting/events/remote>
+- <https://create.roblox.com/docs/reference/engine/classes/Motor6D>
+- <https://create.roblox.com/docs/reference/engine/classes/Motor6D.md>
+- <https://www.gdcvault.com/play/1012300/>
+- <https://media.gdcvault.com/gdc08/slides/S6169i1.pdf>
+- <https://pages.cpsc.ucalgary.ca/~bdstephe/585_W13/d401_animation.pdf>
+- <https://www.gameanim.com/2017/04/03/art-destinys-first-person-animation/>
+- <https://destiny.bungie.org/n/1421>
+- <https://archive.org/details/GDC2015Helsby>
+- <https://www.gdcvault.com/play/1017633/Animation-Bootcamp-Giving-Purpose-to>
+- <https://www.gamedeveloper.com/art/the-secret-to-apex-legends-gorgeous-first-person-animation-mouth-cameras>
+- <https://blog.wolfire.com/2013/04/GDC13-Summary-Animation-Bootcamp-Part-5-6>
+- <https://www.gameanim.com/2018/05/24/battlefield-1-weapon-animation-breakdowns/>
+- <https://gamerant.com/destiny-smooth-fps-boxing/>
+- <https://media.gdcvault.com/GDC2014/Presentations/Duffin_Ryan_Animation_Bootcamp_Using.pdf>
+- <http://archive.org/wait/web/2021/https://ea_dice.artstation.com/blog/jMao/animating-weapons-for-battlefield-v>
+- <https://web.archive.org/web/2021id_/https://ea_dice.artstation.com/blog/jMao/animating-weapons-for-battlefield-v>
+
+Searches run:
+
+- aim offset animation third person shooter spine distribute pitch yaw GDC
+- gamedeveloper.com third person shooter animation aiming upper body blend
+- 80.lv first person weapon animation reload breakdown animator tips
+- devforum roblox R6 arms follow camera Motor6D C0 replicate
+- devforum roblox community resource replicated look direction neck shoulder R6 interpolate other clients unreliable remote
+- GDC vault Uncharted animation aiming gun third person Naughty Dog talk
+- "first person" weapon animation recoil procedural keyframed GDC talk Titanfall Respawn animator
+- Destiny Bungie first person animation interview reload weapon feel animator
+- "Helsby" Destiny "first person" animation GDC 2015 camera arms weapon talk notes
+- Gears of War animation GDC cover shooter aiming blindfire roadie run animator talk
+- Call of Duty Infinity Ward animator interview reload animation weapon first person
+- Valorant weapon equip time animation Riot dev blog first person
+- procedural recoil animation spring weapon kick recovery article game developer
+- devforum roblox tutorial "R6" head and arms follow mouse neck C0 math.asin replicated smooth
+- create.roblox.com UnreliableRemoteEvent frequent updates character look direction
+- archery shot cycle phases duration draw anchor aiming release follow-through seconds study elite archers
+- overhand throwing phases timing milliseconds stride arm cocking acceleration follow-through biomechanics
+- bow draw animation game animator article hold release arrow nock Horizon Tomb Raider third person
+- Lyra aim offset pitch yaw additive "aim offset" unreal documentation mesh space spine
+- "The Division" OR "Uncharted 4" GDC animation aiming cover third person shooter weapon pose layering talk slides pdf
+- valve developer community aim_yaw aim_pitch pose parameter weapon aim layer spine blend
+- gameanim.com first person weapon animation tips reload recoil Jonathan Cooper
+- Max Payne 3 animation aiming system interview Rockstar animator upper body independent legs shootdodge
+- "Last of Us" OR "Uncharted" animator interview aiming weapon handling animation "third person" reload weight
+- Respawn Apex Legends first person animation interview weapon inspect reload animator 80.lv OR gamedeveloper
+- Apex Legends patch notes "tactical reload" "empty reload" time seconds deploy holster time
+- Warzone patch notes "sprint to fire" ms "ADS time" ms weapon tuning
+- Valorant patch notes "equip time" seconds weapon change
+- Insurgency Sandstorm developer blog weapon animation procedural recoil sway
+- 80.lv interview first-person animator weapon animations reload timing recoil "animator"
+- gamedeveloper.com "reload" animation design shooter readability reload animation beats article
+- "third person" shooter animation GDC talk aiming "upper body" "lower body" layering locomotion weapon "pose" Gears 5 OR "Ghost Recon" OR "The Division" OR "Splinter Cell"
+- GDC talk third person shooter aiming animation additive aim poses spine distribution
+- Unreal Engine Aim Offset documentation additive mesh space aim poses pitch yaw
+- devforum.roblox.com R6 arms follow camera mouse replicate Motor6D C0 shoulder neck
+- first person weapon animation reload tactical empty animator interview frames timing
+- Gears of War animation GDC talk cover shooter aiming blending upper body
+- Destiny Bungie GDC animation first person third person weapon animation talk
+- Respawn Titanfall Apex Legends first person weapon animation GDC talk animator
+- Call of Duty animator interview weapon animation reload inspect first person third person
+- EgoMoose "first person element of a first person shooter" devforum tutorial
+- devforum replicate head and arm aim to other clients UnreliableRemoteEvent look angle interpolate R6
+- Headstackk "How to animate Tool Parts" Guns Knifes devforum Motor6D
+- "Travis McIntosh" Uncharted "Animation and Player Control" slides pdf additive aiming
+- Naughty Dog GDC talk The Last of Us aiming animation third person gun additive layers upper body
+- Polygon Destiny first-person animation GDC 2015 Helsby motion sickness weapon
+- Ryan Duffin "first-person animation" GDC Medal of Honor Warfighter talk summary weapon
+- "Animating weapons for Battlefield V" DICE enter points reload timing hitting holding strong actions
+
+#### combat-runtime.md
+
+Running combat and movement clips in Roblox.
+
+Sources opened:
+
+- <https://devforum.roblox.com/t/avatar-joint-upgrade-for-physically-simulated-character-movement-is-now-live/4298561>
+- <https://devforum.roblox.com/t/avatar-joint-upgrade-aju-phase-2-rollout-updated-migration-recommendations/4656414>
+- <https://devforum.roblox.com/t/4739840>
+- <https://api.github.com/repos/Roblox/creator-docs/contents/content/en-us/animation>
+- <https://github.com/Roblox/creator-docs>
+- <https://devforum.roblox.com/t/ik-controls-are-now-out-of-beta/2156480>
+- <https://devforum.roblox.com/t/ik-controls-are-now-out-of-beta/2156480?page=5>
+- <https://github.com/MaximumADHD/Roblox-Client-Tracker>
+- <https://devforum.roblox.com/t/deprecating-loadanimation-on-humanoid-and-animationcontroller/857129>
+- <https://devforum.roblox.com/t/tool-error-animation-track-limit-of-256-tracks-for-one-animator-exceeded/2622870>
+- <https://devforum.roblox.com/t/animationtrack-limit-exceeded-error-is-unhelpful/4067247>
+- <https://devforum.roblox.com/t/animator-reaches-256-tracks-and-no-more-are-played/2052138>
+- <https://devforum.roblox.com/t/2422221>
+- <https://devforum.roblox.com/t/animation-engine-runtime-changes-and-fixes/1320674>
+- <https://devforum.roblox.com/t/animation-priorities-set-in-local-scripts-are-no-longer-being-replicated/3867910>
+- <https://devforum.roblox.com/t/replicated-animations-not-ending/3878962>
+- <https://devforum.roblox.com/search?q=%22AnimationTrack.Looped%20Does%20Not%20Replicate%22>
+- <https://devforum.roblox.com/search.json?q=AnimationTrack.Looped%20Does%20Not%20Replicate>
+- <https://devforum.roblox.com/t/{tid}.json>
+- <https://devforum.roblox.com/t/{tid}/posts.json?{q>
+- <https://raw.githubusercontent.com/Roblox/creator-docs/main/content/en-us>
+- <https://devforum.roblox.com/t/4298561.json>
+- <https://devforum.roblox.com/t/4656414.json>
+- <https://github.com/MaximumADHD/Roblox-Client-Tracker/tree/roblox/avatar/scripts>
+- <https://raw.githubusercontent.com/MaximumADHD/Roblox-Client-Tracker/roblox>
+- <https://github.com/MaximumADHD/Roblox-Client-Tracker/tree/roblox/avatar>
+- <https://github.com/MaximumADHD/Roblox-Client-Tracker.git>
+- <https://about.roblox.com/newsroom/2026/07/creating-responsive-cheat-resistant-games-roblox-server-authority>
+- <https://devforum.roblox.com/[^>
+
+Searches run:
+
+- Roblox animation graphs R6 support devforum
+- IKControl R6 character arm LookAt devforum
+- "IKControl" studio beta announcement 2022 devforum inverse kinematics R6
+- devforum "Deprecating LoadAnimation on Humanoid and AnimationController"
+- "AnimationTrack limit of 256 tracks for one animator exceeded"
+- roblox animator 256 tracks limit LoadAnimation memory leak staff reply devforum
+- roblox release notes 2026 "AnimationTrack" limit warning improved animator
+- roblox AnimationTrack.Priority replicate fix announcement devforum priority now replicates
+- devforum "AnimationTrack.Looped" does not replicate engine bug
+- Roblox server authority animations prediction AnimationTrack rollback devforum announcement
+- devforum.roblox.com "Server Authority" beta announcement client prediction rollback Studio
+
+#### acting-and-performance.md
+
+Acting and performance.
+
+Sources opened:
+
+- <https://www.thinkinganimation.com/acting-for-animators-2>
+- <https://blog.animschool.edu/category/cliche/>
+- <https://ianimate.net/more/articles/mastering-acting-for-animators-tips-and-tricks-from-the-pros>
+- <https://content.animationmentor.com/pdfs/TipsAndTricks_Volume1.pdf>
+- <https://content.animationmentor.com/pdfs/TipsAndTricks_Volume2.pdf>
+- <https://www.awn.com/blog/acting-vs-moving-illustrations>
+- <https://renderu.com/en/articles/post/13139>
+- <https://www.awn.com/animationworld/watch-ed-hooks-talks-good-and-bad-acting-animation-fmx-2015>
+- <https://www.awn.com/print/blog/acting-vs-moving-illustrations>
+- <https://80.lv/articles/david-gibson-animating-mei-in-overwatch>
+- <https://www.gameanim.com/2017/04/29/first-person-animation-overwatch>
+- <https://www.invenglobal.com/articles/1187/how-overwatchs-first-person-animation-breathed-life-into-heroes>
+- <https://babel.speldesign.uu.se/?p=113918>
+- <https://destructoid.com/a-neat-look-at-what-goes-into-animating-overwatch-highlight-intros>
+- <https://futureofstorytelling.org/case-study/glen-keane-revisited-good-true-and-beautiful/>
+- <https://www.slashfilm.com/577363/glen-keane-over-the-moon-interview/>
+- <https://www.philonfilm.net/2011/01/interview-glen-keane.html?m=1>
+- <https://archive.org/metadata/disney-animation-the-illusion-of-life>
+- <https://archive.org/download/disney-animation-the-illusion-of-life/Disney%20Animation-The%20Illusion%20of%20Life_djvu.txt>
+- <https://archive.org/stream/disney-animation-the-illusion-of-life/Disney%20Animation-The%20Illusion%20of%20Life_djvu.txt>
+- <https://archive.org/download/disney-animation-the-illusion-of-life/Disney%20Animation-The%20Illusion%20of%20Life_hocr_searchtext.txt.gz>
+- <https://education.siggraph.org/static/HyperGraph/animation/character_animation/principles/ollie_johnston.htm>
+- <https://www.frankanollie.com/AnimationNotesFromOllie.html>
+- <https://thinkinganimation.com/acting-for-animators>
+- <https://eclass.aegean.gr/modules/document/file.php/511154/Theory/ollie_johnston_notes.pdf>
+- <http://www.edhooks.com/archives.html>
+- <http://web.archive.org/web/2017/http://www.edhooks.com/archives.html>
+- <https://www.edhooks.com/>
+- <https://edhooks.com/quick-acting-tips/>
+- <https://edhooks.com/>
+- <https://www.gameanim.com/?p=2897>
+- <https://jimhillmedia.com/andreas-deja-shares-the-lessons-he-learned-from-those-animation-masters-disneys-nine-old-men/>
+- <https://create.roblox.com/docs/en-us/avatar/emotes/specifications.md>
+- <https://www.gdcvault.com/play/1023473/Animation-Bootcamp-Overwatch-How-A>
+- <https://www.leagueoflegends.com/en-us/news/dev/ask-riot-let-s-talk-clarity/>
+- <https://www.surrenderat20.net/2014/09/red-post-collection-champion-animation.html>
+- <https://gamedeveloper.com/art/video-designing-and-animating-the-heroes-of-i-overwatch-i->
+
+Searches run:
+
+- Ed Hooks acting for animators essential acting principles thinking tends to lead to conclusions emotion tends to lead to action
+- Shawn Kelly animation tips and tricks acting cliche gestures avoid obvious choice
+- Carlos Baena shooting video reference animation article don't copy reference
+- Keith Lango animation tips acting subtle "thinking" character essay
+- Ed Hooks AWN article acting animation "status" OR "objective" OR "obstacle" animators essay
+- Glen Keane interview animate what the character is thinking feeling "thinking" drawing acting
+- Overwatch animation GDC talk heroes personality idle emote highlight intro animators
+- Team Fortress 2 illustrative rendering paper silhouette read character class from distance Mitchell Francke Eng
+- "Illusion of Life" Thomas Johnston full text archive.org "acting" chapter "the thinking character"
+- Andreas Deja blog Milt Kahl acting advice "thinking" character pose deja view
+- Eric Goldberg interview Genie animation acting gestures caricature advice animators
+- Ed Hooks "seven essential acting concepts" animators thinking tends to lead to conclusions
+- Ollie Johnston notes to animators "illustrate ideas or thoughts" attitudes list
+- Carlos Baena video reference article animators "reference" Pixar how to shoot
+- Ed Hooks awn.com article acting animation "status" OR "gesture" OR "empathy"
+- edhooks.com essay animators acting "thinking" "emotion" action objective obstacle
+- Animation Mentor blog acting tips avoid cliche gestures "acting choices" animators
+- Shawn Kelly "Tips and Tricks" animation mentor acting "subtext" "specific" choice cliché
+- Andreas Deja blog Milt Kahl acting advice "thinking" character animation
+- gameanim.com Jonathan Cooper idle animation personality character game animation
+- GDC talk character personality through gameplay animation idles locomotion "personality" animator
+- Overwatch animators interview personality idle emote highlight intro victory pose animation readability
+- Roblox creator docs emotes requirements animation length loop "emote" guidelines avatar marketplace
+- David Gibson Overwatch GDC animation talk idle personality Tracer wide stance gamedeveloper
+- League of Legends animator champion personality idle "recall" animation dev blog Riot readability silhouette
+- animation "take" comedy timing anticipation hold frames cartoon double take tutorial animator
+- Chuck Jones Road Runner coyote fall timing frames "puff" dust disappear interview timing gag
+- Eric Goldberg animation comedy timing advice interview gesture "Character Animation Crash Course"
+
+#### game-animation-direction.md
+
+Game animation direction.
+
+Sources opened:
+
+- <https://www.riotgames.com/en/news/dev-clarity-in-league>
+- <https://www.gamedeveloper.com/design/the-challenge-of-having-both-responsiveness-and-naturalness-in-game-animation>
+- <https://www.gameanim.com/2017/04/29/first-person-animation-overwatch>
+- <https://na.leagueoflegends.com/en-us/news/dev/clarity-in-league/>
+- <https://www.leagueoflegends.com/en-us/news/dev/clarity-in-league/>
+- <https://www.gameanim.com/2018/04/20/god-of-war-iii-animation-process>
+- <https://www.gamedeveloper.com/programming/common-mistakes-in-game-animation>
+- <https://www.gamedeveloper.com/art/more-than-movements-solving-animation-problems>
+- <https://game.watch.impress.co.jp/docs/news/1175860.html>
+- <https://80.lv/articles/learn-the-anatomy-of-attacks-in-combat-games-with-this-article/>
+- <https://www.gameanim.com/?p=18866>
+- <https://cgworld.jp/feature/201709-cedec2017-platinum-2.html>
+- <https://cgworld.jp/feature/201709-cedec2017-platinum-3.html>
+- <https://cgworld.jp/feature/201709-cedec2017-platinum-5.html>
+- <https://www.invenglobal.com/articles/1187/how-overwatchs-first-person-animation-breathed-life-into-heroes>
+- <https://babel.speldesign.uu.se/?p=113918>
+- <https://www.gamedeveloper.com/art/video-designing-and-animating-the-heroes-of-i-overwatch-i->
+- <https://www.gdcvault.com/play/1023473/Animation-Bootcamp-Overwatch-How-A>
+- <https://www.gamedeveloper.com/production/the-12-principles-of-animation-in-video-games>
+- <https://www.linkedin.com/pulse/five-fundamentals-video-game-animation-jonathan-cooper>
+- <https://www.gameanim.com/?s=fundamentals>
+- <https://repository.upenn.edu/hms/141>
+- <https://www.gameanim.com/>
+- <https://www.gameanim.com/?p=52801>
+- <https://www.jumbla.com/news/game-animation-fundamentals>
+- <https://www.youtube.com/watch?v=Q-ZRKHOaAOw>
+- <https://youtubetranscript.com/?server_vid2=Q-ZRKHOaAOw>
+- <https://www.youtube.com/api/timedtext?v=Q-ZRKHOaAOw&lang=en>
+- <https://80.lv/articles/studying-game-animation-principles>
+- <https://80.lv/articles/animation-in-games-function-and-automation>
+- <https://80.lv/articles/animation-tips-from-industry-experts>
+- <https://80.lv/articles/the-work-behind-creating-animation-reels>
+- <https://www.gamedeveloper.com/game-platforms/12-principles-for-game-animation>
+- <https://www.gamedeveloper.com/art/animation-feature>
+- <https://www.gameanim.com/?p=115>
+- <https://www.gameanim.com/[^>
+- <https://www.gameanim.com/wp-json/wp/v2/categories?per_page=100>
+
+Searches run:
+
+- Jonathan Cooper game anim blog responsiveness weight animation
+- GDC animation bootcamp responsiveness vs fidelity character movement talk slides
+- Overwatch animation GDC character weight silhouette readability animator talk
+- Riot Games animation readability champion silhouette dev blog
+- gameanim.com Jonathan Cooper idle pose first frame transitions "game anim" article
+- "animation director" game interview most common mistakes junior animators gameplay 80.lv
+- God of War 2018 animation director Bruno Velazquez Kratos weight animation interview
+- gamedeveloper.com excerpt "Game Anim" Jonathan Cooper book chapter
+- For Honor animation GDC talk combat animation readability Ubisoft Montreal animation director
+- Insomniac Marvel's Spider-Man animation director interview gameplay animation responsiveness
+- Takahisa Taura GDC 2018 NieR Automata combat animation flags cancel tool talk report
+- PlatinumGames CEDEC animation action game "アニメーション" キャンセル フラグ 攻撃 予備動作 レポート
+- gamedeveloper.com Jonathan Cooper animation article Uncharted "Naughty Dog" game animation
+- "animation bootcamp" GDC "first frame" blending gameplay animation pose matching start idle
+- Overwatch heroes animation "weight" Tracer Reinhardt animator interview animation style pose to pose
+- Normoyle Jörg "Trade-offs between responsiveness and naturalness for player characters" pdf results delay
+- Jonathan Cooper gameanim.com blog animation responsiveness vs weight game animation
+- GDC animation bootcamp lead animator "animation set" idle starts stops turns transitions talk
+- Overwatch animation GDC David Gibson stylized animation readability silhouette gameplay
+- "Game Anim" Cooper excerpt "five fundamentals" feel fluidity readability context elegance
+- gamedeveloper.com Jonathan Cooper animation article "Naughty Dog" game animation tips readability
+- God of War 2018 animation director Bruno Velazquez Kratos weight responsiveness interview animation
+- For Honor animation GDC talk heroes weight classes animation readability telegraph Ubisoft Montreal animator
+- Riot Games League of Legends champion animation readability blog animator silhouette gameplay camera
+- 80.lv lead animator interview gameplay animation "responsiveness" "readability" tips
+- gamedeveloper.com gameplay animation lead "animation set" transitions idle "first frame" blend postmortem
+- gdcvault animation bootcamp "gameplay animation" lead animator prototype blocking in engine talk overview
+- Almudena Soria animation prototyping Uncharted 4 GDC talk summary animators prototype features
+- Kristjan Zadziuk motion matching "dance card" For Honor animators GDC 2016 article
+- "animation director" interview game "weight" "responsiveness" balance "we cut" anticipation frames player character combat
+
+#### body-types-and-scale.md
+
+Body types, weight and scale.
+
+Sources opened:
+
+- <https://www.ebi.ac.uk/europepmc/webservices/rest/PMC1571302/fullTextXML>
+- <https://cob.silverchair.com/jeb/article-pdf/2638526/jexbio_138_1_301.pdf>
+- <https://www.sfu.ca/locomotionlab/assets/dynsimwalk1997.pdf>
+- <https://jov.arvojournals.org/article.aspx?articleid=2192576>
+- <https://pmc.ncbi.nlm.nih.gov/articles/PMC1571302/>
+- <https://www.originalwisdom.com/wp-content/uploads/bsk-pdf-manager/2019/10/Heglund-and-Taylor_1988_Speed-and-stride-frequency-and-energy-cost-per-stride-how-do-they-change-with-body-size-and-gait.pdf>
+- <https://www.sccs.swarthmore.edu/users/08/bblonder/phys120/docs/biewener.pdf>
+- <https://www.nature.com/articles/srep28825>
+- <https://art.torvergata.it/handle/2108/19932>
+- <https://www.originalwisdom.com/wp-content/uploads/bsk-pdf-manager/2019/03/Ruiz-and-Torices_2013_Humans-running-at-stadiums-and-beaches-and-the-accuracy-of-speed-estimation-from-fossil-trackways.pdf>
+- <https://www.biomotionlab.ca/size-and-speed-demo/>
+- <https://www.gameanim.com/?p=76076>
+- <https://www.vfxvoice.com/weta-digital-gives-weight-to-the-giant-monsters-of-rampage/>
+- <https://tamulur.itch.io/big-robots-walking-vr-demo>
+- <https://cinematography.net/edited-pages/MiniatureFormula.htm>
+- <https://www.marxists.org/archive/haldane/works/1920s/right-size.htm>
+- <https://tore-knabe[^>
+- <https://www.gameanim.com/downloads/5_Rules_of_Giant_Character_Animation.pdf>
+- <https://tore-knabe.com/game-development-how-much-to-slow-animation-down-for-giant-creatures/>
+
+Searches run:
+
+- Jokisch Troje 2003 "Biological motion as a cue for the perception of size" Journal of Vision
+- Alexander "Bipedal animals, and their differences from humans" Journal of Anatomy Froude number dynamic similarity
+- Heglund Taylor 1988 "Speed, stride frequency and energy cost per stride" body size Journal of Experimental Biology
+- Kram Domingo Ferris 1997 reduced gravity preferred walk-run transition speed Froude number
+- preferred walking speed Froude number 0.25 humans animals leg length
+- Alexander 1976 Nature estimates of speeds of dinosaurs relative stride length 2.3 Froude 0.3 formula
+- Vaughan Langerak O'Malley neuromaturation of human locomotion non-dimensional scaling children Froude
+- Biewener "Biomechanical consequences of scaling" Journal of Experimental Biology 2005 limb posture effective mechanical advantage
+- Jokisch Troje "perception of size" gait frequency pendulum "stride frequency" observers walker size estimate jov.arvojournals.org
+- miniature effects frame rate square root of scale shooting speed model "square root" overcrank
+- animating giants game animation scale weight slower timing GDC talk
+- Haldane "On Being the Right Size" full text giant thigh bones mouse mine shaft
+- Hamilton Joyce Flanagan Frith Wolpert 2007 "Kinematic cues in perceptual weight judgement and their origins in box lifting"
+- Runeson Frykholm visual perception of lifted weight kinematic specification of dynamics box lifting observers
+- Ko Stenholm Ferrucci characteristic gait patterns in older adults with obesity Baltimore Longitudinal Study of Aging step width
+
+## Plan to finish
+
+The exact agent prompts are in `research-prompts.md`. Run every agent at max effort.
+
+1. Wave 1, one agent per target file, all in parallel:
+   - Check the raw findings above against their sources, then write `references/dodges-and-dashes.md` and `references/traversal.md`.
+   - Research and write `references/human-motion-data.md`, `human-micro-motion.md`, `polish-and-critique.md`, `procedural-layers.md`, `aerial-combat.md`, `knockdowns-and-deaths.md`, `grabs-throws-and-finishers.md`, `abilities-and-casts.md`, `ranged-weapons.md`, `combat-runtime.md`, `acting-and-performance.md`, `game-animation-direction.md` and `body-types-and-scale.md`. Each agent also writes a sources table to the scratchpad for `sources.md`.
+2. Wave 2: one independent checker per new research file. It re-reads every source, corrects or removes unsupported sentences, checks every Poser field against `pipeline.md` and `scripts/Poser.lua`, checks the R6 rules, and fills in the "Checked N findings" line of the sources table.
+3. Integrate: one `sources.md` section per file from the scratchpad tables, rows in the SKILL.md resource table, step 4 of "Start with the actual task" naming the new files by clip type, the README and the CHANGELOG.
+4. Critic: links, Contents lists against headings, contradictions between files, invented Poser API, R6-impossible advice. Fix what it finds, then delete the finished parts of this file.
+
+## Notes for the next run (observed 2026-10-12)
+
+- The container had 4 CPUs, so a Workflow ran only 2 agents at a time. Separate background agents ran all 15 at once.
+- Every background agent wakes the main session when it finishes, and each wake-up is a new request carrying the whole conversation. A Workflow wakes it once. Start the next pass from a new, short session so each wake-up stays small.
+- The agents reported that YouTube transcripts were blocked and that web.archive.org dropped connections through the proxy. Europe PMC's REST API worked through curl for open-access papers, and the creator-docs YAML files on GitHub worked for Roblox engine facts.
