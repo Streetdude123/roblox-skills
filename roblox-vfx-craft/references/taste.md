@@ -438,3 +438,10 @@ more than a second.
     reads as a yellow cloud rolling through.
   - Long takes on the 6 GB machine: a 100 s take was clean for 67 s, then stalled 1 to 2 s at a time as 2,000 broken parts and two
     tornadoes piled up, and the Team Create session dropped (RCC-275, place closed). Reconnect brought every edit back.
+  - Profile after the first video: after each blast the client ran at 70 ms a frame (about half the recorded frames repeated)
+    and the cause was server physics, not VFX (client VFX removed: still 57 ms; `Stats.PhysicsStepTimeMs` climbed from 1.2 to
+    42-57 ms as 450 loose bricks piled up and the tornado stirred them; the tornado visual cost 2 to 4 ms, the armed impact
+    viewport 2 ms). A "Debris" collision group that does not collide with itself (set on break, back to Default on rebuild)
+    cut the physics step to 9-14 ms and the client to 25-27 ms after the first 0.5 s. A storm loop that writes Atmosphere,
+    Clouds, ColorCorrection and GlobalWind every frame cost about 3 ms even when calm; write them only when the ramp value
+    moves by 0.002.
