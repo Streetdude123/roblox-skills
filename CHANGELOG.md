@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-13 - Vesna damage numbers made plain, leap indicator removed (user-authorized)
+
+- roblox-ui-design: `references/taste.md` logs "Don't add leap indicator and make the damage indicator much simpler" and his pick of a plain static number; `references/components.md` makes the plain form (one white number, no outline, no motion, 0.6 s, hits only) the default damage number for him.
+
 ## 2026-10-13 - Targaot drill clips imported and blended in game (user-authorized)
 
 - roblox-r6-animation: `projects/review-log.md` logs "upload to studio now" and "Force close": the JSON to KeyframeSequence import with a replay check, group publishing, three tracks weighted by the target height, moving the root to the authored wall distance and body yaw (stepping onto the floor at that spot when the path changes height), the wristless grip blended on every client from replicated track weights, and an arm slide limited to the push windows.

@@ -198,3 +198,13 @@ the Play button becomes and which images it needs.
   `store.steampowered.com/api/appdetails?filters=screenshots&appids=<id>` (mostly gameplay), Dengeki Online
   article images. The Game UI Database stayed on a Cloudflare check (not bypassed); Bing image scraping
   returned junk.
+
+**2026-10-13, Vesna System (Verix creature game, place 138118876360768)** - after the feature videos for
+Corvid's list: "Don't add leap indicator and make the damage indicator much simpler". The leap aim indicator
+(white dot arc + landing ring from handle adornments under the camera, asked for in the designer's list) was
+removed; his word overrides the designer's list. "Much simpler" was open, so three text mock-ups were shown;
+his pick "Plain number, no motion": a plain white number (Builder Sans Bold 22, no outline) over the dummy for
+0.6 s, no rise, no fade, no random offset, bites and pounces only, no bleed numbers. The first version (white
+outlined number rising 1.8 studs and fading, red bleed numbers each second) was too much.
+- Rule: damage numbers default to the plainest form (one static number, no motion, no stroke) unless he asks
+  for more; do not add aim or landing indicators unless he asks for them himself.

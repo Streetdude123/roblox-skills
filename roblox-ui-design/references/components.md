@@ -177,6 +177,10 @@ A pooled BillboardGui per hit: rise 1.5-2 studs over 0.6 s with a slight random 
 0.1 s, fade out in the last 0.25 s; colour by type (normal white, crit yellow/orange and bigger, heal
 green). Recycle, never create hundreds per second.
 
+For Lepy the default is the plain form (2026-10-13, Vesna, "make the damage indicator much simpler"): one
+white number, no outline, no rise, no fade, shown 0.6 s, hits only (no damage-over-time ticks). Add motion,
+colours or bleed ticks only when he asks.
+
 ## Loading screen
 
 Full screen (`ScreenInsets.None`, DisplayOrder 100), opaque backdrop (a TextButton to swallow clicks),
