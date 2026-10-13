@@ -1617,16 +1617,28 @@ Searches run:
 - Runeson Frykholm visual perception of lifted weight kinematic specification of dynamics box lifting observers
 - Ko Stenholm Ferrucci characteristic gait patterns in older adults with obesity Baltimore Longitudinal Study of Aging step width
 
-## Plan to finish
+## Plan to finish (decided with the user on 2026-10-13)
 
-The exact agent prompts are in `research-prompts.md`, and the whole pass as one Workflow script is in `research-workflow.js` (update its scratchpad path and session line first). Agree the scope and effort with the user before running it.
+Quality bar for every agent: R6 animation that a senior Roblox animator with 20 years of experience would be proud of. It reads as a human body on 6 rigid parts and looks good (appeal, clear poses, rhythm), not only realistic. Acclaimed TV anime such as Frieren is the reference for taste and timing, never something to copy. Every finding states whether it survives on 6 rigid parts and which R6 substitute reads the same; findings that cannot read on R6 are dropped. Roblox and R6 sources come first.
 
-1. Wave 1, one agent per target file, all in parallel:
-   - Check the raw findings above against their sources, then write `references/dodges-and-dashes.md` and `references/traversal.md`.
-   - Research and write `references/human-motion-data.md`, `human-micro-motion.md`, `polish-and-critique.md`, `procedural-layers.md`, `aerial-combat.md`, `knockdowns-and-deaths.md`, `grabs-throws-and-finishers.md`, `abilities-and-casts.md`, `ranged-weapons.md`, `combat-runtime.md`, `acting-and-performance.md`, `game-animation-direction.md` and `body-types-and-scale.md`. Each agent also writes a sources table to the scratchpad for `sources.md`.
-2. Wave 2: one independent checker per new research file. It re-reads every source, corrects or removes unsupported sentences, checks every Poser field against `pipeline.md` and `scripts/Poser.lua`, checks the R6 rules, and fills in the "Checked N findings" line of the sources table.
-3. Integrate: one `sources.md` section per file from the scratchpad tables, rows in the SKILL.md resource table, step 4 of "Start with the actual task" naming the new files by clip type, the README and the CHANGELOG.
-4. Critic: links, Contents lists against headings, contradictions between files, invented Poser API, R6-impossible advice. Fix what it finds, then delete the finished parts of this file.
+Decisions:
+
+- Real-life data stays as the target for timing, weight and balance, always translated through the R6 rig, never copied raw.
+- Anime timing sense (sharp contrast between holds and fast motion) goes inside smooth 60 fps playback; full stepped timing only where it suits, such as emotes and finishers. The anime-craft research tests this instead of assuming it.
+- Much of what makes TV anime beautiful (faces, hair, cloth, drawing, camera work) cannot move to R6. Each file separates what transfers from what does not.
+- The strongest R6 evidence is measuring professional R6 clips. When the user has Roblox Studio open, add a run that decodes and measures the best professional R6 animation packs with the skill's tools.
+
+How to run: one Workflow per run, every agent at max effort, sized to finish inside one 5-hour usage window (the container runs 2 agents at a time). No background work outlives a run, and nothing is scheduled. Each topic: a research agent writes a draft in `projects/drafts/` and pushes it; an independent checker re-reads every source, checks the R6 translations and Poser fields, moves the file to `references/` and pushes it. Each run ends with integration (`sources.md`, `SKILL.md`, README, CHANGELOG), a critic pass and a fix pass.
+
+Runs:
+
+1. `r6-craft.md` (new), `anime-craft.md` (new), `human-motion-data.md`, `polish-and-critique.md`. Started 2026-10-13.
+2. `acting-and-performance.md`, `human-micro-motion.md`, `body-types-and-scale.md`, `game-animation-direction.md`.
+3. `procedural-layers.md`, `dodges-and-dashes.md` and `traversal.md` (check the saved raw findings above, then write), `aerial-combat.md`.
+4. `knockdowns-and-deaths.md`, `grabs-throws-and-finishers.md`, `abilities-and-casts.md`.
+5. `ranged-weapons.md`, `combat-runtime.md`, and the Studio measurement run when available.
+
+Use the run 1 script, `research-workflow-run1.js`, as the template for later runs. The prompts for the older topics are in `research-prompts.md`; add the quality bar above to each before reuse. `research-workflow.js` is the stopped all-in-one script.
 
 ## Notes for the next run (observed 2026-10-12)
 
