@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-12 - Targaot drill clips rebuilt from picked references in Blender (user-authorized)
+
+- roblox-r6-animation: `projects/review-log.md` logs "fix all your animations using yhe roblox animation skill please", his picks (three height clips blended by vent height, stock footage references UP 1, FRONT 1, DOWN 1, about 4 s, built in Blender) and the method and numbers: per-clip action grips for a wristless R6 tool hold, solved drill tips, planted flat feet, push rhythm, shake, sway and nods that took the clips from 34-40% still to 0.8-2.1%.
+
 ## 2026-10-12 - Targaot vent quest: drill aim layer, raycast door stops, drill model verdict (user-authorized)
 
 - roblox-r6-animation: `projects/review-log.md` logs "Make sure it doesn't like clip into the wall like that, use raycastign to detect where it opens and where it lands on the wall" (a hinged door finds its stop by raycasting sample points along their arc before it moves) and "Make sure the animation adjusts based on the location of the vent, whether it's above, below, or in front" (an aim layer over a reused clip: facing offset and lift bias measured from the clip's prop tip, the drill arm only, a head look, and a slide along the surface normal that keeps the tip on the face; live numbers for the front, above and below cases).
