@@ -690,6 +690,17 @@ Searches run:
 - boxing punch kinematics elite boxers jab cross hook uppercut fist velocity m/s punch duration ms kinematic chain pelvis trunk shoulder elbow PMC
 - baseball pitching kinematic sequence pelvis upper trunk peak angular velocity timing after foot contact elbow extension shoulder internal rotation ball release Fleisig
 
+Added from the stopped workflow run (2026-10-13):
+
+- <https://www.ebi.ac.uk/europepmc/webservices/rest/search?>
+- <https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Orendurff+center+of+mass+displacement+walking+speed&retmode=json>
+- <https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=15685471&rettype=abstract&retmode=text>
+- <https://pmc.ncbi.nlm.nih.gov/articles/PMC2817299/>
+
+Searches run in that run:
+
+- Orendurff 2004 "effect of walking speed on center of mass displacement" vertical lateral cm 0.7 1.2 1.6 m/s
+
 #### human-micro-motion.md
 
 Life in still poses: sway, breath, gaze and fidgets.
@@ -887,6 +898,35 @@ Searches run:
 - overlapping action offset keys "two frames" chest neck head animation tutorial frames offset chain
 - devforum.roblox.com animation tips experienced animator easing styles polish feedback
 - game animation seamless loop cycle tips first frame last frame tangents animator article
+
+Added from the stopped workflow run (2026-10-13):
+
+- <http://www.navone.org/Tutorial_Splines1.htm|navone_splines1>
+- <http://www.navone.org/Tutorial_Splines2.htm|navone_splines2>
+- <http://www.navone.org/Tutorial_Splines3.htm|navone_splines3>
+- <http://www.keithlango.com/tutorials/>
+- <http://randygossman.com/images/student_projects/3dani4/animation-checklist.pdf>
+- <https://blog.animschool.edu/2024/08/02/cleaning-up-curves-splining-101/|as_cleaning_curves>
+- <https://blog.animschool.edu/2025/06/20/avoiding-spline-depression/|as_spline_depression>
+- <https://blog.animschool.edu/?p=858|as_p858>
+- <https://blog.animschool.edu/?p=1121|as_p1121>
+- <https://blog.animschool.edu/?p=1086|as_p1086>
+- <https://blog.animschool.edu/tag/spline-tips/|as_tag_spline_tips>
+- <https://blog.animschool.edu/tag/animation-curves/|as_tag_curves>
+- <https://thinkinganimation.com/lessons-ten-things-to-think-about-polish-your-shots|thinking_polish>
+- <https://devforum.roblox.com/t/tips-on-smooth-animation/1025384|df_smooth>
+- <https://devforum.roblox.com/t/jespones-guide-to-animations/225752|df_jespone>
+- <https://devforum.roblox.com/t/animating-tipsguide/154214|df_tipsguide>
+- <https://www.animationmentor.com/blog/why-all-animators-need-to-master-the-moving-hold/|am_moving_hold>
+- <https://www.animationmentor.com/?p=100828|am_p100828>
+- <https://www.animationmentor.com/?p=5392|am_p5392>
+- <https://www.animationmentor.com/?p=38977|am_p38977>
+
+Searches run in that run:
+
+- Victor Navone splinophilia tutorial stepped to spline tangents
+- Keith Lango animation checklist polish "moving holds" "arcs" pdf
+- devforum.roblox.com animation critique "floaty" spacing R6 combat animation feedback experienced animator
 
 #### procedural-layers.md
 
@@ -1579,7 +1619,7 @@ Searches run:
 
 ## Plan to finish
 
-The exact agent prompts are in `research-prompts.md`. Run every agent at max effort.
+The exact agent prompts are in `research-prompts.md`, and the whole pass as one Workflow script is in `research-workflow.js` (update its scratchpad path and session line first). Agree the scope and effort with the user before running it.
 
 1. Wave 1, one agent per target file, all in parallel:
    - Check the raw findings above against their sources, then write `references/dodges-and-dashes.md` and `references/traversal.md`.
@@ -1589,6 +1629,8 @@ The exact agent prompts are in `research-prompts.md`. Run every agent at max eff
 4. Critic: links, Contents lists against headings, contradictions between files, invented Poser API, R6-impossible advice. Fix what it finds, then delete the finished parts of this file.
 
 ## Notes for the next run (observed 2026-10-12)
+
+- 2026-10-13: the whole pass was started as one Workflow at max effort (`research-workflow.js`) and stopped by the user after about 8 minutes because of usage; no file was written. Its estimate: 33 agents (15 drafts, 15 checks, integration, critic, fix), 2 at a time, likely over 10 million tokens of agent work at max effort, roughly 8 to 14 hours. Before rerunning, agree the scope and effort with the user (for example fewer topics, or normal effort).
 
 - The container had 4 CPUs, so a Workflow ran only 2 agents at a time. Separate background agents ran all 15 at once.
 - Every background agent wakes the main session when it finishes, and each wake-up is a new request carrying the whole conversation. A Workflow wakes it once. Start the next pass from a new, short session so each wake-up stays small.

@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-13 - roblox-r6-animation: workflow run stopped and saved (user-authorized)
+
+- The whole research pass was started as one Workflow at max effort and stopped by the user after about 8 minutes because of usage, before any file was written. `projects/research-workflow.js` keeps the script; `projects/research-in-progress.md` gains the sources its two agents opened and a note to agree scope and effort before the next run.
+
 ## 2026-10-12 - roblox-r6-animation: research pass stopped and saved (user-authorized)
 
 - A 15-topic research pass at max effort (human motion data, micro-motion and idles, polish and critique, procedural layers, aerial combat, knockdowns and deaths, grabs and finishers, ability casts, ranged weapons, combat runtime, acting and performance, game animation direction, body types and scale, and checks of the saved dodge and traversal findings) was stopped at the user's request before any file was written.
