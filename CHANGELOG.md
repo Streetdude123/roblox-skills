@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-13 - Targaot drill clips: legs rebuilt, DOWN made a real kneel (user-authorized)
+
+- roblox-r6-animation: `projects/review-log.md` logs "Everything is pretty good, i think you animate everything pretty okay but the legs are horribly positioned..." (staggered stances, stance changes as steps, legs aimed from foot to hip, with the professional stance, landing crouch and community crouch numbers behind them) and "who kneels like that for the drilling down? the knee sits flat on the ground, you aren't limited to position you can rotate them however you want..." (a kneeling leg turns 90 degrees back and lies flat on the floor, slides out of the hip socket and touches the torso's front-bottom edge; the knee drops about the planted toe edge; the front foot lands heel first, then flat).
+
 ## 2026-10-12 - Targaot drill clips rebuilt from picked references in Blender (user-authorized)
 
 - roblox-r6-animation: `projects/review-log.md` logs "fix all your animations using yhe roblox animation skill please", his picks (three height clips blended by vent height, stock footage references UP 1, FRONT 1, DOWN 1, about 4 s, built in Blender) and the method and numbers: per-clip action grips for a wristless R6 tool hold, solved drill tips, planted flat feet, push rhythm, shake, sway and nods that took the clips from 34-40% still to 0.8-2.1%.
