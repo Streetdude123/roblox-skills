@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-12 - Targaot vent quest: drill aim layer, raycast door stops, drill model verdict (user-authorized)
+
+- roblox-r6-animation: `projects/review-log.md` logs "Make sure it doesn't like clip into the wall like that, use raycastign to detect where it opens and where it lands on the wall" (a hinged door finds its stop by raycasting sample points along their arc before it moves) and "Make sure the animation adjusts based on the location of the vent, whether it's above, below, or in front" (an aim layer over a reused clip: facing offset and lift bias measured from the clip's prop tip, the drill arm only, a head look, and a slide along the surface normal that keeps the tip on the face; live numbers for the front, above and below cases).
+- roblox-modeling: `references/taste.md` logs "I think you should model a clean drill tool" and the verdict "No use the original not the new" and "Oroginal drill" (search the place for the item before you model a replacement).
+
 ## 2026-10-11 - roblox-r6-animation: physics lesson video, research, principles-first and universal (user-authorized)
 
 - `references/lesson-videos.md`: a fifth lesson video, Alexander Rudenko's "Physics in animation" (centre of mass, balance, rotation about the COM, speed gained and lost only through support, spin speed against pose, through motion and settles, bouncing-ball points, the layered method, arcs), studied from the caption transcript and all 226 storyboard frames (the video stream was blocked by YouTube's bot check), with its R6 translation; the hand-off checklist now asks one question per principle.
