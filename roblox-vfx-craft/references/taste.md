@@ -445,3 +445,7 @@ more than a second.
     cut the physics step to 9-14 ms and the client to 25-27 ms after the first 0.5 s. A storm loop that writes Atmosphere,
     Clouds, ColorCorrection and GlobalWind every frame cost about 3 ms even when calm; write them only when the ramp value
     moves by 0.002.
+- 2026-10-13 (Allergy Season, after the storm videos): "the impact frames need to be fast". The four impact steps were 0.05 to 0.07 s
+  each (0.23 s) plus a 0.25 s flash; now each step lasts 2 rendered frames (counted with RenderStepped, not task.wait, so a
+  slow frame cannot stretch a step) for about 0.13 s in all, and the after-flash is 0.12 s from 0.5 transparency. The camera
+  freeze starts with the first step and is released on the frame the last step ends.

@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-13 - Allergy Season: fast impact frames, Luffy sneeze clip, 3 s ragdolls (user-authorized)
+
+- roblox-vfx-craft: `references/taste.md` logs "the impact frames need to be fast" (2 rendered frames per step, about 0.13 s in all).
+- roblox-r6-animation: `references/project-style.md` logs "wheres the sneeze animation?" and the ragdoll request ("you get up after 3 seconds"): the Blender sneeze and nose-wipe clips from the Luffy reference with their numbers, and the get-up rule 3 s after floor contact.
+
 ## 2026-10-13 - Allergy Season: news HUD, storm sky, impact frames, Serious Punch sneeze (user-authorized)
 
 - roblox-vfx-craft: `references/taste.md` logs "make this super cool", "so crazy it's funny", the impact frames and Serious Punch shockwave requests, the storm sky, fog and wind request with his picks (visual wind only, strong yellow sky), the video requests and "No questions from now on, assume". Lessons: one clone set for four impact styles through Ambient and LightColor (LightColor 6 gives two-tone manga shading), arming the impact ScreenGui during the wind-up because a disabled ScreenGui draws viewport changes about 0.1 s late (measured), hero and rim layers so the sneezer never merges with the town silhouette, texture facts (the pack "glow" is a star flare; VelocityParallel follows the texture's vertical axis), the storm sky values, a dark tornado body for contrast, and the long-take memory limits.
