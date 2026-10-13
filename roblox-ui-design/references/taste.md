@@ -208,3 +208,35 @@ his pick "Plain number, no motion": a plain white number (Builder Sans Bold 22, 
 outlined number rising 1.8 studs and fading, red bleed numbers each second) was too much.
 - Rule: damage numbers default to the plainest form (one static number, no motion, no stroke) unless he asks
   for more; do not add aim or landing indicators unless he asks for them himself.
+
+**2026-10-13, Allergy Season (HiddenDevs "Design a Disaster" entry, place 136988453804049)** - from the UI style
+sheet (U1-U8: pollen app, TV weather forecast, Fall Guys, Hi-Fi Rush comic, classic NDS, emergency broadcast,
+medicine box, Mini Motorways) he picked U2: "UI would go great wirh the TV weather forecast saying RUN FOR YOUR
+LIFE!! being overly dramatic in general". The first build was a top-left boxy news panel (LIVE + channel bar,
+title bar, four pastel level bars on a light card, a headline bar, a ticker) plus a bottom meter plate with tick
+marks and two flat buttons. His verdict: "Ui needs to have the bar banner thing instead of whatever that is, it
+needs to look more like news weather report, the UI also looks heavily ai too".
+- Rule: when he picks a real-world genre (TV news), copy the real artifact's structure from real screenshots,
+  not a generic panel "inspired by" it. A real local-news weather lower third is: a channel logo box at the left,
+  a thin category tab ("WEATHER ALERT"), a white headline bar in condensed caps with a thin divider and short
+  info pairs ("POLLEN COUNT / EXTREME", "AREA / TOWNWIDE"), a full-width crawl with square separators and the
+  logo at its left, a time/temp style box at the right, a slanted red header top-left ("THE WEATHER AUTHORITY").
+  A stack of uniform boxes with pastel bar charts reads as AI.
+- Method that worked for the redo: real broadcast screenshots (WKRC Local 12 "The Weather Authority", StormWatch
+  breaking news, NWS/EAS tornado warning screens, cable "BREAKING NEWS" chyrons) -> three mock-ups B1-B3 drawn
+  with PIL over a real game frame, with the game's own fonts taken from Studio's `content/fonts` (Oswald-Bold,
+  RobotoCondensed-Regular), sent for his pick before building.
+- His pick from the mock-ups: "Do B1, like the style just make sure the percentage is positioned cleanly". B1 = the
+  local-news weather lower third (slanted red "THE ALLERGY AUTHORITY" header, red logo box, WEATHER ALERT tab, white
+  headline bar with info pairs, navy crawl, navy allergy box with START SEASON / RESET tabs above it). In the
+  mock-up the "74%" sat on a different baseline from its "YOUR ALLERGIES" label and crowded the bar; rule: a label and
+  its value share one baseline row, the bar sits under both with equal padding.
+- B1 built 2026-10-13 as a real instance tree (`StarterGui.Hud`: Root/Fit, Header with the slanted Band, Lower with Logo,
+  Tab, Bar (Headline + Info pairs), Side (Start, Reset, Meter with Row Label/Value + Track/Fill) and Crawl (Logo + clipped
+  Scroll/Line)). Measured traps: a `UIGradient` with `Rotation` does NOT map its angle in pixel space on a wide frame (on a
+  490 x 44 band a 22.25 degree cut drew at about 35 degrees and a narrow middle piece), so slants are a clipped frame
+  (`ClipsDescendants`) holding one child frame rotated by atan(slant / height), width (W - slant) x cos(angle), height 5 x H;
+  rotated children ARE clipped by a non-rotated parent. A label and a bigger value on one row with `TextYAlignment.Bottom`
+  in Oswald need the label raised about 2 px to share the baseline (measured from a 4x zoom of a capture); the row moved up
+  6 px gave equal padding (12 px) above the value's cap and below the bar. Scale: one root UIScale k = clamp(min(H / 720,
+  W / 1100), 0.6, 2); the info pairs hide when the headline bar is narrower than 760 / 560 reference px.

@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-13 - Allergy Season: news HUD, storm sky, impact frames, Serious Punch sneeze (user-authorized)
+
+- roblox-vfx-craft: `references/taste.md` logs "make this super cool", "so crazy it's funny", the impact frames and Serious Punch shockwave requests, the storm sky, fog and wind request with his picks (visual wind only, strong yellow sky), the video requests and "No questions from now on, assume". Lessons: one clone set for four impact styles through Ambient and LightColor (LightColor 6 gives two-tone manga shading), arming the impact ScreenGui during the wind-up because a disabled ScreenGui draws viewport changes about 0.1 s late (measured), hero and rim layers so the sneezer never merges with the town silhouette, texture facts (the pack "glow" is a star flare; VelocityParallel follows the texture's vertical axis), the storm sky values, a dark tornado body for contrast, and the long-take memory limits.
+- roblox-ui-design: `references/taste.md` logs the B1 pick and the build: rotated UIGradient angles do not map in pixel space, so slants are a clipped rotated frame; a label and a bigger value share a baseline after a measured 2 px raise; one root UIScale with info pairs that hide on narrow screens.
+
 ## 2026-10-13 - Vesna damage numbers made plain, leap indicator removed (user-authorized)
 
 - roblox-ui-design: `references/taste.md` logs "Don't add leap indicator and make the damage indicator much simpler" and his pick of a plain static number; `references/components.md` makes the plain form (one white number, no outline, no motion, 0.6 s, hits only) the default damage number for him.

@@ -397,3 +397,44 @@ more than a second.
 - 2026-10-10 (Grimoire Duelists, Flame Mage fire fists): "i'd like if the fire VFX looks pretty unique compared to other games, just how demon slayer makes their water and fire look unique, just make the fire vfx unique", then "Fire 1 and fire 3 combination". The hand-painted cel flames (outlined tongue flipbook, radial burst, ribbon) got "That fire vfx looks horrible, just scrap that and use vfx packs and kits with decals and stuff". Rule: fire comes from Toolbox pack flipbooks and their tuned emitters, scaled at build time; do not hand-paint fire sprites for him.
 - 2026-10-10 (same kit, after the pack rebuild): "Make suee to record videos". Six short player-camera videos went out, one per move (ignite on/off, M1 combo, Charged Fire Fists, dash, block, parry); record again after any change to a move.
 - 2026-10-10 (same kit): "Okay now male these 3 abilities, try to just do it youncan assume so you don't have to ask questions" (Sol Linea, Leo Palma, Exploding Fireball Bat, with the anime clip he linked). He allowed assumptions for this pass, so the design choices were made without a pick sheet and listed in the report for his verdict.
+
+- 2026-10-13 (Allergy Season, HiddenDevs "Design a Disaster" entry; player sneezes launch tornadoes and quakes): "make it
+  dramatic and cinematic", "These disasters and sneezes need to be so crazy it's funny okay?", "high quality detailed impact
+  frames from sneezes", "a massive shockwave forward like saitamas serious punch" (his picks: impact frames for everyone within
+  150 studs; shockwave visuals 300+ studs, physics 70), then "And make sure you use the vfx skill and male this super cool".
+  Mid-pass: "Make sure the storm turns the sky yellow, adds a little yellow fog, and high wind speeds too in general when not
+  sneezing" (his picks: wind visual only, strong yellow sky with the sun visible and the map readable), "Record a video after
+  completion", "Record a long video of the storm so i can watch like 60 seconds or 90 seconds", and "No questions from bow on
+  assume". What the captures taught:
+  - Detailed impact frames from ONE set of white SmoothPlastic clones in a ViewportFrame: change only `Ambient` and `LightColor`
+    per step. Ambient black = black ink on a white Frame; Ambient white = white ink on black; Ambient dark brown with
+    `LightColor = Color3.new(6, 6, 6)` (over 1 saturates) and `LightDirection` along the blast = a two-tone manga panel (faces
+    toward the blast white, the rest brown) that shows windows, roof steps and fence posts; Ambient black with LightColor
+    (6, 5, 2.6) = a dark rim-light step. Include the whole town (3,051 map clones built once at join), every character and every
+    effect mesh, plus 44 radial Frame rays aimed at the sneezer's head.
+  - A ViewportFrame draws moved or new parts on the next frame while its ScreenGui is shown (measured: 0 to 8 ms with 3,051
+    parts), but changes made while the ScreenGui is disabled draw about 0.1 s late: the sneezer and the burst were missing from the
+    first two impact steps. Fix: enable the GUI invisibly (Bg transparent, rays hidden, `ImageTransparency` 0.99) at the start of
+    the 1 s wind-up, keep clone pools (characters on spawn, effect meshes by MeshId) and only move them at the blast.
+  - Freeze character silhouettes at the blast pose: the recoil threw the sneezer past the camera in 0.2 s, so synced clones left
+    the frame. Debris and effect clones keep syncing.
+  - Texture facts from a thumbnail sheet of 32 pack textures (thumbnails API + PIL): the pack "glow" 8120666025 is a four-point
+    star flare, so a pollen gather drawn with it read as magic sparkles; `VelocityParallel` lines up the texture's VERTICAL axis
+    with the velocity, so streaks need the vertical streak 7447358016, not the horizontal line 2597342345. Pollen motes: the soft
+    dot 7451822955 at LightEmission 0.15.
+  - The Serious Punch shockwave: a spiky burst cone (437347603) at the face, a helix wind tunnel (4898378749, Y axis along the aim,
+    stretched to 220 studs, spun 10 rad/s), 9 WindCircle rings travelling at 260 studs/s to 340 studs, ring sprites (16074677231,
+    VelocityPerpendicular) trailing a carrier, a far ring + cloud burst only when the aim does not hit the ground within 150 studs
+    (a ground sneeze put that burst 15 studs from the lens and washed the screen white).
+  - Storm sky that reads strong yellow with a readable map: Terrain `Clouds` Cover 0.85, Density 0.32 (thick clouds shade olive),
+    Color (255, 236, 125); Atmosphere Density +0.07, Haze +2.4, Glare +0.8, Color (255, 222, 125), Decay (255, 185, 60); a
+    ColorCorrection tint (255, 236, 168) with Saturation 0.12. Haze 2.2 + Density 0.42 + big camera-near cloud puffs at 5/s was a
+    total white-out. Ramp it with the pollen value (clouds at 1.6x the pace so the sky turns by HIGH), `GlobalWind` 75 x sqrt(k).
+  - A ForceField mesh with no texture is almost invisible in daylight: the tornado funnel read as a soft cloud column. SmoothPlastic
+    at 0.42 in dust brown, a pollen-yellow outer cone at 0.8, a pale helix at 0.3, horizontal swirl-ring sprites (5726444189,
+    VelocityPerpendicular, Top, RotSpeed 220 to 340) stacked up the funnel, dark debris specks orbiting; dark body against the
+    yellow sky, pale strands on top. A pale tornado on a yellow sky had no contrast.
+  - A season-start pollen wall at 140 puffs/s made a 4 s white-out when it passed the lens; 60/s at 0.45 to 0.62 transparency
+    reads as a yellow cloud rolling through.
+  - Long takes on the 6 GB machine: a 100 s take was clean for 67 s, then stalled 1 to 2 s at a time as 2,000 broken parts and two
+    tornadoes piled up, and the Team Create session dropped (RCC-275, place closed). Reconnect brought every edit back.
