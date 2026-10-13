@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-13 - Targaot drill clips: the body turns so the drill arm stays in its shoulder (user-authorized)
+
+- roblox-r6-animation: `projects/review-log.md` logs "Watch where the arm is positioned for the first 0 second of the drill up, why is the hand located at the shoulder joint" (a wall-depth limit slid the arm 1.385 studs out of its shoulder) and "If you want to do this postion, next time angle the body so that the left side of the body that's not holding the drill is closer to the vent..." (turn the body so the tool side is farther from the target: UP 40 degrees, FRONT 15, no slide at the tool hold; turn the review side camera with the body).
+
 ## 2026-10-13 - Targaot drill clips: legs rebuilt, DOWN made a real kneel (user-authorized)
 
 - roblox-r6-animation: `projects/review-log.md` logs "Everything is pretty good, i think you animate everything pretty okay but the legs are horribly positioned..." (staggered stances, stance changes as steps, legs aimed from foot to hip, with the professional stance, landing crouch and community crouch numbers behind them) and "who kneels like that for the drilling down? the knee sits flat on the ground, you aren't limited to position you can rotate them however you want..." (a kneeling leg turns 90 degrees back and lies flat on the floor, slides out of the hip socket and touches the torso's front-bottom edge; the knee drops about the planted toe edge; the front foot lands heel first, then flat).
