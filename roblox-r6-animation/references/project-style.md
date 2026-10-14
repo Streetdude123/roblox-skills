@@ -258,3 +258,12 @@ These project-specific notes were preserved from upstream revision `1993ddb`. Th
   resets it. The sneezer's own recoil is a ragdoll too, so the sneeze clip only has to carry the wind-up and the slam (the
   ragdoll starts from the slam pose) and the nose wipe plays after the get-up. Measured: limp at 1.22 s, floor 1.91 s, up at
   4.95 s.
+- Same evening, after the Blender videos: "Put the animation in the game". Import: the JSON from `sneeze_anim.py` became two
+  KeyframeSequences in `ServerStorage.SneezeClips` (HumanoidRootPart pose weight 0, Torso weight 1 on Sneeze and 0 on Wipe,
+  Linear, Action), published from Explorer to the thefuture1687 account: Sneeze 78996045188078 (76 keys), Wipe 92396157288276 (61 keys).
+  `ReplicatedStorage.Assets.Anims` holds the two Animations. `Client/Sneeze.lua` loads both on the owner's Animator (the
+  Animator replicates the tracks to other clients), plays Sneeze when the `Sneezing` attribute is set, starts it at
+  `GetServerTimeNow() - at` when the attribute arrives late, and plays Wipe 0.45 s after `Ragdoll` turns false.
+  `ContentProvider:PreloadAsync` loads both at join. Measured in Play: the slam at +1.012 s against the server blast at
+  +1.019 s; the wipe 0.5 to 1.5 s after the get-up. Profile without the recorder: idle 16.8 ms frames, get-up 23-26 ms,
+  wipe 22-25 ms, no spike from the clips. The recorder made a 0.33 s capture gap at the get-up; the game had none.

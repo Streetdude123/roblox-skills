@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-13 - Allergy Season: sneeze clips in the game (user-authorized)
+
+- roblox-r6-animation: `references/project-style.md` logs "Put the animation in the game": the KeyframeSequence import, the published asset ids, the client wiring (late start by server time, nose wipe 0.45 s after the get-up) and the Play measurements.
+- roblox-vfx-craft: `references/taste.md` adds the impact frame length measured in Play on his machine (0.38 s; the earlier 0.13 s holds only at 60 fps).
+
 ## 2026-10-13 - Allergy Season: fast impact frames, Luffy sneeze clip, 3 s ragdolls (user-authorized)
 
 - roblox-vfx-craft: `references/taste.md` logs "the impact frames need to be fast" (2 rendered frames per step, about 0.13 s in all).

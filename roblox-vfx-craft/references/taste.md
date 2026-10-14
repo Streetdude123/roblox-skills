@@ -448,4 +448,5 @@ more than a second.
 - 2026-10-13 (Allergy Season, after the storm videos): "the impact frames need to be fast". The four impact steps were 0.05 to 0.07 s
   each (0.23 s) plus a 0.25 s flash; now each step lasts 2 rendered frames (counted with RenderStepped, not task.wait, so a
   slow frame cannot stretch a step) for about 0.13 s in all, and the after-flash is 0.12 s from 0.5 transparency. The camera
-  freeze starts with the first step and is released on the frame the last step ends.
+  freeze starts with the first step and is released on the frame the last step ends. Measured later in Play on his machine:
+  the frames that draw the set take 41 to 56 ms, so the 8 frames last 0.38 s; the 0.13 s holds only at 60 fps.
