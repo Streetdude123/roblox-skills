@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-13 - Allergy Season: five new disasters, sneeze fling, NPC Flail and Stagger (user-authorized)
+
+- roblox-vfx-craft: `references/taste.md` logs "i want more disasters too" with his picks and the approved plan, the measured break and move budgets per disaster, the Ball part and halo lessons, the join warm-up of the impact view, and the fling request with the toss formula.
+- roblox-r6-animation: `references/project-style.md` logs the NPC Flail and Stagger clips (references, differences, numbers) and the Euler order lesson for raised arms.
+
 ## 2026-10-13 - Allergy Season: lag fix, 10x map, NPC wave (user-authorized)
 
 - roblox-vfx-craft: `references/taste.md` logs "cleaner" meaning "feels kind of laggy": the ViewportFrame redraw cost (moving parts redraw the whole view, parked parts are not culled) and the split-view fix with numbers; "Also no videos please".
