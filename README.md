@@ -54,10 +54,17 @@ Package layout:
   playback, spacing contrast, restrained acting, signature gestures), measured
   human motion translated to R6 (walks, runs, turns, punches, throws, kicks,
   jumps), polish and critique (favouring, keyed drag, overshoot holds, floaty
-  fixes, review habits, common notes), R6 transform, centre-of-mass and
-  contact math, the motion metrics, weapons and props, creature rigs, video
-  rotoscoping, skinned bone rigs, the Poser runtime contract, diagnosis,
-  sources and decoded reference clips.
+  fixes, review habits, common notes), acting on six parts (the thought behind
+  the action, status and mood in the body, the head as the eyes, takes and
+  holds, poses that read from the player camera), life in still poses (sway,
+  weight shifts, breath, looks, fidgets, idles that never loop), body types
+  and scale (giants and small bodies, heavy builds, loads, children, older
+  adults, fatigue and limps), game animation direction (responsiveness against
+  weight, the clip set, weight classes, style sheets, readability from the
+  default camera, first and last frames for blends), R6 transform,
+  centre-of-mass and contact math, the motion metrics, weapons and props,
+  creature rigs, video rotoscoping, skinned bone rigs, the Poser runtime
+  contract, diagnosis, sources and decoded reference clips.
 - `templates/clip-plan.md` - brief, beat table, motion layers, physics,
   measurements, principles check, review record.
 - `scripts/` - core tools: `Poser.lua` (runtime with `curve = "spline"`,
