@@ -13,7 +13,7 @@ export const meta = {
 const ROOT = '/home/user/roblox-skills'
 const SK = ROOT + '/roblox-r6-animation'
 const DR = SK + '/projects/drafts'
-const SCR = '/tmp/claude-0/-home-user-roblox-skills/2b6990f4-3335-5095-bc18-8fc48fc1ed6b/scratchpad'
+const SCR = '/tmp/claude-0/-home-user-roblox-skills/66461c85-5953-594d-966b-29e18d73891d/scratchpad'
 const BRANCH = 'claude/animation-vfx-research'
 const BASE = '5e552ef'
 
@@ -28,7 +28,7 @@ const WEB = `Web rules: load the web tools with ToolSearch query "select:WebSear
 const FORMAT = (title) => `Format: follow ${SK}/references/combat.md: a "# Title"; one intro paragraph saying what the file holds and that every finding was checked against its source (sources.md, "${title} research"); a "## Contents" list matching the headings exactly; "## Section" headings; bullets that open with a **bold lead sentence.**, then the source fact, then "On R6: ..." with a concrete translation (joint, degrees, studs, frames at 60 fps, which Poser field) that would look good on 6 parts. Translations may use only Poser fields and helpers that exist in ${SK}/references/pipeline.md and ${SK}/scripts/Poser.lua (grep before naming one) and must respect "R6 rules that bite" in SKILL.md and ${SK}/references/r6-mechanics.md; where a technique needs new runtime code, say so plainly. Write links as they must work from references/ (for example [combat.md](combat.md)), because the file moves there after the check. Plain short sentences, active voice, one term per meaning, no filler, no emoji. Any Luau has no comments. End with "## Does not transfer to R6" (findings that cannot read on 6 parts, one line each with the reason) and "## Not covered" (sub-topics searched without a usable source).`
 
 const TRAILER = `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_01SkJrrpwtQAWv9TdWqphBVZ`
+Claude-Session: https://claude.ai/code/session_01XdYgne4K6SA6eCV53JDDKw`
 
 const GITRULES = `Git rules: work in ${ROOT} on branch ${BRANCH} only. Stage only the paths you name (never git add -A). Commit with git commit -m "<subject>" -m "<the two trailer lines below>" -- <the same paths>, then git push origin ${BRANCH}, retrying up to 4 times with 2, 4, 8 and 16 second waits on network errors. Another agent may commit at the same moment: if git reports an index.lock, wait 5 seconds and retry. Never push to main, never force-push, never open a pull request. The two trailer lines, exactly:
 ${TRAILER}`
