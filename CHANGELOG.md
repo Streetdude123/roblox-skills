@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-14 - Allergy Season: disaster sound pass (user-authorized)
+
+- roblox-sfx-finder: `SKILL.md` logs "more sound effects ... sirens, people screaming ... you pick": the partner-audio set, the event wiring, the "(SFX)" search tip, and the waveform measurement for volumes and start offsets.
+
 ## 2026-10-14 - Allergy Season: tsunami model and VFX, map cleanup, Flail deleted (user-authorized)
 
 - roblox-vfx-craft: `references/taste.md` logs the removal of Gravity and Black Hole, the tsunami picks, and "looks kind of out if place" / "doesn’t blend well": the base break-up recipe with texture ids and rates, the warm lights for the back-lit side, the crescent trap, the cost, and the 5 infected water packs of 8.
