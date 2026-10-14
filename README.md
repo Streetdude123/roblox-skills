@@ -49,9 +49,15 @@ Package layout:
   their target ranges, verification and handoff, R6 rules.
 - `references/` - five lesson videos translated to R6, the craft (posing,
   timing in frames, overlap, moving holds, springs, game feel, recipes), R6
-  transform, centre-of-mass and contact math, the motion metrics, weapons and
-  props, creature rigs, video rotoscoping, skinned bone rigs, the Poser
-  runtime contract, diagnosis, sources and decoded reference clips.
+  craft from R6 animators (slides and pistons for knees and elbows, acting
+  with the head, battlegrounds move sets), anime craft (smooth or stepped
+  playback, spacing contrast, restrained acting, signature gestures), measured
+  human motion translated to R6 (walks, runs, turns, punches, throws, kicks,
+  jumps), polish and critique (favouring, keyed drag, overshoot holds, floaty
+  fixes, review habits, common notes), R6 transform, centre-of-mass and
+  contact math, the motion metrics, weapons and props, creature rigs, video
+  rotoscoping, skinned bone rigs, the Poser runtime contract, diagnosis,
+  sources and decoded reference clips.
 - `templates/clip-plan.md` - brief, beat table, motion layers, physics,
   measurements, principles check, review record.
 - `scripts/` - core tools: `Poser.lua` (runtime with `curve = "spline"`,
