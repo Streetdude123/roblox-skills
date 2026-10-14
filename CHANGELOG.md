@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-14 - Allergy Season: tsunami that forms and flows (user-authorized)
+
+- roblox-vfx-craft: `references/taste.md` logs "not flowing like a liquid ... appear in front of me with an animation of forming", his picks, the liquid recipe (bone motion, scrolled alpha strand texture, slope streaks), the forming sequence, the traps (no-alpha overlay, glass-pane sheets, first-load freeze) and the measured costs.
+- roblox-modeling: `references/taste.md` logs the column-chain bone rig, why nearest-bone weights failed and the profile-position weights that work, the rotation limits, and the facts of a rigged Import 3D.
+
 ## 2026-10-14 - Allergy Season: disaster sound pass (user-authorized)
 
 - roblox-sfx-finder: `SKILL.md` logs "more sound effects ... sirens, people screaming ... you pick": the partner-audio set, the event wiring, the "(SFX)" search tip, and the waveform measurement for volumes and start offsets.
