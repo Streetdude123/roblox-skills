@@ -5,6 +5,12 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-14 - Allergy Season: tsunami model and VFX, map cleanup, Flail deleted (user-authorized)
+
+- roblox-vfx-craft: `references/taste.md` logs the removal of Gravity and Black Hole, the tsunami picks, and "looks kind of out if place" / "doesn’t blend well": the base break-up recipe with texture ids and rates, the warm lights for the back-lit side, the crescent trap, the cost, and the 5 infected water packs of 8.
+- roblox-modeling: `references/taste.md` logs the sidewalk and fence cleanup methods, the Great Wave build method with its failed rounds, the foam pile and skirt, and the import facts; `references/studio-preview.md` and `scripts/studio/PreviewMesh.lua` place an EditableMesh part by its origin.
+- roblox-r6-animation: `references/project-style.md` logs "Delete it" for the Flail clip.
+
 ## 2026-10-13 - Allergy Season: NPC Flail and Stagger imported (user-authorized)
 
 - roblox-r6-animation: `references/project-style.md` logs "Import both (Recommended)": the published ids, the float lift fault that hid the Flail (velocity sets lose to gravity, fixed with a LinearVelocity), the first-play delay and preload, and the held-pose capture method for a clip shorter than the delay between tool calls.

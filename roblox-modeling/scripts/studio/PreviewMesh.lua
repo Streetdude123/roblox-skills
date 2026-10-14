@@ -89,7 +89,7 @@ part.Color = Color3.new(1, 1, 1)
 local folder = workspace.CurrentCamera:FindFirstChild("ModelPreview") or Instance.new("Folder")
 folder.Name = "ModelPreview"
 folder.Parent = workspace.CurrentCamera
-part.CFrame = CFrame.new(at + Vector3.new(0, part.Size.Y / 2, 0))
+part.CFrame = CFrame.new(at)
 local sa = Instance.new("SurfaceAppearance")
 local set = {}
 for _, pair in { { "color", "ColorMapContent" }, { "normal", "NormalMapContent" }, { "rough", "RoughnessMapContent" }, { "metal", "MetalnessMapContent" } } do

@@ -9,7 +9,7 @@ Use it to judge a model in a game's real lighting, also inside a team place (Lep
 2. Serve: find a free port first (8766, 8768 and 8771 were held by servers from other sessions), then
    `Start-Process node.exe -ArgumentList @("scripts/studio/serve_preview.js", "<out>", "<port>") -WindowStyle Hidden`.
    `/n/<file>` returns the chunk count, `/f/<file>?part=k` returns 512 KB chunks (base64 for binary). PowerShell shows the count as an ASCII byte (51 = "3"); Studio gets a string.
-3. Load: run the body of `scripts/studio/PreviewMesh.lua` in `execute_luau` (Edit), wrapped so `HttpService.HttpEnabled` goes on and back to its old value in the same call, with arguments base URL, name, a Vector3 for the bottom centre, flip (false), size (512). It builds an EditableMesh (AddVertex, AddTriangle, AddNormal + SetFaceNormals, AddUV + SetFaceUVs), `CreateMeshPartAsync(Content.fromObject(mesh))`, and a SurfaceAppearance with `ColorMapContent`, `NormalMapContent`, `RoughnessMapContent`, `MetalnessMapContent` from EditableImages. One model per call keeps each call short.
+3. Load: run the body of `scripts/studio/PreviewMesh.lua` in `execute_luau` (Edit), wrapped so `HttpService.HttpEnabled` goes on and back to its old value in the same call, with arguments base URL, name, a Vector3 for the model origin (the Blender origin, which the mesh keeps), flip (false), size (512). It builds an EditableMesh (AddVertex, AddTriangle, AddNormal + SetFaceNormals, AddUV + SetFaceUVs), `CreateMeshPartAsync(Content.fromObject(mesh))`, and a SurfaceAppearance with `ColorMapContent`, `NormalMapContent`, `RoughnessMapContent`, `MetalnessMapContent` from EditableImages. One model per call keeps each call short.
 4. Look: `screen_capture` with a camera position and a look-at point; add local floor, R6 reference blocks and PointLights under the same folder if the scene is dark.
 5. Clean: destroy `workspace.CurrentCamera.ModelPreview`, count leftovers (0), confirm `HttpEnabled` false, stop the node process you started.
 
@@ -30,3 +30,5 @@ Verified 2026-10-04 on the samurai (11 groups, one FBX): File > Import (Ctrl+M) 
 ## C. Publish a mesh from an EditableMesh
 
 `AssetService:CreateAssetAsync` takes Mesh, Model, Image and Plugin asset types, but needs the AssetCreateUpdate capability; it was "not available yet" for animations in 2026-09. Try it only with his approval because it creates assets on his account.
+
+Fact (2026-10-14, Allergy Season tsunami): `CreateMeshPartAsync` keeps the EditableMesh's own origin. The part's CFrame is the Blender origin, not the bounds centre: placing the wave by its bounds centre floated it 25 studs. `PreviewMesh.lua` now places the part at `at`.
