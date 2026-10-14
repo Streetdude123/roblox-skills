@@ -240,3 +240,22 @@ needs to look more like news weather report, the UI also looks heavily ai too".
   in Oswald need the label raised about 2 px to share the baseline (measured from a 4x zoom of a capture); the row moved up
   6 px gave equal padding (12 px) above the value's cap and below the bar. Scale: one root UIScale k = clamp(min(H / 720,
   W / 1100), 0.6, 2); the info pairs hide when the headline bar is narrower than 760 / 560 reference px.
+
+**2026-10-14, Wacky Pets (pet status tag)** - the pass replaced the old need bubbles with a tag per pet (food bar,
+water bar, earn line "+9 / hr" or "Hungry - no coins"). Built as 3.6 x 1.6 stud bars with `UICorner(0.5)` pills on a
+dark purple (40, 0, 72) track. His sentence on seeing it in Play: "That UI for the pets look horrid", then
+"/roblox-ui-design use the ui design smill".
+- Three options were built as real BillboardGui trees from the game's own pieces and shown over two cats (hungry left,
+  fed right) in one labelled sheet: 1 bubble card (a clone of the authored `EggBubble`: dark purple outline, white to
+  lavender body, tail), 2 the authored round need bubbles that fill with colour (a hard-stop `UIGradient` on the round
+  body shows a level inside a `UICorner` circle without clipping), 3 stroked text only (the authored `PetTag` style).
+- His pick: "1 Bubble card". Built: `Assets.UI.PetStatus` = `EggBubble` clone, rows Food / Water (icon + outlined bar:
+  dark purple frame, light body, gradient fill, radius 0.2-0.25, no dark track) and Earn (coin + gold label).
+- Size rule for a status tag the player must read: mix studs and pixels, `UDim2.new(1.6, 70, 2.3, 101)`, so it shrinks
+  with distance but keeps a pixel floor. Scale-only (3.2 studs) gave about 7 px text on a phone at the game's max zoom
+  (15 studs); with the floor the earn text measured 13 px on desktop at 15 studs, about 11 px on a phone.
+- Anchor a speech-bubble billboard at its tail: make the gui twice the bubble height and put the bubble in the top half
+  (`Outline` height 0.42, `Tail` at 0.42), so `StudsOffsetWorldSpace` = top of the pet + 0.3 holds the tail tip just over
+  the head at every distance, even when the pixel floor makes the bubble taller than its stud size.
+- Trap: the authored `PetNeeds` bubbles ship with `Food.Visible = false` and `Water.Visible = false` (code showed them on
+  need); a clone shows nothing until they are set visible.

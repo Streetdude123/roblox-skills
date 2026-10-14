@@ -5,6 +5,12 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-14 - Wacky Pets: hook pass, egg crash intro, pet tag (user-authorized)
+
+- roblox-vfx-craft: `references/taste.md` logs the request "as satisfying and addictive as possible", the sprite layer and burst template method, and the traps (dark ground shock at LightEmission 0, the overhead tag over the egg, the sky-only fall shot), plus "stop trying to record videos just send me finished".
+- roblox-r6-animation: `references/project-style.md` logs "You pick the best fitting animation" and "actually pick cheer 1", the R15 AnimationConstraint rig that baked R6 clips cannot move, the R15 emote ids used, and the front three-quarter shot for a cheer.
+- roblox-ui-design: `references/taste.md` logs "That UI for the pets look horrid", the three options, his pick (bubble card from the authored EggBubble), the stud plus pixel size floor, the tail anchor, and the hidden PetNeeds bubbles trap.
+
 ## 2026-10-14 - Allergy Season: tsunami that forms and flows (user-authorized)
 
 - roblox-vfx-craft: `references/taste.md` logs "not flowing like a liquid ... appear in front of me with an animation of forming", his picks, the liquid recipe (bone motion, scrolled alpha strand texture, slope streaks), the forming sequence, the traps (no-alpha overlay, glass-pane sheets, first-load freeze) and the measured costs.
