@@ -7,6 +7,7 @@ Raw history of the projects this skill was built on. The skill does not load thi
 - `research-prompts.md` - the exact prompts of the 2026-10-12 max-effort pass, one per target file, for resuming it.
 - `research-workflow.js` - the same pass as one Workflow script (research, independent check, integration, critic, fix), stopped on 2026-10-13 before any file was written.
 - `research-workflow-run1.js` - the run 1 Workflow script (R6 craft, anime craft, human motion data, polish and critique), the template for later runs.
+- `research-workflow-run2.js` - the run 2 Workflow script (acting and performance, micro-motion, body types and scale, game animation direction).
 - `case-notes/` - snapshots of `SKILL.md` and the references as they were before the universal rewrite, with the project names, dates and quotes they carried.
 
 The worked examples from these projects are in `scripts/examples/`.

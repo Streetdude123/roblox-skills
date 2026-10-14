@@ -1424,7 +1424,7 @@ How to run: one Workflow per run, every agent at max effort, sized to finish ins
 Runs:
 
 1. `r6-craft.md` (new), `anime-craft.md` (new), `human-motion-data.md`, `polish-and-critique.md`. Started 2026-10-13. Done 2026-10-14: all four files checked, moved to `references/` and integrated (`sources.md`, `SKILL.md`, README, CHANGELOG); the lead lists for `human-motion-data.md` and `polish-and-critique.md` are removed.
-2. `acting-and-performance.md`, `human-micro-motion.md`, `body-types-and-scale.md`, `game-animation-direction.md`.
+2. `acting-and-performance.md`, `human-micro-motion.md`, `body-types-and-scale.md`, `game-animation-direction.md`. Script: `research-workflow-run2.js`, scheduled for 2026-10-14 07:26 UTC.
 3. `procedural-layers.md`, `dodges-and-dashes.md` and `traversal.md` (check the saved raw findings above, then write), `aerial-combat.md`.
 4. `knockdowns-and-deaths.md`, `grabs-throws-and-finishers.md`, `abilities-and-casts.md`.
 5. `ranged-weapons.md`, `combat-runtime.md`, and the Studio measurement run when available.
