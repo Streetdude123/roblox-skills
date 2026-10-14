@@ -1433,6 +1433,8 @@ Use the run 1 script, `research-workflow-run1.js`, as the template for later run
 
 ## Notes for the next run (observed 2026-10-12)
 
+- 2026-10-14 (user rule): start each run 5 to 8 minutes before the current 5-hour usage window resets, and let it run past the reset. Read the reset time from `rate_limit_info.resetsAt` in the get_session result before starting.
+
 - 2026-10-13: the whole pass was started as one Workflow at max effort (`research-workflow.js`) and stopped by the user after about 8 minutes because of usage; no file was written. Its estimate: 33 agents (15 drafts, 15 checks, integration, critic, fix), 2 at a time, likely over 10 million tokens of agent work at max effort, roughly 8 to 14 hours. Before rerunning, agree the scope and effort with the user (for example fewer topics, or normal effort).
 
 - The container had 4 CPUs, so a Workflow ran only 2 agents at a time. Separate background agents ran all 15 at once.
