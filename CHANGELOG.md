@@ -5,6 +5,12 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-13 - Allergy Season: lag fix, 10x map, NPC wave (user-authorized)
+
+- roblox-vfx-craft: `references/taste.md` logs "cleaner" meaning "feels kind of laggy": the ViewportFrame redraw cost (moving parts redraw the whole view, parked parts are not culled) and the split-view fix with numbers; "Also no videos please".
+- roblox-modeling: `references/taste.md` logs "no stud textures", "i want the map built 10x bigger" and "Too symmetrical ... nothing in this world is perfect": the seeded plan script that walks bent streets to place varied lots and writes the layout the builder reads.
+- roblox-r6-animation: `references/project-style.md` logs "make sure npcs wave and turn smoothly": the AlignOrientation turn and the Blender NPC wave (reference, differences, numbers, published id).
+
 ## 2026-10-13 - Allergy Season: sneeze clips in the game (user-authorized)
 
 - roblox-r6-animation: `references/project-style.md` logs "Put the animation in the game": the KeyframeSequence import, the published asset ids, the client wiring (late start by server time, nose wipe 0.45 s after the get-up) and the Play measurements.
