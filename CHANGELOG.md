@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-15 - Shinsenkyo: FS3-FS6 forest set pieces (user-authorized)
+
+- roblox-modeling: `references/taste.md` logs his FS2 approval and "keep going now", and the lessons from FS3-FS6: box colliders for a hollow hull, a solid textured wall over stone-by-stone walls, the Jizo bib on the core SDF only, plant spots from the real footprint of a hollow tree and judging "giant" against the place's own trees, interior tints, and the FS6 moss method (keep only the outer moss surface, drop small islands, thick round drapes, bare roof corners, a calmer moss texture, stone tint for rain lighting).
+
 ## 2026-10-14 - Shinsenkyo: FS2 expedition camp (user-authorized)
 
 - roblox-modeling: `references/taste.md` logs his FS1 verdict ("Good, build FS2 next"), the forest slot rule ("7, one of each"), and the FS2 lessons: cloth split under the 20k limit, organic tears, the leaning-pole collapsed tent, aged canvas, smaller moss, the kettle on two bars, and solid plant shapes on a dirt pad.
