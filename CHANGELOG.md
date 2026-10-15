@@ -8,6 +8,7 @@ needs.
 ## 2026-10-15 - Eclipse Animator walk test (user-authorized)
 
 - roblox-r6-animation: `references/project-style.md` logs the Eclipse Animator walk test: his requests and process notes, the Eclipse import workflow and its C0 trap, and his review of the circled back leg (a vertical stance leg slid back reads as a block; the stance leg now rotates from the hip over a floor track, with the numbers and the sole-tilt cost).
+- roblox-r6-animation: the same log adds his next review ("you’re animating it like a human body ... this is r6", "It moves like a penguin too"): a heel-to-toe foot roll, human-data angles, side sway and roll, and arms rolled out read as a simulated human and a waddle; the rebuild uses straight pendulum legs, no torso roll or sway, and arms that hang straight beside the torso.
 
 ## 2026-10-15 - Shinsenkyo: realistic masks, paper and items (user-authorized)
 
