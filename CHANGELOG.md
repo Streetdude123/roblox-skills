@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-15 - Shinsenkyo: FS7 bridge and pond (user-authorized)
+
+- roblox-modeling: `references/taste.md` logs the FS7 lessons: the ivy shell that read as two rolls and the noise, holes, strands and wrap that fixed it, the painted leaf-mat texture, pond water that must stop at the pad's voxel top, and the grid size and smoothing that page a 6 GB machine.
+
 ## 2026-10-15 - Shinsenkyo: FS3-FS6 forest set pieces (user-authorized)
 
 - roblox-modeling: `references/taste.md` logs his FS2 approval and "keep going now", and the lessons from FS3-FS6: box colliders for a hollow hull, a solid textured wall over stone-by-stone walls, the Jizo bib on the core SDF only, plant spots from the real footprint of a hollow tree and judging "giant" against the place's own trees, interior tints, and the FS6 moss method (keep only the outer moss surface, drop small islands, thick round drapes, bare roof corners, a calmer moss texture, stone tint for rain lighting).
