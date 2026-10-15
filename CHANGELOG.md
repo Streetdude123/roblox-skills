@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-15 - Eclipse Animator walk test (user-authorized)
+
+- roblox-r6-animation: `references/project-style.md` logs the Eclipse Animator walk test: his requests and process notes, the Eclipse import workflow and its C0 trap, and his review of the circled back leg (a vertical stance leg slid back reads as a block; the stance leg now rotates from the hip over a floor track, with the numbers and the sole-tilt cost).
+
 ## 2026-10-15 - Shinsenkyo: realistic masks, paper and items (user-authorized)
 
 - roblox-modeling: `references/taste.md` logs his verdict on the convict variant sheets ("you think that looks like a realistic mask? i asked for realism ... the paper is super unrealistic ... do it all with the other convicts").
