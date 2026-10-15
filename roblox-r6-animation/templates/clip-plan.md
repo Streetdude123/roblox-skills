@@ -5,6 +5,7 @@ Fill this in task notes. Keep only fields relevant to the request. Record unknow
 ## Brief
 
 - Action and intent:
+- One idea / thought behind the action / want, obstacle, subtext:
 - Style and supplied reference:
 - Rig and inspected joint/prop setup:
 - Duration and authoring FPS:
@@ -13,6 +14,15 @@ Fill this in task notes. Keep only fields relevant to the request. Record unknow
 - Allowed world movement and planted contacts:
 - Required impact, cancel, or transition times:
 - Runtime and requested delivery:
+
+## Character
+
+Fill once per character before its first clip, and take every clip's numbers from it ([body-types-and-scale.md](../references/body-types-and-scale.md), "One weight class across a clip set"; [game-animation-direction.md](../references/game-animation-direction.md), "Write a style sheet for each character").
+
+| Scale S | Build (light, average, heavy) | Rate factor 1/sqrt(S) | Planted share | Foot lift | Contact sink | Lean | Arm swing | `lag` preset | `springs` presets |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+
+- Style sheet: golden poses as joint values, push level, moving-hold drift, `life` level, peak joint speed of ordinary moves against signature moves, two `rear34` captures per pose (one right, one wrong):
 
 ## Reference evidence
 

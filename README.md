@@ -49,9 +49,22 @@ Package layout:
   their target ranges, verification and handoff, R6 rules.
 - `references/` - five lesson videos translated to R6, the craft (posing,
   timing in frames, overlap, moving holds, springs, game feel, recipes), R6
-  transform, centre-of-mass and contact math, the motion metrics, weapons and
-  props, creature rigs, video rotoscoping, skinned bone rigs, the Poser
-  runtime contract, diagnosis, sources and decoded reference clips.
+  craft from R6 animators (slides and pistons for knees and elbows, acting
+  with the head, battlegrounds move sets), anime craft (smooth or stepped
+  playback, spacing contrast, restrained acting, signature gestures), measured
+  human motion translated to R6 (walks, runs, turns, punches, throws, kicks,
+  jumps), polish and critique (favouring, keyed drag, overshoot holds, floaty
+  fixes, review habits, common notes), acting on six parts (the thought behind
+  the action, status and mood in the body, the head as the eyes, takes and
+  holds, poses that read from the player camera), life in still poses (sway,
+  weight shifts, breath, looks, fidgets, idles that never loop), body types
+  and scale (giants and small bodies, heavy builds, loads, children, older
+  adults, fatigue and limps), game animation direction (responsiveness against
+  weight, the clip set, weight classes, style sheets, readability from the
+  default camera, first and last frames for blends), R6 transform,
+  centre-of-mass and contact math, the motion metrics, weapons and props,
+  creature rigs, video rotoscoping, skinned bone rigs, the Poser runtime
+  contract, diagnosis, sources and decoded reference clips.
 - `templates/clip-plan.md` - brief, beat table, motion layers, physics,
   measurements, principles check, review record.
 - `scripts/` - core tools: `Poser.lua` (runtime with `curve = "spline"`,
@@ -89,7 +102,9 @@ Package layout:
   measured numbers and the feedback log.
 - `references/` - `taste.md`, `kit-workflow.md`, `modules.md`, `cinematic.md`,
   `sound.md`, `verification.md`, `ambient.md` (canopy light shafts, beam
-  butterflies, zone mist, weather rain).
+  butterflies, zone mist, weather rain), and the researched files
+  `impacts-and-camera.md`, `movement-fx.md`, `projectiles-beams-elements.md`
+  and `engine-and-performance.md`.
 - `scripts/` - `Tw.lua`, `Emitters.lua`, `Kit.lua`, `CameraRig.lua`,
   `ScreenFx.lua`, `ImpactFrames.lua`, `SpeedLines.lua`, the two worked
   examples `SummonVfx.lua` and `UltimateVfx.lua` with their client, server and

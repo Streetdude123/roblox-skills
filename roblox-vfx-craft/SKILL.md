@@ -46,6 +46,8 @@ Rules that follow from the ladder:
 5. **Mix the sound** last, from a recording when he sends one. See `references/sound.md`.
 6. **Log his sentence** in `references/taste.md` and update the numbers here.
 
+Researched rules for common pieces: `references/impacts-and-camera.md` (hits, hit stop, shake, craters, flash limits), `references/movement-fx.md` (dashes, trails, landings, footsteps, afterimages), `references/projectiles-beams-elements.md` (projectiles, beams, lightning, fire, earth) and `references/engine-and-performance.md` (emitter behaviour, client-side effects, pooling, quality scaling, profiling). His taste still wins where they disagree.
+
 ## The rules he taught (short form)
 
 - **Flashier by default** (2026-09-28): "from now on, your animations and VFX needs to be significantly more flashier". Start every move a
@@ -870,6 +872,10 @@ transparency for two frames brought it to 26 ms on a 17 ms idle.
 - [verification.md](references/verification.md) - quality level, capture cache, occluded Studio, phase polling, frame profiling.
 - [principles.md](references/principles.md) - the style guide and tutorial principles (readability, scale of importance, value and colour, shapes, timing, block-ins, juice) translated to Roblox properties and numbers, with sources.
 - [water.md](references/water.md) - water constructs: the four water properties, edge break-up, line/fill/shadow/foam layers, the Creator Hub waterfall numbers, mesh VFX practice, and what the Judgement's Hammer rebuild proved (framing for the player camera, a hand mesh, fractional torrent textures, camera-facing swing trails), with sources.
+- [impacts-and-camera.md](references/impacts-and-camera.md) - explosion layer offsets and contact timing, hit stop scaled from damage with victim vibration, trauma shake tuning, a damped-spring camera punch, shaking the default camera without drift (Focus, CameraOffset), crater rings and rock pools, flash limits and Reduce Motion, with sources.
+- [movement-fx.md](references/movement-fx.md) - dash structure (streak plus ghosts), Trail sampling, Lifetime, WidthScale, Min/MaxLength and TextureModes with a dash streak template, landing and jump triggers from StateChanged with fall-height gating, footstep dust on animation markers, wakes emitted by distance, particle jump rings, pooled afterimages and movement cost, with sources.
+- [projectiles-beams-elements.md](references/projectiles-beams-elements.md) - projectile cast, head, tail and impact values, ending a trail on hit, readable direction and honest hitboxes, trail colour and two-trail contrast, Beam curves, texture modes, blending and layered sustained beams, client-side replication and FastCast, midpoint lightning with a flicker schedule, pack fire, earth debris and element colour language, with sources.
+- [engine-and-performance.md](references/engine-and-performance.md) - ParticleEmitter Rate and Lifetime caps, fill rate and overdraw, what Enabled, Clear, Color, TimeScale and Trail Lifetime changes do live, flipbooks, LightInfluence defaults, Squash and ZOffset, ShapePartial and inherited motion, Highlight cost, client-side visuals and caster-local play, Debris cap and pooling, quality scaling, MicroProfiler, effect lights and post effects, with sources.
 
 ## Scripts
 
