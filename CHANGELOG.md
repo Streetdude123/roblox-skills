@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-14 - Shinsenkyo: FS1 stupa set piece and free convict hair (user-authorized)
+
+- roblox-modeling: `references/taste.md` logs "Continue with the shisenkyo island plan please, you are working on forest pieces and hairs, read project memory", the Sketchfab sign-in he did himself ("signed in"), what the six free hair GLB files contain, the three FS1 stupa review passes (brick grade, vines read as ribs, ring slits, black coplanar moss slabs) and the set piece site lessons (open area, dirt pad, broken pad edge).
+
 ## 2026-10-14 - Wacky Pets: hook pass, egg crash intro, pet tag (user-authorized)
 
 - roblox-vfx-craft: `references/taste.md` logs the request "as satisfying and addictive as possible", the sprite layer and burst template method, and the traps (dark ground shock at LightEmission 0, the overhead tag over the egg, the sky-only fall shot), plus "stop trying to record videos just send me finished".
