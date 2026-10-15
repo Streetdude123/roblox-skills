@@ -5,6 +5,11 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-15 - Shinsenkyo: realistic masks, paper and items (user-authorized)
+
+- roblox-modeling: `references/taste.md` logs his verdict on the convict variant sheets ("you think that looks like a realistic mask? i asked for realism ... the paper is super unrealistic ... do it all with the other convicts").
+- roblox-modeling: new `references/masks-and-paper.md` (museum references measured on a grid, masks as a carved relief on a curved shell with paint maps and separate 3D parts, the smooth-max window bug, what read as a toy and what read as real, paper talismans with real brush characters and seals, cloth around the R6 head, the Blender generated-image colour-space trap) and rule 11 in `SKILL.md`.
+
 ## 2026-10-15 - Shinsenkyo: H1 courtesan pick (user-authorized)
 
 - roblox-modeling: `references/taste.md` logs "Crimson moon please" (H1 V2) as his pick for the courtesan.
