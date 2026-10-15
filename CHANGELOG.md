@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-15 - Shinsenkyo: forest pieces approved, convict variant sheets (user-authorized)
+
+- roblox-modeling: `references/taste.md` logs "Perfect beautiful, next step" on FS5-FS7 and the free-hair fit for the convicts: the hidden anime head mesh, why eye-span and width scaling failed, and the head-box fit that worked.
+
 ## 2026-10-15 - Shinsenkyo: FS7 bridge and pond (user-authorized)
 
 - roblox-modeling: `references/taste.md` logs the FS7 lessons: the ivy shell that read as two rolls and the noise, holes, strands and wrap that fixed it, the painted leaf-mat texture, pond water that must stop at the pad's voxel top, and the grid size and smoothing that page a 6 GB machine.
