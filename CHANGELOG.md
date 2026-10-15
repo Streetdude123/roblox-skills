@@ -5,6 +5,10 @@ Maintenance history for this repository. Entries were previously kept as dated
 now live here so the shipped skill package carries only what an agent using it
 needs.
 
+## 2026-10-15 - Shinsenkyo: H1 courtesan pick (user-authorized)
+
+- roblox-modeling: `references/taste.md` logs "Crimson moon please" (H1 V2) as his pick for the courtesan.
+
 ## 2026-10-15 - Shinsenkyo: forest pieces approved, convict variant sheets (user-authorized)
 
 - roblox-modeling: `references/taste.md` logs "Perfect beautiful, next step" on FS5-FS7 and the free-hair fit for the convicts: the hidden anime head mesh, why eye-span and width scaling failed, and the head-box fit that worked.
